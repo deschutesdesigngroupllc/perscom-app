@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Models\Domain;
 use App\Models\Tenant;
 use App\Support\Tenancy\Bootstrappers\ConfigBootstrapper;
-use App\Support\Tenancy\Bootstrappers\FilamentBootstrapper;
 use App\Support\Tenancy\Bootstrappers\PermissionsBootstrapper;
 use App\Support\Tenancy\Bootstrappers\SettingsBootstrapper;
 
@@ -44,7 +43,6 @@ return [
         // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class,
         ConfigBootstrapper::class,
         PermissionsBootstrapper::class,
-        FilamentBootstrapper::class,
         SettingsBootstrapper::class,
     ],
 

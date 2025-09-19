@@ -12,6 +12,8 @@ class ListEvents extends ListRecords
 {
     protected static string $resource = EventResource::class;
 
+    protected ?string $subheading = 'Manage your organizational events and schedules.';
+
     protected function getHeaderActions(): array
     {
         return [

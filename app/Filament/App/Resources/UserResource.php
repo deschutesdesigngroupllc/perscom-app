@@ -400,6 +400,7 @@ class UserResource extends BaseResource
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
         return $table
+            ->emptyStateDescription('There are no users to view. Create one to get started.')
             ->columns([
                 ImageColumn::make('profile_photo')
                     ->hidden(fn (): bool => in_array('profile_photo', $hiddenFields))

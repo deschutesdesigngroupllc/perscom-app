@@ -8,7 +8,6 @@ use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Filament\App\Resources\ApiPurgeLogResource\Pages\ListApiPurgeLogs;
 use App\Models\ApiPurgeLog;
 use BackedEnum;
-use Filament\Panel;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -28,18 +27,14 @@ class ApiPurgeLogResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
-    protected static ?string $label = 'API Cache Purge Log';
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
+    protected static ?string $label = 'API cache logs';
 
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no API cache logs to view.')
             ->columns([
                 TextColumn::make('apiLog.id')
                     ->label('API Log ID')

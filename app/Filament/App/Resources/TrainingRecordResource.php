@@ -176,6 +176,7 @@ class TrainingRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create a new training record to get started.')
             ->columns([
                 TextColumn::make('user.name')
                     ->sortable()

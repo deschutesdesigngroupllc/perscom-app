@@ -15,15 +15,13 @@ use App\Settings\DashboardSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
-use Filament\Panel;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -48,11 +46,6 @@ class Dashboard extends SettingsPage
     protected static ?string $title = 'Dashboard Settings';
 
     protected ?string $subheading = 'Settings that focus on configuring and setting up your online dashboard.';
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
 
     public static function canAccess(): bool
     {
@@ -82,29 +75,18 @@ class Dashboard extends SettingsPage
                         Tab::make('Domain')
                             ->icon('heroicon-o-globe-alt')
                             ->badgeColor('gray')
-                            ->badge(function () {
-                                /** @var Tenant $tenant */
-                                $tenant = Filament::getTenant();
-
-                                return $tenant->url;
-                            })
+                            ->badge(fn () => tenant('url'))
                             ->schema([
-                                Placeholder::make('fallback')
-                                    ->content(function (): HtmlString {
-                                        /** @var Tenant $tenant */
-                                        $tenant = Filament::getTenant();
+                                TextEntry::make('fallback')
+                                    ->state(function (): HtmlString {
+                                        $fallbackUrl = tenant('fallback_url');
 
-                                        return new HtmlString("<a href='$tenant->fallback_url' target='_blank'>$tenant->fallback_url</a>");
+                                        return new HtmlString("<a href='$fallbackUrl' target='_blank'>$fallbackUrl</a>");
                                     })
                                     ->helperText('The default URL for your account. You can always access your dashboard from this domain.'),
                                 TextInput::make('subdomain')
                                     ->maxLength(255)
-                                    ->rules(function (): array {
-                                        /** @var Tenant $tenant */
-                                        $tenant = Filament::getTenant();
-
-                                        return [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain->id ?? null), new SubdomainRule];
-                                    })
+                                    ->rules(fn (): array => [Rule::unique('mysql.domains', 'domain')->ignore(tenant()->custom_domain->id ?? null), new SubdomainRule])
                                     ->helperText('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                                     ->prefix(config('app.scheme').'://')
                                     ->suffix(config('app.base_url'))
@@ -200,8 +182,8 @@ class Dashboard extends SettingsPage
         /** @var array $data */
         $data = data_get($this->form->getLivewire(), 'data');
 
-        /** @var Tenant $tenant */
-        $tenant = Filament::getTenant();
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
 
         $subdomain = data_get($data, 'subdomain');
 
@@ -219,8 +201,12 @@ class Dashboard extends SettingsPage
      */
     private function updateTenantSubdomain(string $subdomain): void
     {
-        /** @var Tenant $tenant */
-        $tenant = Filament::getTenant();
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
+
+        if (blank($tenant)) {
+            return;
+        }
 
         $action = new UpdateTenantSubdomain;
         $action->handle($tenant, $subdomain);
@@ -236,8 +222,12 @@ class Dashboard extends SettingsPage
      */
     private function resetTenantSubdomain(): void
     {
-        /** @var Tenant $tenant */
-        $tenant = Filament::getTenant();
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
+
+        if (blank($tenant)) {
+            return;
+        }
 
         $action = new ResetTenantSubdomain;
         $action->handle($tenant);

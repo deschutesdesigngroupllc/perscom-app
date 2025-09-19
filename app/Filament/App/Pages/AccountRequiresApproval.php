@@ -7,7 +7,6 @@ namespace App\Filament\App\Pages;
 use App\Models\Tenant;
 use App\Models\User;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Filament\Pages\SimplePage;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,9 +24,13 @@ class AccountRequiresApproval extends SimplePage
         $user = Auth::user();
 
         /** @var ?Tenant $tenant */
-        $tenant = Filament::getTenant();
+        $tenant = tenant();
 
-        if ($user && $tenant && $user->approved) {
+        if (blank($user) || blank($tenant)) {
+            return;
+        }
+
+        if ($user->approved) {
             $this->redirect(route('filament.app.pages.dashboard', [
                 'tenant' => $tenant,
             ]));

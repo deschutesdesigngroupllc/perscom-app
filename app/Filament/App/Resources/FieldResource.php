@@ -161,6 +161,7 @@ class FieldResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no custom fields to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

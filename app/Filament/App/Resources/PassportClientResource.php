@@ -43,7 +43,7 @@ class PassportClientResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $pluralModelLabel = 'clients';
 

@@ -16,12 +16,12 @@ use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
+use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
-use App\Models\Tenant;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
@@ -46,6 +46,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Padmission\DataLens\DataLensPlugin;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Torchlight\Middleware\RenderTorchlight;
 
@@ -118,6 +119,7 @@ class AppPanelProvider extends PanelProvider
                 InitializeTenancyBySubdomain::class,
             ], isPersistent: true)
             ->middleware([
+                CheckSubscription::class,
                 AttachTraceAndRequestId::class,
                 SentryContext::class,
                 EncryptCookies::class,
@@ -143,6 +145,10 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(6),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
@@ -176,11 +182,6 @@ class AppPanelProvider extends PanelProvider
                     ->label('System Status')
                     ->url('https://status.perscom.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-command-line'),
-            ])
-            ->tenantMenu(false)
-            ->tenant(Tenant::class, 'slug')
-            ->tenantDomain('{tenant:slug}'.config('app.base_url'))
-            ->tenantBillingProvider(new BillingProvider)
-            ->requiresTenantSubscription();
+            ]);
     }
 }

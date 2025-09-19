@@ -87,6 +87,7 @@ class QualificationResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no qualifications to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
