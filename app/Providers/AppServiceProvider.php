@@ -14,6 +14,7 @@ use App\Models\PassportToken;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Policies\CustomReportPolicy;
 use App\Services\ApiPermissionService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
@@ -53,6 +54,7 @@ use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
+use Padmission\DataLens\Models\CustomReport;
 use Spatie\Backup\Commands\BackupCommand as BaseBackupCommand;
 use Spatie\Backup\Config\Config;
 
@@ -321,6 +323,7 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewPulse', fn (Admin|User|null $user = null): bool => $user instanceof Admin);
 
+        Gate::policy(CustomReport::class, CustomReportPolicy::class);
         Gate::before(function (Admin|User|null $user, string $ability, $model) {
             if ($user instanceof Admin) {
                 return true;
