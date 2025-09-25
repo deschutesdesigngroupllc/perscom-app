@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +18,7 @@ class CheckSubscription extends VerifyBillableIsSubscribed
     {
         $this->request = $request;
 
-        if (App::isDemo() || App::isAdmin()) {
+        if (App::isDemo() || App::isAdmin() || ! Auth::check()) {
             return $next($request);
         }
 

@@ -135,6 +135,7 @@ return Application::configure(basePath: dirname(__DIR__))
             ThrottleRequestsWithRedis::class,
             SubstituteBindings::class,
             MoveApiKeyQueryParameterToHeader::class,
+            CheckSubscription::class,
             AuthenticateApi::class,
             AuthenticatesRequests::class,
             Authorize::class,
