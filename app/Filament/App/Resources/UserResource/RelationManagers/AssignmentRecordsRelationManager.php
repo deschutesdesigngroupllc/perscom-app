@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\AssignmentRecordResource;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\User;
@@ -22,9 +24,12 @@ class AssignmentRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $title = 'Assignment Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Assignment Records')
             ->description('The assignment records for the user.')
             ->columns([
                 TextColumn::make('created_at')
@@ -47,22 +52,22 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?AssignmentRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (AssignmentRecord $record) => $record->document)
+                            ->user(fn (AssignmentRecord $record) => $record->user)
+                            ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (AssignmentRecord $record) => $record->text),
+                    ),
             ])
             ->emptyStateActions([
                 Action::make('create')

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Models\TrainingRecord;
 use App\Models\User;
@@ -20,9 +22,12 @@ class TrainingRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-academic-cap';
 
+    protected static ?string $title = 'Training Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Training Records')
             ->description('The training records for the user.')
             ->columns([
                 TextColumn::make('created_at')
@@ -33,24 +38,24 @@ class TrainingRecordsRelationManager extends RelationManager
                 TextColumn::make('competencies.name')
                     ->listWithLineBreaks(),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (TrainingRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?TrainingRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?TrainingRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?TrainingRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (TrainingRecord $record) => $record->document)
+                            ->user(fn (TrainingRecord $record) => $record->user)
+                            ->attached(fn (TrainingRecord $record): TrainingRecord => $record),
                     ),
             ])
             ->emptyStateActions([

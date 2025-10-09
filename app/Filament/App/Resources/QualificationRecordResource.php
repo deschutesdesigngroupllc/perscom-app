@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\QualificationRecordResource\Pages\CreateQualificationRecord;
 use App\Filament\App\Resources\QualificationRecordResource\Pages\EditQualificationRecord;
 use App\Filament\App\Resources\QualificationRecordResource\Pages\ListQualificationRecords;
@@ -12,12 +14,11 @@ use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\Atta
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\QualificationRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\App\ViewDocument;
+use App\Livewire\Filament\App\ViewDocument;
 use App\Models\QualificationRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -184,23 +185,23 @@ class QualificationRecordResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?QualificationRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?QualificationRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (QualificationRecord $record) => $record->document)
+                            ->user(fn (QualificationRecord $record) => $record->user)
+                            ->attached(fn (QualificationRecord $record): QualificationRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (QualificationRecord $record) => $record->text),
+                    ),
                 TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),

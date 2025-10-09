@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\RankRecordResource;
 use App\Models\RankRecord;
 use App\Models\User;
@@ -21,9 +23,12 @@ class RankRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-chevron-double-up';
 
+    protected static ?string $title = 'Rank Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Rank Records')
             ->description('The rank records for the user.')
             ->columns([
                 TextColumn::make('created_at')
@@ -34,24 +39,24 @@ class RankRecordsRelationManager extends RelationManager
                 ImageColumn::make('rank.image.path')
                     ->label(''),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (RankRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?RankRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?RankRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?RankRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (RankRecord $record) => $record->document)
+                            ->user(fn (RankRecord $record) => $record->user)
+                            ->attached(fn (RankRecord $record): RankRecord => $record),
                     ),
             ])
             ->emptyStateActions([

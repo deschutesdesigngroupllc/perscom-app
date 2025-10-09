@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource\Pages\CreateServiceRecord;
 use App\Filament\App\Resources\ServiceRecordResource\Pages\EditServiceRecord;
 use App\Filament\App\Resources\ServiceRecordResource\Pages\ListServiceRecords;
@@ -12,12 +14,11 @@ use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\Attachment
 use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\ServiceRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\App\ViewDocument;
+use App\Livewire\Filament\App\ViewDocument;
 use App\Models\ServiceRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -167,23 +168,23 @@ class ServiceRecordResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?ServiceRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?ServiceRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?ServiceRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (ServiceRecord $record) => $record->document)
+                            ->user(fn (ServiceRecord $record) => $record->user)
+                            ->attached(fn (ServiceRecord $record): ServiceRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (ServiceRecord $record) => $record->text),
+                    ),
                 TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),

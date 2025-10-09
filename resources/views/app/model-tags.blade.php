@@ -1,1 +1,0 @@
-@livewire('app.model-tags')

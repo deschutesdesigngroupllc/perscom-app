@@ -28,6 +28,9 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -120,6 +123,9 @@ class SubmissionResource extends BaseResource
             ->emptyStateDescription('There are no submissions to view. Create one to get started.')
             ->columns([
                 TextColumn::make('form.name')
+                    ->weight(fn (Submission $record): ?\Filament\Support\Enums\FontWeight => $record->read_at ? null : FontWeight::Bold)
+                    ->icon(fn (Submission $record): ?\Filament\Support\Icons\Heroicon => $record->read_at ? null : Heroicon::OutlinedPlus)
+                    ->iconPosition(IconPosition::After)
                     ->searchable(),
                 TextColumn::make('user.name')
                     ->searchable(),

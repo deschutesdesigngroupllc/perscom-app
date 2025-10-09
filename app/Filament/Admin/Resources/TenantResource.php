@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Actions\SwapSubscriptionBulkAction;
+use App\Filament\Admin\Resources\TenantResource\Actions\SwapSubscriptionBulkAction;
 use App\Filament\Admin\Resources\TenantResource\Pages\CreateTenant;
 use App\Filament\Admin\Resources\TenantResource\Pages\EditTenant;
 use App\Filament\Admin\Resources\TenantResource\Pages\ListTenants;

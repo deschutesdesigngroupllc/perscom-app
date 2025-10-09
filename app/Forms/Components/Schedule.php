@@ -86,7 +86,7 @@ class Schedule
                                 'FR' => 'Friday',
                                 'SA' => 'Saturday',
                             ])
-                            ->hidden(fn (Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'MONTHLY' || $get('frequency') === 'YEARLY'),
+                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'MONTHLY', 'YEARLY'], true)),
                         Select::make('by_month_day')
                             ->live()
                             ->helperText('The day of the month the schedule will repeat.')
@@ -102,7 +102,7 @@ class Schedule
 
                                 return $period->mapWithKeys(fn ($value): array => [$value->format('j') => $value->format('jS')]);
                             })
-                            ->hidden(fn (Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'YEARLY'),
+                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'WEEKLY', 'YEARLY'], true)),
                         Select::make('by_month')
                             ->live()
                             ->helperText('The month of the year the schedule will repeat.')
@@ -123,7 +123,7 @@ class Schedule
                                 '11' => 'November',
                                 '12' => 'December',
                             ])
-                            ->hidden(fn (Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'MONTHLY'),
+                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'WEEKLY', 'MONTHLY'], true)),
                     ]),
                 Select::make('end_type')
                     ->live()

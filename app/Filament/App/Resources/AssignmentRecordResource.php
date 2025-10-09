@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages\CreateAssignmentRecord;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages\EditAssignmentRecord;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages\ListAssignmentRecords;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages\ViewAssignmentRecord;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\CommentsRelationManager;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\AssignmentRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\App\ViewDocument;
+use App\Livewire\Filament\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\RosterMode;
@@ -21,7 +23,6 @@ use App\Models\User;
 use App\Settings\DashboardSettings;
 use App\Settings\NotificationSettings;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -249,23 +250,23 @@ class AssignmentRecordResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?AssignmentRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (AssignmentRecord $record) => $record->document)
+                            ->user(fn (AssignmentRecord $record) => $record->user)
+                            ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (AssignmentRecord $record) => $record->text),
+                    ),
                 TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),

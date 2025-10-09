@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\TenantResource\Pages;
 
-use App\Filament\Admin\Actions\TenantLoginAction;
 use App\Filament\Admin\Resources\TenantResource;
+use App\Filament\Admin\Resources\TenantResource\Actions\TenantLoginAction;
 use App\Models\Tenant;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;

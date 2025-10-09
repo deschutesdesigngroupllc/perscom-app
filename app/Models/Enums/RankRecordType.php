@@ -34,7 +34,7 @@ enum RankRecordType: int implements HasColor, HasIcon, HasLabel
     {
         return match ($this) {
             RankRecordType::PROMOTION => 'heroicon-o-arrow-up-circle',
-            RankRecordType::DEMOTION => 'heroicon-o-arrow-up-circle',
+            RankRecordType::DEMOTION => 'heroicon-o-arrow-down-circle',
             RankRecordType::LATERAL, RankRecordType::TRANSFER => 'heroicon-o-arrow-right-circle',
         };
     }

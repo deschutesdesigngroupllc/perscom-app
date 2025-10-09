@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\CombatRecordResource\Pages\CreateCombatRecord;
 use App\Filament\App\Resources\CombatRecordResource\Pages\EditCombatRecord;
 use App\Filament\App\Resources\CombatRecordResource\Pages\ListCombatRecords;
 use App\Filament\App\Resources\CombatRecordResource\Pages\ViewCombatRecord;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRelationManager;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\CombatRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\App\ViewDocument;
+use App\Livewire\Filament\App\ViewDocument;
 use App\Models\CombatRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -167,23 +168,23 @@ class CombatRecordResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?CombatRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?CombatRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?CombatRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (CombatRecord $record) => $record->document)
+                            ->user(fn (CombatRecord $record) => $record->user)
+                            ->attached(fn (CombatRecord $record): CombatRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (CombatRecord $record) => $record->text),
+                    ),
                 TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),

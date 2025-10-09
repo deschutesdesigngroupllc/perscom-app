@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Models\ServiceRecord;
 use App\Models\User;
@@ -20,33 +22,36 @@ class ServiceRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-clipboard-document-list';
 
+    protected static ?string $title = 'Service Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Service Records')
             ->description('The service records for the user.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (ServiceRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?ServiceRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?ServiceRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?ServiceRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (ServiceRecord $record) => $record->document)
+                            ->user(fn (ServiceRecord $record) => $record->user)
+                            ->attached(fn (ServiceRecord $record): ServiceRecord => $record),
                     ),
             ])
             ->emptyStateActions([

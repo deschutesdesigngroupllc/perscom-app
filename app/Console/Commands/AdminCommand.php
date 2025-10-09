@@ -84,7 +84,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
     {
         $id = search(
             label: 'Please select the admin:',
-            options: fn ($value) => strlen($value) > 0
+            options: fn ($value) => $value !== ''
                 ? Admin::where('name', 'like', "%$value%")->pluck('name', 'id')->all()
                 : []
         );
@@ -111,7 +111,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
     {
         $id = search(
             label: 'Please select the admin:',
-            options: fn ($value) => strlen($value) > 0
+            options: fn ($value) => $value !== ''
                 ? Admin::where('name', 'like', "%$value%")->pluck('name', 'id')->all()
                 : []
         );

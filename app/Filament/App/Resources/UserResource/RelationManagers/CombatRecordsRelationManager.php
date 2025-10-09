@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\CombatRecordResource;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\CombatRecord;
 use App\Models\User;
 use BackedEnum;
@@ -20,33 +22,36 @@ class CombatRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-fire';
 
+    protected static ?string $title = 'Combat Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Combat Records')
             ->description('The combat records for the user.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (CombatRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?CombatRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?CombatRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?CombatRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (CombatRecord $record) => $record->document)
+                            ->user(fn (CombatRecord $record) => $record->user)
+                            ->attached(fn (CombatRecord $record): CombatRecord => $record),
                     ),
             ])
             ->emptyStateActions([

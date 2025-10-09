@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\AwardRecordResource;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AwardRecord;
 use App\Models\User;
 use BackedEnum;
@@ -21,9 +23,12 @@ class AwardRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-trophy';
 
+    protected static ?string $title = 'Award Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Award Records')
             ->description('The award records for the user.')
             ->columns([
                 TextColumn::make('created_at')
@@ -34,24 +39,24 @@ class AwardRecordsRelationManager extends RelationManager
                 ImageColumn::make('award.image.path')
                     ->label(''),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (AwardRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?AwardRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?AwardRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (AwardRecord $record) => $record->document)
+                            ->user(fn (AwardRecord $record) => $record->user)
+                            ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
             ])
             ->emptyStateActions([

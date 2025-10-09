@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Actions\Events;
+namespace App\Filament\App\Resources\EventResource\Actions;
 
 use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Models\Enums\EventRegistrationStatus;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\App;
+namespace App\Livewire\Filament\App;
 
 use App\Models\Enums\ModelTagType;
 use App\Models\ModelTag;
@@ -28,7 +28,7 @@ class ModelTags extends Component implements HasActions, HasForms, HasTable
 
     public function render(): View
     {
-        return view('livewire.app.model-tags');
+        return view('livewire.filament.app.model-tags');
     }
 
     public function table(Table $table): Table

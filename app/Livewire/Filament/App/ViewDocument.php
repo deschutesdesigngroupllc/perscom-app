@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\App;
+namespace App\Livewire\Filament\App;
 
 use App\Models\Document;
 use App\Models\User;
@@ -26,6 +26,6 @@ class ViewDocument extends Component
 
     public function render(): View
     {
-        return view('livewire.app.view-document');
+        return view('livewire.filament.app.view-document');
     }
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\App\Actions\ViewHtmlAction;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Models\QualificationRecord;
 use App\Models\User;
@@ -21,9 +23,12 @@ class QualificationRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-star';
 
+    protected static ?string $title = 'Qualification Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Qualification Records')
             ->description('The qualification records for the user.')
             ->columns([
                 TextColumn::make('created_at')
@@ -34,24 +39,24 @@ class QualificationRecordsRelationManager extends RelationManager
                 ImageColumn::make('qualification.image.path')
                     ->label(''),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
-                    ->sortable(),
+                    ->sortable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (QualificationRecord $record) => $record->text),
+                    ),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?QualificationRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?QualificationRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (QualificationRecord $record) => $record->document)
+                            ->user(fn (QualificationRecord $record) => $record->user)
+                            ->attached(fn (QualificationRecord $record): QualificationRecord => $record),
                     ),
             ])
             ->emptyStateActions([

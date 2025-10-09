@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\AwardRecordResource\Pages\CreateAwardRecord;
 use App\Filament\App\Resources\AwardRecordResource\Pages\EditAwardRecord;
 use App\Filament\App\Resources\AwardRecordResource\Pages\ListAwardRecords;
 use App\Filament\App\Resources\AwardRecordResource\Pages\ViewAwardRecord;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\CommentsRelationManager;
+use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\AwardRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\App\ViewDocument;
+use App\Livewire\Filament\App\ViewDocument;
 use App\Models\AwardRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -184,23 +185,23 @@ class AwardRecordResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Action::make('select')
-                            ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
-                            ->modalSubmitAction(false)
-                            ->modalCancelActionLabel('Close')
-                            ->modalHeading(fn (?AwardRecord $record) => $record->document->name ?? 'Document')
-                            ->modalContent(fn (?AwardRecord $record) => view('app.view-document', [
-                                'document' => $record->document,
-                                'user' => $record->user,
-                                'model' => $record,
-                            ])),
+                        ViewDocumentAction::make()
+                            ->document(fn (AwardRecord $record) => $record->document)
+                            ->user(fn (AwardRecord $record) => $record->user)
+                            ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
                 TextColumn::make('text')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->icon('heroicon-o-document')
+                    ->wrap(false)
+                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
-                    ->wrap()
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->action(
+                        ViewHtmlAction::make()
+                            ->modalHeading('Text')
+                            ->html(fn (AwardRecord $record) => $record->text),
+                    ),
                 TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),
