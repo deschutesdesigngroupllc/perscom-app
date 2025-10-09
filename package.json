@@ -15,7 +15,7 @@
     "@headlessui/react": "^2.2.7",
     "@heroicons/react": "^2.2.0",
     "@iframe-resizer/child": "5.3.2",
-    "@inertiajs/react": "^2.1.4",
+    "@inertiajs/react": "^2.2.6",
     "@radix-ui/react-select": "^2.2.4",
     "@radix-ui/react-slot": "1.2.3",
     "@shufo/prettier-plugin-blade": "^1.16.0",
