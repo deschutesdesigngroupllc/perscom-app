@@ -14,7 +14,7 @@ class AwardRecordRequest extends Request
             'user_id' => 'integer|exists:users,id',
             'award_id' => 'integer|exists:awards,id',
             'document_id' => 'nullable|integer|exists:documents,id',
-            'author_id' => 'nullable|integer|exists:users,id',
+            'author_id' => 'integer|exists:users,id',
             'text' => 'nullable|string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',

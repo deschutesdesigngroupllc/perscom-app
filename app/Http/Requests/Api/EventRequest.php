@@ -45,7 +45,6 @@ class EventRequest extends Request
         }
 
         return array_merge($rules, [
-            'author_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
             'starts' => 'required|date',
             'ends' => 'required|date|after:start',

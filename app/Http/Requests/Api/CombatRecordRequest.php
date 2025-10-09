@@ -13,7 +13,7 @@ class CombatRecordRequest extends Request
         return [
             'user_id' => 'integer|exists:users,id',
             'document_id' => 'nullable|integer|exists:documents,id',
-            'author_id' => 'nullable|integer|exists:users,id',
+            'author_id' => 'integer|exists:users,id',
             'text' => 'string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',

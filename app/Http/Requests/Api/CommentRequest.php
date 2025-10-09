@@ -23,7 +23,6 @@ class CommentRequest extends Request
     public function storeRules(): array
     {
         return [
-            'author_id' => 'required|integer|exists:users,id',
             'comment' => 'required|string|max:65535',
         ];
     }

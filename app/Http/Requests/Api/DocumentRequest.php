@@ -23,7 +23,6 @@ class DocumentRequest extends Request
     public function storeRules(): array
     {
         return [
-            'author_id' => 'required|integer|exists:users,id',
             'name' => 'required|string|max:255',
             'content' => 'required|string|max:65535',
         ];

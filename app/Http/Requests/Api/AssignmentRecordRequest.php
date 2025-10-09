@@ -19,7 +19,7 @@ class AssignmentRecordRequest extends Request
             'position_id' => 'nullable|integer|exists:positions,id',
             'specialty_id' => 'nullable|integer|exists:specialties,id',
             'document_id' => 'nullable|integer|exists:documents,id',
-            'author_id' => 'nullable|integer|exists:users,id',
+            'author_id' => 'integer|exists:users,id',
             'type' => [Rule::enum(AssignmentRecordType::class), 'max:255'],
             'text' => 'nullable|string|max:65535',
             'updated_at' => 'date',
