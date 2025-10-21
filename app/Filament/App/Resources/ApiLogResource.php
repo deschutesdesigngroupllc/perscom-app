@@ -342,6 +342,14 @@ class ApiLogResource extends BaseResource
         ];
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        /** @var Builder|ApiLog $query */
+        $query = parent::getEloquentQuery();
+
+        return $query->withMeta();
+    }
+
     public static function canCreate(): bool
     {
         return false;

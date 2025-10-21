@@ -16511,8 +16511,8 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonerickson/laravel-meta/zipball/8cb3acf128acc329db599f87a91c525f95e389c3",
-                "reference": "8cb3acf128acc329db599f87a91c525f95e389c3",
+                "url": "https://api.github.com/repos/jonerickson/laravel-meta/zipball/ca644fcbbacfc8e85f1d2554927bf171fb7c886d",
+                "reference": "ca644fcbbacfc8e85f1d2554927bf171fb7c886d",
                 "shasum": ""
             },
             "require": {
@@ -16563,7 +16563,7 @@
             "support": {
                 "source": "https://github.com/jonerickson/laravel-meta/tree/feature/publish-migrations"
             },
-            "time": "2025-07-10T16:36:24+00:00"
+            "time": "2025-10-21T19:09:20+00:00"
         }
     ],
     "packages-dev": [
