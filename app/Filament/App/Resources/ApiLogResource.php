@@ -305,6 +305,10 @@ class ApiLogResource extends BaseResource
                                 ->grammar(Grammar::Json),
                         ]),
                     Tab::make('Response')
+                        ->badge(fn (ApiLog $record): ?string => $record->properties->get('is_truncated')
+                            ? 'Truncated'
+                            : null)
+                        ->badgeColor('gray')
                         ->icon('heroicon-o-cloud-arrow-down')
                         ->schema([
                             TextEntry::make('status')
