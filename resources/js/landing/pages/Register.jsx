@@ -6,6 +6,9 @@ import { Input } from '../components/Input'
 import { Logo } from '../components/Logo'
 import { ValidationErrors } from '../components/ValidationErrors'
 import Checkbox from '../components/Checkbox'
+import { Turnstile } from '@marsidev/react-turnstile'
+
+const turnstileSiteKey = import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY
 
 export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
@@ -94,11 +97,10 @@ export default function Register() {
             </a>
             .
           </div>
-          <div className='pt-5'>
-            <Button type='submit' processing={processing} color='blue' className='w-full'>
-              Continue <span aria-hidden='true'>&nbsp;&rarr;</span>
-            </Button>
-          </div>
+          {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} />}
+          <Button type='submit' processing={processing} color='blue' className='w-full'>
+            Continue <span aria-hidden='true'>&nbsp;&rarr;</span>
+          </Button>
         </form>
       </div>
     </RegisterLayout>
