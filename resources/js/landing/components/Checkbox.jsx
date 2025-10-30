@@ -1,6 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
 
 export function Checkbox({ name, value, onChange, className }) {
   return (

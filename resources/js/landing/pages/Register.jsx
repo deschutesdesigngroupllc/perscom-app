@@ -1,17 +1,17 @@
-import React from 'react'
 import { useForm } from '@inertiajs/react'
-import { RegisterLayout } from '../layouts/Register'
+import { Turnstile } from '@marsidev/react-turnstile'
 import { Button } from '../components/Button'
+import Checkbox from '../components/Checkbox'
 import { Input } from '../components/Input'
 import { Logo } from '../components/Logo'
 import { ValidationErrors } from '../components/ValidationErrors'
-import Checkbox from '../components/Checkbox'
-import { Turnstile } from '@marsidev/react-turnstile'
+import { RegisterLayout } from '../layouts/Register'
 
 const turnstileSiteKey = import.meta.env.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY
 
 export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
+    token: '',
     organization: '',
     email: '',
     domain: ''
@@ -19,6 +19,10 @@ export default function Register() {
 
   const onHandleChange = (event) => {
     setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
+  }
+
+  const onTurnstileSuccess = (token) => {
+    setData('token', token)
   }
 
   const submit = (e) => {
@@ -97,7 +101,7 @@ export default function Register() {
             </a>
             .
           </div>
-          {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} />}
+          {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} onSuccess={onTurnstileSuccess} />}
           <Button type='submit' processing={processing} color='blue' className='w-full'>
             Continue <span aria-hidden='true'>&nbsp;&rarr;</span>
           </Button>

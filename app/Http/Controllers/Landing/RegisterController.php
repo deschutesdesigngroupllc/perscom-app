@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Landing;
 
-use App\Actions\CreateNewTenant;
 use App\Http\Controllers\Controller;
-use App\Models\Tenant;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Models\Registration;
+use App\Notifications\Tenant\RegistrationVerificationRequired;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use Throwable;
 
 class RegisterController extends Controller
 {
@@ -21,23 +19,20 @@ class RegisterController extends Controller
         return Inertia::render('Register');
     }
 
-    /**
-     * @throws Throwable
-     * @throws ValidationException
-     */
-    public function store(Request $request, CreateNewTenant $createNewTenant): RedirectResponse
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $tenant = $createNewTenant->create($request->all());
-
-        return redirect()->signedRoute('web.register.complete', [
-            'tenant' => $tenant->id,
+        $registration = Registration::create([
+            'organization' => $request->validated('organization'),
+            'email' => $request->validated('email'),
         ]);
+
+        $registration->notify(new RegistrationVerificationRequired($registration));
+
+        return redirect()->signedRoute('web.register.show');
     }
 
-    public function complete(Tenant $tenant): Response
+    public function show(): Response
     {
-        return Inertia::render('Complete', [
-            'url' => $tenant->url,
-        ]);
+        return Inertia::render('Verify');
     }
 }

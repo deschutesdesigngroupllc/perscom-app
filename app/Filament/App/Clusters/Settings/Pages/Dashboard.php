@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
-use App\Actions\ResetTenantSubdomain;
-use App\Actions\UpdateTenantSubdomain;
+use App\Actions\Tenant\ResetTenantSubdomain;
+use App\Actions\Tenant\UpdateTenantSubdomain;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Enums\RosterMode;
 use App\Models\Tenant;

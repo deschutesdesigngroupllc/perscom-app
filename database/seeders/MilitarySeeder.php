@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Actions\SetupTenantAccount;
+use App\Actions\Tenant\SetupTenantAccount;
 use App\Models\Announcement;
 use App\Models\AssignmentRecord;
 use App\Models\Award;

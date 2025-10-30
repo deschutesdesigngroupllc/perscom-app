@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 import backgroundImage1 from '../../../images/landing/register1.jpeg'
 import backgroundImage2 from '../../../images/landing/register2.jpeg'
 import backgroundImage3 from '../../../images/landing/register3.jpeg'

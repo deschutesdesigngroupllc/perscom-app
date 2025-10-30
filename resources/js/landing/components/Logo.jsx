@@ -1,5 +1,3 @@
-import React from 'react'
-
 const s0Style = {
   fill: 'none'
 }

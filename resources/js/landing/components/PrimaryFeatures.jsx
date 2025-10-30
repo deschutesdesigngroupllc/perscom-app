@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
+import { useEffect, useState } from 'react'
 
-import { Container } from './Container'
 import backgroundImage from '../../../images/landing/background-features.jpg'
 import featureDashboard from '../../../images/landing/features/feature-1.png'
 import featurePersonnelFiles from '../../../images/landing/features/feature-2.png'
 import featureForms from '../../../images/landing/features/feature-3.png'
 import featureLogs from '../../../images/landing/features/feature-4.png'
+import { Container } from './Container'
 
 const features = [
   {

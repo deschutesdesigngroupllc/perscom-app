@@ -1,13 +1,12 @@
-import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
+import { Fragment } from 'react'
 
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ButtonLink } from './Button'
 import { Container } from './Container'
 import { Logo } from './Logo'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function MobileNavigation() {
   return (

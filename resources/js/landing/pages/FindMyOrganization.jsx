@@ -1,10 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { Head, useForm } from '@inertiajs/react'
-import { AuthLayout } from '../layouts/Auth'
-import { ValidationErrors } from '../components/ValidationErrors'
+import PropTypes from 'prop-types'
 import { Button, ButtonLink } from '../components/Button'
 import { Input } from '../components/Input'
+import { ValidationErrors } from '../components/ValidationErrors'
+import { AuthLayout } from '../layouts/Auth'
 
 function FindMyOrganization({ url, tenant }) {
   const { data, setData, post, processing, errors } = useForm({

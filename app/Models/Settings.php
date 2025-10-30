@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelSettings\Models\SettingsProperty;
 
@@ -39,5 +38,4 @@ class Settings extends SettingsProperty
 {
     use ClearsApiCache;
     use ClearsResponseCache;
-    use HasFactory;
 }

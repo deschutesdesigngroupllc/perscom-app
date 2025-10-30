@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\Tenant;
 
 use App\Contracts\SendsModelNotifications;
 use App\Models\Enums\NotificationChannel;

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ButtonLink } from './Button'
 import { Container } from './Container'
 

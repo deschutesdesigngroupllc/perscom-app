@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Jobs\SendModelNotifications;
+use App\Jobs\Tenant\SendModelNotifications;
 use App\Models\ModelNotification;
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphMany;

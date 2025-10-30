@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Actions;
+namespace App\Actions\Tenant;
 
+use App\Actions\Auth\CreateNewUser;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
 use App\Models\Tenant;

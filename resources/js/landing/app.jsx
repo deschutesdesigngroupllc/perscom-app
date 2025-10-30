@@ -1,7 +1,6 @@
-import React from 'react'
-import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+import { createRoot } from 'react-dom/client'
 
 import.meta.glob(['../../svg/**', '../../../images/landing/landing/**'])
 

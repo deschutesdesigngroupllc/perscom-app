@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Jobs;
 
-use App\Jobs\PurgeApiCache;
+use App\Jobs\Tenant\PurgeApiCache;
 use App\Models\Rank;
 use App\Services\ApiCacheService;
 use Illuminate\Support\Facades\Queue;

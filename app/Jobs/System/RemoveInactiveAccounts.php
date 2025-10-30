@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\System;
 
 use App\Models\Tenant;
 use App\Notifications\System\DeleteAccount;
