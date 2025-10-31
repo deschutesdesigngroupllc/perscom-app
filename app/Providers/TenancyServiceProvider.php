@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Jobs\RemoveTenantAccount;
-use App\Jobs\SetupTenantAccount;
+use App\Jobs\Tenant\RemoveTenantAccount;
+use App\Jobs\Tenant\SetupTenantAccount;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;

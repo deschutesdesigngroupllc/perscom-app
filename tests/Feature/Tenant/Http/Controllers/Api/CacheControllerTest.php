@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
-use App\Jobs\PurgeApiCache;
+use App\Jobs\Tenant\PurgeApiCache;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\Tenant\TenantTestCase;
 use Tests\Traits\MakesApiRequests;

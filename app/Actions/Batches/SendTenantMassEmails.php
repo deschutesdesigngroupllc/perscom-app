@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\SendMassEmail;
+use App\Jobs\Central\SendMassEmail;
 use App\Models\Mail;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;

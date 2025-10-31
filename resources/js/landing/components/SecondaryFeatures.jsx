@@ -1,12 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { CalendarDaysIcon, FolderMinusIcon, NewspaperIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
-import { FolderMinusIcon, CalendarDaysIcon, NewspaperIcon } from '@heroicons/react/20/solid'
-import { Container } from './Container'
+import PropTypes from 'prop-types'
 import customFieldsImage from '../../../images/landing/features/secondary-1.png'
 import recordsImage from '../../../images/landing/features/secondary-2.png'
 import searchImage from '../../../images/landing/features/secondary-3.png'
+import { Container } from './Container'
 
 const features = [
   {

@@ -7,7 +7,7 @@ namespace App\Filament\App\Resources\PassportTokenResource\Pages;
 use App\Filament\App\Resources\ApiLogResource;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Filament\App\Resources\PassportTokenResource\Widgets\ApiRequests;
-use App\Jobs\PurgeApiCache;
+use App\Jobs\Tenant\PurgeApiCache;
 use App\Services\ApiCacheService;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;

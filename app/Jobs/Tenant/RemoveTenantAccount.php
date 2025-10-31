@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\Tenant;
 
-use App\Actions\SetupTenantAccount as SetupTenantAccountAction;
+use App\Actions\Tenant\RemoveTenantAccount as RemoveTenantAccountAction;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class SetupTenantAccount implements ShouldQueue
+class RemoveTenantAccount implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -28,14 +28,14 @@ class SetupTenantAccount implements ShouldQueue
 
     public function handle(): void
     {
-        /** @var SetupTenantAccountAction $action */
-        $action = app(SetupTenantAccountAction::class);
+        /** @var RemoveTenantAccountAction $action */
+        $action = app(RemoveTenantAccountAction::class);
         $action->handle($this->tenant);
     }
 
     public function failed(Throwable $exception): void
     {
-        Log::error('Failed to setup tenant account', [
+        Log::error('Failed to remove tenant account', [
             'exception' => $exception,
         ]);
     }

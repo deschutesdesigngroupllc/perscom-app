@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Commands;
 
-use App\Jobs\RemoveInactiveAccounts;
+use App\Jobs\System\RemoveInactiveAccounts;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 

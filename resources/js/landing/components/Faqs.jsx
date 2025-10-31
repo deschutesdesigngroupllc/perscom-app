@@ -1,7 +1,5 @@
-import React from 'react'
-
-import { Container } from './Container'
 import backgroundImage from '../../../images/landing/background-faqs.jpg'
+import { Container } from './Container'
 
 const faqs = [
   {

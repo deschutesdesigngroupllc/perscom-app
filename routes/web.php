@@ -5,11 +5,12 @@ declare(strict_types=1);
 use App\Http\Controllers\Landing\FindMyOrganizationController;
 use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\RegisterController;
+use App\Http\Controllers\Landing\VerifyController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['middleware' => 'landing', CacheResponse::class], static function (): void {
+Route::group(['domain' => config('app.url'), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
     Route::get('/', [HomeController::class, 'index'])
         ->name('landing.home');
 
@@ -44,8 +45,11 @@ Route::group(['middleware' => 'landing', CacheResponse::class], static function 
         Route::post('/', [RegisterController::class, 'store'])
             ->name('register.store')
             ->middleware('throttle:register');
-        Route::get('complete/{tenant}', [RegisterController::class, 'complete'])
-            ->name('register.complete')
+        Route::get('verify/{registration}', VerifyController::class)
+            ->name('register.verify')
+            ->middleware('signed');
+        Route::get('complete', [RegisterController::class, 'show'])
+            ->name('register.show')
             ->middleware('signed');
     });
 });
@@ -57,10 +61,3 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.
     Route::get('health', HealthCheckResultsController::class)
         ->name('health');
 });
-
-// TODO: Remove
-Route::get('test/{widget}', function ($widget) {
-    Illuminate\Support\Facades\Auth::login(App\Models\User::first());
-
-    return view("widgets.$widget");
-})->middleware(App\Http\Middleware\InitializeTenancyByRequestData::class);

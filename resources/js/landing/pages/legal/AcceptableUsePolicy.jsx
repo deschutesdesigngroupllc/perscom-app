@@ -1,7 +1,6 @@
-import React from 'react'
-import { Header } from '@/landing/components/Header'
-import { Footer } from '@/landing/components/Footer'
 import Container from '@/landing/components/Container'
+import { Footer } from '@/landing/components/Footer'
+import { Header } from '@/landing/components/Header'
 
 function AcceptableUsePolicy() {
   return (

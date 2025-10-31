@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
 import { ButtonLink } from './Button'
 import { Container } from './Container'
-import PropTypes from 'prop-types'
 
 function Plan({ name, price, description, href, features, featured = false }) {
   return (

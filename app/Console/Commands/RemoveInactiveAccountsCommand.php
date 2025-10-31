@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\RemoveInactiveAccounts;
+use App\Jobs\System\RemoveInactiveAccounts;
 use Illuminate\Console\Command;
 
 class RemoveInactiveAccountsCommand extends Command

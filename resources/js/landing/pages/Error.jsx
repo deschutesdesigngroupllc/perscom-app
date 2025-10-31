@@ -1,7 +1,6 @@
-import React from 'react'
+import { useForm } from '@inertiajs/react'
 import PropTypes from 'prop-types'
 import { Logo } from '../components/Logo'
-import { useForm } from '@inertiajs/react'
 
 export default function Error({ status, title = null, message = null, back = null, showLink = true, showLogout = false }) {
   const { post } = useForm({})

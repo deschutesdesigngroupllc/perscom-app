@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -41,7 +40,6 @@ class Banner extends Model
 {
     use CentralConnection;
     use ClearsResponseCache;
-    use HasFactory;
 
     protected $fillable = [
         'title',

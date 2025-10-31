@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Actions\SetupTenantAccount;
+use App\Actions\Tenant\SetupTenantAccount;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;

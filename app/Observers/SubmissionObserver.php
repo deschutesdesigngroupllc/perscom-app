@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Jobs\SendModelNotifications;
+use App\Jobs\Tenant\SendModelNotifications;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Submission;
 use App\Models\Webhook;

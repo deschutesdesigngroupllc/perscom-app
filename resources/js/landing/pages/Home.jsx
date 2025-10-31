@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 import { Banner } from '../components/Banner'
 import { CallToAction } from '../components/CallToAction'
 import { Faqs } from '../components/Faqs'
@@ -8,7 +8,6 @@ import { Hero } from '../components/Hero'
 import { Pricing } from '../components/Pricing'
 import { PrimaryFeatures } from '../components/PrimaryFeatures'
 import { SecondaryFeatures } from '../components/SecondaryFeatures'
-import PropTypes from 'prop-types'
 
 export default function Home({ banners = null }) {
   return (

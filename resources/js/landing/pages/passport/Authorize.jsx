@@ -1,9 +1,8 @@
-import React from 'react'
+import { Head, useForm } from '@inertiajs/react'
 import PropTypes from 'prop-types'
 import { Button } from '../../components/Button'
-import { AuthLayout } from '../../layouts/Auth'
 import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, useForm } from '@inertiajs/react'
+import { AuthLayout } from '../../layouts/Auth'
 
 export function Authorize({ client, description, image, name, scopes, state, authToken, tenant }) {
   const { post, processing, errors } = useForm({

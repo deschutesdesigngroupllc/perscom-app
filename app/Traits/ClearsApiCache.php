@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Jobs\PurgeApiCache;
+use App\Jobs\Tenant\PurgeApiCache;
 use App\Services\ApiCacheService;
 use Eloquent;
 use Illuminate\Database\Eloquent\Model;

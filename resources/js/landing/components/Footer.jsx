@@ -1,6 +1,5 @@
-import React from 'react'
-import { Logo } from './Logo'
 import Container from '@/landing/components/Container.jsx'
+import { Logo } from './Logo'
 
 const navigation = {
   perscom: [

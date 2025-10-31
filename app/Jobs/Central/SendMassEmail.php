@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\Central;
 
 use App\Mail\System\MassEmail;
 use App\Models\Mail;

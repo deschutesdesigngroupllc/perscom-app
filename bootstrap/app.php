@@ -16,8 +16,9 @@ use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
 use App\Http\Middleware\MoveApiKeyQueryParameterToHeader;
 use App\Http\Middleware\SentryContext;
-use App\Jobs\RemoveInactiveAccounts;
-use App\Jobs\ResetDemoAccount;
+use App\Jobs\System\DeleteUnverifiedRegistrations;
+use App\Jobs\System\RemoveInactiveAccounts;
+use App\Jobs\System\ResetDemoAccount;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
@@ -223,6 +224,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();
         $schedule->command(ScheduleCheckHeartbeatCommand::class)->environments('production')->everyMinute();
 
+        $schedule->job(new DeleteUnverifiedRegistrations)->dailyAt('11:00'); // 4 AM
         $schedule->job(new ResetDemoAccount)->environments('demo')->dailyAt('13:00'); // 6 AM
         $schedule->job(new RemoveInactiveAccounts)->environments('production')->dailyAt('12:00'); // 5 AM
     })
