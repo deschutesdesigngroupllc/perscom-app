@@ -28,7 +28,7 @@ trait HasModelNotifications
             }
         });
 
-        static::deleted(function ($model): void {
+        static::deleting(function ($model): void {
             if (filled($model)) {
                 SendModelNotifications::dispatch($model, 'deleted');
             }

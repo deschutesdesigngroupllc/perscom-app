@@ -22,6 +22,8 @@ class SendModelNotifications implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(protected SendsModelNotifications|Model $model, protected string $event)
     {
         $this->afterCommit = true;
