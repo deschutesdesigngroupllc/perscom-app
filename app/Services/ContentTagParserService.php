@@ -54,7 +54,7 @@ class ContentTagParserService
             $tag === '{assignment_record_speciality}' => data_get($attachedModel, 'specialty.name'),
             $tag === '{assignment_record_type}' => optional($attachedModel->type ?? null)->getLabel() ?? null,
             $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}', $tag === '{training_record_text}' => data_get($attachedModel, 'text'),
-            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}', $tag === '{training_record_date}' => function (bool $user, $attachedModel): ?string {
+            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}', $tag === '{training_record_date}' => function (?User $user = null, ?Model $attachedModel = null): ?string {
                 $createdAt = data_get($attachedModel, 'created_at');
 
                 if (blank($createdAt)) {

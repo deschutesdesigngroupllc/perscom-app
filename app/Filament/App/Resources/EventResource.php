@@ -289,7 +289,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('starts')
                                     ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
                                     ->icon(fn (?Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null)
-                                    ->suffix(fn (?Event $record) => filled($record->length) && $record->length->total('seconds') > 0 ? sprintf(' (%s)', $record->length->forHumans(['parts' => 1])) : null)
+                                    ->suffix(fn (?Event $record): ?string => filled($record->length) && $record->length->total('seconds') > 0 ? sprintf(' (%s)', $record->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
@@ -307,7 +307,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('next_occurrence')
                                     ->label('Next Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
-                                    ->suffix(fn (?Event $record) => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
+                                    ->suffix(fn (?Event $record): ?string => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
