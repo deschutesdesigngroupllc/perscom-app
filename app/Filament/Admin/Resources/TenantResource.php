@@ -206,6 +206,9 @@ class TenantResource extends Resource
                     ->sortable()
                     ->openUrlInNewTab()
                     ->url(fn ($state) => $state),
+                IconColumn::make('customer')
+                    ->boolean()
+                    ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
                 TextColumn::make('subscription_status')
                     ->label('Subscription Status')
                     ->badge(),
@@ -214,19 +217,18 @@ class TenantResource extends Resource
                     ->color('gray')
                     ->getStateUsing(fn (Tenant $record) => Str::headline($record->sparkPlan()?->interval ?? 'No Subscription'))
                     ->badge(),
+                TextColumn::make('subscriptions.ends_at')
+                    ->placeholder('No End Date')
+                    ->label('Subscription Ends')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('trial')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record) => $record->onTrial()),
                 TextColumn::make('subscriptions.trial_ends_at')
+                    ->placeholder('No End Date')
                     ->label('Trial Ends')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                IconColumn::make('customer')
-                    ->boolean()
-                    ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
-                TextColumn::make('subscriptions.ends_at')
-                    ->label('Subscription Ends')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
