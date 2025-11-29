@@ -18,7 +18,7 @@ class ApplicationVersionCommand extends Command
     {
         $currentApplicationVersion = $this->getApplicationVersion();
 
-        $this->info("The current application version is: $currentApplicationVersion");
+        $this->info('The current application version is: '.$currentApplicationVersion);
 
         if ($newVersion = $this->option('set')) {
             return $this->setApplicationVersion($newVersion);
@@ -39,11 +39,11 @@ class ApplicationVersionCommand extends Command
 
         $escaped = preg_quote('='.config('app.version'), '/');
 
-        $this->info("Setting the current application version to: $version");
+        $this->info('Setting the current application version to: '.$version);
 
         file_put_contents($path, preg_replace(
-            "/^APP_VERSION{$escaped}/m",
-            "APP_VERSION={$version}",
+            sprintf('/^APP_VERSION%s/m', $escaped),
+            'APP_VERSION='.$version,
             file_get_contents($path)
         ));
 

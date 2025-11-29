@@ -20,6 +20,9 @@ class TenantTestCase extends TestCase
 {
     use TenantHelpers;
 
+    /**
+     * @var string[]
+     */
     public array $connectionsToTransact = ['mysql'];
 
     public bool $tenantDatabaseMigrated = false;
@@ -49,8 +52,8 @@ class TenantTestCase extends TestCase
     {
         $testToken = ParallelTesting::token() ?: 1;
 
-        $tenantName = "Tenant $testToken";
-        $tenantDatabaseName = "tenant{$testToken}_testing";
+        $tenantName = 'Tenant '.$testToken;
+        $tenantDatabaseName = sprintf('tenant%s_testing', $testToken);
 
         $this->tenant = Tenant::factory()->state([
             'name' => $tenantName,
@@ -109,6 +112,7 @@ class TenantTestCase extends TestCase
 
         $connection = $database->connection('tenant');
         $connection->setTransactionManager($transactionsManager);
+
         $dispatcher = $connection->getEventDispatcher();
 
         $connection->unsetEventDispatcher();

@@ -86,7 +86,7 @@ class CalendarWidget extends BaseCalendarWidget
     /**
      * @return Collection|array<CalendarEvent>
      */
-    public function getEvents(array|FetchInfo $info = []): Collection|array
+    protected function getEvents(array|FetchInfo $info = []): Collection|array
     {
         $timezone = UserSettingsService::get('timezone', function () {
             /** @var OrganizationSettings $settings */

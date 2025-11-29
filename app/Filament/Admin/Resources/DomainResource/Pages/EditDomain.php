@@ -12,6 +12,9 @@ class EditDomain extends EditRecord
 {
     protected static string $resource = DomainResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

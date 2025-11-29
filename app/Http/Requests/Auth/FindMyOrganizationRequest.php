@@ -16,10 +16,13 @@ class FindMyOrganizationRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
-            'email.exists' => 'We can\'t find an organization with that email address.',
+            'email.exists' => "We can't find an organization with that email address.",
         ];
     }
 }

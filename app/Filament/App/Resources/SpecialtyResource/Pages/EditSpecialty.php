@@ -12,6 +12,9 @@ class EditSpecialty extends EditRecord
 {
     protected static string $resource = SpecialtyResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

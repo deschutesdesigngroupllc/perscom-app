@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\ServiceRecordResource\Pages;
 
 use App\Filament\App\Resources\ServiceRecordResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -13,6 +14,9 @@ class ViewServiceRecord extends ViewRecord
 {
     protected static string $resource = ServiceRecordResource::class;
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

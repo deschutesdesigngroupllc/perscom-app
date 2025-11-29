@@ -17,7 +17,7 @@ class ApplicationVersionTest extends TestCase
 
     public function test_command_updates_environment_file(): void
     {
-        $version = "v{$this->faker->semver()}";
+        $version = 'v'.$this->faker->semver();
 
         $this->artisan('perscom:version', [
             '--set' => $version,

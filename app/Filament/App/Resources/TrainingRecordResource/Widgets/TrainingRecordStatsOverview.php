@@ -13,6 +13,9 @@ use Illuminate\Support\Number;
 
 class TrainingRecordStatsOverview extends BaseWidget
 {
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentMtd = TrainingRecord::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();

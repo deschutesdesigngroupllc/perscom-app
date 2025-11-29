@@ -21,6 +21,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\TextSize;
 use Filament\Tables\Columns\TextColumn;
@@ -49,13 +50,13 @@ class NewsfeedResource extends BaseResource
             ->components([
                 TextInput::make('headline')
                     ->columnSpanFull()
-                    ->helperText('The newsfeed item\'s headline.')
+                    ->helperText("The newsfeed item's headline.")
                     ->required()
                     ->maxValue(255),
                 RichEditor::make('text')
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
-                    ->helperText('The newsfeed item\'s content.')
+                    ->helperText("The newsfeed item's content.")
                     ->required()
                     ->maxLength(65535),
                 DateTimePicker::make('created_at')
@@ -129,6 +130,9 @@ class NewsfeedResource extends BaseResource
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

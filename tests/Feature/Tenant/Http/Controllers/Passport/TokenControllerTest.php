@@ -7,7 +7,6 @@ namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use DateInterval;
-use DateTimeImmutable;
 use Laravel\Passport\Bridge\AuthCodeRepository;
 use Laravel\Passport\Bridge\ClientRepository;
 use Laravel\Passport\Bridge\ScopeRepository;
@@ -48,7 +47,7 @@ class TokenControllerTest extends TenantTestCase
             'auth_code_id' => $authCode->getIdentifier(),
             'scopes' => $authCode->getScopes(),
             'user_id' => $authCode->getUserIdentifier(),
-            'expire_time' => (new DateTimeImmutable)->add(new DateInterval('PT10M'))->getTimestamp(),
+            'expire_time' => (\Carbon\CarbonImmutable::now())->add(new DateInterval('PT10M'))->getTimestamp(),
         ];
 
         $this->postJson($this->tenant->route('passport.token'), [
@@ -96,7 +95,7 @@ class TokenControllerTest extends TenantTestCase
             'auth_code_id' => $authCode->getIdentifier(),
             'scopes' => $authCode->getScopes(),
             'user_id' => $authCode->getUserIdentifier(),
-            'expire_time' => (new DateTimeImmutable)->add(new DateInterval('PT10M'))->getTimestamp(),
+            'expire_time' => (\Carbon\CarbonImmutable::now())->add(new DateInterval('PT10M'))->getTimestamp(),
         ];
 
         $refreshToken = $this->postJson($this->tenant->route('passport.token'), [

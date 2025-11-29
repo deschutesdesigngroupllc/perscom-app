@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\NewsfeedResource\Pages;
 
 use App\Filament\App\Resources\NewsfeedResource;
 use App\Models\Newsfeed;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -16,6 +17,9 @@ class EditNewsfeed extends EditRecord
 {
     protected static string $resource = NewsfeedResource::class;
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

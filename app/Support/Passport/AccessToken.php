@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Support\Passport;
 
 use App\Models\User;
-use DateTimeImmutable;
+use Carbon\CarbonImmutable;
 use Laravel\Passport\Bridge\AccessToken as PassportAccessToken;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
@@ -21,8 +21,8 @@ class AccessToken extends PassportAccessToken
         $builder = $this->jwtConfiguration->builder()
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
-            ->issuedAt(new DateTimeImmutable)
-            ->canOnlyBeUsedAfter(new DateTimeImmutable)
+            ->issuedAt(CarbonImmutable::now())
+            ->canOnlyBeUsedAfter(CarbonImmutable::now())
             ->expiresAt($this->getExpiryDateTime())
             ->relatedTo((string) $this->getUserIdentifier())
             ->withClaim('scopes', $this->getScopes());

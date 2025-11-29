@@ -14,6 +14,9 @@ class ListUnits extends ListRecords
 
     protected ?string $subheading = 'Units provide grouping and sorting of personnel within the organizational hierarchy.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -14,7 +14,8 @@ use Illuminate\Queue\SerializesModels;
 
 class NewMessage extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected Message $message)
     {

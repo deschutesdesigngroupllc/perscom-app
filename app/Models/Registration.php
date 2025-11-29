@@ -58,6 +58,9 @@ class Registration extends Model
         return $this->email;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

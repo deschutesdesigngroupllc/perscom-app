@@ -40,6 +40,9 @@ class Metric extends Model
         'created_at',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

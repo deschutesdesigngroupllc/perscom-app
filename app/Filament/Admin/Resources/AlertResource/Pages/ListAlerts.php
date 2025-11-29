@@ -14,6 +14,9 @@ class ListAlerts extends ListRecords
 
     protected ?string $subheading = 'Manage alerts to notify users of important updates or changes.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

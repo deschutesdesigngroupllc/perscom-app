@@ -14,6 +14,9 @@ class ListBanners extends ListRecords
 
     protected ?string $subheading = 'Manage banners to display important messages or announcements.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

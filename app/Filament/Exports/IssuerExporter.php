@@ -13,6 +13,9 @@ class IssuerExporter extends Exporter
 {
     protected static ?string $model = Issuer::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

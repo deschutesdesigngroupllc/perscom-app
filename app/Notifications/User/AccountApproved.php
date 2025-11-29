@@ -20,6 +20,9 @@ class AccountApproved extends Notification implements ShouldQueue
         $this->tenant = tenant();
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

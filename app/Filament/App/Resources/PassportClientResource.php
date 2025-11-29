@@ -23,6 +23,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
@@ -165,7 +166,7 @@ class PassportClientResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateDescription('Create your first OAuth 2.0 client to start integrating with PERSCOM\'s powerful API.')
+            ->emptyStateDescription("Create your first OAuth 2.0 client to start integrating with PERSCOM's powerful API.")
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -220,6 +221,9 @@ class PassportClientResource extends BaseResource
             ->where('name', '<>', PassportClient::SYSTEM_PASSWORD_GRANT_CLIENT);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

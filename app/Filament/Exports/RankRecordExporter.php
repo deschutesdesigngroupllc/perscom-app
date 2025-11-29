@@ -14,6 +14,9 @@ class RankRecordExporter extends Exporter
 {
     protected static ?string $model = RankRecord::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

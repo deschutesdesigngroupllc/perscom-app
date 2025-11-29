@@ -133,24 +133,9 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         'updated_at',
     ];
 
-    public static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (AssignmentRecord $record): void {
-            if (filled($record->unit_slot_id)) {
-                $record->forceFill([
-                    'unit_id' => $record->unit_slot->unit_id ?? null,
-                    'position_id' => $record->unit_slot->slot->position_id ?? null,
-                    'specialty_id' => $record->unit_slot->slot->specialty_id ?? null,
-                ]);
-            }
-        });
-    }
-
     public function headlineForNewsfeedItem(): string
     {
-        return "An assignment record has been added for {$this->user->name}";
+        return 'An assignment record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string
@@ -168,7 +153,7 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
 
         $status = optional($this->status, fn (Status $status) => $status->name) ?? 'No Status Assigned';
 
-        return "Position: $position<br> Specialty: $specialty<br> Unit: $unit<br>Status: $status<br>";
+        return sprintf('Position: %s<br> Specialty: %s<br> Unit: %s<br>Status: %s<br>', $position, $specialty, $unit, $status);
     }
 
     public function recipientForNewsfeedItem(): ?User
@@ -179,6 +164,21 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (AssignmentRecord $record): void {
+            if (filled($record->unit_slot_id)) {
+                $record->forceFill([
+                    'unit_id' => $record->unit_slot->unit_id ?? null,
+                    'position_id' => $record->unit_slot->slot->position_id ?? null,
+                    'specialty_id' => $record->unit_slot->slot->specialty_id ?? null,
+                ]);
+            }
+        });
     }
 
     protected function casts(): array

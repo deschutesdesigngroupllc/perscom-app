@@ -38,6 +38,9 @@ class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQ
 HTML;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function via(): array
     {
         return ['mail', 'database', 'broadcast'];

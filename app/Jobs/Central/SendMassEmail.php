@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Mail as MailFacade;
 
 class SendMassEmail implements ShouldQueue
 {
-    use Batchable, Queueable, SerializesModels;
+    use Batchable;
+    use Queueable;
+    use SerializesModels;
 
     public bool $deleteWhenMissingModels = true;
 

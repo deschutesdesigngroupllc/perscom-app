@@ -14,6 +14,9 @@ class ListEvents extends ListRecords
 
     protected ?string $subheading = 'Manage your organizational events and schedules.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

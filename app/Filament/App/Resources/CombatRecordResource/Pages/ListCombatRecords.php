@@ -16,8 +16,11 @@ class ListCombatRecords extends ListRecords
 
     protected static string $resource = CombatRecordResource::class;
 
-    protected ?string $subheading = 'Keep track of a user\'s notable engagements during their time in the organization.';
+    protected ?string $subheading = "Keep track of a user's notable engagements during their time in the organization.";
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

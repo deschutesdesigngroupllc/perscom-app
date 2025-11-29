@@ -131,6 +131,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         'subscription_status',
     ];
 
+    /**
+     * @return array<int, string>
+     */
     public static function getCustomColumns(): array
     {
         return [
@@ -226,8 +229,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             }
 
             return match (true) {
-                App::isProduction() => "https://dashboard.stripe.com/customers/$this->stripe_id",
-                default => "https://dashboard.stripe.com/test/customers/$this->stripe_id"
+                App::isProduction() => 'https://dashboard.stripe.com/customers/'.$this->stripe_id,
+                default => 'https://dashboard.stripe.com/test/customers/'.$this->stripe_id
             };
         });
     }
@@ -293,7 +296,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 
     public function route(string $name, array $parameters = []): string
     {
-        return "$this->url".route($name, array_merge($parameters, [
+        return $this->url.route($name, array_merge($parameters, [
             'tenant' => $this,
         ]), false);
     }
@@ -310,6 +313,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return parent::resolveRouteBinding($value, $field);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

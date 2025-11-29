@@ -49,7 +49,7 @@ class RouteServiceProvider extends ServiceProvider
                 return Limit::none();
             }
 
-            return Limit::perDay(50)->by("tenant:{$tenant->getKey()}");
+            return Limit::perDay(50)->by('tenant:'.$tenant->getKey());
         });
     }
 }

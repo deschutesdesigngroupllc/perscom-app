@@ -62,7 +62,7 @@ class Create extends Component implements HasForms
                             ->hiddenLabel()
                             ->visible(fn ($state) => filled($state))
                             ->content(fn ($state): HtmlString => new HtmlString(<<<HTML
-<div class="text-green-600 font-bold">$state</div>
+<div class="text-green-600 font-bold">{$state}</div>
 HTML
                             )),
                     ], Submit::getFormSchemaFromFields($this->record), [

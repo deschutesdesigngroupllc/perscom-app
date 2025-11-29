@@ -12,6 +12,9 @@ class EditPosition extends EditRecord
 {
     protected static string $resource = PositionResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

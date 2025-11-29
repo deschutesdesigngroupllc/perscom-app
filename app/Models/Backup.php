@@ -48,7 +48,7 @@ class Backup extends Model
             $date = preg_replace('/\.\w+$/', '', $file);
 
             return [
-                'name' => "$file.zip",
+                'name' => $file.'.zip',
                 'path' => $path,
                 'size' => Number::fileSize(Storage::disk('backups')->size($path)),
                 'url' => Storage::disk('backups')->temporaryUrl($path, now()->addDay()),

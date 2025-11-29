@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\PassportClientResource\Pages;
 
 use App\Filament\App\Resources\PassportClientResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -13,6 +14,9 @@ class EditPassportClient extends EditRecord
 {
     protected static string $resource = PassportClientResource::class;
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

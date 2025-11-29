@@ -13,6 +13,9 @@ class EventExporter extends Exporter
 {
     protected static ?string $model = Event::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

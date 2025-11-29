@@ -12,6 +12,9 @@ class EditTask extends EditRecord
 {
     protected static string $resource = TaskResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

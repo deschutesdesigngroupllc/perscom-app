@@ -13,7 +13,8 @@ use Illuminate\Queue\SerializesModels;
 
 class MassEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected Mail $mail)
     {

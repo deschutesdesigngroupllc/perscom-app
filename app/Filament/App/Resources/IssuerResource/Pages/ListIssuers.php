@@ -14,6 +14,9 @@ class ListIssuers extends ListRecords
 
     protected ?string $subheading = 'The organization or entity that authorizes and provides an official document, certificate, or digital badge to personnel, verifying their competencies, credentials, or qualifications.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

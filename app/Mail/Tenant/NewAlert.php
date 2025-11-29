@@ -12,7 +12,8 @@ use Illuminate\Queue\SerializesModels;
 
 class NewAlert extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected Alert $alert)
     {

@@ -17,6 +17,9 @@ class TasksController extends Controller
 
     protected $request = TaskRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -26,16 +29,25 @@ class TasksController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'title', 'description', 'instructions', 'form_id', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at'];

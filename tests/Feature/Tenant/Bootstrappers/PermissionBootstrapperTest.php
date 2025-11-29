@@ -17,7 +17,7 @@ class PermissionBootstrapperTest extends TenantTestCase
         /** @var PermissionRegistrar $registrar */
         $registrar = $this->app->make(PermissionRegistrar::class);
 
-        $this->assertEquals($registrar->cacheKey, "spatie.permission.cache.tenant.{$this->tenant->getTenantKey()}");
+        $this->assertEquals($registrar->cacheKey, 'spatie.permission.cache.tenant.'.$this->tenant->getTenantKey());
     }
 
     /**
@@ -31,7 +31,7 @@ class PermissionBootstrapperTest extends TenantTestCase
         /** @var PermissionRegistrar $registrar */
         $registrar = $this->app->make(PermissionRegistrar::class);
 
-        $this->assertNotEquals($registrar->cacheKey, "spatie.permission.cache.tenant.{$this->tenant->getTenantKey()}");
+        $this->assertNotEquals($registrar->cacheKey, 'spatie.permission.cache.tenant.'.$this->tenant->getTenantKey());
 
         tenancy()->initialize($tenant);
     }

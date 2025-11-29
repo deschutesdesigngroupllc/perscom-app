@@ -43,8 +43,8 @@ class SwapSubscriptionBulkAction extends BulkAction
                     true => $records->each(fn (Tenant $record) => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
                     default => $records->each(fn (Tenant $record) => $record->subscription()?->swap(data_get($data, 'price_id'))),
                 };
-            } catch (Exception $e) {
-                $action->failureNotificationTitle($e->getMessage());
+            } catch (Exception $exception) {
+                $action->failureNotificationTitle($exception->getMessage());
                 $action->failure();
             }
         });

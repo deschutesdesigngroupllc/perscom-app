@@ -20,6 +20,9 @@ class ListSubmissions extends ListRecords
 
     protected ?string $subheading = 'View form submissions and collect data.';
 
+    /**
+     * @return PresetView[]
+     */
     public function getPresetViews(): array
     {
         $count = Submission::query()
@@ -42,6 +45,9 @@ class ListSubmissions extends ListRecords
         ];
     }
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

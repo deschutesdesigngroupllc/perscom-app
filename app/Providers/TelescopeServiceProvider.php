@@ -26,15 +26,19 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             if ($this->isHealthCheckCommand($entry)) {
                 return false;
             }
+
             if ($entry->isReportableException()) {
                 return true;
             }
+
             if ($entry->isFailedRequest()) {
                 return true;
             }
+
             if ($entry->isFailedJob()) {
                 return true;
             }
+
             if ($entry->isScheduledTask()) {
                 return true;
             }

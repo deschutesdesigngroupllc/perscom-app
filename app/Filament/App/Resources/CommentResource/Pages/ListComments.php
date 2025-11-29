@@ -12,6 +12,9 @@ class ListComments extends ListRecords
 {
     protected static string $resource = CommentResource::class;
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

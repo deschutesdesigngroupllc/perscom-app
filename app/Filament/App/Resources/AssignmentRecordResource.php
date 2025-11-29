@@ -34,6 +34,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -83,7 +84,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('type')
-                                    ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the user\'s list of secondary assignments.')
+                                    ->helperText("The type of assignment record. A primary assignment record will update the user's assigned unit, position, and specialty. A secondary assignment will simply add a new record to the user's list of secondary assignments.")
                                     ->required()
                                     ->live()
                                     ->options(AssignmentRecordType::class)
@@ -331,6 +332,9 @@ class AssignmentRecordResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -348,7 +352,7 @@ class AssignmentRecordResource extends BaseResource
     {
         $user = optional($record->user)->name;
 
-        return "$record->id: $user";
+        return sprintf('%d: %s', $record->id, $user);
     }
 
     /**
@@ -371,6 +375,9 @@ class AssignmentRecordResource extends BaseResource
         return $details;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['text', 'position.name', 'specialty.name', 'unit.name', 'status.name'];

@@ -29,6 +29,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -227,6 +228,9 @@ class ServiceRecordResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -244,7 +248,7 @@ class ServiceRecordResource extends BaseResource
     {
         $user = optional($record->user)->name;
 
-        return "$record->id: $user";
+        return sprintf('%d: %s', $record->id, $user);
     }
 
     /**
@@ -261,6 +265,9 @@ class ServiceRecordResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['text', 'user.name'];

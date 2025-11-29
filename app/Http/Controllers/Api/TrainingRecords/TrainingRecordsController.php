@@ -17,6 +17,9 @@ class TrainingRecordsController extends Controller
 
     protected $request = TrainingRecordRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -38,16 +41,25 @@ class TrainingRecordsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'user_id', 'instructor_id', 'event_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];

@@ -19,6 +19,9 @@ class UsersController extends Controller
 
     protected $request = UserRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -54,6 +57,9 @@ class UsersController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return [
@@ -89,6 +95,9 @@ class UsersController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return [
@@ -124,6 +133,9 @@ class UsersController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return [
@@ -159,7 +171,7 @@ class UsersController extends Controller
         ];
     }
 
-    public function beforeSave(Request $request, Model $entity): void
+    protected function beforeSave(Request $request, Model $entity): void
     {
         if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
             $path = $request->file('profile_photo')->storePublicly('profile-photos');

@@ -12,6 +12,9 @@ class EditGroup extends EditRecord
 {
     protected static string $resource = GroupResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

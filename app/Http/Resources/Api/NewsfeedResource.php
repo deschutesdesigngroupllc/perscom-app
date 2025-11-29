@@ -11,6 +11,9 @@ use Orion\Http\Resources\Resource;
 
 class NewsfeedResource extends Resource
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         /** @var User|null $author */

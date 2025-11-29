@@ -36,6 +36,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
@@ -131,21 +132,21 @@ class UserResource extends BaseResource
                                     ->visible(fn ($state) => filled($state))
                                     ->content(fn (?User $record) => optional($record?->time_in_assignment, fn ($date): string => CarbonInterval::make($date)->forHumans())),
                                 Select::make('position_id')
-                                    ->helperText('The user\'s current position.')
+                                    ->helperText("The user's current position.")
                                     ->columnSpanFull()
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => PositionResource::form($form)),
                                 Select::make('specialty_id')
-                                    ->helperText('The user\'s current specialty.')
+                                    ->helperText("The user's current specialty.")
                                     ->columnSpanFull()
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => SpecialtyResource::form($form)),
                                 Select::make('unit_id')
-                                    ->helperText('The user\'s current unit.')
+                                    ->helperText("The user's current unit.")
                                     ->columnSpanFull()
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
@@ -185,7 +186,7 @@ class UserResource extends BaseResource
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
                                     ->label('Email Verified')
-                                    ->helperText('The date the user\'s email was verified. Set this to bypass user email verification.'),
+                                    ->helperText("The date the user's email was verified. Set this to bypass user email verification."),
                             ]),
                         Tab::make('Notes')
                             ->icon('heroicon-o-pencil-square')
@@ -218,7 +219,7 @@ class UserResource extends BaseResource
                                     ->visible(fn ($state) => filled($state))
                                     ->content(fn (?User $record) => optional($record?->time_in_grade, fn ($date): string => CarbonInterval::make($date)->forHumans())),
                                 Select::make('rank_id')
-                                    ->helperText('The user\'s current rank.')
+                                    ->helperText("The user's current rank.")
                                     ->preload()
                                     ->columnSpanFull()
                                     ->relationship(name: 'rank', titleAttribute: 'name')
@@ -231,7 +232,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-scale')
                             ->schema([
                                 Select::make('status_id')
-                                    ->helperText('The user\'s current status.')
+                                    ->helperText("The user's current status.")
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
@@ -261,7 +262,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-user')
                             ->schema([
                                 Section::make('Personnel File')
-                                    ->description('The user\'s vital statistics.')
+                                    ->description("The user's vital statistics.")
                                     ->schema([
                                         ImageEntry::make('cover_photo_url')
                                             ->hidden(fn (User $record): bool => in_array('cover_photo', $hiddenFields) || is_null($record->cover_photo_url))
@@ -292,7 +293,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 Section::make('Primary Assignment')
-                                    ->description('The user\'s current primary assignment.')
+                                    ->description("The user's current primary assignment.")
                                     ->columns(3)
                                     ->schema([
                                         TextEntry::make('position.name')
@@ -368,7 +369,7 @@ class UserResource extends BaseResource
                             ->columns()
                             ->schema([
                                 Section::make('Current Rank')
-                                    ->description('The user\'s current rank.')
+                                    ->description("The user's current rank.")
                                     ->columns(3)
                                     ->schema([
                                         TextEntry::make('rank.name')
@@ -376,7 +377,7 @@ class UserResource extends BaseResource
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
-                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn ($url): HtmlString => new HtmlString("<img src='$url' class='h-5 inline' alt='{$record->rank->name}' />")))
+                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline' alt='%s' />", $url, $record->rank->name))))
                                             ->columnSpanFull(),
                                         TextEntry::make('time_in_grade')
                                             ->label('Time In Grade')
@@ -504,6 +505,9 @@ class UserResource extends BaseResource
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -524,6 +528,7 @@ class UserResource extends BaseResource
 
     /**
      * @param  User  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
@@ -536,6 +541,9 @@ class UserResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'email'];

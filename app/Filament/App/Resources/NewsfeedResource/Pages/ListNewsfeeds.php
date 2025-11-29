@@ -14,6 +14,9 @@ class ListNewsfeeds extends ListRecords
 
     protected ?string $subheading = 'Keep your users up-to-date with the latest news happening in your organization.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

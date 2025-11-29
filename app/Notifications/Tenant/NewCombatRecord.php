@@ -45,7 +45,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
 
         $this->message = <<<HTML
 <p>A new combat record has been added to your account.</p>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

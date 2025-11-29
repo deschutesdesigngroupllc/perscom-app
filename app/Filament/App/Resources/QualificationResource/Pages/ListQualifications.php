@@ -14,6 +14,9 @@ class ListQualifications extends ListRecords
 
     protected ?string $subheading = 'Qualifications establish what a user is allowed to do based on performance.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

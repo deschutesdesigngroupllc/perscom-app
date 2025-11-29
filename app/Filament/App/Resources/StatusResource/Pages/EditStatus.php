@@ -12,6 +12,9 @@ class EditStatus extends EditRecord
 {
     protected static string $resource = StatusResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -14,6 +14,9 @@ class ListFields extends ListRecords
 
     protected ?string $subheading = 'Custom fields provide advanced data collection customization to several PERSCOM features.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

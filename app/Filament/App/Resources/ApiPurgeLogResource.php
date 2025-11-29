@@ -8,6 +8,7 @@ use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Filament\App\Resources\ApiPurgeLogResource\Pages\ListApiPurgeLogs;
 use App\Models\ApiPurgeLog;
 use BackedEnum;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -77,6 +78,9 @@ class ApiPurgeLogResource extends BaseResource
             ]);
     }
 
+    /**
+     * @return PageRegistration[]
+     */
     public static function getPages(): array
     {
         return [

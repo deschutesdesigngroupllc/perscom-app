@@ -19,6 +19,6 @@ trait CanBeOrdered
     {
         $table = $this->getTable();
 
-        return "$table.order";
+        return $table.'.order';
     }
 }

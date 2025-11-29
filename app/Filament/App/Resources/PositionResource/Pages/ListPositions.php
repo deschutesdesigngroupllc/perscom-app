@@ -14,6 +14,9 @@ class ListPositions extends ListRecords
 
     protected ?string $subheading = 'Positions outline responsibilities assigned to certain personnel.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -19,6 +19,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Components\ViewComponent;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Conditionable;
 
@@ -45,13 +46,16 @@ class ViewUser extends ViewRecord
         return $relationManagers->toArray();
     }
 
+    /**
+     * @return ViewComponent[]
+     */
     protected function getHeaderActions(): array
     {
         return [
             Action::make('email')
                 ->hidden(fn (): bool => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
                 ->color('gray')
-                ->url(fn (?User $record): string => "mailto:$record->email")
+                ->url(fn (?User $record): string => 'mailto:'.$record->email)
                 ->openUrlInNewTab()
                 ->tooltip(fn (?User $record) => $record->email),
             EditAction::make(),

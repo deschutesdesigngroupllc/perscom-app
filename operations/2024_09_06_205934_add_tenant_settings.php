@@ -62,8 +62,8 @@ return new class extends OneTimeOperation
 
                 DB::statement('ALTER TABLE `settings` DROP COLUMN `value`');
                 DB::statement('DELETE FROM `settings` WHERE `group` IS NULL');
-            } catch (Exception $e) {
-                Log::debug($e);
+            } catch (Exception $exception) {
+                Log::debug($exception);
             }
         });
     }

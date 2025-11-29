@@ -33,6 +33,7 @@ class ScheduleService
                 if ($repeatable->by_day?->isNotEmpty()) {
                     $payload['BYDAY'] = $repeatable->by_day->implode(',');
                 }
+
                 break;
 
             case ScheduleFrequency::MONTHLY:
@@ -42,6 +43,7 @@ class ScheduleService
                 } elseif ($repeatable->by_month_day?->isNotEmpty()) {
                     $payload['BYMONTHDAY'] = $repeatable->by_month_day->implode(',');
                 }
+
                 break;
 
             case ScheduleFrequency::YEARLY:
@@ -53,6 +55,7 @@ class ScheduleService
                     $payload['BYDAY'] = $repeatable->by_day;
                     $payload['BYSETPOS'] = $repeatable->by_set_position;
                 }
+
                 break;
         }
 

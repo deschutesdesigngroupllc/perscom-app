@@ -49,7 +49,7 @@ class Index extends Component implements HasActions, HasForms, HasTable
                     ->button()
                     ->color('primary')
                     ->action(function (Form $record): void {
-                        $this->dispatch('iframe:navigate', path: "forms/{$record->getKey()}");
+                        $this->dispatch('iframe:navigate', path: 'forms/'.$record->getKey());
                     }),
             ]);
     }

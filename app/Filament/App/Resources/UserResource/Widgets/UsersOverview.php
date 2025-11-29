@@ -16,6 +16,9 @@ class UsersOverview extends StatsOverviewWidget
 
     protected ?string $heading = 'New Users';
 
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $dataMtd = Trend::model(User::class)

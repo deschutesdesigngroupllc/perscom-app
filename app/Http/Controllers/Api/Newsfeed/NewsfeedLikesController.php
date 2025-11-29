@@ -16,6 +16,9 @@ class NewsfeedLikesController extends RelationController
 
     protected $relation = 'likes';
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [

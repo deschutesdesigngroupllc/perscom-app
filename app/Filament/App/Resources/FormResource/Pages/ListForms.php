@@ -14,6 +14,9 @@ class ListForms extends ListRecords
 
     protected ?string $subheading = 'Create custom forms to collect valuable organizational data.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -98,6 +98,9 @@ class Form extends Model implements HasLabel, SendsModelNotifications
         return $this->belongsTo(Status::class);
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\Api\SettingsResource;
 use App\Models\Settings;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Orion\Http\Controllers\Controller;
 use Orion\Http\Requests\Request;
 
@@ -22,9 +21,8 @@ class SettingsController extends Controller
     /**
      * @param  LengthAwarePaginator  $entities
      */
-    public function afterIndex(Request $request, $entities)
+    protected function afterIndex(Request $request, $entities)
     {
-        /** @var Collection $settings */
         $settings = $entities->getCollection()->transform(fn (Settings $setting) => $setting->forceFill([
             'payload' => json_decode((string) $setting->payload),
         ]));

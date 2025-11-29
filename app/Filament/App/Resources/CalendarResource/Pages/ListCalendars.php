@@ -14,6 +14,9 @@ class ListCalendars extends ListRecords
 
     protected ?string $subheading = 'Manage your system-wide calendars.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

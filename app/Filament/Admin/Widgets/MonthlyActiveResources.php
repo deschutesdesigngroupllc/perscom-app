@@ -19,6 +19,9 @@ class MonthlyActiveResources extends BaseWidget
 {
     protected static ?int $sort = 1;
 
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentUserLogin = Metric::total(UserLoginMetric::class, function (Builder $query): void {

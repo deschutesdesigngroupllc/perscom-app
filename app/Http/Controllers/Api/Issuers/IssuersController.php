@@ -17,16 +17,25 @@ class IssuersController extends Controller
 
     protected $request = IssuerRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'created_at', 'updated_at'];

@@ -34,57 +34,57 @@ class ModelTag extends Model
         return [
             [
                 'tag' => '{user_name}',
-                'description' => 'The user\'s name.',
+                'description' => "The user's name.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_email}',
-                'description' => 'The user\'s email.',
+                'description' => "The user's email.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_email_verified_at}',
-                'description' => 'The user\'s email verification date. Null if email has not been verified',
+                'description' => "The user's email verification date. Null if email has not been verified",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_status}',
-                'description' => 'The user\'s status.',
+                'description' => "The user's status.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_online}',
-                'description' => 'The user\'s online status.',
+                'description' => "The user's online status.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_assignment_position}',
-                'description' => 'The user\'s current assignment position.',
+                'description' => "The user's current assignment position.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_assignment_specialty}',
-                'description' => 'The user\'s current assignment specialty.',
+                'description' => "The user's current assignment specialty.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_assignment_unit}',
-                'description' => 'The user\'s current assignment unit.',
+                'description' => "The user's current assignment unit.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_rank}',
-                'description' => 'The user\'s current rank.',
+                'description' => "The user's current rank.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_rank_abbreviation}',
-                'description' => 'The user\'s current rank as an abbreviation.',
+                'description' => "The user's current rank as an abbreviation.",
                 'type' => ModelTagType::USER,
             ],
             [
                 'tag' => '{user_discord_tag}',
-                'description' => 'This will replace the user\'s name with their Discord name and tag them.',
+                'description' => "This will replace the user's name with their Discord name and tag them.",
                 'type' => ModelTagType::USER,
             ],
             [
@@ -234,7 +234,7 @@ class ModelTag extends Model
             ],
             [
                 'tag' => '{author_resource_name}',
-                'description' => 'The author\'s name if linked to a resource.',
+                'description' => "The author's name if linked to a resource.",
                 'type' => ModelTagType::USER,
             ],
         ];

@@ -12,6 +12,9 @@ class EditAward extends EditRecord
 {
     protected static string $resource = AwardResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -30,6 +30,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -249,6 +250,9 @@ class QualificationRecordResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -266,7 +270,7 @@ class QualificationRecordResource extends BaseResource
     {
         $user = optional($record->user)->name;
 
-        return "$record->id: $user";
+        return sprintf('%d: %s', $record->id, $user);
     }
 
     /**
@@ -285,6 +289,9 @@ class QualificationRecordResource extends BaseResource
         return $details;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['text', 'user.name', 'qualification.name'];

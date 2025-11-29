@@ -17,6 +17,9 @@ class AwardRecordsController extends Controller
 
     protected $request = AwardRecordRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -33,16 +36,25 @@ class AwardRecordsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'award_id', 'award.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'user_id', 'award_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'award_id', 'award.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];

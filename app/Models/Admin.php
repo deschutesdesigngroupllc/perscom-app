@@ -71,6 +71,9 @@ class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $panel->getId() === 'admin';
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

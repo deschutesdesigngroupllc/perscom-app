@@ -35,7 +35,7 @@ class OptimizeDatabase implements ShouldQueue
             $tables = DB::select('SHOW TABLES');
             foreach ($tables as $table) {
                 $table = array_values((array) $table)[0];
-                DB::statement("OPTIMIZE TABLE `$table`");
+                DB::statement(sprintf('OPTIMIZE TABLE `%s`', $table));
             }
         });
     }

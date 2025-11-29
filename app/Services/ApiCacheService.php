@@ -68,7 +68,7 @@ class ApiCacheService
 
         $baseUrl = config('services.fastly.base_url');
         $service = config('services.fastly.service');
-        $url = "$baseUrl/service/$service/purge";
+        $url = sprintf('%s/service/%s/purge', $baseUrl, $service);
 
         $headers = [
             'Fastly-Key' => config('services.fastly.token'),
@@ -100,7 +100,7 @@ class ApiCacheService
 
     public function getTenantCacheTag(): string
     {
-        return "tenant:{$this->tenant->getKey()}";
+        return 'tenant:'.$this->tenant->getKey();
     }
 
     protected function getRelationKeys(Model $model, Collection $tags): void

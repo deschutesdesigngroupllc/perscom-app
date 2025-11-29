@@ -17,6 +17,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\ColorColumn;
@@ -91,6 +92,9 @@ class StatusResource extends BaseResource
             ->reorderable('order');
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -108,6 +112,9 @@ class StatusResource extends BaseResource
         return $record->name;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['name'];

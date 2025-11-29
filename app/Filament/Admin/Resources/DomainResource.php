@@ -17,6 +17,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -41,7 +42,7 @@ class DomainResource extends Resource
             ->columns(1)
             ->components([
                 TextInput::make('domain')
-                    ->helperText('The tenant\'s subdomain.')
+                    ->helperText("The tenant's subdomain.")
                     ->required()
                     ->rule(new SubdomainRule)
                     ->unique('domains', 'domain', ignoreRecord: true)
@@ -109,6 +110,9 @@ class DomainResource extends Resource
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

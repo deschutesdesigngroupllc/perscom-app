@@ -17,26 +17,41 @@ class CalendarsController extends Controller
 
     protected $request = CalendarRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function exposedScopes(): array
     {
         return ['tags'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['events', 'events.author', 'tags'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];

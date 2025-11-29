@@ -34,7 +34,7 @@ trait InteractsWithFields
             /** @var Field $class */
             $class = $field->type->getFilamentField();
 
-            $filamentField = $class::make("data.$field->key")
+            $filamentField = $class::make('data.'.$field->key)
                 ->label($field->name)
                 ->hidden($field->hidden)
                 ->rules($field->rules ?? [])

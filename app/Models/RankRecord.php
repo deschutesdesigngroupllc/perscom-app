@@ -112,7 +112,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
 
     public function headlineForNewsfeedItem(): string
     {
-        return "A rank record has been added for {$this->user->name}";
+        return 'A rank record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string
@@ -122,7 +122,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
 
     public function itemForNewsfeedItem(): ?string
     {
-        return "Rank: {$this->rank->name}";
+        return 'Rank: '.$this->rank->name;
     }
 
     public function recipientForNewsfeedItem(): ?User

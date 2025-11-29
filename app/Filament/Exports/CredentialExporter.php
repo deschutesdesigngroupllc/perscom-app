@@ -13,6 +13,9 @@ class CredentialExporter extends Exporter
 {
     protected static ?string $model = Credential::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

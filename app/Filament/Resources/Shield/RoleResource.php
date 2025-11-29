@@ -19,6 +19,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Panel;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Grid;
@@ -36,6 +37,9 @@ class RoleResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $recordTitleAttribute = 'name';
 
+    /**
+     * @return array<int, string>
+     */
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -122,6 +126,9 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -231,6 +238,9 @@ class RoleResource extends Resource implements HasShieldPermissions
             ->sum();
     }
 
+    /**
+     * @param  array<string, mixed>  $entity
+     */
     public static function getResourcePermissionOptions(array $entity): array
     {
         return collect(Utils::getResourcePermissionPrefixes($entity['fqcn']))
@@ -312,6 +322,9 @@ class RoleResource extends Resource implements HasShieldPermissions
                 ]);
     }
 
+    /**
+     * @param  array<string, mixed>  $entity
+     */
     public static function getCheckBoxListComponentForResource(array $entity): Component
     {
         $permissionsArray = static::getResourcePermissionOptions($entity);

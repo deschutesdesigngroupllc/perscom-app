@@ -21,6 +21,9 @@ class SubmissionsStatusesController extends RelationController
 
     protected $pivotFillable = ['text'];
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['record'];

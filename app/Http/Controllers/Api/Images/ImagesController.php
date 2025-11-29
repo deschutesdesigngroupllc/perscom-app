@@ -19,21 +19,33 @@ class ImagesController extends Controller
 
     protected $request = ImageRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['model'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'path', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at'];

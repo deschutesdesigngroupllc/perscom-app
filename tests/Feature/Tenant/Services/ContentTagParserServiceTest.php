@@ -28,7 +28,7 @@ class ContentTagParserServiceTest extends TenantTestCase
 
         $replaced = ContentTagParser::parse($content, $user);
 
-        $this->assertSame($replaced, "$user->name $user->email {$user->email_verified_at->toDayDateTimeString()} {$user->status->name} {$user->position->name} {$user->specialty->name} {$user->unit->name} {$user->rank->name}");
+        $this->assertSame($replaced, sprintf('%s %s %s %s %s %s %s %s', $user->name, $user->email, $user->email_verified_at->toDayDateTimeString(), $user->status->name, $user->position->name, $user->specialty->name, $user->unit->name, $user->rank->name));
     }
 
     public function test_it_correctly_replaces_assignment_record_text(): void
@@ -48,7 +48,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "{$record->status->name} {$record->unit->name} {$record->position->name} {$record->specialty->name} $record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s %s %s %s %s', $record->status->name, $record->unit->name, $record->position->name, $record->specialty->name, $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_award_record_text(): void
@@ -62,7 +62,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "{$record->award->name} $record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s %s', $record->award->name, $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_combat_record_text(): void
@@ -76,7 +76,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "$record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s', $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_qualification_record_text(): void
@@ -90,7 +90,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "{$record->qualification->name} $record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s %s', $record->qualification->name, $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_rank_record_text(): void
@@ -104,7 +104,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "{$record->rank->name} {$record->type->getLabel()} $record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s %s %s', $record->rank->name, $record->type->getLabel(), $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_service_record_text(): void
@@ -118,7 +118,7 @@ class ContentTagParserServiceTest extends TenantTestCase
             attachedModel: $record
         );
 
-        $this->assertSame($replaced, "$record->text {$record->created_at->toDayDateTimeString()}");
+        $this->assertSame($replaced, sprintf('%s %s', $record->text, $record->created_at->toDayDateTimeString()));
     }
 
     public function test_it_correctly_replaces_author_text(): void

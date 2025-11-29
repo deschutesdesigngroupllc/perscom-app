@@ -13,6 +13,9 @@ class CalendarExporter extends Exporter
 {
     protected static ?string $model = Calendar::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

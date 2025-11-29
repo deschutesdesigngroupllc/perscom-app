@@ -91,6 +91,9 @@ class Submit extends Page implements HasForms
             ->title($this->submissionForm->success_message ?? 'Your form has been successfully submitted.');
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getFormActions(): array
     {
         return [

@@ -18,6 +18,9 @@ class ListQualificationRecords extends ListRecords
 
     protected ?string $subheading = 'Keep track of a users capabilities, qualifications, training and certifications.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

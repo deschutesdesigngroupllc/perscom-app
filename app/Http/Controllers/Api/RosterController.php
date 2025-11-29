@@ -22,6 +22,9 @@ class RosterController extends Controller
         parent::__construct();
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['units.*'];

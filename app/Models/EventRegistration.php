@@ -53,23 +53,6 @@ class EventRegistration extends Pivot
         'status',
     ];
 
-    public static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function (EventRegistration $eventRegistration): void {
-            throw_if(! $eventRegistration->event->registration_enabled,
-                Exception::class,
-                "Registrations for {$eventRegistration->event->name} are disabled.");
-
-            throw_if(
-                $eventRegistration->event->registration_deadline &&
-                Carbon::parse($eventRegistration->event->registration_deadline)->isPast(),
-                Exception::class,
-                "The registration deadline for {$eventRegistration->event->name} has passed.");
-        });
-    }
-
     public function scopeFuture(Builder $query): void
     {
         $query->whereRelation('event', function (Builder $query): void {
@@ -81,6 +64,23 @@ class EventRegistration extends Pivot
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (EventRegistration $eventRegistration): void {
+            throw_if(! $eventRegistration->event->registration_enabled,
+                Exception::class,
+                sprintf('Registrations for %s are disabled.', $eventRegistration->event->name));
+
+            throw_if(
+                $eventRegistration->event->registration_deadline &&
+                Carbon::parse($eventRegistration->event->registration_deadline)->isPast(),
+                Exception::class,
+                sprintf('The registration deadline for %s has passed.', $eventRegistration->event->name));
+        });
     }
 
     protected function casts(): array

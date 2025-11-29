@@ -17,6 +17,9 @@ class SubmissionsController extends Controller
 
     protected $request = SubmissionRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -31,16 +34,25 @@ class SubmissionsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'data', 'read_at', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'form_id', 'user_id', 'data', 'read_at', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'read_at', 'created_at', 'updated_at'];

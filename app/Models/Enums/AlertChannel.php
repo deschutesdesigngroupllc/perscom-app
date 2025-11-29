@@ -24,7 +24,7 @@ enum AlertChannel: string implements HasDescription, HasLabel
     public function getDescription(): ?string
     {
         return match ($this) {
-            AlertChannel::DASHBOARD => 'Post this alert to each tenant\'s dashboard.',
+            AlertChannel::DASHBOARD => "Post this alert to each tenant's dashboard.",
             AlertChannel::MAIL => 'Send this alert to each tenant.',
             AlertChannel::SLACK => 'Post this alert to the PERSCOM slack workspace.',
         };

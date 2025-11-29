@@ -46,7 +46,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
         $this->message = <<<HTML
 <p>A new award record has been added to your account.</p>
 <strong>Award: </strong>{$this->awardRecord->award->name}<br>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

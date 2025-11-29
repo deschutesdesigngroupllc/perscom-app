@@ -13,11 +13,15 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CodeEditor;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Components\ViewComponent;
 
 class ViewWebhook extends ViewRecord
 {
     protected static string $resource = WebhookResource::class;
 
+    /**
+     * @return ViewComponent[]
+     */
     protected function getHeaderActions(): array
     {
         return [

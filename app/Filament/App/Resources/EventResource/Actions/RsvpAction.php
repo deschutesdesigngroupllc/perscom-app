@@ -24,7 +24,7 @@ class RsvpAction extends Action
         $this->modalDescription('Please select your RSVP status for the event.');
         $this->modalSubmitActionLabel('Submit RSVP');
 
-        $this->successNotificationTitle('You have successully RSVP\'d for the event.');
+        $this->successNotificationTitle("You have successully RSVP'd for the event.");
         $this->visible(fn (Event $record): bool => $record->registration_enabled && ! $record->registration_deadline?->isPast());
 
         $this->fillForm(fn (Event $record): array => [

@@ -102,8 +102,8 @@ class Subscription extends BaseSubscription
             }
 
             return match (true) {
-                App::isProduction() => "https://dashboard.stripe.com/subscriptions/$this->stripe_id",
-                default => "https://dashboard.stripe.com/test/subscriptions/$this->stripe_id"
+                App::isProduction() => 'https://dashboard.stripe.com/subscriptions/'.$this->stripe_id,
+                default => 'https://dashboard.stripe.com/test/subscriptions/'.$this->stripe_id
             };
         });
     }

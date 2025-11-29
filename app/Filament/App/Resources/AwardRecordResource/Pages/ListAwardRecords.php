@@ -16,8 +16,11 @@ class ListAwardRecords extends ListRecords
 
     protected static string $resource = AwardRecordResource::class;
 
-    protected ?string $subheading = 'Keep track of a user\'s meritorious achievements and acknowledgments effortlessly.';
+    protected ?string $subheading = "Keep track of a user's meritorious achievements and acknowledgments effortlessly.";
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

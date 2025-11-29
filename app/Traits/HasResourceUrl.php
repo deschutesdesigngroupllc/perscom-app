@@ -26,6 +26,7 @@ trait HasResourceUrl
                         'tenant' => $tenant,
                     ], panel: 'app');
                 }
+
                 /** @var class-string<resource> $class */
                 if ($class::hasPage('edit')) {
                     return $class::getUrl('edit', [
@@ -50,6 +51,7 @@ trait HasResourceUrl
                         'tenant' => $tenant,
                     ], isAbsolute: false, panel: 'app');
                 }
+
                 /** @var class-string<resource> $class */
                 if ($class::hasPage('edit')) {
                     return $class::getUrl('edit', [

@@ -38,7 +38,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     public function test_can_reach_index_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['index']))
-            ->getJson("/{$this->endpoint()}")
+            ->getJson('/'.$this->endpoint())
             ->assertJsonCount($this->expectedIndexCount ?? 1, 'data')
             ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertSuccessful();
@@ -47,7 +47,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     public function test_can_reach_show_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['show']))
-            ->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->getJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()))
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
     }
@@ -57,7 +57,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->storeData();
 
         $this->withToken($this->apiKey($this->scopes()['store']))
-            ->postJson("/{$this->endpoint()}", $data)
+            ->postJson('/'.$this->endpoint(), $data)
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
@@ -73,7 +73,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->updateData();
 
         $this->withToken($this->apiKey($this->scopes()['update']))
-            ->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), $data)
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
@@ -87,7 +87,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     public function test_can_reach_delete_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['delete']))
-            ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->deleteJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()))
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
@@ -101,11 +101,11 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $class = class_basename($this->model());
 
         if (Str::contains($class, 'Record')) {
-            $this->markTestSkipped("The $class class policy allows everyone to always view all records so this test is not necessary.");
+            $this->markTestSkipped(sprintf('The %s class policy allows everyone to always view all records so this test is not necessary.', $class));
         }
 
         $this->withToken($this->apiKey([]))
-            ->getJson("/{$this->endpoint()}")
+            ->getJson('/'.$this->endpoint())
             ->assertForbidden();
     }
 
@@ -114,46 +114,46 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $class = class_basename($this->model());
 
         if (Str::contains($class, 'Record')) {
-            $this->markTestSkipped("The $class class policy allows the user to always view records associated with the user so this test is not necessary.");
+            $this->markTestSkipped(sprintf('The %s class policy allows the user to always view records associated with the user so this test is not necessary.', $class));
         }
 
         $this->withToken($this->apiKey([]))
-            ->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->getJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()))
             ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
-            ->postJson("/{$this->endpoint()}", $this->storeData())
+            ->postJson('/'.$this->endpoint(), $this->storeData())
             ->assertForbidden();
     }
 
     public function test_cannot_reach_update_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
-            ->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), $this->updateData())
             ->assertForbidden();
     }
 
     public function test_cannot_reach_delete_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
-            ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->deleteJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()))
             ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_body(): void
     {
         $this->withToken($this->apiKey($this->scopes()['store']))
-            ->postJson("/{$this->endpoint()}")
+            ->postJson('/'.$this->endpoint())
             ->assertStatus(422);
     }
 
     public function test_show_endpoint_returns_not_found(): void
     {
         $this->withToken($this->apiKey($this->scopes()['show']))
-            ->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
+            ->getJson(sprintf('/%s/%d', $this->endpoint(), $this->faker->randomDigitNot($this->factory->getKey())))
             ->assertNotFound();
     }
 

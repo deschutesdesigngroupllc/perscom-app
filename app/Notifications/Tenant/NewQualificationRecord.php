@@ -46,7 +46,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
         $this->message = <<<HTML
 <p>A new qualification record has been added to your account.</p>
 <strong>Qualification: </strong>{$this->qualificationRecord->qualification->name}<br>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

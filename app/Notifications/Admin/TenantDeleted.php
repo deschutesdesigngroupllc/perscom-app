@@ -23,6 +23,9 @@ class TenantDeleted extends Notification implements ShouldBroadcast, ShouldQueue
         //
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function via(mixed $notifiable): array
     {
         return ['mail', 'database', 'broadcast'];

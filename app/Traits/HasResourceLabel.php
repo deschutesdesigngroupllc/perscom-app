@@ -23,7 +23,7 @@ trait HasResourceLabel
     {
         $resource = implode(' ', preg_split('/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/', class_basename($this), -1, PREG_SPLIT_NO_EMPTY));
 
-        return "$resource: {$this->getKey()}";
+        return sprintf('%s: %s', $resource, $this->getKey());
     }
 
     protected function initializeHasResourceLabel(): void

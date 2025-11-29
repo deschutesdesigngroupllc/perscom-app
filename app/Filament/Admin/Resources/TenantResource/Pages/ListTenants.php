@@ -14,6 +14,9 @@ class ListTenants extends ListRecords
 
     protected ?string $subheading = 'Manage all PERSCOM tenant accounts.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

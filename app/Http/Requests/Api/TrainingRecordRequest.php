@@ -8,6 +8,9 @@ use Orion\Http\Requests\Request;
 
 class TrainingRecordRequest extends Request
 {
+    /**
+     * @return array<string, string>
+     */
     public function commonRules(): array
     {
         return [

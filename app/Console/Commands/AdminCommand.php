@@ -29,7 +29,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             label: 'Please select an operation:',
             options: [
                 'create' => 'Create a new admin',
-                'password' => 'Update an admin\'s password',
+                'password' => "Update an admin's password",
                 'delete' => 'Delete an admin',
             ]
         );
@@ -45,7 +45,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
     protected function createAdmin(): int
     {
         $name = text(
-            label: 'Please provide the admin\'s name:',
+            label: "Please provide the admin's name:",
             required: true,
             validate: [
                 'name' => 'max:255|string',
@@ -53,7 +53,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
         );
 
         $email = text(
-            label: 'Please provide the admin\'s email:',
+            label: "Please provide the admin's email:",
             required: true,
             validate: [
                 'email' => 'max:255|email|unique:admins,email',
@@ -61,7 +61,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
         );
 
         $password = Hash::make(password(
-            label: 'Please provide the admin\'s password:',
+            label: "Please provide the admin's password:",
             required: true,
             validate: [
                 'password' => new Password(8),
@@ -85,12 +85,12 @@ class AdminCommand extends Command implements PromptsForMissingInput
         $id = search(
             label: 'Please select the admin:',
             options: fn ($value) => $value !== ''
-                ? Admin::where('name', 'like', "%$value%")->pluck('name', 'id')->all()
+                ? Admin::where('name', 'like', sprintf('%%%s%%', $value))->pluck('name', 'id')->all()
                 : []
         );
 
         $password = password(
-            label: 'Please provide the admin\'s password:',
+            label: "Please provide the admin's password:",
             required: true,
             validate: [
                 'password' => new Password(8),
@@ -102,7 +102,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             'password' => Hash::make($password),
         ])->save();
 
-        info('The admin\'s password been successfully updated.');
+        info("The admin's password been successfully updated.");
 
         return static::SUCCESS;
     }
@@ -112,7 +112,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
         $id = search(
             label: 'Please select the admin:',
             options: fn ($value) => $value !== ''
-                ? Admin::where('name', 'like', "%$value%")->pluck('name', 'id')->all()
+                ? Admin::where('name', 'like', sprintf('%%%s%%', $value))->pluck('name', 'id')->all()
                 : []
         );
 

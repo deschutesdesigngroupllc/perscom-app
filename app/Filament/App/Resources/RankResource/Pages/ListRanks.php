@@ -14,6 +14,9 @@ class ListRanks extends ListRecords
 
     protected ?string $subheading = 'Ranks provide a vertical organization hierarchy that establishes authority within an organization.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

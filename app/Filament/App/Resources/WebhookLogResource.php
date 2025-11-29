@@ -16,6 +16,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -80,7 +81,7 @@ class WebhookLogResource extends BaseResource
                 TextColumn::make('status_code')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn (WebhookLog $record, $state): string => "$state $record->reason_phrase")
+                    ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                     ->color(fn ($state): string => match (true) {
                         (int) $state >= 200 && (int) $state < 300 => 'success',
                         default => 'danger'
@@ -117,7 +118,7 @@ class WebhookLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->payload->request_id', 'NOT LIKE', "%$text%");
+                                                        $query->where('properties->payload->request_id', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -126,7 +127,7 @@ class WebhookLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->payload->request_id', 'LIKE', "%$text%");
+                                                    $query->where('properties->payload->request_id', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
                                     }),
@@ -142,7 +143,7 @@ class WebhookLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->payload->trace_id', 'NOT LIKE', "%$text%");
+                                                        $query->where('properties->payload->trace_id', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -151,7 +152,7 @@ class WebhookLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->payload->trace_id', 'LIKE', "%$text%");
+                                                    $query->where('properties->payload->trace_id', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
                                     }),
@@ -189,7 +190,7 @@ class WebhookLogResource extends BaseResource
                             TextEntry::make('status_code')
                                 ->label('Status')
                                 ->badge()
-                                ->formatStateUsing(fn (WebhookLog $record, $state): string => "$state $record->reason_phrase")
+                                ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                                 ->color(fn ($state): string => match (true) {
                                     (int) $state >= 200 && (int) $state < 300 => 'success',
                                     default => 'danger'
@@ -223,6 +224,9 @@ class WebhookLogResource extends BaseResource
         ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

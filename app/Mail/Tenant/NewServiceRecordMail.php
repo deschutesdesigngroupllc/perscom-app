@@ -13,7 +13,8 @@ use Illuminate\Support\Carbon;
 
 class NewServiceRecordMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected ServiceRecord $serviceRecord, protected string $url)
     {

@@ -25,6 +25,7 @@ use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -63,16 +64,16 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-user-group')
                             ->schema([
                                 TextInput::make('name')
-                                    ->helperText('The tenant\'s name.')
+                                    ->helperText("The tenant's name.")
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('email')
-                                    ->helperText('The tenant\'s email.')
+                                    ->helperText("The tenant's email.")
                                     ->email()
                                     ->required()
                                     ->maxLength(255),
                                 TextInput::make('domain')
-                                    ->helperText('The tenant\'s initial fallback subdomain.')
+                                    ->helperText("The tenant's initial fallback subdomain.")
                                     ->required()
                                     ->visibleOn('create')
                                     ->rule(new SubdomainRule)
@@ -80,7 +81,7 @@ class TenantResource extends Resource
                                     ->suffix(config('app.base_url'))
                                     ->maxLength(255),
                                 TextInput::make('website')
-                                    ->helperText('The tenant\'s website.')
+                                    ->helperText("The tenant's website.")
                                     ->url()
                                     ->maxLength(255),
                             ]),
@@ -305,6 +306,9 @@ class TenantResource extends Resource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -355,6 +359,7 @@ class TenantResource extends Resource
 
     /**
      * @param  Tenant  $record
+     * @return Action[]
      */
     public static function getGlobalSearchResultActions(Model $record): array
     {

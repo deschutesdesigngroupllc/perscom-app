@@ -134,7 +134,7 @@ class SetupTenantAccount
         activity('newsfeed')
             ->withProperties([
                 'text' => "Welcome to our platform! We're thrilled to have you on board. Get ready to experience a powerful and intuitive solution that streamlines personnel management and transforms how you organize and track your team. For more information and tutorials, please visit our documentation at <a href='https://docs.perscom.io' target='_blank'>https://docs.perscom.io</a>.",
-                'headline' => "Welcome to PERSCOM Personnel Management System, {$this->tenant->name}",
+                'headline' => 'Welcome to PERSCOM Personnel Management System, '.$this->tenant->name,
             ])
             ->event('created')
             ->causedBy(User::first())
@@ -144,7 +144,7 @@ class SetupTenantAccount
     protected function createAnnouncement(): void
     {
         Announcement::create([
-            'title' => "Welcome to PERSCOM Personnel Management System, {$this->tenant->name}",
+            'title' => 'Welcome to PERSCOM Personnel Management System, '.$this->tenant->name,
             'content' => '<p>Take a look around, and if you have any questions, please join our Slack at <a href="https://perscom.io/slack">https://perscom.io/slack</a>.</p>',
             'color' => 'info',
             'global' => true,

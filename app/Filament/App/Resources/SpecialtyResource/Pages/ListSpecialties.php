@@ -14,6 +14,9 @@ class ListSpecialties extends ListRecords
 
     protected ?string $subheading = 'Specialities help to further delineate personnel responsibilities and capabilities.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

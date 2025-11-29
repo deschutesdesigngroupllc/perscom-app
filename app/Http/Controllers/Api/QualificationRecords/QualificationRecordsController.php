@@ -17,6 +17,9 @@ class QualificationRecordsController extends Controller
 
     protected $request = QualificationRecordRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -33,16 +36,25 @@ class QualificationRecordsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'qualification_id', 'qualification.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'user_id', 'qualification_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'user_id', 'user.*', 'qualification_id', 'qualification.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];

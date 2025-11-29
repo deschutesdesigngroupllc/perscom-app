@@ -21,6 +21,9 @@ class Dashboard extends BaseDashboard
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
+    /**
+     * @return CopyAction[]
+     */
     protected function getActions(): array
     {
         return [

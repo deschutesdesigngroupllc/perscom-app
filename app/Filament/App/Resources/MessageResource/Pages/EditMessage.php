@@ -12,6 +12,9 @@ class EditMessage extends EditRecord
 {
     protected static string $resource = MessageResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -17,21 +17,33 @@ class StatusesController extends Controller
 
     protected $request = StatusRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['submissions', 'users'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'color', 'icon', 'order', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'color', 'icon', 'order', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'color', 'icon', 'order', 'created_at', 'updated_at'];

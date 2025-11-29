@@ -14,6 +14,9 @@ class ListAnnouncements extends ListRecords
 
     protected ?string $subheading = 'Keep your organization up-to-date with dashboard-wide announcements.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

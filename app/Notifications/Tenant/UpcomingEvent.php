@@ -75,7 +75,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
     public function toBroadcast(User $notifiable): BroadcastMessage
     {
         return FilamentNotification::make()
-            ->title("Upcoming Event - {$this->event->name}")
+            ->title('Upcoming Event - '.$this->event->name)
             ->body($this->getMessage($notifiable))
             ->info()
             ->getBroadcastMessage();
@@ -87,7 +87,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
     public function toDatabase(User $notifiable): array
     {
         return FilamentNotification::make()
-            ->title("Upcoming Event - {$this->event->name}")
+            ->title('Upcoming Event - '.$this->event->name)
             ->body($this->getMessage($notifiable))
             ->info()
             ->getDatabaseMessage();
@@ -131,11 +131,11 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
         $time = $start->format('g:i A');
 
         return match ($this->interval) {
-            NotificationInterval::PT0M => "{$this->event->name} is starting now.",
-            NotificationInterval::PT15M => "{$this->event->name} is starting in 15 minutes.",
-            NotificationInterval::PT1H => "{$this->event->name} is starting in 1 hour.",
-            NotificationInterval::P1D => "{$this->event->name} begins tomorrow at $time.",
-            NotificationInterval::P1W => "{$this->event->name} begins next week on $date at $time.",
+            NotificationInterval::PT0M => $this->event->name.' is starting now.',
+            NotificationInterval::PT15M => $this->event->name.' is starting in 15 minutes.',
+            NotificationInterval::PT1H => $this->event->name.' is starting in 1 hour.',
+            NotificationInterval::P1D => sprintf('%s begins tomorrow at %s.', $this->event->name, $time),
+            NotificationInterval::P1W => sprintf('%s begins next week on %s at %s.', $this->event->name, $date, $time),
         };
     }
 }

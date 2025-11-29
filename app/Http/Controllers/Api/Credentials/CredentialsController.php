@@ -17,6 +17,9 @@ class CredentialsController extends Controller
 
     protected $request = CredentialRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -24,16 +27,25 @@ class CredentialsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'description', 'type', 'issuer_id', 'order', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'description', 'type', 'issuer_id', 'order', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'description', 'type', 'issuer_id', 'order', 'created_at', 'updated_at'];

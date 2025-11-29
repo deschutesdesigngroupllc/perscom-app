@@ -36,12 +36,12 @@ enum NotificationChannel: string implements HasDescription, HasLabel
     public function getDescription(): ?string
     {
         return match ($this) {
-            NotificationChannel::BROADCAST => 'Send the notification as an instant notification to the user\'s dashboard.',
-            NotificationChannel::DATABASE => 'Store the notification in the user\'s database so they can review it later.',
-            NotificationChannel::DISCORD_PRIVATE => 'Send the notification to the user\'s private Discord channel.',
+            NotificationChannel::BROADCAST => "Send the notification as an instant notification to the user's dashboard.",
+            NotificationChannel::DATABASE => "Store the notification in the user's database so they can review it later.",
+            NotificationChannel::DISCORD_PRIVATE => "Send the notification to the user's private Discord channel.",
             NotificationChannel::DISCORD_PUBLIC => 'Send the notification to your public Discord server. This will only send one notification regardless of the amount of recipients selected.',
             NotificationChannel::MAIL => 'Send the notification as an email.',
-            NotificationChannel::SMS => 'Send the notification straight to the user\'s cell phone.',
+            NotificationChannel::SMS => "Send the notification straight to the user's cell phone.",
         };
     }
 

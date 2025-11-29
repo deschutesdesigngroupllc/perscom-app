@@ -13,6 +13,9 @@ class QualificationRecordExporter extends Exporter
 {
     protected static ?string $model = QualificationRecord::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

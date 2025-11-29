@@ -12,6 +12,9 @@ class ListCategories extends ListRecords
 {
     protected static string $resource = CategoryResource::class;
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

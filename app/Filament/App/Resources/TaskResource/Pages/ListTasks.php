@@ -14,6 +14,9 @@ class ListTasks extends ListRecords
 
     protected ?string $subheading = 'Tasks allow administrators to assign instructions to a given group of personnel.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -13,6 +13,9 @@ class TrainingRecordExporter extends Exporter
 {
     protected static ?string $model = TrainingRecord::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

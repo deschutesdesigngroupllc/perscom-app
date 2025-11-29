@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -23,6 +24,9 @@ class ViewSubmission extends ViewRecord
         $submission->markAsRead();
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -18,6 +18,9 @@ class EditRole extends EditRecord
 
     protected static string $resource = RoleResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getActions(): array
     {
         return [

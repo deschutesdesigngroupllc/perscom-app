@@ -13,7 +13,7 @@ class ApiRequests extends ChartWidget
 {
     protected ?string $heading = 'Live API Requests';
 
-    protected ?string $description = 'Your account\'s API request history over the last year.';
+    protected ?string $description = "Your account's API request history over the last year.";
 
     protected int|string|array $columnSpan = 'full';
 

@@ -11,6 +11,9 @@ use function in_array;
 
 class SubdomainRule implements ValidationRule
 {
+    /**
+     * @var string[]
+     */
     public static array $reservedSubdomains = [
         'admin',
         'api',

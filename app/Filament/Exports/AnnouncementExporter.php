@@ -13,6 +13,9 @@ class AnnouncementExporter extends Exporter
 {
     protected static ?string $model = Announcement::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

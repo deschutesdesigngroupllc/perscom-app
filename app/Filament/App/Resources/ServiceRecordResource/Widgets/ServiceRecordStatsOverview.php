@@ -13,6 +13,9 @@ use Illuminate\Support\Number;
 
 class ServiceRecordStatsOverview extends BaseWidget
 {
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentMtd = ServiceRecord::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();

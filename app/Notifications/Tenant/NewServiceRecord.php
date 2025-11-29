@@ -45,7 +45,7 @@ class NewServiceRecord extends Notification implements NotificationCanBeManaged,
 
         $this->message = <<<HTML
 <p>A new service record has been added to your account.</p>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

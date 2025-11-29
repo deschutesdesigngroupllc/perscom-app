@@ -13,6 +13,9 @@ class FormExporter extends Exporter
 {
     protected static ?string $model = Form::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

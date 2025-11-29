@@ -59,7 +59,7 @@ trait HasLogs
             ? 'An'
             : 'A';
 
-        return $activity->log("$starter $resource has been created.");
+        return $activity->log(sprintf('%s %s has been created.', $starter, $resource));
     }
 
     protected static function bootHasLogs(): void

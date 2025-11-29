@@ -14,6 +14,9 @@ class ListCompetencies extends ListRecords
 
     protected ?string $subheading = 'Specific skills, knowledge, and abilities an individual has acquired and demonstrated through training to perform their job effectively.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

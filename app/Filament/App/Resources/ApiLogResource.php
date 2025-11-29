@@ -15,6 +15,8 @@ use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
+use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -57,7 +59,7 @@ class ApiLogResource extends BaseResource
                     ->label('New API key')
                     ->url(PassportTokenResource::getUrl('create')),
             ])
-            ->emptyStateDescription('There are no API logs to view. Create your first API key to start integrating with PERSCOM\'s powerful API.')
+            ->emptyStateDescription("There are no API logs to view. Create your first API key to start integrating with PERSCOM's powerful API.")
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->select(['id', 'log_name', 'created_at', 'causer_id', 'causer_type', 'event']))
             ->columns([
                 TextColumn::make('id')
@@ -68,7 +70,7 @@ class ApiLogResource extends BaseResource
                 TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->searchable(query: fn (Builder|ApiLog $query, string $search) => $query->whereMeta('request_id', 'LIKE', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")),
+                    ->searchable(query: fn (Builder|ApiLog $query, string $search) => $query->whereMeta('request_id', 'LIKE', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))),
                 TextColumn::make('log_name')
                     ->label('Log')
                     ->formatStateUsing(fn ($state) => match ($state) {
@@ -157,7 +159,7 @@ class ApiLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->whereMeta('request_id', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('request_id', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -166,7 +168,7 @@ class ApiLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->whereMeta('request_id', 'LIKE', "%$text%");
+                                                    $query->whereMeta('request_id', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
                                     }),
@@ -182,7 +184,7 @@ class ApiLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->whereMeta('trace_id', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('trace_id', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -191,7 +193,7 @@ class ApiLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->whereMeta('trace_id', 'LIKE', "%$text%");
+                                                    $query->whereMeta('trace_id', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
                                     }),
@@ -206,7 +208,7 @@ class ApiLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->whereMeta('endpoint', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('endpoint', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -215,7 +217,7 @@ class ApiLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->whereMeta('endpoint', 'LIKE', "%$text%");
+                                                    $query->whereMeta('endpoint', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
                                     }),
@@ -232,7 +234,7 @@ class ApiLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->whereMeta('status', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('status', 'NOT LIKE', sprintf('%%%s%%', $text));
                                                     }
                                                 );
                                         }
@@ -241,7 +243,7 @@ class ApiLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->whereMeta('status', 'LIKE', "%$text%");
+                                                    $query->whereMeta('status', 'LIKE', sprintf('%%%s%%', $text));
                                                 }
                                             );
 
@@ -331,6 +333,9 @@ class ApiLogResource extends BaseResource
         ]);
     }
 
+    /**
+     * @return RelationManagerConfiguration[]
+     */
     public static function getRelations(): array
     {
         return [
@@ -338,6 +343,9 @@ class ApiLogResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -371,6 +379,7 @@ class ApiLogResource extends BaseResource
 
     /**
      * @param  ApiLog  $record
+     * @return array<string, string>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {

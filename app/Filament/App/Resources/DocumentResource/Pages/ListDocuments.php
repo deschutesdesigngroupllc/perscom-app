@@ -14,6 +14,9 @@ class ListDocuments extends ListRecords
 
     protected ?string $subheading = 'Documents provide additional context and meaning to other resources in the platform.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

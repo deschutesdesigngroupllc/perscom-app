@@ -50,7 +50,7 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
 <strong>Specialty</strong>: {$this->assignmentRecord->specialty?->name}<br>
 <strong>Unit</strong>: {$this->assignmentRecord->unit?->name}<br>
 <strong>Status</strong>: {$this->assignmentRecord->status?->name}<br>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

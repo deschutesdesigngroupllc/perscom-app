@@ -20,7 +20,7 @@ class SettingsBootstrapper implements TenancyBootstrapper
     {
         App::offsetUnset(SettingsCacheFactory::class);
 
-        config()->set('settings.cache.prefix', "tenant_{$tenant->getTenantKey()}");
+        config()->set('settings.cache.prefix', 'tenant_'.$tenant->getTenantKey());
 
         app()->makeWith(SettingsCacheFactory::class, [
             'settingsConfig' => config('settings'),

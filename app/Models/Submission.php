@@ -80,24 +80,6 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
         return $this->toHtml();
     }
 
-    public static function boot(): void
-    {
-        parent::boot();
-
-        static::creating(function ($model): void {
-            $user = match (true) {
-                isset($model->user) => $model->user,
-                Auth::guard('web')->check() => Auth::guard('web')->user(),
-                Auth::guard('api')->check() => Auth::guard('api')->user(),
-                default => null
-            };
-
-            if ($user) {
-                $model->user()->associate($user);
-            }
-        });
-    }
-
     /**
      * @return string[]
      */
@@ -126,5 +108,23 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     public function toHtml(): string
     {
         return view('models.submission')->with('submission', $this)->render();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model): void {
+            $user = match (true) {
+                isset($model->user) => $model->user,
+                Auth::guard('web')->check() => Auth::guard('web')->user(),
+                Auth::guard('api')->check() => Auth::guard('api')->user(),
+                default => null
+            };
+
+            if ($user) {
+                $model->user()->associate($user);
+            }
+        });
     }
 }

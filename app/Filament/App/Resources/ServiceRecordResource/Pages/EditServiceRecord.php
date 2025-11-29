@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\ServiceRecordResource\Pages;
 
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Traits\Filament\InteractsWithModelNotifications;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
@@ -16,6 +17,9 @@ class EditServiceRecord extends EditRecord
 
     protected static string $resource = ServiceRecordResource::class;
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

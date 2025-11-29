@@ -13,8 +13,8 @@ class ConfigBootstrapperTest extends TenantTestCase
 {
     public function test_bootstrap_method_sets_up_config(): void
     {
-        $this->assertEquals(config('mail.from.name'), "PERSCOM - {$this->tenant->name}");
-        $this->assertEquals(config('responsecache.cache_tag'), "tenant{$this->tenant->getKey()}");
+        $this->assertEquals(config('mail.from.name'), 'PERSCOM - '.$this->tenant->name);
+        $this->assertEquals(config('responsecache.cache_tag'), 'tenant'.$this->tenant->getKey());
     }
 
     /**

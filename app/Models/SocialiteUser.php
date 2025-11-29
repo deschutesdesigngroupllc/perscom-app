@@ -45,7 +45,7 @@ class SocialiteUser extends BaseSocialiteUser
 
         $socialiteUser = null;
         if ($exists = $user::query()->where(static::getProviderColumn($provider), $oauthUser->getId())->first()) {
-            $relationship = "{$provider}User";
+            $relationship = $provider.'User';
 
             if (method_exists($exists, $relationship) && $exists->$relationship) {
                 $socialiteUser = $exists->$relationship;

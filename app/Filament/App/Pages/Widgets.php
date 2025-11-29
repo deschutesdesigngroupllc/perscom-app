@@ -40,6 +40,9 @@ class Widgets extends Page
 
     protected ?string $subheading = 'Widgets offer a visual representation of your personnel data that can be embedded into any external website. Use the widget explorer below to interact with the widgets in real-time.';
 
+    /**
+     * @var array<string, string>
+     */
     protected static array $widgets = [
         'awards' => 'Awards',
         'calendar' => 'Calendar',
@@ -64,6 +67,9 @@ class Widgets extends Page
         ])->login($user);
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [
@@ -155,10 +161,10 @@ class Widgets extends Page
 <div id="perscom_widget_wrapper">
     <script
         id="perscom_widget"
-        data-apikey="$apiKey"
-        data-widget="$widget"
-        data-dark="$darkMode"
-        src="$widgetUrl"
+        data-apikey="{$apiKey}"
+        data-widget="{$widget}"
+        data-dark="{$darkMode}"
+        src="{$widgetUrl}"
         type="text/javascript"
     ></script>
 </div>

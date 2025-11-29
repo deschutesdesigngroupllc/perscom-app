@@ -118,7 +118,7 @@ class Integration extends SettingsPage
                             ->schema([
                                 Toggle::make('sms_settings.sms_enabled')
                                     ->live()
-                                    ->helperText('Enable SMS notifications system wide. Text messages will be sent to a user\'s phone number if they have one on file.')
+                                    ->helperText("Enable SMS notifications system wide. Text messages will be sent to a user's phone number if they have one on file.")
                                     ->label('Enabled'),
                                 Placeholder::make('attempts')
                                     ->visible(fn (Get $get): bool => $get('sms_settings.sms_enabled'))
@@ -130,13 +130,16 @@ class Integration extends SettingsPage
 
                                         $attempts = $service->limiter->attempts('sms') ?? 0;
 
-                                        return "$attempts / 50";
+                                        return $attempts.' / 50';
                                     }),
                             ]),
                     ]),
             ]);
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

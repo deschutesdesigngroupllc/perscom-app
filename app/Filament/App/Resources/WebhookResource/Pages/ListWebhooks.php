@@ -10,6 +10,7 @@ use App\Filament\App\Resources\WebhookResource\Widgets\WebhookRequests;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Components\ViewComponent;
 
 class ListWebhooks extends ListRecords
 {
@@ -17,6 +18,9 @@ class ListWebhooks extends ListRecords
 
     protected ?string $subheading = 'Webhooks provide real-time outbound notifications to ensure your services stay in sync.';
 
+    /**
+     * @return ViewComponent[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -18,7 +18,7 @@ trait HasTags
 
     public function tags(): BelongsToMany
     {
-        $relationship = $this->belongsToMany(Tag::class, "{$this->getTable()}_tags")
+        $relationship = $this->belongsToMany(Tag::class, $this->getTable().'_tags')
             ->withPivot('order')
             ->withTimestamps();
 

@@ -15,7 +15,7 @@ class ApiCacheServiceTest extends TenantTestCase
     {
         $rank = Rank::factory()->createQuietly();
 
-        $this->assertTrue(ApiCacheService::tagForModel($rank) === "{$this->tenant->getKey()}:rank:{$rank->getKey()}");
+        $this->assertTrue(ApiCacheService::tagForModel($rank) === sprintf('%s:rank:%s', $this->tenant->getKey(), $rank->getKey()));
     }
 
     public function test_cache_tag_is_correctly_generated(): void
@@ -23,7 +23,7 @@ class ApiCacheServiceTest extends TenantTestCase
         $rank = Rank::factory()->createQuietly();
         $service = new ApiCacheService;
 
-        $this->assertTrue($service->getCacheTag($rank) === "{$this->tenant->getKey()}:rank:{$rank->getKey()}");
+        $this->assertTrue($service->getCacheTag($rank) === sprintf('%s:rank:%s', $this->tenant->getKey(), $rank->getKey()));
     }
 
     public function test_surrogate_keys_are_correctly_generated(): void
@@ -34,10 +34,10 @@ class ApiCacheServiceTest extends TenantTestCase
 
         $keys = $service->surrogateKeysForResource($collection)->toArray();
 
-        $this->assertTrue(in_array("{$this->tenant->getKey()}:rank", $keys));
+        $this->assertTrue(in_array($this->tenant->getKey().':rank', $keys));
 
         $rank->each(function (Rank $rank) use ($keys): void {
-            $this->assertTrue(in_array("{$this->tenant->getKey()}:rank:{$rank->getKey()}", $keys));
+            $this->assertTrue(in_array(sprintf('%s:rank:%s', $this->tenant->getKey(), $rank->getKey()), $keys));
         });
     }
 }

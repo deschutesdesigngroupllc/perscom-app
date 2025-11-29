@@ -30,7 +30,7 @@ class CacheControllerTest extends TenantTestCase
                 'status' => 'okay',
             ]);
 
-        Queue::assertPushed(PurgeApiCache::class, fn (PurgeApiCache $job): bool => $job->tags === "tenant:{$this->tenant->getTenantKey()}");
+        Queue::assertPushed(PurgeApiCache::class, fn (PurgeApiCache $job): bool => $job->tags === 'tenant:'.$this->tenant->getTenantKey());
     }
 
     public function test_cannot_call_api_with_incorrect_scopes(): void

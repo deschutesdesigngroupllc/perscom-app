@@ -14,6 +14,9 @@ class ListAttachments extends ListRecords
 
     protected ?string $subheading = 'A record of all attachments in your account.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

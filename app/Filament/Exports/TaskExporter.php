@@ -13,6 +13,9 @@ class TaskExporter extends Exporter
 {
     protected static ?string $model = Task::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

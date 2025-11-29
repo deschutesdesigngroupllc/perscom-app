@@ -13,6 +13,9 @@ class CombatRecordExporter extends Exporter
 {
     protected static ?string $model = CombatRecord::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

@@ -12,6 +12,9 @@ class EditCredential extends EditRecord
 {
     protected static string $resource = CredentialResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

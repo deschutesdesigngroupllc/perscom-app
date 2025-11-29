@@ -22,6 +22,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
@@ -122,6 +123,9 @@ class MessageResource extends BaseResource
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -130,6 +134,9 @@ class MessageResource extends BaseResource
         ];
     }
 
+    /**
+     * @return RichEditor[]
+     */
     public static function messageSchema(): array
     {
         return [
@@ -141,6 +148,9 @@ class MessageResource extends BaseResource
         ];
     }
 
+    /**
+     * @return CheckboxList[]
+     */
     public static function channelSchema(): array
     {
         return [
@@ -159,6 +169,9 @@ class MessageResource extends BaseResource
         ];
     }
 
+    /**
+     * @return Select[]
+     */
     public static function detailsSchema(): array
     {
         return [

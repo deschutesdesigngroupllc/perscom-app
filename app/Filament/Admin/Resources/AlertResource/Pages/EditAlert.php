@@ -12,6 +12,9 @@ class EditAlert extends EditRecord
 {
     protected static string $resource = AlertResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

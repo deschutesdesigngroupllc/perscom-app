@@ -12,6 +12,9 @@ class EditComment extends EditRecord
 {
     protected static string $resource = CommentResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -13,7 +13,8 @@ use Illuminate\Support\Carbon;
 
 class NewAssignmentRecordMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected AssignmentRecord $assignmentRecord, protected string $url)
     {

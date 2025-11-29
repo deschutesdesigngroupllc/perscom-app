@@ -98,7 +98,7 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
 
     public function headlineForNewsfeedItem(): string
     {
-        return "A service record has been added for {$this->user->name}";
+        return 'A service record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string

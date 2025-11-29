@@ -108,7 +108,7 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
 
     public function headlineForNewsfeedItem(): string
     {
-        return "An award record has been added for {$this->user->name}";
+        return 'An award record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string
@@ -118,7 +118,7 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
 
     public function itemForNewsfeedItem(): ?string
     {
-        return "Award: {$this->award->name}";
+        return 'Award: '.$this->award->name;
     }
 
     public function recipientForNewsfeedItem(): ?User

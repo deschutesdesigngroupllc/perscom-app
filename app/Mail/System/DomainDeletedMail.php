@@ -11,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class DomainDeletedMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public function __construct(protected string $domain, protected string $url)
     {

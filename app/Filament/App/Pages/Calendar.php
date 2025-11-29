@@ -18,5 +18,5 @@ class Calendar extends Page
 
     protected string $view = 'filament.app.pages.calendar';
 
-    protected ?string $subheading = 'Keep up-to-date with your organization\'s calendar of events and schedule.';
+    protected ?string $subheading = "Keep up-to-date with your organization's calendar of events and schedule.";
 }

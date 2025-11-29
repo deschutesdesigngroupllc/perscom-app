@@ -20,7 +20,7 @@ class ListAssignmentRecords extends ListRecords
 
     protected static string $resource = AssignmentRecordResource::class;
 
-    protected ?string $subheading = 'Keep track of a user\'s position within the organizational hierarchy with ease.';
+    protected ?string $subheading = "Keep track of a user's position within the organizational hierarchy with ease.";
 
     public function getPresetViews(): array
     {
@@ -33,6 +33,9 @@ class ListAssignmentRecords extends ListRecords
         ])->toArray();
     }
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

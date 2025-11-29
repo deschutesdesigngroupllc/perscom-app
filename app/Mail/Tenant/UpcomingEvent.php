@@ -17,7 +17,8 @@ use Illuminate\Queue\SerializesModels;
 
 class UpcomingEvent extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     protected string $title;
 
@@ -39,18 +40,18 @@ class UpcomingEvent extends Mailable implements ShouldQueue
         $this->time = $start->format('g:i A');
 
         $this->title = match ($this->interval) {
-            NotificationInterval::PT0M => "{$this->event->name} - Now",
-            NotificationInterval::PT15M => "{$this->event->name} - 15 Minutes",
-            NotificationInterval::PT1H => "{$this->event->name} - 1 Hour",
-            NotificationInterval::P1D => "{$this->event->name} - Tomorrow at $this->time",
-            NotificationInterval::P1W => "{$this->event->name} - Next Week on $this->date at $this->time",
+            NotificationInterval::PT0M => $this->event->name.' - Now',
+            NotificationInterval::PT15M => $this->event->name.' - 15 Minutes',
+            NotificationInterval::PT1H => $this->event->name.' - 1 Hour',
+            NotificationInterval::P1D => sprintf('%s - Tomorrow at %s', $this->event->name, $this->time),
+            NotificationInterval::P1W => sprintf('%s - Next Week on %s at %s', $this->event->name, $this->date, $this->time),
         };
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: "Upcoming Event: $this->title",
+            subject: 'Upcoming Event: '.$this->title,
         );
     }
 
@@ -60,7 +61,7 @@ class UpcomingEvent extends Mailable implements ShouldQueue
             markdown: 'emails.user.upcoming-event',
             with: [
                 'name' => $this->event->name,
-                'start' => "$this->date at $this->time",
+                'start' => sprintf('%s at %s', $this->date, $this->time),
                 'time' => $this->event->starts->toDateTimeString(),
                 'url' => $this->event->url,
             ]

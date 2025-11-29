@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources\MailResource\Pages;
 
 use App\Filament\Admin\Resources\MailResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -19,6 +20,9 @@ class ViewMail extends ViewRecord
         return $this->record->subject ?? 'View Email';
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

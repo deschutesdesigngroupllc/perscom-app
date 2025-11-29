@@ -102,6 +102,6 @@ class ApiPermissionService
             return $ability;
         }
 
-        return "$ability:$model";
+        return sprintf('%s:%s', $ability, $model);
     }
 }

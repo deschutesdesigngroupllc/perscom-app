@@ -188,6 +188,9 @@ class TaskAssignment extends Pivot
         });
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

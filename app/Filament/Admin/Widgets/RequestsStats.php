@@ -19,6 +19,9 @@ class RequestsStats extends BaseWidget
 {
     protected static ?int $sort = 3;
 
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentHttp = Metric::average(HttpRequestMetric::class);

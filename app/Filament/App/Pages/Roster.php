@@ -12,6 +12,7 @@ use App\Settings\DashboardSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use Illuminate\Support\Collection;
 
 class Roster extends Page
 {
@@ -26,7 +27,7 @@ class Roster extends Page
 
     protected static ?int $navigationSort = 4;
 
-    protected ?string $subheading = 'An comprehensive overview of your organization\'s personnel.';
+    protected ?string $subheading = "An comprehensive overview of your organization's personnel.";
 
     public function mount(): void
     {
@@ -45,6 +46,9 @@ class Roster extends Page
         return 'filament.app.pages.roster.automatic';
     }
 
+    /**
+     * @return Collection[]
+     */
     protected function getViewData(): array
     {
         $settings = app(DashboardSettings::class);

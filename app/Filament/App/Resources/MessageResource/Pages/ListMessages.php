@@ -14,6 +14,9 @@ class ListMessages extends ListRecords
 
     protected ?string $subheading = 'Send instant, real-time messages across an array of notification channels.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

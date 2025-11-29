@@ -26,7 +26,7 @@ trait HasCustomFieldData
         static::retrieved(function ($model): void {
             foreach ($model->data ?? [] as $key => $value) {
                 if (is_string($value) && self::isFilePath($value)) {
-                    $model->setAttribute("{$key}_url", Storage::url($value));
+                    $model->setAttribute($key.'_url', Storage::url($value));
                 }
             }
         });

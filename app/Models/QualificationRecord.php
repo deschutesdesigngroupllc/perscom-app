@@ -108,7 +108,7 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
 
     public function headlineForNewsfeedItem(): string
     {
-        return "A qualification record has been added for {$this->user->name}";
+        return 'A qualification record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string
@@ -118,7 +118,7 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
 
     public function itemForNewsfeedItem(): ?string
     {
-        return "Qualification: {$this->qualification->name}";
+        return 'Qualification: '.$this->qualification->name;
     }
 
     public function recipientForNewsfeedItem(): ?User

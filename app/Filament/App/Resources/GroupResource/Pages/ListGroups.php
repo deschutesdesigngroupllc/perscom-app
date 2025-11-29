@@ -14,6 +14,9 @@ class ListGroups extends ListRecords
 
     protected ?string $subheading = 'Groups provide logical sorting and grouping of units within the organizational hierarchy.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

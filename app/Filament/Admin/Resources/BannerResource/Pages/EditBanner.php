@@ -12,6 +12,9 @@ class EditBanner extends EditRecord
 {
     protected static string $resource = BannerResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -18,7 +18,7 @@ class ListUsers extends ListRecords
 
     protected static string $resource = UserResource::class;
 
-    protected ?string $subheading = 'Manage your organization\'s personnel.';
+    protected ?string $subheading = "Manage your organization's personnel.";
 
     public function getPresetViews(): array
     {
@@ -31,6 +31,9 @@ class ListUsers extends ListRecords
         ])->toArray();
     }
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

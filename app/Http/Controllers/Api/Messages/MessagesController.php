@@ -17,6 +17,9 @@ class MessagesController extends Controller
 
     protected $request = MessageRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -24,16 +27,25 @@ class MessagesController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];

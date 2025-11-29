@@ -98,7 +98,7 @@ class CombatRecord extends Model implements HasLabel, SendsModelNotifications, S
 
     public function headlineForNewsfeedItem(): string
     {
-        return "A combat record has been added for {$this->user->name}";
+        return 'A combat record has been added for '.$this->user->name;
     }
 
     public function textForNewsfeedItem(): ?string

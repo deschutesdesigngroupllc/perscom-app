@@ -81,7 +81,7 @@ class Dashboard extends SettingsPage
                                     ->state(function (): HtmlString {
                                         $fallbackUrl = tenant('fallback_url');
 
-                                        return new HtmlString("<a href='$fallbackUrl' target='_blank'>$fallbackUrl</a>");
+                                        return new HtmlString(sprintf("<a href='%s' target='_blank'>%s</a>", $fallbackUrl, $fallbackUrl));
                                     })
                                     ->helperText('The default URL for your account. You can always access your dashboard from this domain.'),
                                 TextInput::make('subdomain')
@@ -106,7 +106,7 @@ class Dashboard extends SettingsPage
                                 TextInput::make('cover_photo_height')
                                     ->label('Cover Photo Height')
                                     ->required()
-                                    ->helperText('The pixel height of a cover photo in a user\'s profile.')
+                                    ->helperText("The pixel height of a cover photo in a user's profile.")
                                     ->numeric()
                                     ->suffix('px')
                                     ->default(250),

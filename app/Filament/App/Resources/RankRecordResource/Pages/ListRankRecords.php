@@ -34,6 +34,9 @@ class ListRankRecords extends ListRecords
         ])->toArray();
     }
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

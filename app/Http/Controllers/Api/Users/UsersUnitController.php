@@ -19,6 +19,9 @@ class UsersUnitController extends RelationController
 
     protected $relation = 'unit';
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return ['image'];

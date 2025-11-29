@@ -32,7 +32,7 @@ class UnitsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('name')
-            ->description('The group\'s assigned units.')
+            ->description("The group's assigned units.")
             ->emptyStateDescription('Attach a unit to the group to get started.')
             ->columns([
                 TextColumn::make('name')

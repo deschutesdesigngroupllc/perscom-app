@@ -13,6 +13,9 @@ class AwardExporter extends Exporter
 {
     protected static ?string $model = Award::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

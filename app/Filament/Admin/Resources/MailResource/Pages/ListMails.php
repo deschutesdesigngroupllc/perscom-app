@@ -14,6 +14,9 @@ class ListMails extends ListRecords
 
     protected ?string $subheading = 'Send updates and notifications to all PERSCOM accounts.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

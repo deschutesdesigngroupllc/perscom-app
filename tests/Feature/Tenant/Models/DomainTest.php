@@ -20,7 +20,7 @@ class DomainTest extends TenantTestCase
         $scheme = config('app.scheme');
         $base = config('app.base_url');
 
-        $this->assertEquals("$scheme://$word$base", $domain->url);
+        $this->assertEquals(sprintf('%s://%s%s', $scheme, $word, $base), $domain->url);
     }
 
     public function test_host_attribute_properly_returns(): void
@@ -32,6 +32,6 @@ class DomainTest extends TenantTestCase
 
         $base = config('app.base_url');
 
-        $this->assertEquals("$word$base", $domain->host);
+        $this->assertEquals($word.$base, $domain->host);
     }
 }

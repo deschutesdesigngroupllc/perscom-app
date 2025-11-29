@@ -40,7 +40,7 @@ class UserSettingsService
             return value($default);
         }
 
-        $cacheKey = UserSettingsService::$cacheKey."_{$user->getKey()}";
+        $cacheKey = UserSettingsService::$cacheKey.('_'.$user->getKey());
 
         if ($flush) {
             Cache::forget($cacheKey);
@@ -65,7 +65,7 @@ class UserSettingsService
             return null;
         }
 
-        $cacheKey = UserSettingsService::$cacheKey."_{$user->getKey()}";
+        $cacheKey = UserSettingsService::$cacheKey.('_'.$user->getKey());
 
         return Cache::forget($cacheKey);
     }

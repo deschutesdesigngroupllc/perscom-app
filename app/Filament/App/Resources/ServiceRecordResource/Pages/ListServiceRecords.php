@@ -18,6 +18,9 @@ class ListServiceRecords extends ListRecords
 
     protected ?string $subheading = 'Maintain general records that don’t fit into any specific category.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

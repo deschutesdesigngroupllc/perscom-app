@@ -37,6 +37,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -288,7 +289,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('starts')
                                     ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
                                     ->icon(fn (?Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null)
-                                    ->suffix(fn (?Event $record) => filled($record->length) && $record->length->total('seconds') > 0 ? " ({$record->length->forHumans(['parts' => 1])})" : null)
+                                    ->suffix(fn (?Event $record) => filled($record->length) && $record->length->total('seconds') > 0 ? sprintf(' (%s)', $record->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
@@ -306,7 +307,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('next_occurrence')
                                     ->label('Next Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
-                                    ->suffix(fn (?Event $record) => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? " ({$record->schedule->length->forHumans(['parts' => 1])})" : null)
+                                    ->suffix(fn (?Event $record) => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
@@ -429,6 +430,9 @@ class EventResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [
@@ -462,6 +466,9 @@ class EventResource extends BaseResource
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'description', 'content'];

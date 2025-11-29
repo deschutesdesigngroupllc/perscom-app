@@ -19,7 +19,7 @@ class PermissionsBootstrapper implements TenancyBootstrapper
 
     public function bootstrap(Tenant $tenant): void
     {
-        $this->registrar->cacheKey = "spatie.permission.cache.tenant.{$tenant->getTenantKey()}";
+        $this->registrar->cacheKey = 'spatie.permission.cache.tenant.'.$tenant->getTenantKey();
     }
 
     public function revert(): void

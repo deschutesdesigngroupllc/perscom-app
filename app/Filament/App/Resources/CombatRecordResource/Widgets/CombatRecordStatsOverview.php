@@ -13,6 +13,9 @@ use Illuminate\Support\Number;
 
 class CombatRecordStatsOverview extends BaseWidget
 {
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentMtd = CombatRecord::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();

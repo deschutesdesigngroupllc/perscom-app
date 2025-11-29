@@ -6,11 +6,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Services\ApiPermissionService;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Database\Eloquent\Model;
 
 trait AuthorizesRequests
 {
-    public function authorize(string $ability, array|string|Model $arguments = []): Response
+    public function authorize(string $ability, $arguments = []): Response
     {
         $authorized = ApiPermissionService::authorize($ability, $arguments);
 

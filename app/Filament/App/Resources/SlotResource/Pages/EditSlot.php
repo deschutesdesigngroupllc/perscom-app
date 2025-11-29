@@ -12,6 +12,9 @@ class EditSlot extends EditRecord
 {
     protected static string $resource = SlotResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

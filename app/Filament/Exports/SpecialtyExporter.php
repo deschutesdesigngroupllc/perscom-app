@@ -13,6 +13,9 @@ class SpecialtyExporter extends Exporter
 {
     protected static ?string $model = Specialty::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

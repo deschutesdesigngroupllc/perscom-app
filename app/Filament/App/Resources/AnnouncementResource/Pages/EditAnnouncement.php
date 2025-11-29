@@ -15,6 +15,9 @@ class EditAnnouncement extends EditRecord
 
     protected static string $resource = AnnouncementResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

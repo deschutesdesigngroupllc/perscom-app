@@ -55,6 +55,9 @@ class Backups extends Page implements HasTable
             ]);
     }
 
+    /**
+     * @return Action[]
+     */
     protected function getHeaderActions(): array
     {
         return [

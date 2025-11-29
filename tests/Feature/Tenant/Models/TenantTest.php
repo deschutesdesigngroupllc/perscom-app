@@ -53,7 +53,7 @@ class TenantTest extends TenantTestCase
         $scheme = config('app.scheme');
         $base = config('app.base_url');
 
-        $this->assertEquals("$scheme://{$tenant->fallback_domain->domain}$base", $tenant->fallback_url);
+        $this->assertEquals(sprintf('%s://%s%s', $scheme, $tenant->fallback_domain->domain, $base), $tenant->fallback_url);
     }
 
     public function test_custom_url_attribute_returns_proper_url(): void
@@ -67,7 +67,7 @@ class TenantTest extends TenantTestCase
         $scheme = config('app.scheme');
         $base = config('app.base_url');
 
-        $this->assertEquals("$scheme://{$tenant->custom_domain->domain}$base", $tenant->custom_url);
+        $this->assertEquals(sprintf('%s://%s%s', $scheme, $tenant->custom_domain->domain, $base), $tenant->custom_url);
     }
 
     public function test_url_attribute_properly_returns_domain(): void
@@ -80,7 +80,7 @@ class TenantTest extends TenantTestCase
         $scheme = config('app.scheme');
         $base = config('app.base_url');
 
-        $this->assertEquals("$scheme://{$tenant->domain->domain}$base", $tenant->url);
+        $this->assertEquals(sprintf('%s://%s%s', $scheme, $tenant->domain->domain, $base), $tenant->url);
     }
 
     public function test_url_attribute_properly_returns_custom_domain(): void
@@ -94,6 +94,6 @@ class TenantTest extends TenantTestCase
         $scheme = config('app.scheme');
         $base = config('app.base_url');
 
-        $this->assertEquals("$scheme://{$tenant->domain->domain}$base", $tenant->url);
+        $this->assertEquals(sprintf('%s://%s%s', $scheme, $tenant->domain->domain, $base), $tenant->url);
     }
 }

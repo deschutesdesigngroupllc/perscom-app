@@ -14,6 +14,9 @@ class ListAwards extends ListRecords
 
     protected ?string $subheading = 'Awards are used to recognize personnel achievements.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

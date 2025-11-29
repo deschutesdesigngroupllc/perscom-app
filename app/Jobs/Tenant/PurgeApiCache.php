@@ -58,6 +58,9 @@ class PurgeApiCache implements ShouldQueue
         }
     }
 
+    /**
+     * @return array<int, int>
+     */
     public function backoff(): array
     {
         return [1, 5, 10];

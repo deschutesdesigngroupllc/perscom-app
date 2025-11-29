@@ -15,6 +15,9 @@ class CreateMessage extends CreateRecord
 
     protected static string $resource = MessageResource::class;
 
+    /**
+     * @return Step[]
+     */
     public function getSteps(): array
     {
         return [

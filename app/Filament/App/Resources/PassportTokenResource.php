@@ -22,6 +22,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -104,7 +105,7 @@ class PassportTokenResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
+            ->emptyStateDescription("Create your first API key to start integrating with PERSCOM's powerful API.")
             ->columns([
                 TextColumn::make('name')
                     ->sortable(),
@@ -145,6 +146,9 @@ class PassportTokenResource extends BaseResource
             ->whereDoesntHave('client', fn (Builder $query) => $query->where('name', '<>', PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT));
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

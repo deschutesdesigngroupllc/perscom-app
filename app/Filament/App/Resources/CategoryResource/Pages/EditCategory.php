@@ -12,6 +12,9 @@ class EditCategory extends EditRecord
 {
     protected static string $resource = CategoryResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

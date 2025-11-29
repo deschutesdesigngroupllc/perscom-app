@@ -14,7 +14,7 @@ class CopyAction extends Action
 {
     protected Closure|string|null $copyable = null;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

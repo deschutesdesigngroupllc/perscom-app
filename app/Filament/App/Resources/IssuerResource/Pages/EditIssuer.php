@@ -12,6 +12,9 @@ class EditIssuer extends EditRecord
 {
     protected static string $resource = IssuerResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

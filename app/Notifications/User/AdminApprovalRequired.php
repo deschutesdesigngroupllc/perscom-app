@@ -26,6 +26,9 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
         ], panel: 'app');
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

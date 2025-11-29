@@ -19,6 +19,9 @@ class IntegrationSettings extends Settings
         return 'integration';
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function encrypted(): array
     {
         return [

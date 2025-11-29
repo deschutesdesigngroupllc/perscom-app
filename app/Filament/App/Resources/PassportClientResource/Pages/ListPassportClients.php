@@ -9,6 +9,7 @@ use App\Filament\App\Resources\PassportClientResource;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Components\ViewComponent;
 
 class ListPassportClients extends ListRecords
 {
@@ -16,6 +17,9 @@ class ListPassportClients extends ListRecords
 
     protected ?string $subheading = 'Manage your SSO clients to enable seamless application-to-application integration with PERSCOM using OAuth 2.0.';
 
+    /**
+     * @return ViewComponent[]
+     */
     protected function getHeaderActions(): array
     {
         return [

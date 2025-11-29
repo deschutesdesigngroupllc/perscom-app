@@ -47,7 +47,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
 <p>A new rank record has been added to your account.</p>
 <strong>Rank: </strong>{$this->rankRecord->rank->name}<br>
 <strong>Type: </strong>{$this->rankRecord->type->getLabel()}<br>
-<strong>Text: </strong>$text
+<strong>Text: </strong>{$text}
 HTML;
     }
 

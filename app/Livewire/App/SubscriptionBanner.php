@@ -45,7 +45,7 @@ class SubscriptionBanner extends Component
         }
 
         $this->message = match (true) {
-            $tenant->onTrial() && isset($left, $expiration) => "You are currently on trial. Your trial is set to expire $left on $expiration.",
+            $tenant->onTrial() && isset($left, $expiration) => sprintf('You are currently on trial. Your trial is set to expire %s on %s.', $left, $expiration),
             $tenant->hasIncompletePayment() => 'Your subscription is currently past due. Please pay your invoice to continue using PERSCOM.',
             ! $tenant->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
             default => null

@@ -14,6 +14,9 @@ class ListDomains extends ListRecords
 
     protected ?string $subheading = 'Manage all PERSCOM domains that are associated with tenant accounts.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

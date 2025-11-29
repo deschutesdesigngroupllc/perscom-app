@@ -392,7 +392,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function online(): Attribute
     {
         return Attribute::make(
-            get: fn () => Cache::tags('users_online')->has("user_online_$this->id")
+            get: fn () => Cache::tags('users_online')->has('user_online_'.$this->id)
         )->shouldCache();
     }
 
@@ -499,6 +499,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return 'web';
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

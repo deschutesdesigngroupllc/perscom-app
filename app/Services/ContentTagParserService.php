@@ -47,7 +47,7 @@ class ContentTagParserService
             $tag === '{user_assignment_unit}' => data_get($user, 'unit.name'),
             $tag === '{user_rank}' => data_get($user, 'rank.name'),
             $tag === '{user_rank_abbreviation}' => data_get($user, 'rank.abbreviation'),
-            $tag === '{user_discord_tag}' => filled($user->discord_user_id) ? "<@$user->discord_user_id>" : null,
+            $tag === '{user_discord_tag}' => filled($user->discord_user_id) ? sprintf('<@%s>', $user->discord_user_id) : null,
             $tag === '{assignment_record_status}' => data_get($attachedModel, 'status.name'),
             $tag === '{assignment_record_unit}' => data_get($attachedModel, 'unit.name'),
             $tag === '{assignment_record_position}' => data_get($attachedModel, 'position.name'),
@@ -85,7 +85,7 @@ class ContentTagParserService
                     return null;
                 }
 
-                return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
+                return new HtmlString(sprintf("<img src='%s' alt='%s' style='height: 40px;' />", $imageUrl, $imageName));
             },
             $tag === '{qualification_record_qualification}' => data_get($attachedModel, 'qualification.name'),
             $tag === '{qualification_record_qualification_image}' => function ($user, $attachedModel): ?HtmlString {
@@ -96,7 +96,7 @@ class ContentTagParserService
                     return null;
                 }
 
-                return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
+                return new HtmlString(sprintf("<img src='%s' alt='%s' style='height: 40px;' />", $imageUrl, $imageName));
             },
             $tag === '{rank_record_rank}' => data_get($attachedModel, 'rank.name'),
             $tag === '{rank_record_rank_abbreviation}' => data_get($attachedModel, 'rank.abbreviation'),
@@ -108,7 +108,7 @@ class ContentTagParserService
                     return null;
                 }
 
-                return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
+                return new HtmlString(sprintf("<img src='%s' alt='%s' style='height: 40px;' />", $imageUrl, $imageName));
             },
             $tag === '{rank_record_type}' => data_get($attachedModel, 'type')->getLabel() ?? null,
             $tag === '{training_record_credentials}' => collect(data_get($attachedModel, 'credentials'))->map(fn (Credential $credential) => $credential->name)->implode(','),

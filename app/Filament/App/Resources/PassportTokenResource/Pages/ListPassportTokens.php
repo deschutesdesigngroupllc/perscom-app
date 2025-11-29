@@ -12,14 +12,18 @@ use App\Services\ApiCacheService;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Components\ViewComponent;
 use Illuminate\Support\HtmlString;
 
 class ListPassportTokens extends ListRecords
 {
     protected static string $resource = PassportTokenResource::class;
 
-    protected ?string $subheading = 'Manage your application\'s API keys.';
+    protected ?string $subheading = "Manage your application's API keys.";
 
+    /**
+     * @return ViewComponent[]
+     */
     protected function getHeaderActions(): array
     {
         return [

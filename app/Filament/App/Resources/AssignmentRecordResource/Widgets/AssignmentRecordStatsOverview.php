@@ -13,6 +13,9 @@ use Illuminate\Support\Number;
 
 class AssignmentRecordStatsOverview extends BaseWidget
 {
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentMtd = AssignmentRecord::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();

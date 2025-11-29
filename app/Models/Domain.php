@@ -87,6 +87,9 @@ class Domain extends BaseDomain
         )->shouldCache();
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

@@ -16,8 +16,11 @@ class ListTrainingRecords extends ListRecords
 
     protected static string $resource = TrainingRecordResource::class;
 
-    protected ?string $subheading = 'Comprehensive records that encapsulate details of a training event, including the competencies acquired, the issuer of the credential, and the credential itself, providing a complete history of an individual\'s training experience.';
+    protected ?string $subheading = "Comprehensive records that encapsulate details of a training event, including the competencies acquired, the issuer of the credential, and the credential itself, providing a complete history of an individual's training experience.";
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

@@ -29,7 +29,7 @@ class DeleteUnverifiedRegistrations implements ShouldQueue
             ->delete();
 
         if ($deletedCount > 0) {
-            Log::debug("Deleted $deletedCount unverified registration(s) older than 3 days.");
+            Log::debug(sprintf('Deleted %d unverified registration(s) older than 3 days.', $deletedCount));
         }
     }
 }

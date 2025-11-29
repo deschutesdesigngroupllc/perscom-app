@@ -12,6 +12,9 @@ class EditRank extends EditRecord
 {
     protected static string $resource = RankResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

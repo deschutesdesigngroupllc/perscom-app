@@ -63,7 +63,7 @@ class DiscordService
         return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) use ($guildId) {
             $response = $service
                 ->client()
-                ->get("guilds/$guildId/channels");
+                ->get(sprintf('guilds/%s/channels', $guildId));
 
             $data = $response->json();
 

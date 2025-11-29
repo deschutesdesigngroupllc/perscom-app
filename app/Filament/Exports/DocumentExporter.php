@@ -13,6 +13,9 @@ class DocumentExporter extends Exporter
 {
     protected static ?string $model = Document::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

@@ -21,7 +21,7 @@ class WidgetController extends Controller
             'widget.in' => 'The requested :attribute is invalid. Please provide a valid widget.',
         ])->validate();
 
-        return response()->view("widgets.$widget", [
+        return response()->view('widgets.'.$widget, [
             'resourceId' => $resourceId,
         ]);
     }

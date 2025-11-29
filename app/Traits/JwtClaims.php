@@ -19,6 +19,9 @@ trait JwtClaims
         return $this->getKey();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getJWTCustomClaims(): array
     {
         $timezone = UserSettingsService::get('timezone', function () {

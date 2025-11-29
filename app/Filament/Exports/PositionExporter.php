@@ -13,6 +13,9 @@ class PositionExporter extends Exporter
 {
     protected static ?string $model = Position::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

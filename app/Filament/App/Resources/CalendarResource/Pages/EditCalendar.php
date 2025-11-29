@@ -12,6 +12,9 @@ class EditCalendar extends EditRecord
 {
     protected static string $resource = CalendarResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

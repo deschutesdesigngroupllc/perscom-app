@@ -30,7 +30,7 @@ class DomainsRelationManager extends RelationManager
         return $schema
             ->components([
                 TextInput::make('domain')
-                    ->helperText('The tenant\'s subdomain.')
+                    ->helperText("The tenant's subdomain.")
                     ->columnSpanFull()
                     ->rule(new SubdomainRule)
                     ->unique('domains', 'domain', ignoreRecord: true)

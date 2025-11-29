@@ -17,11 +17,17 @@ class EventsController extends Controller
 
     protected $request = EventRequest::class;
 
+    /**
+     * @return array<int, string>
+     */
     public function exposedScopes(): array
     {
         return ['datePeriod', 'tags'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function includes(): array
     {
         return [
@@ -38,16 +44,25 @@ class EventsController extends Controller
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function sortableBy(): array
     {
         return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function searchableBy(): array
     {
         return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function filterableBy(): array
     {
         return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];

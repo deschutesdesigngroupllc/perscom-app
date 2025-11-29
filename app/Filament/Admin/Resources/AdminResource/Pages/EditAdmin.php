@@ -12,6 +12,9 @@ class EditAdmin extends EditRecord
 {
     protected static string $resource = AdminResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

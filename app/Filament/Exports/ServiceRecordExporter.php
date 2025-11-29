@@ -13,6 +13,9 @@ class ServiceRecordExporter extends Exporter
 {
     protected static ?string $model = ServiceRecord::class;
 
+    /**
+     * @return ExportColumn[]
+     */
     public static function getColumns(): array
     {
         return [

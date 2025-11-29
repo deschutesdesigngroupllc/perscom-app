@@ -14,6 +14,9 @@ class ListStatuses extends ListRecords
 
     protected ?string $subheading = 'Statuses provide a way to add additional meaning to a resource at a moment in time.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

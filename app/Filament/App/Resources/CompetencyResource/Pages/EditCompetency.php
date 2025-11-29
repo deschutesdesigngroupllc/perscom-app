@@ -12,6 +12,9 @@ class EditCompetency extends EditRecord
 {
     protected static string $resource = CompetencyResource::class;
 
+    /**
+     * @return DeleteAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

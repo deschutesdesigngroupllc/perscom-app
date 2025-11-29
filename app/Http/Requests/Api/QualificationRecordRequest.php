@@ -8,6 +8,9 @@ use Orion\Http\Requests\Request;
 
 class QualificationRecordRequest extends Request
 {
+    /**
+     * @return array<string, string>
+     */
     public function commonRules(): array
     {
         return [

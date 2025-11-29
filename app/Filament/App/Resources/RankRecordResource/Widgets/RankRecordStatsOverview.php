@@ -13,6 +13,9 @@ use Illuminate\Support\Number;
 
 class RankRecordStatsOverview extends BaseWidget
 {
+    /**
+     * @return Stat[]
+     */
     protected function getStats(): array
     {
         $currentMtd = RankRecord::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();

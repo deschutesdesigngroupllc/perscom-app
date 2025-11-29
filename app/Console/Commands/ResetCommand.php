@@ -22,7 +22,7 @@ class ResetCommand extends Command implements Isolatable
     protected $signature = 'perscom:reset
                             {--seeder=military : The seeder to use. Default: military}';
 
-    protected $description = 'Reset\'s the perscom application.';
+    protected $description = "Reset's the perscom application.";
 
     /**
      * @throws DatabaseManagerNotRegisteredException

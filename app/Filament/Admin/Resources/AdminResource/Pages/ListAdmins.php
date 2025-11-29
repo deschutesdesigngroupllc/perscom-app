@@ -14,6 +14,9 @@ class ListAdmins extends ListRecords
 
     protected ?string $subheading = 'Manage all PERSCOM administrator accounts.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [
