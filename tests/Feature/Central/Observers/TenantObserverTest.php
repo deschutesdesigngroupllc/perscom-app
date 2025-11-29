@@ -25,7 +25,7 @@ class TenantObserverTest extends CentralTestCase
         Tenant::factory()->create();
 
         Event::assertDispatched(BaseTenantCreated::class);
-        Notification::assertSentTo($this->admin, TenantCreated::class, function ($notification, $channels): true {
+        Notification::assertSentTo($this->admin, TenantCreated::class, function ($notification, iterable $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
@@ -50,7 +50,7 @@ class TenantObserverTest extends CentralTestCase
             'ends_at' => null,
         ]);
 
-        Notification::assertSentTo($this->admin, NewSubscription::class, function ($notification, $channels): true {
+        Notification::assertSentTo($this->admin, NewSubscription::class, function ($notification, iterable $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
@@ -69,7 +69,7 @@ class TenantObserverTest extends CentralTestCase
         $tenant->delete();
 
         Event::assertDispatched(BaseTenantDeleted::class);
-        Notification::assertSentTo($this->admin, TenantDeleted::class, function ($notification, $channels): true {
+        Notification::assertSentTo($this->admin, TenantDeleted::class, function ($notification, iterable $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);

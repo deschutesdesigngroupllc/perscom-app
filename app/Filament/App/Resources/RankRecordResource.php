@@ -75,14 +75,14 @@ class RankRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('rank_id')
                                     ->required()
                                     ->helperText('The rank for this record.')
                                     ->preload()
                                     ->relationship(name: 'rank', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => RankResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => RankResource::form($form)),
                                 Select::make('type')
                                     ->helperText('The type of rank record.')
                                     ->columnSpanFull()
@@ -103,7 +103,7 @@ class RankRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
                                 Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -111,7 +111,7 @@ class RankRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')

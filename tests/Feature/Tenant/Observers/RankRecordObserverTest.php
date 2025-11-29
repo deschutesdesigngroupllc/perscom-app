@@ -29,7 +29,7 @@ class RankRecordObserverTest extends TenantTestCase
 
         $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewRankRecord::class, function (NewRankRecord $notification, $channels) use ($rank): true {
+        Notification::assertSentTo($user, NewRankRecord::class, function (NewRankRecord $notification, iterable $channels) use ($rank): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($rank->user);

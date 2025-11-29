@@ -67,12 +67,12 @@ class SubmissionResource extends BaseResource
                     ->preload()
                     ->relationship(name: 'form', titleAttribute: 'name')
                     ->searchable()
-                    ->createOptionForm(fn ($form): Schema => FormResource::form($form)),
+                    ->createOptionForm(fn (Schema $form): Schema => FormResource::form($form)),
                 Select::make('user_id')
                     ->preload()
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable()
-                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                 KeyValue::make('data')
                     ->columnSpanFull()
                     ->helperText('The submission data.')

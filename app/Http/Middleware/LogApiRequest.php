@@ -71,6 +71,10 @@ class LogApiRequest
 
         config()->set('activitylog.activity_model', $currentActivityModel);
 
+        tenant()->updateQuietly([
+            'last_login_at' => now(),
+        ]);
+
         return $response;
     }
 
@@ -110,7 +114,7 @@ class LogApiRequest
         }
 
         if (is_array($data)) {
-            return array_map(fn ($value): mixed => $this->processMultipartData($value), $data);
+            return array_map($this->processMultipartData(...), $data);
         }
 
         return $data;

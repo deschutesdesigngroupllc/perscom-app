@@ -69,9 +69,9 @@ trait InteractsWithModelNotifications
                 $event = static::$resource::modelNotificationCreatedEvent();
             }
 
-            collect(data_get($data, 'groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'groups'))->each(fn (\App\Models\Group|string|int $groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'units'))->each(fn (\App\Models\Unit|string|int $unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'users'))->each(fn (\App\Models\User|string|int $userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
         }
     }
 

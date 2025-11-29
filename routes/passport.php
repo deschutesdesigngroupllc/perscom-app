@@ -27,7 +27,7 @@ Route::group([
         'middleware' => ['web', 'landing'],
     ]);
 
-    $guard = config('passport.guard', null);
+    $guard = config('passport.guard');
 
     Route::middleware(['web', $guard ? 'auth:'.$guard : 'auth'])->group(function (): void {
         Route::post('/token/refresh', [

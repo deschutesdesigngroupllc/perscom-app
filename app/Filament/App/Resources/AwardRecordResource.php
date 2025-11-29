@@ -74,14 +74,14 @@ class AwardRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('award_id')
                                     ->required()
                                     ->helperText('The award for this record.')
                                     ->preload()
                                     ->relationship(name: 'award', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => AwardResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => AwardResource::form($form)),
                                 RichEditor::make('text')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Optional information about the record.')
@@ -96,7 +96,7 @@ class AwardRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
                                 Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -104,7 +104,7 @@ class AwardRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')

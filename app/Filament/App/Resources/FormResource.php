@@ -103,7 +103,7 @@ class FormResource extends BaseResource
                                     ->label('Status')
                                     ->relationship('submission_status', 'name')
                                     ->helperText('The default status of the submission when it is submitted.')
-                                    ->createOptionForm(fn ($form): Schema => StatusResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                                 Textarea::make('success_message')
                                     ->label('Message')
                                     ->nullable()

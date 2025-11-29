@@ -22,7 +22,7 @@ class ServiceRecordObserverTest extends TenantTestCase
 
         $service = ServiceRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewServiceRecord::class, function (NewServiceRecord $notification, $channels) use ($service): true {
+        Notification::assertSentTo($user, NewServiceRecord::class, function (NewServiceRecord $notification, iterable $channels) use ($service): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($service->user);

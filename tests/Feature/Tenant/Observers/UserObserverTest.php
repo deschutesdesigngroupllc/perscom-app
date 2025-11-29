@@ -62,7 +62,7 @@ class UserObserverTest extends TenantTestCase
             'password' => Str::password(),
         ]);
 
-        Notification::assertSentTo($user, PasswordChanged::class, function (PasswordChanged $notification, $channels) use ($user): true {
+        Notification::assertSentTo($user, PasswordChanged::class, function (PasswordChanged $notification, iterable $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -82,7 +82,7 @@ class UserObserverTest extends TenantTestCase
 
         $user = User::factory()->create();
 
-        Notification::assertSentTo($user, ApprovalRequired::class, function (ApprovalRequired $notification, $channels) use ($user): true {
+        Notification::assertSentTo($user, ApprovalRequired::class, function (ApprovalRequired $notification, iterable $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -105,7 +105,7 @@ class UserObserverTest extends TenantTestCase
 
         User::factory()->create();
 
-        Notification::assertSentTo($user, AdminApprovalRequired::class, function (AdminApprovalRequired $notification, $channels) use ($user): true {
+        Notification::assertSentTo($user, AdminApprovalRequired::class, function (AdminApprovalRequired $notification, iterable $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -128,7 +128,7 @@ class UserObserverTest extends TenantTestCase
             'approved' => true,
         ]);
 
-        Notification::assertSentTo($user, AccountApproved::class, function (AccountApproved $notification, $channels) use ($user): true {
+        Notification::assertSentTo($user, AccountApproved::class, function (AccountApproved $notification, iterable $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);

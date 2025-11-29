@@ -216,9 +216,19 @@ class TenantResource extends Resource
                 IconColumn::make('trial')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record) => $record->onTrial()),
+                TextColumn::make('subscriptions.trial_ends_at')
+                    ->label('Trial Ends')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('customer')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
+                TextColumn::make('subscriptions.ends_at')
+                    ->label('Subscription Ends')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('last_login_at')
                     ->label('Last Login')
                     ->dateTime()

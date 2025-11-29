@@ -10,6 +10,7 @@ use App\Models\Schedule as ScheduleModel;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
+use DateTimeInterface;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
@@ -149,7 +150,7 @@ class Schedule
                     ->helperText('The date the recurring schedule will end.')
                     ->hidden(fn (Get $get): bool => ScheduleEndType::from($get('end_type')) !== ScheduleEndType::ON)
                     ->required(fn (Get $get): bool => ScheduleEndType::from($get('end_type')) === ScheduleEndType::ON)
-                    ->dehydrateStateUsing(function ($state, Get $get): Carbon {
+                    ->dehydrateStateUsing(function (DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, Get $get): Carbon {
                         $start = Carbon::parse($get('start'));
                         $until = Carbon::parse($state);
 

@@ -78,7 +78,7 @@ class DocumentResource extends BaseResource
                     ->required()
                     ->relationship('author', 'name')
                     ->columnSpanFull()
-                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
             ]);
     }
 

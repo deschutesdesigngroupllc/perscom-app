@@ -136,21 +136,21 @@ class UserResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => PositionResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => PositionResource::form($form)),
                                 Select::make('specialty_id')
                                     ->helperText('The user\'s current specialty.')
                                     ->columnSpanFull()
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => SpecialtyResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => SpecialtyResource::form($form)),
                                 Select::make('unit_id')
                                     ->helperText('The user\'s current unit.')
                                     ->columnSpanFull()
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UnitResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UnitResource::form($form)),
                             ]),
                         Tab::make('Custom Fields')
                             ->hiddenOn('create')
@@ -223,7 +223,7 @@ class UserResource extends BaseResource
                                     ->columnSpanFull()
                                     ->relationship(name: 'rank', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => RankResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => RankResource::form($form)),
                             ]),
                         Tab::make('Status')
                             ->badge(fn (?User $record) => $record?->status?->name)
@@ -235,7 +235,7 @@ class UserResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => StatusResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                                 Toggle::make('approved')
                                     ->helperText('Turn off to disable account access.')
                                     ->required()

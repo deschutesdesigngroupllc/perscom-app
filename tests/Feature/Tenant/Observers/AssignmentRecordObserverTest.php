@@ -22,7 +22,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
 
         $assignment = AssignmentRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewAssignmentRecord::class, function (NewAssignmentRecord $notification, $channels) use ($assignment): true {
+        Notification::assertSentTo($user, NewAssignmentRecord::class, function (NewAssignmentRecord $notification, iterable $channels) use ($assignment): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);

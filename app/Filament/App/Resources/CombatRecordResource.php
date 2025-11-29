@@ -73,7 +73,7 @@ class CombatRecordResource extends BaseResource
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
                                     ->columnSpanFull()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 RichEditor::make('text')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->required()
@@ -89,7 +89,7 @@ class CombatRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
                                 Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -97,7 +97,7 @@ class CombatRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')

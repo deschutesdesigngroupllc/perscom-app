@@ -18,7 +18,7 @@ class TaskAssignmentObserverTest extends TenantTestCase
 
         $assignment = TaskAssignment::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewTaskAssignment::class, function (NewTaskAssignment $notification, $channels) use ($assignment): true {
+        Notification::assertSentTo($user, NewTaskAssignment::class, function (NewTaskAssignment $notification, iterable $channels) use ($assignment): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);

@@ -22,8 +22,8 @@ return [
      *  This can be useful to monitor the performance of your application.
      */
     'cache_bypass_header' => [
-        'name' => env('CACHE_BYPASS_HEADER_NAME', null),
-        'value' => env('CACHE_BYPASS_HEADER_VALUE', null),
+        'name' => env('CACHE_BYPASS_HEADER_NAME'),
+        'value' => env('CACHE_BYPASS_HEADER_VALUE'),
     ],
 
     /*

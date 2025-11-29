@@ -227,7 +227,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getResourceTabBadgeCount(): ?int
     {
         return collect(FilamentShield::getResources())
-            ->map(fn ($resource): int => count(static::getResourcePermissionOptions($resource)))
+            ->map(fn (array $resource): int => count(static::getResourcePermissionOptions($resource)))
             ->sum();
     }
 

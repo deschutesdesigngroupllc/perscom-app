@@ -75,7 +75,7 @@ class ApiCacheService
             'Fastly-Soft-Purge' => 1,
         ];
 
-        $responses = Http::pool(fn (Pool $pool) => $tags->map(fn ($tag) => $pool
+        $responses = Http::pool(fn (Pool $pool) => $tags->map(fn (string $tag) => $pool
             ->baseUrl($url)
             ->withHeaders($headers)
             ->post($tag)

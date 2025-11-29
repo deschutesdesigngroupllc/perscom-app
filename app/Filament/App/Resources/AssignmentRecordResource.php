@@ -81,7 +81,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('type')
                                     ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the user\'s list of secondary assignments.')
                                     ->required()
@@ -102,7 +102,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
                                 Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -110,7 +110,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
                         Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
@@ -125,21 +125,21 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => PositionResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => PositionResource::form($form)),
                                 Select::make('specialty_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned the specialty when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => SpecialtyResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => SpecialtyResource::form($form)),
                                 Select::make('unit_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned to the unit when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UnitResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UnitResource::form($form)),
                                 Select::make('unit_slot_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::MANUAL)
                                     ->required(fn (): bool => $rosterMode === RosterMode::MANUAL)
@@ -153,7 +153,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => StatusResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                             ]),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')

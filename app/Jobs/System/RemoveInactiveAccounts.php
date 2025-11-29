@@ -6,6 +6,7 @@ namespace App\Jobs\System;
 
 use App\Models\Tenant;
 use App\Notifications\System\DeleteAccount;
+use App\Notifications\System\DeleteAccountOneDay;
 use App\Notifications\System\DeleteAccountOneMonth;
 use App\Notifications\System\DeleteAccountOneWeek;
 use Illuminate\Bus\Queueable;
@@ -32,21 +33,27 @@ class RemoveInactiveAccounts implements ShouldQueue
     {
         Tenant::all()->each(function (Tenant $tenant): void {
             $dateToCompare = match (true) {
+                $tenant->subscription()?->ends_at !== null => $tenant->subscription()->ends_at,
                 $tenant->last_login_at !== null => $tenant->last_login_at,
                 default => $tenant->created_at
             };
 
-            if ($dateToCompare?->isSameDay(now()->subMonths(5))) {
+            if ($dateToCompare?->isSameDay(now()->subMonth())) {
                 $tenant->notify(new DeleteAccountOneMonth);
                 Log::debug('Inactive account one month deletion warning sent', ['tenant' => $tenant]);
             }
 
-            if ($dateToCompare?->isSameDay(now()->subMonths(6)->addWeek())) {
+            if ($dateToCompare?->isSameDay(now()->subMonths(2)->addWeek())) {
                 $tenant->notify(new DeleteAccountOneWeek);
                 Log::debug('Inactive account one week deletion warning sent', ['tenant' => $tenant]);
             }
 
-            if ($dateToCompare?->isSameDay(now()->subMonths(6))) {
+            if ($dateToCompare?->isSameDay(now()->subMonths(2)->addDay())) {
+                $tenant->notify(new DeleteAccountOneDay);
+                Log::debug('Inactive account one day deletion warning sent', ['tenant' => $tenant]);
+            }
+
+            if ($dateToCompare?->isSameDay(now()->subMonths(2))) {
                 $tenant->notifyNow(new DeleteAccount);
                 $tenant->delete();
                 Log::debug('Inactive account deleted', ['tenant' => $tenant]);

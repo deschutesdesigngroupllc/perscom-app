@@ -71,7 +71,7 @@ class Domain extends BaseDomain
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => optional($this->host, static fn ($host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
+            get: fn (): string => optional($this->host, static fn (string $host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
         )->shouldCache();
     }
 

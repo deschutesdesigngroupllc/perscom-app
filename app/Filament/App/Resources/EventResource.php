@@ -21,6 +21,7 @@ use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
+use DateTimeInterface;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -87,7 +88,7 @@ class EventResource extends BaseResource
                                     ->required()
                                     ->relationship(name: 'calendar', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => CalendarResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => CalendarResource::form($form)),
                                 Select::make('author_id')
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->preload()
@@ -95,7 +96,7 @@ class EventResource extends BaseResource
                                     ->required()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 DateTimePicker::make('starts')
                                     ->helperText('The date and time the event starts.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -107,7 +108,7 @@ class EventResource extends BaseResource
                                     ->default(now()->addHour()->startOfHour())
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Set $set, Get $get, $state, $component): void {
+                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, $component): void {
                                         $date = Carbon::parse($state)
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
@@ -136,7 +137,7 @@ class EventResource extends BaseResource
                                     ->afterOrEqual('starts')
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Set $set, Get $get, $state, $component): void {
+                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, $component): void {
                                         $start = Carbon::parse($get('starts'))
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));

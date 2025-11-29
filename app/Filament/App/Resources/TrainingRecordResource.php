@@ -73,7 +73,7 @@ class TrainingRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('instructor_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -81,7 +81,7 @@ class TrainingRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'instructor', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('credentials.name')
                                     ->columnSpanFull()
                                     ->required()
@@ -90,7 +90,7 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'credentials', titleAttribute: 'name')
                                     ->multiple()
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => CredentialResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => CredentialResource::form($form)),
                                 RichEditor::make('text')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Information about the record.')
@@ -105,7 +105,7 @@ class TrainingRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
                                 Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -113,7 +113,7 @@ class TrainingRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')

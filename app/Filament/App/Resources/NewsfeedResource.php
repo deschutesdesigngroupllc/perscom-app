@@ -73,7 +73,7 @@ class NewsfeedResource extends BaseResource
                     ->preload()
                     ->options(User::query()->orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
-                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
             ]);
     }
 
