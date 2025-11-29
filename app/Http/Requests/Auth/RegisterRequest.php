@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\Registration;
 use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -14,7 +15,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email'), Rule::unique(Registration::class, 'email')],
             'privacy' => ['required', 'boolean'],
             'token' => ['required', 'string'],
         ];
