@@ -49,6 +49,8 @@ class ApiPermissionService
 
         /** @var JWT $jwt */
         $jwt = Auth::guard('jwt');
+
+        /** @var array $scopes */
         $scopes = rescue(fn () => Arr::wrap($jwt->getPayload()->get('scopes')), [], false);
 
         if (in_array('*', $scopes)) {
