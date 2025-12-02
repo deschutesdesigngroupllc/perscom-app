@@ -27,13 +27,11 @@ class RegistrationsRelationManager extends RelationManager
             ->emptyStateDescription('There are no users registered.')
             ->description('The users registered for the event.')
             ->columns([
-                TextColumn::make('registration.user.name')
-                    ->sortable(),
+                TextColumn::make('registration.user.name'),
                 TextColumn::make('registration.status')
                     ->label('Status')
                     ->badge(),
                 TextColumn::make('registration.created_at')
-                    ->sortable()
                     ->label('Registered')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
