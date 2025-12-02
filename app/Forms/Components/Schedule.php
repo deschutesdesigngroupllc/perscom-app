@@ -10,6 +10,8 @@ use App\Models\Schedule as ScheduleModel;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
+use Carbon\Month;
+use Carbon\WeekDay;
 use DateTimeInterface;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -46,6 +48,7 @@ class Schedule
         }
 
         return Section::make()
+            ->columnSpanFull()
             ->relationship('schedule')
             ->columns(3)
             ->schema([
@@ -148,9 +151,9 @@ class Schedule
                     ->default(today()->addMonth())
                     ->label('End Date')
                     ->helperText('The date the recurring schedule will end.')
-                    ->hidden(fn (Get $get): bool => ScheduleEndType::from($get('end_type')) !== ScheduleEndType::ON)
-                    ->required(fn (Get $get): bool => ScheduleEndType::from($get('end_type')) === ScheduleEndType::ON)
-                    ->dehydrateStateUsing(function (DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, Get $get): Carbon {
+                    ->hidden(fn (Get $get): bool => $get('end_type') !== ScheduleEndType::ON)
+                    ->required(fn (Get $get): bool => $get('end_type') === ScheduleEndType::ON)
+                    ->dehydrateStateUsing(function (DateTimeInterface|WeekDay|Month|string|int|float|null $state, Get $get): Carbon {
                         $start = Carbon::parse($get('start'));
                         $until = Carbon::parse($state);
 
