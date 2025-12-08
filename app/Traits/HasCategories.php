@@ -11,6 +11,8 @@ use App\Models\Competency;
 use App\Models\CompetencyCategory;
 use App\Models\Document;
 use App\Models\DocumentCategory;
+use App\Models\Event;
+use App\Models\EventCategory;
 use App\Models\Form;
 use App\Models\FormCategory;
 use App\Models\Position;
@@ -41,6 +43,7 @@ trait HasCategories
             Award::class => AwardCategory::class,
             Competency::class => CompetencyCategory::class,
             Document::class => DocumentCategory::class,
+            Event::class => EventCategory::class,
             Form::class => FormCategory::class,
             Position::class => PositionCategory::class,
             Qualification::class => QualificationCategory::class,
@@ -62,6 +65,7 @@ trait HasCategories
             Award::class => AwardCategory::class,
             Competency::class => CompetencyCategory::class,
             Document::class => DocumentCategory::class,
+            Event::class => EventCategory::class,
             Form::class => FormCategory::class,
             Position::class => PositionCategory::class,
             Qualification::class => QualificationCategory::class,

@@ -81,7 +81,10 @@ class CompetencyResource extends BaseResource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('categories.name')
-                    ->listWithLineBreaks(),
+                    ->placeholder('No Categories')
+                    ->sortable()
+                    ->color('gray')
+                    ->badge(),
             ])
             ->filters([
                 SelectFilter::make('categories.name')

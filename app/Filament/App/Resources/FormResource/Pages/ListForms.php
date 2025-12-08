@@ -44,8 +44,7 @@ class ListForms extends ListRecords
                 ->label($category->name)
                 ->icon('heroicon-o-tag')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))
-                ->favorite()
-                ->icon('heroicon-o-pencil-square'),
+                ->favorite(),
         ])->toArray());
     }
 

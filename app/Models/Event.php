@@ -10,6 +10,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
+use App\Traits\HasCategories;
 use App\Traits\HasComments;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
@@ -52,6 +53,9 @@ use Illuminate\Support\Collection;
  * @property-read int|null $attachments_count
  * @property-read User|null $author
  * @property-read Calendar|null $calendar
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read EventCategory|null $categoryPivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read bool $has_passed
@@ -103,6 +107,7 @@ class Event extends Model implements HasLabel
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
+    use HasCategories;
     use HasComments;
     use HasFactory;
     use HasImages;

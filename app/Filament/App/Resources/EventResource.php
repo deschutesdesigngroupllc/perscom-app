@@ -31,6 +31,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -51,6 +52,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +100,22 @@ class EventResource extends BaseResource
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                Select::make('categories')
+                                    ->columnSpanFull()
+                                    ->label('Category')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required(),
+                                        Hidden::make('resource')
+                                            ->default(static::$model),
+                                    ])
+                                    ->helperText('The category the event belongs to.')
+                                    ->nullable()
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->maxItems(1)
+                                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                                 DateTimePicker::make('starts')
                                     ->helperText('The date and time the event starts.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -379,10 +397,16 @@ class EventResource extends BaseResource
                 TextColumn::make('calendar.name')
                     ->badge()
                     ->color(fn (Event $record): array => Color::generateV3Palette($record->calendar?->color)),
+                TextColumn::make('categories.name')
+                    ->placeholder('No Categories')
+                    ->sortable()
+                    ->color('gray')
+                    ->badge(),
                 TextColumn::make('author.name')
                     ->label('Organizer')
                     ->sortable(),
                 IconColumn::make('all_day')
+                    ->label('All Day')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable(),
@@ -393,7 +417,7 @@ class EventResource extends BaseResource
                 true => 'border-s-2! border-s-red-600!',
                 default => null,
             })
-            ->groups(['all_day', 'repeats'])
+            ->groups(['all_day', 'calendar.name', 'repeats'])
             ->filters([
                 TernaryFilter::make('all_day'),
                 SelectFilter::make('calendar')
@@ -419,7 +443,8 @@ class EventResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultGroup('calendar.name');
     }
 
     public static function getRelations(): array

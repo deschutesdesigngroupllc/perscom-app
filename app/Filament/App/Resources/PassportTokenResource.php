@@ -116,6 +116,7 @@ class PassportTokenResource extends BaseResource
                     ->expandableLimitedList()
                     ->sortable(),
                 TextColumn::make('expires_at')
+                    ->label('Expires')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
