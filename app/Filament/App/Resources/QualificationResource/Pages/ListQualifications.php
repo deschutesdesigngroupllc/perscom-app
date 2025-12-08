@@ -18,13 +18,14 @@ class ListQualifications extends ListRecords
 
     protected static string $resource = QualificationResource::class;
 
-    protected ?string $subheading = 'Qualifications establish what a user is allowed to do based on performance.';
+    protected ?string $subheading = 'Qualifications establish what a user is allowed to do based on performance and/or training.';
 
     public function getPresetViews(): array
     {
         return Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->favorite()
+                ->icon('heroicon-o-tag')
                 ->label($category->name)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id))),
         ])->toArray();

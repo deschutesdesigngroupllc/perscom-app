@@ -18,13 +18,14 @@ class ListRanks extends ListRecords
 
     protected static string $resource = RankResource::class;
 
-    protected ?string $subheading = 'Ranks provide a vertical organization hierarchy that establishes authority within an organization.';
+    protected ?string $subheading = 'Ranks provide a vertical hierarchy that establishes authority within an organization.';
 
     public function getPresetViews(): array
     {
         return Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->favorite()
+                ->icon('heroicon-o-tag')
                 ->label($category->name)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id))),
         ])->toArray();

@@ -23,6 +23,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -50,13 +51,8 @@ class DocumentResource extends BaseResource
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the document.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
                 Select::make('categories')
+                    ->label('Category')
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required(),
@@ -68,7 +64,14 @@ class DocumentResource extends BaseResource
                     ->preload()
                     ->searchable()
                     ->multiple()
+                    ->maxItems(1)
                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the document.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
                 RichEditor::make('content')
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
@@ -123,6 +126,11 @@ class DocumentResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Document $record) => $record->categoryPivot?->category?->name),
+            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -134,7 +142,8 @@ class DocumentResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultGroup('categoryPivot.category_id');
     }
 
     /**

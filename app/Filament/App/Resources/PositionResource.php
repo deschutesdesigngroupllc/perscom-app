@@ -22,6 +22,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -47,13 +48,8 @@ class PositionResource extends BaseResource
                     ->helperText('The name of the position.')
                     ->required()
                     ->maxLength(255),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the position.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
                 Select::make('categories')
+                    ->label('Category')
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required(),
@@ -65,7 +61,14 @@ class PositionResource extends BaseResource
                     ->preload()
                     ->searchable()
                     ->multiple()
+                    ->maxItems(1)
                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the position.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -94,6 +97,11 @@ class PositionResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Position $record) => $record->categoryPivot?->category?->name),
+            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -106,6 +114,7 @@ class PositionResource extends BaseResource
                     DeleteBulkAction::make(),
                 ]),
             ])
+            ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
     }

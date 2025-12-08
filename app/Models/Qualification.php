@@ -31,6 +31,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
+ * @property-read QualificationCategory|null $categoryPivot
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count

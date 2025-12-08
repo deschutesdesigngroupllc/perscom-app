@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Category $category
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
@@ -44,4 +46,14 @@ class DocumentCategory extends Pivot
         'created_at',
         'updated_at',
     ];
+
+    public function document(): BelongsTo
+    {
+        return $this->belongsTo(Document::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

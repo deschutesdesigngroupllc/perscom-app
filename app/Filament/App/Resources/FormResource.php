@@ -10,6 +10,7 @@ use App\Filament\App\Resources\FormResource\Pages\ListForms;
 use App\Filament\App\Resources\FormResource\RelationManagers\FieldsRelationManager;
 use App\Filament\Exports\FormExporter;
 use App\Forms\Components\ModelNotification;
+use App\Models\Form;
 use App\Models\Form as FormModel;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -17,6 +18,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -32,6 +34,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -79,6 +82,22 @@ class FormResource extends BaseResource
                                     ->regex('/^[a-zA-Z0-9-]+$/')
                                     ->required()
                                     ->maxLength(255),
+                                Select::make('categories')
+                                    ->columnSpanFull()
+                                    ->label('Category')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required(),
+                                        Hidden::make('resource')
+                                            ->default(static::$model),
+                                    ])
+                                    ->helperText('The category the form belongs to.')
+                                    ->nullable()
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->maxItems(1)
+                                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the form.')
@@ -152,7 +171,9 @@ class FormResource extends BaseResource
                     ->sortable(),
             ])
             ->groups([
-                Group::make('is_public')->label('Public'),
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
             ])
             ->filters([
                 TernaryFilter::make('is_public')
@@ -169,7 +190,8 @@ class FormResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultGroup('categoryPivot.category_id');
     }
 
     public static function getRelations(): array

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Carbon;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Category $category
+ * @property-read Form $form
  *
  * @method static Builder<static>|FormCategory newModelQuery()
  * @method static Builder<static>|FormCategory newQuery()
@@ -39,4 +42,14 @@ class FormCategory extends Pivot
         'created_at',
         'updated_at',
     ];
+
+    public function form(): BelongsTo
+    {
+        return $this->belongsTo(Form::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

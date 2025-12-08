@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\Categories\Schemas;
 
 use App\Models\Award;
+use App\Models\Competency;
 use App\Models\Document;
+use App\Models\Form;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\Rank;
@@ -37,7 +39,9 @@ class CategoryForm
                     ->required()
                     ->options([
                         Award::class => 'Awards',
+                        Competency::class => 'Competencies',
                         Document::class => 'Documents',
+                        Form::class => 'Forms',
                         Position::class => 'Positions',
                         Qualification::class => 'Qualifications',
                         Rank::class => 'Ranks',

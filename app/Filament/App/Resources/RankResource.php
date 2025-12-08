@@ -27,6 +27,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -66,13 +67,8 @@ class RankResource extends BaseResource
                                     ->helperText('The paygrade of the rank.')
                                     ->nullable()
                                     ->maxLength(255),
-                                RichEditor::make('description')
-                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('A brief description of the rank.')
-                                    ->nullable()
-                                    ->maxLength(65535)
-                                    ->columnSpanFull(),
                                 Select::make('categories')
+                                    ->label('Category')
                                     ->createOptionForm([
                                         TextInput::make('name')
                                             ->required(),
@@ -84,7 +80,14 @@ class RankResource extends BaseResource
                                     ->preload()
                                     ->searchable()
                                     ->multiple()
+                                    ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('A brief description of the rank.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
@@ -144,6 +147,11 @@ class RankResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Rank $record) => $record->categoryPivot?->category?->name),
+            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -156,6 +164,7 @@ class RankResource extends BaseResource
                     DeleteBulkAction::make(),
                 ]),
             ])
+            ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
     }

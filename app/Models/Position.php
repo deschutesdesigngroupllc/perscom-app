@@ -31,6 +31,9 @@ use Spatie\EloquentSortable\Sortable;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read Collection<int, Category> $categories
+ * @property-read int|null $categories_count
+ * @property-read PositionCategory|null $categoryPivot
  * @property-read string $label
  * @property-read Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count

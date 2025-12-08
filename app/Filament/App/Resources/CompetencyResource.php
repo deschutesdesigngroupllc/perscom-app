@@ -8,7 +8,6 @@ use App\Filament\App\Resources\CompetencyResource\Pages\CreateCompetency;
 use App\Filament\App\Resources\CompetencyResource\Pages\EditCompetency;
 use App\Filament\App\Resources\CompetencyResource\Pages\ListCompetencies;
 use App\Filament\Exports\CompetencyExporter;
-use App\Models\Category;
 use App\Models\Competency;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -24,7 +23,9 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class CompetencyResource extends BaseResource
@@ -48,22 +49,20 @@ class CompetencyResource extends BaseResource
                     ->maxLength(255)
                     ->columnSpanFull(),
                 Select::make('categories')
+                    ->label('Category')
                     ->createOptionForm([
                         TextInput::make('name')
                             ->required(),
                         Hidden::make('resource')
                             ->default(static::$model),
                     ])
-                    ->helperText('An optional category for the competency to assist with organization.')
-                    ->columnSpanFull()
-                    ->relationship('categories', 'name')
+                    ->helperText('The category the competency belongs to.')
+                    ->nullable()
                     ->preload()
                     ->searchable()
                     ->multiple()
-                    ->createOptionForm(fn (Schema $schema): Schema => CategoryResource::form($schema))
-                    ->createOptionUsing(fn (array $data) => Category::create(array_merge($data, [
-                        'resource' => Competency::class,
-                    ]))->getKey()),
+                    ->maxItems(1)
+                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                 RichEditor::make('description')
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->helperText('A brief description of the competency.')
@@ -91,7 +90,11 @@ class CompetencyResource extends BaseResource
                     ->preload()
                     ->multiple(),
             ])
-            ->groups(['categories.name'])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Competency $record) => $record->categoryPivot?->category?->name),
+            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),
@@ -103,7 +106,8 @@ class CompetencyResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultGroup('categoryPivot.category_id');
     }
 
     /**

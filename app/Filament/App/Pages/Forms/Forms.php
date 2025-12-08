@@ -14,6 +14,7 @@ use Filament\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 
 class Forms extends Page implements HasForms, HasTable
@@ -47,12 +48,20 @@ class Forms extends Page implements HasForms, HasTable
             ->recordUrl(fn (?Form $record): string => Submit::getUrl([
                 'record' => $record,
             ]))
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->collapsible()
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
+            ])
+            ->groupingSettingsHidden()
             ->recordActions([
                 Action::make('open')
                     ->icon('heroicon-o-pencil')
                     ->url(fn (?Form $record): string => Submit::getUrl([
                         'record' => $record,
                     ])),
-            ]);
+            ])
+            ->defaultGroup('categoryPivot.category_id');
     }
 }

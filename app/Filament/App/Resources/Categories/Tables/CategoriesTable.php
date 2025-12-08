@@ -6,7 +6,9 @@ namespace App\Filament\App\Resources\Categories\Tables;
 
 use App\Models\Award;
 use App\Models\Category;
+use App\Models\Competency;
 use App\Models\Document;
+use App\Models\Form;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\Rank;
@@ -36,7 +38,9 @@ class CategoriesTable
                 SelectFilter::make('resource')
                     ->options([
                         Award::class => 'Awards',
+                        Competency::class => 'Competencies',
                         Document::class => 'Documents',
+                        Form::class => 'Forms',
                         Position::class => 'Positions',
                         Qualification::class => 'Qualifications',
                         Rank::class => 'Ranks',
