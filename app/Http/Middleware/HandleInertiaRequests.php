@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
-    protected $rootView = 'landing.app';
+    protected $rootView = 'components.layouts.landing';
 
     public function handle(Request $request, Closure $next): Response
     {

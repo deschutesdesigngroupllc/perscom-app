@@ -1,3 +1,3 @@
-<x-widgets.layout>
+<x-layouts.widget>
   @livewire('widgets.ranks')
-</x-widgets.layout>
+</x-layouts.widget>
