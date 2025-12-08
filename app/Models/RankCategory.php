@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasRank;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Category $category
  * @property-read Rank $rank
  *
  * @method static Builder<static>|RankCategory newModelQuery()
@@ -38,9 +40,20 @@ class RankCategory extends Pivot
     protected $table = 'ranks_categories';
 
     protected $fillable = [
+        'rank_id',
         'category_id',
         'order',
         'created_at',
         'updated_at',
     ];
+
+    public function rank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

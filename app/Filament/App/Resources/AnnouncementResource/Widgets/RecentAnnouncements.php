@@ -27,33 +27,26 @@ class RecentAnnouncements extends BaseWidget
                 'sm:-mx-6' => true,
                 '-mx-4' => true,
             ])
-            ->query(
-                Announcement::query()->where('global', false)
-                    ->latest()
-            )
+            ->query(Announcement::query()->latest())
             ->recordAction('view')
             ->columns([
                 Stack::make([
                     TextColumn::make('title')
-                        ->color(fn (?Announcement $record): array => Color::generateV3Palette($record->color))
                         ->weight(FontWeight::Bold),
                     TextColumn::make('content')
                         ->html()
                         ->wrap(),
+                    TextColumn::make('created_at')
+                        ->toggleable(false)
+                        ->color(Color::Gray),
                 ]),
-                TextColumn::make('created_at')
-                    ->toggleable(false)
-                    ->color(Color::Gray),
             ])
             ->recordActions([
                 ViewAction::make()
                     ->icon(null)
                     ->hiddenLabel()
+                    ->modalHeading(fn (Announcement $record): string => $record->title)
                     ->schema([
-                        TextEntry::make('title')
-                            ->hiddenLabel()
-                            ->color(fn (?Announcement $record): array => Color::generateV3Palette($record->color))
-                            ->weight(FontWeight::Bold),
                         TextEntry::make('content')
                             ->hiddenLabel()
                             ->html(),

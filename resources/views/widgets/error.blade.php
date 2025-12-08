@@ -1,6 +1,6 @@
 @props(['message'])
 
-<x-widgets.layout>
+<x-layouts.widget>
   <div class="rounded-md bg-red-50 p-4">
     <div class="flex">
       <div class="shrink-0">
@@ -20,4 +20,4 @@
       </div>
     </div>
   </div>
-</x-widgets.layout>
+</x-layouts.widget>

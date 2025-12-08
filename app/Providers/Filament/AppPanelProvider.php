@@ -11,6 +11,7 @@ use App\Filament\App\Pages\Auth\Register;
 use App\Filament\App\Pages\Auth\RequestPasswordReset;
 use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
+use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
@@ -114,6 +115,7 @@ class AppPanelProvider extends PanelProvider
                 AccountWidget::class,
                 UsersOverview::class,
                 RecentAnnouncements::class,
+                RecentNews::class,
             ])
             ->middleware([
                 InitializeTenancyBySubdomain::class,

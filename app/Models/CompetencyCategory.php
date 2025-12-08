@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Carbon;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read Category|null $category
+ * @property-read Competency|null $competency
  *
  * @method static Builder<static>|CompetencyCategory newModelQuery()
  * @method static Builder<static>|CompetencyCategory newQuery()
@@ -39,4 +42,14 @@ class CompetencyCategory extends Pivot
         'created_at',
         'updated_at',
     ];
+
+    public function competency(): BelongsTo
+    {
+        return $this->belongsTo(Competency::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

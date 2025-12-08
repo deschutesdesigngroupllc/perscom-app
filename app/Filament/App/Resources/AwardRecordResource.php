@@ -180,8 +180,10 @@ class AwardRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('award.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -192,6 +194,7 @@ class AwardRecordResource extends BaseResource
                             ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

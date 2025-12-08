@@ -15,6 +15,7 @@ use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -41,6 +42,7 @@ class Index extends Component implements HasActions, HasForms, HasTable
                     TextColumn::make('name')
                         ->weight(FontWeight::Bold),
                     TextColumn::make('description')
+                        ->placeholder('No Description')
                         ->html(),
                 ]),
             ])
@@ -51,6 +53,14 @@ class Index extends Component implements HasActions, HasForms, HasTable
                     ->action(function (Form $record): void {
                         $this->dispatch('iframe:navigate', path: 'forms/'.$record->getKey());
                     }),
-            ]);
+            ])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->titlePrefixedWithLabel(false)
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
+            ])
+            ->groupingSettingsHidden()
+            ->defaultGroup('categoryPivot.category_id');
     }
 }

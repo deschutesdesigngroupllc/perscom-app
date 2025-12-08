@@ -38,6 +38,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $awards_count
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
+ * @property-read AwardCategory|null $categoryPivot
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count

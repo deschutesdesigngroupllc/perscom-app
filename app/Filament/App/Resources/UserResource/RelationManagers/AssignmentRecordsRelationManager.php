@@ -16,6 +16,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class AssignmentRecordsRelationManager extends RelationManager
@@ -39,16 +40,21 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ->badge()
                     ->sortable(),
                 TextColumn::make('position.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable(),
                 TextColumn::make('specialty.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable(),
                 TextColumn::make('unit.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable(),
                 TextColumn::make('status.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->badge()
                     ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
@@ -58,6 +64,7 @@ class AssignmentRecordsRelationManager extends RelationManager
                             ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

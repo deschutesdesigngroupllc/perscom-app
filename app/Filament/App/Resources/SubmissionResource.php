@@ -35,6 +35,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -91,7 +92,7 @@ class SubmissionResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? 'Status')
+                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
@@ -124,17 +125,19 @@ class SubmissionResource extends BaseResource
             ->emptyStateDescription('There are no submissions to view. Create one to get started.')
             ->columns([
                 TextColumn::make('form.name')
-                    ->weight(fn (Submission $record): ?\Filament\Support\Enums\FontWeight => $record->read_at ? null : FontWeight::Bold)
-                    ->icon(fn (Submission $record): ?\Filament\Support\Icons\Heroicon => $record->read_at ? null : Heroicon::OutlinedPlus)
-                    ->iconPosition(IconPosition::After)
+                    ->weight(fn (Submission $record): ?FontWeight => $record->read_at ? null : FontWeight::Bold)
+                    ->icon(fn (Submission $record): ?Heroicon => $record->read_at ? null : Heroicon::OutlinedPlus)
+                    ->iconPosition(IconPosition::Before)
                     ->searchable(),
                 TextColumn::make('user.name')
                     ->searchable(),
                 TextColumn::make('status.name')
+                    ->placeholder('No Status')
                     ->badge()
                     ->color(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 TextColumn::make('read_at')
+                    ->placeholder('Unread')
                     ->label('Read')
                     ->dateTime()
                     ->sortable(),
@@ -143,7 +146,11 @@ class SubmissionResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name'])
+            ->groups([
+                Group::make('form.categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Submission $record) => $record->form?->categoryPivot?->category?->name),
+            ])
             ->filters([
                 TernaryFilter::make('read_at')
                     ->label('Read')
@@ -165,7 +172,8 @@ class SubmissionResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultGroup('form.categoryPivot.category_id');
     }
 
     public static function getRelations(): array

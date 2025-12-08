@@ -1,3 +1,3 @@
-<x-widgets.layout>
+<x-layouts.widget>
   @livewire('widgets.positions')
-</x-widgets.layout>
+</x-layouts.widget>

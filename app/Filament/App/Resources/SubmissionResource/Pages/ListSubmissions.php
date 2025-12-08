@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
+use App\Models\Form;
 use App\Models\Submission;
 use Archilex\AdvancedTables\AdvancedTables;
 use Archilex\AdvancedTables\Components\PresetView;
@@ -29,7 +30,7 @@ class ListSubmissions extends ListRecords
             ->unread()
             ->count();
 
-        return [
+        $views = [
             PresetView::make('read')
                 ->label('Read')
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->read())
@@ -43,6 +44,14 @@ class ListSubmissions extends ListRecords
                 ->favorite()
                 ->icon('heroicon-o-envelope-open'),
         ];
+
+        return array_merge($views, Form::all()->mapWithKeys(fn (Form $form): array => [
+            $form->id => PresetView::make()
+                ->label($form->name)
+                ->modifyQueryUsing(fn (Submission|Builder $query) => $query->whereBelongsTo($form))
+                ->favorite()
+                ->icon('heroicon-o-pencil-square'),
+        ])->toArray());
     }
 
     /**

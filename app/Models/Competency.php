@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
+ * @property-read CompetencyCategory|null $categoryPivot
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read TrainingRecordCompetency|null $pivot

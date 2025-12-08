@@ -68,13 +68,12 @@ class StatusResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 IconColumn::make('icon')
+                    ->placeholder('No Icon')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
-            ])
-            ->filters([
             ])
             ->recordActions([
                 EditAction::make(),

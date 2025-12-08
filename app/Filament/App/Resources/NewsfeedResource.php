@@ -23,7 +23,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
@@ -83,17 +87,19 @@ class NewsfeedResource extends BaseResource
         return $table
             ->emptyStateDescription('There are no newsfeed items to view. Perform an action to get started.')
             ->columns([
-                TextColumn::make('headline'),
-                TextColumn::make('text')
-                    ->html()
-                    ->wrap()
-                    ->formatStateUsing(fn ($state) => Str::limit($state)),
-                TextColumn::make('causer.name')
-                    ->label('Author'),
-                TextColumn::make('created_at')
-                    ->sortable(),
-                TextColumn::make('updated_at')
-                    ->sortable(),
+                Split::make([
+                    Stack::make([
+                        TextColumn::make('headline')
+                            ->weight(FontWeight::Bold),
+                        TextColumn::make('text')
+                            ->html()
+                            ->wrap()
+                            ->formatStateUsing(fn ($state) => Str::limit($state, 250)),
+                        TextColumn::make('created_at')
+                            ->weight(FontWeight::Light)
+                            ->color(Color::Gray),
+                    ]),
+                ]),
             ])
             ->recordActions([
                 ViewAction::make(),

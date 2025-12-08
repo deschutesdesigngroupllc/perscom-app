@@ -75,8 +75,6 @@ class CalendarResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->filters([
-            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),

@@ -97,8 +97,6 @@ class BannerResource extends Resource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->filters([
-            ])
             ->recordActions([
                 EditAction::make(),
                 DeleteAction::make(),

@@ -43,6 +43,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $awards_count
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
+ * @property-read DocumentCategory|null $categoryPivot
  * @property-read Collection<int, CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string $label

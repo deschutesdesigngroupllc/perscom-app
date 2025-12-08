@@ -1,3 +1,3 @@
-<x-widgets.layout>
+<x-layouts.widget>
   @livewire('widgets.specialties')
-</x-widgets.layout>
+</x-layouts.widget>

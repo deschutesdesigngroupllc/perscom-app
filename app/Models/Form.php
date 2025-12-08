@@ -35,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
+ * @property-read FormCategory|null $categoryPivot
  * @property-read Collection<int, Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label

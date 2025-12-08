@@ -15,12 +15,16 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use UnitEnum;
@@ -44,6 +48,21 @@ class PositionResource extends BaseResource
                     ->helperText('The name of the position.')
                     ->required()
                     ->maxLength(255),
+                Select::make('categories')
+                    ->label('Category')
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required(),
+                        Hidden::make('resource')
+                            ->default(static::$model),
+                    ])
+                    ->helperText('The category the position belongs to.')
+                    ->nullable()
+                    ->preload()
+                    ->searchable()
+                    ->multiple()
+                    ->maxItems(1)
+                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                 RichEditor::make('description')
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->helperText('A brief description of the position.')
@@ -62,17 +81,26 @@ class PositionResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('categories.name')
+                    ->placeholder('No Categories')
+                    ->sortable()
+                    ->color('gray')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->filters([
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Position $record) => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -86,6 +114,7 @@ class PositionResource extends BaseResource
                     DeleteBulkAction::make(),
                 ]),
             ])
+            ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
     }

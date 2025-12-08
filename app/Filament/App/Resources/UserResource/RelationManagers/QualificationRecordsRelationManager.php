@@ -15,6 +15,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class QualificationRecordsRelationManager extends RelationManager
@@ -37,8 +38,10 @@ class QualificationRecordsRelationManager extends RelationManager
                 TextColumn::make('qualification.name')
                     ->sortable(),
                 ImageColumn::make('qualification.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
@@ -50,6 +53,7 @@ class QualificationRecordsRelationManager extends RelationManager
                             ->html(fn (QualificationRecord $record) => $record->text),
                     ),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(

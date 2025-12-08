@@ -41,6 +41,7 @@ class ModelTags extends Component implements HasActions, HasForms, HasTable
                         ->copyable()
                         ->searchable(),
                     TextColumn::make('description')
+                        ->placeholder('No Description')
                         ->searchable()
                         ->color('gray'),
                 ])->from('sm'),

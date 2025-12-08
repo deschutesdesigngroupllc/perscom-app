@@ -165,6 +165,7 @@ class ServiceRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -175,6 +176,7 @@ class ServiceRecordResource extends BaseResource
                             ->attached(fn (ServiceRecord $record): ServiceRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

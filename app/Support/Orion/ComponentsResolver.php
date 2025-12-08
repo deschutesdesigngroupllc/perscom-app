@@ -42,7 +42,7 @@ class ComponentsResolver extends StandardComponentsResolver
             $versionFormatted = Str::upper($version);
 
             $resourceClass = class_basename($this->resourceModelClass).'Resource';
-            $resourceClassNamespace = "App\\Http\\Resources\\Api\\$versionFormatted\\";
+            $resourceClassNamespace = "App\\Http\\Resources\\Api\\{$versionFormatted}\\";
 
             if (class_exists($resourceClassNamespace.$resourceClass) && $requestedVersion === $versionFormatted) {
                 return $resourceClassNamespace;

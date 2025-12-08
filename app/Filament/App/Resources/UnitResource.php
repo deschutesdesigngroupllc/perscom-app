@@ -120,8 +120,10 @@ class UnitResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('image.path')
+                    ->placeholder('No Image')
                     ->label('Image'),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
@@ -130,6 +132,7 @@ class UnitResource extends BaseResource
                 ToggleColumn::make('hidden')
                     ->sortable(),
                 IconColumn::make('icon')
+                    ->placeholder('No Icon')
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable(),

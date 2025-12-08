@@ -14,6 +14,7 @@ use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class ServiceRecordsRelationManager extends RelationManager
@@ -34,6 +35,7 @@ class ServiceRecordsRelationManager extends RelationManager
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
@@ -45,6 +47,7 @@ class ServiceRecordsRelationManager extends RelationManager
                             ->html(fn (ServiceRecord $record) => $record->text),
                     ),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
