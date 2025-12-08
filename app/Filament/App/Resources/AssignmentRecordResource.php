@@ -30,7 +30,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
@@ -74,6 +73,12 @@ class AssignmentRecordResource extends BaseResource
                             ->columns()
                             ->icon('heroicon-o-information-circle')
                             ->schema([
+                                TextEntry::make('warning')
+                                    ->columnSpanFull()
+                                    ->hiddenLabel()
+                                    ->html()
+                                    ->getStateUsing(fn () => new HtmlString("<span class='font-bold text-gray-950 mr-1'>NOTE:</span><span class='text-gray-600'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
+                                    ->visibleOn('edit'),
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
@@ -116,10 +121,6 @@ class AssignmentRecordResource extends BaseResource
                         Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
-                                Placeholder::make('warning')
-                                    ->hiddenLabel()
-                                    ->content(new HtmlString("<div class='font-bold'>NOTE: Updating an assignment record does not update a user's position, specialty, or unit. To make these changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</div>"))
-                                    ->visibleOn('edit'),
                                 Select::make('position_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned the position when the record is created.')

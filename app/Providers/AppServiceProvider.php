@@ -155,7 +155,8 @@ class AppServiceProvider extends ServiceProvider
                     $field
                         ->label('Created')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->dateTime()
+                        ->since()
+                        ->dateTimeTooltip()
                         ->timezone(function () {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
@@ -174,7 +175,8 @@ class AppServiceProvider extends ServiceProvider
                     $field
                         ->label('Updated')
                         ->toggleable(isToggledHiddenByDefault: true)
-                        ->dateTime()
+                        ->since()
+                        ->dateTimeTooltip()
                         ->timezone(function () {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
@@ -202,7 +204,8 @@ class AppServiceProvider extends ServiceProvider
                     /** @var TextEntry $field */
                     $field
                         ->label('Created')
-                        ->dateTime()
+                        ->since()
+                        ->dateTimeTooltip()
                         ->timezone(function () {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
@@ -220,7 +223,8 @@ class AppServiceProvider extends ServiceProvider
                     /** @var TextEntry $field */
                     $field
                         ->label('Updated')
-                        ->dateTime()
+                        ->since()
+                        ->dateTimeTooltip()
                         ->timezone(function () {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');

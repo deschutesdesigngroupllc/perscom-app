@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Resources\AnnouncementResource\Widgets;
+namespace App\Filament\App\Resources\NewsfeedResource\Widgets;
 
-use App\Models\Announcement;
+use App\Models\Newsfeed;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Colors\Color;
@@ -14,7 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
-class RecentAnnouncements extends BaseWidget
+class RecentNews extends BaseWidget
 {
     protected static ?int $sort = -2;
 
@@ -27,13 +27,13 @@ class RecentAnnouncements extends BaseWidget
                 'sm:-mx-6' => true,
                 '-mx-4' => true,
             ])
-            ->query(Announcement::query()->latest())
+            ->query(Newsfeed::query()->latest())
             ->recordAction('view')
             ->columns([
                 Stack::make([
-                    TextColumn::make('title')
+                    TextColumn::make('headline')
                         ->weight(FontWeight::Bold),
-                    TextColumn::make('content')
+                    TextColumn::make('text')
                         ->html()
                         ->wrap(),
                     TextColumn::make('created_at')
@@ -45,9 +45,9 @@ class RecentAnnouncements extends BaseWidget
                 ViewAction::make()
                     ->icon(null)
                     ->hiddenLabel()
-                    ->modalHeading(fn (Announcement $record): string => $record->title)
+                    ->modalHeading(fn (Newsfeed $record): string => $record->headline)
                     ->schema([
-                        TextEntry::make('content')
+                        TextEntry::make('text')
                             ->hiddenLabel()
                             ->html(),
                     ]),

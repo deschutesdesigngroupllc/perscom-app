@@ -123,6 +123,7 @@ class AnnouncementResource extends BaseResource
                 ToggleColumn::make('enabled')
                     ->sortable(),
                 TextColumn::make('expires_at')
+                    ->label('Expires')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
