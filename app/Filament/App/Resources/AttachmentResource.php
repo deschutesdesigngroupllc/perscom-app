@@ -174,8 +174,6 @@ class AttachmentResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->filters([
-            ])
             ->recordActions([
                 Action::make('download')
                     ->icon('heroicon-o-cloud-arrow-down')

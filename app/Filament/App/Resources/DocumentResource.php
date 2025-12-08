@@ -16,6 +16,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -23,6 +24,7 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -54,6 +56,19 @@ class DocumentResource extends BaseResource
                     ->nullable()
                     ->maxLength(65535)
                     ->columnSpanFull(),
+                Select::make('categories')
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required(),
+                        Hidden::make('resource')
+                            ->default(static::$model),
+                    ])
+                    ->helperText('The category the document belongs to.')
+                    ->nullable()
+                    ->preload()
+                    ->searchable()
+                    ->multiple()
+                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                 RichEditor::make('content')
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
@@ -92,17 +107,21 @@ class DocumentResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('categories.name')
+                    ->placeholder('No Categories')
+                    ->sortable()
+                    ->color('gray')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
-            ])
-            ->filters([
             ])
             ->recordActions([
                 EditAction::make(),

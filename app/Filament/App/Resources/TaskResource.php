@@ -88,6 +88,7 @@ class TaskResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
@@ -97,8 +98,6 @@ class TaskResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
-            ])
-            ->filters([
             ])
             ->recordActions([
                 EditAction::make(),

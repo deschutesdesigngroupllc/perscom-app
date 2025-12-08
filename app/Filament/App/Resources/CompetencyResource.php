@@ -16,6 +16,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -47,6 +48,12 @@ class CompetencyResource extends BaseResource
                     ->maxLength(255)
                     ->columnSpanFull(),
                 Select::make('categories')
+                    ->createOptionForm([
+                        TextInput::make('name')
+                            ->required(),
+                        Hidden::make('resource')
+                            ->default(static::$model),
+                    ])
                     ->helperText('An optional category for the competency to assist with organization.')
                     ->columnSpanFull()
                     ->relationship('categories', 'name')

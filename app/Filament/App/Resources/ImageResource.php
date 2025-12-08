@@ -142,8 +142,10 @@ class ImageResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
@@ -168,8 +170,6 @@ class ImageResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
-            ])
-            ->filters([
             ])
             ->recordActions([
                 Action::make('open')

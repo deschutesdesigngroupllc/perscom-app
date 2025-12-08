@@ -37,6 +37,7 @@ class QualificationRecordsRelationManager extends RelationManager
                 TextColumn::make('qualification.name')
                     ->sortable(),
                 ImageColumn::make('qualification.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('text')
                     ->icon('heroicon-o-document')

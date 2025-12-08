@@ -16,7 +16,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Section;
@@ -26,6 +28,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use UnitEnum;
@@ -69,6 +72,19 @@ class RankResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
+                                Select::make('categories')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required(),
+                                        Hidden::make('resource')
+                                            ->default(static::$model),
+                                    ])
+                                    ->helperText('The category the rank belongs to.')
+                                    ->nullable()
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
@@ -103,6 +119,7 @@ class RankResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('image.path')
+                    ->placeholder('No Image')
                     ->label('Image'),
                 TextColumn::make('abbreviation')
                     ->sortable()
@@ -111,17 +128,21 @@ class RankResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('categories.name')
+                    ->placeholder('No Categories')
+                    ->sortable()
+                    ->color('gray')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
                     ->sortable(),
-            ])
-            ->filters([
             ])
             ->recordActions([
                 EditAction::make(),

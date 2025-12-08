@@ -179,6 +179,7 @@ class FieldResource extends BaseResource
                     ->badge()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
                     ->html()

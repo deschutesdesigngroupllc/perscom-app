@@ -30,6 +30,7 @@ class CompetenciesRelationManager extends RelationManager
                 TextColumn::make('name')
                     ->sortable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->sortable()
                     ->html()
                     ->wrap(),

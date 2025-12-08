@@ -41,6 +41,7 @@ class Index extends Component implements HasActions, HasForms, HasTable
                     TextColumn::make('name')
                         ->weight(FontWeight::Bold),
                     TextColumn::make('description')
+                        ->placeholder('No Description')
                         ->html(),
                 ]),
             ])

@@ -9,6 +9,7 @@ use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
+use App\Traits\HasCategories;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
@@ -63,6 +64,7 @@ class Specialty extends Model implements HasLabel, Sortable
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasAssignmentRecords;
+    use HasCategories;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;

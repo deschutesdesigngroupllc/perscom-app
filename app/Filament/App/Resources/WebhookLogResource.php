@@ -70,6 +70,7 @@ class WebhookLogResource extends BaseResource
                     ->iconPosition(IconPosition::After)
                     ->url(fn (WebhookLog $record) => $record->resource_url),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->label('Webhook')
                     ->sortable()
                     ->color('gray')

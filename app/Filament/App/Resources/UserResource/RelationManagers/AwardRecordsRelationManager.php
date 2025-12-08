@@ -37,6 +37,7 @@ class AwardRecordsRelationManager extends RelationManager
                 TextColumn::make('award.name')
                     ->sortable(),
                 ImageColumn::make('award.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('text')
                     ->icon('heroicon-o-document')

@@ -180,6 +180,7 @@ class QualificationRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('qualification.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

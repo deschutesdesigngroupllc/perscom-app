@@ -1,0 +1,48 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\App\Resources\Categories\Schemas;
+
+use App\Models\Award;
+use App\Models\Document;
+use App\Models\Position;
+use App\Models\Qualification;
+use App\Models\Rank;
+use App\Models\Specialty;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
+
+class CategoryForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('name')
+                    ->helperText('The name of the category.')
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the category.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Select::make('resource')
+                    ->helperText('The resource this category can be used with.')
+                    ->required()
+                    ->options([
+                        Award::class => 'Awards',
+                        Document::class => 'Documents',
+                        Position::class => 'Positions',
+                        Qualification::class => 'Qualifications',
+                        Rank::class => 'Ranks',
+                        Specialty::class => 'Specialties',
+                    ]),
+            ]);
+    }
+}

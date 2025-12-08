@@ -37,6 +37,7 @@ class RankRecordsRelationManager extends RelationManager
                 TextColumn::make('rank.name')
                     ->sortable(),
                 ImageColumn::make('rank.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('text')
                     ->icon('heroicon-o-document')

@@ -404,6 +404,7 @@ class UserResource extends BaseResource
             ->emptyStateDescription('There are no users to view. Create one to get started.')
             ->columns([
                 ImageColumn::make('profile_photo')
+                    ->placeholder('No Profile Photo')
                     ->hidden(fn (): bool => in_array('profile_photo', $hiddenFields))
                     ->label('')
                     ->defaultImageUrl(fn (User $record) => $record->profile_photo_url),

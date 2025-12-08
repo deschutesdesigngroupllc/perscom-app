@@ -103,6 +103,7 @@ class SlotResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()

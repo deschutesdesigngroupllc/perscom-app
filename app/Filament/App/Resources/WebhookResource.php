@@ -115,6 +115,7 @@ class WebhookResource extends BaseResource
                 TextColumn::make('url')
                     ->sortable(),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
                     ->html()

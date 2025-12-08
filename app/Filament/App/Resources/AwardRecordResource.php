@@ -180,6 +180,7 @@ class AwardRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('award.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

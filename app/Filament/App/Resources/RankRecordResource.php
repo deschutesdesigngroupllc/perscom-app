@@ -192,6 +192,7 @@ class RankRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 ImageColumn::make('rank.image.path')
+                    ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

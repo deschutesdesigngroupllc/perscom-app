@@ -55,6 +55,7 @@ class ApiPurgeLogResource extends BaseResource
                     ->searchable(['properties'])
                     ->label('Trace ID'),
                 TextColumn::make('description')
+                    ->placeholder('No Description')
                     ->label('Event')
                     ->searchable()
                     ->formatStateUsing(fn ($state) => Str::title($state))
