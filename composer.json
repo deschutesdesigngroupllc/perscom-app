@@ -59,7 +59,7 @@
     "spatie/laravel-settings": "^3.6.0",
     "spatie/laravel-webhook-server": "^3.8.3",
     "spatie/url": "^2.4",
-    "stancl/jobpipeline": "v2.0.0-rc4 as v1.6.2",
+    "stancl/jobpipeline": "v2.0.0-rc6 as v1.6.2",
     "stancl/tenancy": "^3.8.5",
     "stancl/virtualcolumn": "^1.5.0",
     "staudenmeir/belongs-to-through": "^2.16.4",

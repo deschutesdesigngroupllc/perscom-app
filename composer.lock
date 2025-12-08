@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0cc5ff9e6134710cedb4108910b755e",
+    "content-hash": "7eb29d6bd3f1dcb3fcc54f3e84301282",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -12527,25 +12527,25 @@
         },
         {
             "name": "stancl/jobpipeline",
-            "version": "v2.0.0-rc4",
+            "version": "v2.0.0-rc6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/jobpipeline.git",
-                "reference": "d17ee430dd43b553d79da170f9c1f3e23089b353"
+                "reference": "4a8f566a5e9dcaf4b72ca6977fd5cfaf86211aed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/d17ee430dd43b553d79da170f9c1f3e23089b353",
-                "reference": "d17ee430dd43b553d79da170f9c1f3e23089b353",
+                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/4a8f566a5e9dcaf4b72ca6977fd5cfaf86211aed",
+                "reference": "4a8f566a5e9dcaf4b72ca6977fd5cfaf86211aed",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^9.0|^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
                 "php": "^8.0"
             },
             "require-dev": {
                 "ext-redis": "*",
-                "orchestra/testbench": "^7.0|^8.0|^9.0",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
                 "spatie/valuestore": "^1.2"
             },
             "type": "library",
@@ -12567,9 +12567,9 @@
             "description": "Turn any series of jobs into Laravel listeners.",
             "support": {
                 "issues": "https://github.com/archtechx/jobpipeline/issues",
-                "source": "https://github.com/archtechx/jobpipeline/tree/v2.0.0-rc4"
+                "source": "https://github.com/archtechx/jobpipeline/tree/v2.0.0-rc6"
             },
-            "time": "2024-12-16T15:43:17+00:00"
+            "time": "2025-07-29T20:16:31+00:00"
         },
         {
             "name": "stancl/tenancy",
@@ -21034,7 +21034,7 @@
     "aliases": [
         {
             "package": "stancl/jobpipeline",
-            "version": "2.0.0.0-RC4",
+            "version": "2.0.0.0-RC6",
             "alias": "v1.6.2",
             "alias_normalized": "1.6.2.0"
         }
