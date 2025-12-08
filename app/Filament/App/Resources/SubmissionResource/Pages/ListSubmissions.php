@@ -45,7 +45,7 @@ class ListSubmissions extends ListRecords
                 ->icon('heroicon-o-envelope-open'),
         ];
 
-        return array_merge($views, Form::all()->mapWithKeys(fn (Form $form) => [
+        return array_merge($views, Form::all()->mapWithKeys(fn (Form $form): array => [
             $form->id => PresetView::make()
                 ->label($form->name)
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->whereBelongsTo($form))

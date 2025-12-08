@@ -31,7 +31,7 @@ class ListEvents extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereBelongsTo($calendar)),
         ])->toArray();
 
-        return array_merge($calendars, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category) => [
+        return array_merge($calendars, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->label($category->name)
                 ->icon('heroicon-o-tag')

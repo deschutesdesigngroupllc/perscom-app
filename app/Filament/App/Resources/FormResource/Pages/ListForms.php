@@ -39,7 +39,7 @@ class ListForms extends ListRecords
                 ->icon('heroicon-o-eye-slash'),
         ];
 
-        return array_merge($views, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category) => [
+        return array_merge($views, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->label($category->name)
                 ->icon('heroicon-o-tag')
