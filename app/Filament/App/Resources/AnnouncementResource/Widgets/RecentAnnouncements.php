@@ -23,6 +23,9 @@ class RecentAnnouncements extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No recent announcements')
+            ->emptyStateDescription('There are no recent announcements to show.')
+            ->emptyStateIcon('heroicon-o-megaphone')
             ->recordClasses([
                 'sm:-mx-6' => true,
                 '-mx-4' => true,
@@ -52,7 +55,6 @@ class RecentAnnouncements extends BaseWidget
                             ->html(),
                     ]),
             ])
-            ->emptyStateDescription('There are no recent announcements to show.')
             ->paginated([5]);
     }
 }

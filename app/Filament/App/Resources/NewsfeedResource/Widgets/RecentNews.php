@@ -23,6 +23,9 @@ class RecentNews extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->emptyStateHeading('No recent news')
+            ->emptyStateDescription('There are no recent news items to show.')
+            ->emptyStateIcon('heroicon-o-newspaper')
             ->recordClasses([
                 'sm:-mx-6' => true,
                 '-mx-4' => true,
@@ -52,7 +55,6 @@ class RecentNews extends BaseWidget
                             ->html(),
                     ]),
             ])
-            ->emptyStateDescription('There are no recent announcements to show.')
             ->paginated([5]);
     }
 }
