@@ -184,8 +184,10 @@ class TrainingRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('credentials.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->listWithLineBreaks(),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -196,6 +198,7 @@ class TrainingRecordResource extends BaseResource
                             ->attached(fn (TrainingRecord $record): TrainingRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

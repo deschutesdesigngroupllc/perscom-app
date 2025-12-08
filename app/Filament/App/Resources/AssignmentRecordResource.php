@@ -235,18 +235,23 @@ class AssignmentRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('position.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('specialty.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('unit.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('status.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -257,6 +262,7 @@ class AssignmentRecordResource extends BaseResource
                             ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

@@ -18,7 +18,6 @@ use App\Settings\OrganizationSettings;
 use App\Traits\Filament\InteractsWithFields;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
-use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -29,7 +28,6 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -75,6 +73,7 @@ class UserResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Demographics')
@@ -120,17 +119,6 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->columns()
                             ->schema([
-                                Placeholder::make('last_assignment_change_date')
-                                    ->helperText('This date is only changed through a primary assignment record.')
-                                    ->label('Last assignment changed')
-                                    ->hiddenOn(['create', 'edit'])
-                                    ->visible(fn ($state) => filled($state))
-                                    ->content(fn (?User $record) => optional($record?->last_assignment_change_date, fn (CarbonInterface $date) => $date->longRelativeToNowDiffForHumans())),
-                                Placeholder::make('time_in_assignment')
-                                    ->label('Time in assignment')
-                                    ->hiddenOn(['create', 'edit'])
-                                    ->visible(fn ($state) => filled($state))
-                                    ->content(fn (?User $record) => optional($record?->time_in_assignment, fn ($date): string => CarbonInterval::make($date)->forHumans())),
                                 Select::make('position_id')
                                     ->helperText("The user's current position.")
                                     ->columnSpanFull()
@@ -191,11 +179,6 @@ class UserResource extends BaseResource
                         Tab::make('Notes')
                             ->icon('heroicon-o-pencil-square')
                             ->schema([
-                                Placeholder::make('notes_updated_at')
-                                    ->label('Notes updated')
-                                    ->hiddenOn(['create', 'edit'])
-                                    ->visible(fn ($state) => filled($state))
-                                    ->content(fn (?User $record) => optional($record?->notes_updated_at, fn (CarbonInterface $date) => $date->longRelativeToNowDiffForHumans())),
                                 RichEditor::make('notes')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->nullable()
@@ -207,17 +190,6 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-chevron-double-up')
                             ->columns()
                             ->schema([
-                                Placeholder::make('last_rank_change_date')
-                                    ->helperText('This date is only changed through a rank record.')
-                                    ->label('Last rank changed')
-                                    ->hiddenOn(['create', 'edit'])
-                                    ->visible(fn ($state) => filled($state))
-                                    ->content(fn (?User $record) => optional($record?->last_rank_change_date, fn (CarbonInterface $date) => $date->longRelativeToNowDiffForHumans())),
-                                Placeholder::make('time_in_grade')
-                                    ->label('Time in grade')
-                                    ->hiddenOn(['create', 'edit'])
-                                    ->visible(fn ($state) => filled($state))
-                                    ->content(fn (?User $record) => optional($record?->time_in_grade, fn ($date): string => CarbonInterval::make($date)->forHumans())),
                                 Select::make('rank_id')
                                     ->helperText("The user's current rank.")
                                     ->preload()
@@ -253,6 +225,7 @@ class UserResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Demographics')
@@ -284,6 +257,7 @@ class UserResource extends BaseResource
                                             ->hidden(fn (): bool => in_array('time_in_service', $hiddenFields))
                                             ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)->forHumans()),
                                         TextEntry::make('last_seen_at')
+                                            ->placeholder('Unknown')
                                             ->label('Last Online')
                                             ->dateTime()
                                             ->hidden(fn (): bool => in_array('last_seen_at', $hiddenFields)),
@@ -338,6 +312,7 @@ class UserResource extends BaseResource
                                     ->description('The awards the user has received.')
                                     ->schema([
                                         TextEntry::make('awards.name')
+                                            ->placeholder('No Awards Available')
                                             ->hiddenLabel()
                                             ->listWithLineBreaks(),
                                     ]),
@@ -349,6 +324,7 @@ class UserResource extends BaseResource
                                     ->description('The credentials the user has assigned.')
                                     ->schema([
                                         TextEntry::make('credentials.name')
+                                            ->placeholder('No Credentials Available')
                                             ->hiddenLabel()
                                             ->listWithLineBreaks(),
                                     ]),
@@ -360,6 +336,7 @@ class UserResource extends BaseResource
                                     ->description('The qualifications the user has earned.')
                                     ->schema([
                                         TextEntry::make('qualifications.name')
+                                            ->placeholder('No Qualifications Available')
                                             ->hiddenLabel()
                                             ->listWithLineBreaks(),
                                     ]),

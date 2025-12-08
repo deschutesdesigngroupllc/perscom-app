@@ -183,6 +183,7 @@ class QualificationRecordResource extends BaseResource
                     ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -193,6 +194,7 @@ class QualificationRecordResource extends BaseResource
                             ->attached(fn (QualificationRecord $record): QualificationRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))

@@ -195,6 +195,7 @@ class RankRecordResource extends BaseResource
                     ->placeholder('No Image')
                     ->label(''),
                 TextColumn::make('document.name')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
@@ -205,6 +206,7 @@ class RankRecordResource extends BaseResource
                             ->attached(fn (RankRecord $record): RankRecord => $record),
                     ),
                 TextColumn::make('text')
+                    ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
