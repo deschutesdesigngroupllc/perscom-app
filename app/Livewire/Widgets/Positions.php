@@ -14,6 +14,7 @@ use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
@@ -43,6 +44,14 @@ class Positions extends Component implements HasActions, HasForms, HasTable
                         ->placeholder('No Description')
                         ->html(),
                 ]),
-            ]);
+            ])
+            ->groups([
+                Group::make('categoryPivot.category_id')
+                    ->titlePrefixedWithLabel(false)
+                    ->label('Category')
+                    ->getTitleFromRecordUsing(fn (Position $record) => $record->categoryPivot?->category?->name),
+            ])
+            ->groupingSettingsHidden()
+            ->defaultGroup('categoryPivot.category_id');
     }
 }

@@ -16,7 +16,7 @@ class WidgetController extends Controller
         Validator::make([
             'widget' => $request->route('widget'),
         ], [
-            'widget' => ['in:awards,calendar,forms,positions,qualifications,ranks,roster,specialities'],
+            'widget' => ['in:awards,calendar,forms,positions,qualifications,ranks,roster,specialties'],
         ], [
             'widget.in' => 'The requested :attribute is invalid. Please provide a valid widget.',
         ])->validate();
