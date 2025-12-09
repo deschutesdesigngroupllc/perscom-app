@@ -31,7 +31,7 @@ class AccountRequiresApproval extends SimplePage
         }
 
         if ($user->approved) {
-            $this->redirect(route('filament.app.pages.dashboard', [
+            $this->redirect(Dashboard::getUrl([
                 'tenant' => $tenant,
             ]));
         }
