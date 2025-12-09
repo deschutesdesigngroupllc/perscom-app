@@ -468,7 +468,7 @@ class MilitarySeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Awards',
-                    'description' => 'An overview of your current awards. Manage this page in your System Settings.',
+                    'description' => 'An overview of your current awards. Manage this page in your System Settings or visit Widgets to use on your own website.',
                     'slug' => 'awards',
                     'hidden' => false,
                     'icon' => 'heroicon-o-trophy',
@@ -484,11 +484,10 @@ class MilitarySeeder extends Seeder
     ></script>
 </div>
 HTML
-
                 ],
                 [
                     'name' => 'Positions',
-                    'description' => 'An overview of your current positions. Manage this page in your System Settings.',
+                    'description' => 'An overview of your current positions. Manage this page in your System Settings or visit Widgets to use on your own website.',
                     'slug' => 'positions',
                     'hidden' => false,
                     'icon' => 'heroicon-o-identification',
@@ -504,11 +503,10 @@ HTML
     ></script>
 </div>
 HTML
-
                 ],
                 [
                     'name' => 'Qualifications',
-                    'description' => 'An overview of your current qualifications. Manage this page in your System Settings.',
+                    'description' => 'An overview of your current qualifications. Manage this page in your System Settings or visit Widgets to use on your own website.',
                     'slug' => 'qualifications',
                     'hidden' => false,
                     'icon' => 'heroicon-o-star',
@@ -524,11 +522,10 @@ HTML
     ></script>
 </div>
 HTML
-
                 ],
                 [
                     'name' => 'Ranks',
-                    'description' => 'An overview of your current ranks. Manage this page in your System Settings.',
+                    'description' => 'An overview of your current ranks. Manage this page in your System Settings or visit Widgets to use on your own website.',
                     'slug' => 'ranks',
                     'hidden' => false,
                     'icon' => 'heroicon-o-chevron-double-up',
@@ -544,11 +541,10 @@ HTML
     ></script>
 </div>
 HTML
-
                 ],
                 [
                     'name' => 'Specialties',
-                    'description' => 'An overview of your current specialties. Manage this page in your System Settings.',
+                    'description' => 'An overview of your current specialties. Manage this page in your System Settings or visit Widgets to use on your own website.',
                     'slug' => 'specialties',
                     'hidden' => false,
                     'icon' => 'heroicon-o-briefcase',
@@ -564,7 +560,6 @@ HTML
     ></script>
 </div>
 HTML
-
                 ]
             )
             ->create();

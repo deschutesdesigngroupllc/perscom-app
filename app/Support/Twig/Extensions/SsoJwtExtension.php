@@ -6,8 +6,9 @@ namespace App\Support\Twig\Extensions;
 
 use App\Models\User;
 use App\Settings\IntegrationSettings;
-use Firebase\JWT\JWT;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -35,21 +36,14 @@ class SsoJwtExtension extends AbstractExtension
 
     private function generateJwt(): string
     {
-        $now = now();
-        $exp = $now->clone()->addMinutes(5);
+        /** @var JWTGuard $guard */
+        $guard = Auth::guard('jwt');
 
-        $payload = [
-            'sub' => $this->user->id,
-            'iat' => $now->getTimestamp(),
-            'exp' => $exp->getTimestamp(),
-            'scopes' => ['*'],
-            'tenant' => tenant()->getKey(),
-        ];
+        /** @var User $user */
+        $user = Auth::guard('web')->user();
 
-        return JWT::encode(
-            $payload,
-            $this->settings->single_sign_on_key,
-            'HS256'
-        );
+        return $guard->claims([
+            'scopes' => '*',
+        ])->login($user);
     }
 }

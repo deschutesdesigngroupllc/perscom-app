@@ -68,7 +68,6 @@
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.6.0",
     "timokoerber/laravel-one-time-operations": "^1.4.5",
-    "torchlight/torchlight-laravel": "^0.6.1",
     "twig/twig": "^3.0",
     "twilio/sdk": "^7.16.2",
     "zoha/laravel-meta": "dev-feature/publish-migrations"

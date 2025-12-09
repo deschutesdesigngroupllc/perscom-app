@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages;
 
 use App\Filament\App\Resources\PassportTokenResource;
-use App\Forms\Components\TorchlightCode;
-use App\Forms\Components\WidgetCodeGenerator;
 use App\Models\User;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
+use Phiki\Grammar\Grammar;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 use UnitEnum;
 
@@ -105,7 +105,6 @@ class Widgets extends Page
                     Select::make('widget')
                         ->helperText('The widget to display.')
                         ->searchable()
-                        ->preload()
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
                         ->options(static::$widgets),
@@ -127,15 +126,12 @@ class Widgets extends Page
                         ->label('Dark Mode')
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set)),
-                    TorchlightCode::make('widget_code')
-                        ->helperText('Copy the code above and paste it into your website.')
+                    CodeEntry::make('widget_code')
+                        ->copyable()
+                        ->grammar(Grammar::Javascript)
+                        ->helperText('Click to copy the code above and paste it into your website.')
                         ->default(fn (): string => $this->generateCodeSnippet())
-                        ->hiddenLabel()
-                        ->language('html'),
-                    WidgetCodeGenerator::make('copy')
-                        ->default(fn (): string => $this->generateCodeSnippet())
-                        ->label('Copy Code')
-                        ->color('gray'),
+                        ->hiddenLabel(),
                 ]),
         ];
     }

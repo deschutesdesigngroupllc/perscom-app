@@ -48,7 +48,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Padmission\DataLens\DataLensPlugin;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use Torchlight\Middleware\RenderTorchlight;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -133,7 +132,6 @@ class AppPanelProvider extends PanelProvider
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
-                RenderTorchlight::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -146,7 +144,7 @@ class AppPanelProvider extends PanelProvider
                 DataLensPlugin::make()
                     ->navigationGroup('Reporting')
                     ->navigationLabel('Custom Reports')
-                    ->navigationSort(6),
+                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
