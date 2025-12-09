@@ -48,7 +48,7 @@ class PageForm
                     ->helperText('The icon used for the menu item.')
                     ->columnSpanFull(),
                 CodeEditor::make('content')
-                    ->hintAction(fn (Page $record): CodeEditorAction => CodeEditorAction::make()->page($record))
+                    ->hintAction(fn (?Page $record): CodeEditorAction => CodeEditorAction::make()->visible(filled($record))->page($record))
                     ->helperText(new HtmlString("The HTML content of the page. You may use the <a class='underline' href='https://twig.symfony.com/' target='_blank'>Twig Template Engine</a> to add dynamic rendering. For security, certain functions, filters, tags, etc have been disabled. Tailwind CSS may also be used to style the page."))
                     ->language(CodeEditor\Enums\Language::Html)
                     ->required()

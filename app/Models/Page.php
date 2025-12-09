@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Hideable;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,7 @@ class Page extends Model implements Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;
+    use ClearsResponseCache;
     use HasFactory;
     use HasIcon;
 

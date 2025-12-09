@@ -51,6 +51,7 @@ class MilitarySeeder extends Seeder
         $action
             ->shouldCreateUser(false)
             ->shouldCreateAnnouncement(false)
+            ->shouldCreatePages(false)
             ->handle(tenant());
 
         $user = User::factory()->unassigned()->createQuietly([

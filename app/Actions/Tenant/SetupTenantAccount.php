@@ -90,6 +90,13 @@ class SetupTenantAccount
         return $this;
     }
 
+    public function shouldCreatePages(bool $createPages = true): static
+    {
+        $this->shouldCreatePages = $createPages;
+
+        return $this;
+    }
+
     protected function seedInitialSettings(): void
     {
         Artisan::call('tenants:migrate', [
