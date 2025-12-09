@@ -28,7 +28,7 @@ class TwigServiceProvider extends ServiceProvider
             );
 
             $twig = new Environment($loader, [
-                'cache' => storage_path('twig'),
+                'cache' => storage_path('framework/twig'),
                 'debug' => config('app.debug'),
                 'autoescape' => 'html',
             ]);
