@@ -42,7 +42,7 @@ class NewAlert extends Notification implements ShouldQueue
 
     public function toMail(Tenant $notifiable): NewAlertMailable
     {
-        return (new NewAlertMailable($this->alert))->to($notifiable->email);
+        return new NewAlertMailable($this->alert)->to($notifiable->email);
     }
 
     public function toSlack(): SlackMessage

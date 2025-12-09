@@ -31,6 +31,6 @@ class NewSubscription extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): NewSubscriptionMail
     {
-        return (new NewSubscriptionMail($this->subscription))->to($notifiable->email);
+        return new NewSubscriptionMail($this->subscription)->to($notifiable->email);
     }
 }

@@ -50,6 +50,8 @@ class Page extends BasePage
     }
 
     /**
+     * @return array<string, string>
+     *
      * @throws RuntimeError
      * @throws SyntaxError
      * @throws LoaderError

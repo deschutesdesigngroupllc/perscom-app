@@ -33,7 +33,7 @@ class TenantDeleted extends Notification implements ShouldBroadcast, ShouldQueue
 
     public function toMail(mixed $notifiable): TenantDeletedMail
     {
-        return (new TenantDeletedMail($this->tenant, $this->email))->to($notifiable->email);
+        return new TenantDeletedMail($this->tenant, $this->email)->to($notifiable->email);
     }
 
     public function toBroadcast($notifiable): BroadcastMessage

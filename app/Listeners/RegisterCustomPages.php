@@ -31,15 +31,13 @@ class RegisterCustomPages
             return;
         }
 
-        $pages = Page::all()->map(function (Page $page) {
-            return NavigationItem::make($page->name)
-                ->url(FilamentPage::getUrl(['page' => $page->slug]))
-                ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(), request()->getUri()))
-                ->group('Pages')
-                ->icon($page->icon)
-                ->sort($page->order)
-                ->hidden($page->hidden);
-        })->toArray();
+        $pages = Page::all()->map(fn (Page $page): NavigationItem => NavigationItem::make($page->name)
+            ->url(FilamentPage::getUrl(['page' => $page->slug]))
+            ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(), request()->getUri()))
+            ->group('Pages')
+            ->icon($page->icon)
+            ->sort($page->order)
+            ->hidden($page->hidden))->toArray();
 
         if (empty($pages)) {
             return;

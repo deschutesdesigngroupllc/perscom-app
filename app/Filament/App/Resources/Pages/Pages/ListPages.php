@@ -14,6 +14,9 @@ class ListPages extends ListRecords
 
     protected ?string $subheading = 'Pages provide a way to create custom web pages within your dashboard using the Twig Template Engine.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getHeaderActions(): array
     {
         return [

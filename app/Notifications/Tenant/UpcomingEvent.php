@@ -69,7 +69,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
 
     public function toMail(User $notifiable): UpcomingEventMail
     {
-        return (new UpcomingEventMail($this->event, $this->interval, $notifiable))->to($notifiable->email);
+        return new UpcomingEventMail($this->event, $this->interval, $notifiable)->to($notifiable->email);
     }
 
     public function toBroadcast(User $notifiable): BroadcastMessage

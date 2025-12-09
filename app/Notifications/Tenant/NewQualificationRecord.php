@@ -80,7 +80,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewQualificationRecordMail
     {
-        return (new NewQualificationRecordMail($this->qualificationRecord, $this->url))->to($notifiable->email);
+        return new NewQualificationRecordMail($this->qualificationRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

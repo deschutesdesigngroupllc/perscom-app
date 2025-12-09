@@ -17,7 +17,7 @@ class TwigServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton('twig', function (Container $app) {
+        $this->app->singleton('twig', function (Container $app): Environment {
             $loader = new FilesystemLoader(resource_path('views/twig'));
             $policy = new SecurityPolicy(
                 allowedTags: ['apply', 'if', 'for', 'set'],

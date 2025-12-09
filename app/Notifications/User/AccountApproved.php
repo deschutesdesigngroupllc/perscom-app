@@ -30,6 +30,6 @@ class AccountApproved extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): AccountApprovedMail
     {
-        return (new AccountApprovedMail($this->tenant))->to($notifiable->email);
+        return new AccountApprovedMail($this->tenant)->to($notifiable->email);
     }
 }

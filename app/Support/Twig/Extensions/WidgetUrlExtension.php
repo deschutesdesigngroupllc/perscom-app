@@ -17,10 +17,13 @@ class WidgetUrlExtension extends AbstractExtension
         //
     }
 
+    /**
+     * @return TwigFunction[]
+     */
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('widgetUrl', [$this, 'widgetUrl']),
+            new TwigFunction('widgetUrl', $this->widgetUrl(...)),
         ];
     }
 

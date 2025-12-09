@@ -80,7 +80,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewAwardRecordMail
     {
-        return (new NewAwardRecordMail($this->awardRecord, $this->url))->to($notifiable->email);
+        return new NewAwardRecordMail($this->awardRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

@@ -81,7 +81,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewRankRecordMail
     {
-        return (new NewRankRecordMail($this->rankRecord, $this->url))->to($notifiable->email);
+        return new NewRankRecordMail($this->rankRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

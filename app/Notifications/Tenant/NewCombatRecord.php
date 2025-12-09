@@ -79,7 +79,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewCombatRecordMail
     {
-        return (new NewCombatRecordMail($this->combatRecord, $this->url))->to($notifiable->email);
+        return new NewCombatRecordMail($this->combatRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

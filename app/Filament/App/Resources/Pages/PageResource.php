@@ -14,6 +14,7 @@ use App\Models\Page;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use BackedEnum;
+use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
@@ -51,6 +52,9 @@ class PageResource extends BaseResource
             ]);
     }
 
+    /**
+     * @return array<string, PageRegistration>
+     */
     public static function getPages(): array
     {
         return [

@@ -17,14 +17,7 @@ class CheckSubscription extends VerifyBillableIsSubscribed
     public function handle($request, $next, $billableType = null, $plan = null): Response
     {
         $this->request = $request;
-
-        $authenticated = false;
-        foreach (['web', 'api'] as $guard) {
-            if (Auth::guard($guard)->check()) {
-                $authenticated = true;
-                break;
-            }
-        }
+        $authenticated = array_any(['web', 'api'], fn ($guard) => Auth::guard($guard)->check());
 
         if (App::isDemo() || App::isAdmin() || ! $authenticated) {
             return $next($request);

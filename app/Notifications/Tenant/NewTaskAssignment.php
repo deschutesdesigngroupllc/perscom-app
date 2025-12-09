@@ -48,7 +48,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewTaskAssignmentMail
     {
-        return (new NewTaskAssignmentMail($this->taskAssignment, $this->url))->to($notifiable->email);
+        return new NewTaskAssignmentMail($this->taskAssignment, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage
