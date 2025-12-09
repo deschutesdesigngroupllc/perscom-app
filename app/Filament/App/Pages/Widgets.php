@@ -34,7 +34,7 @@ class Widgets extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 9;
 
     protected string $view = 'filament.app.pages.widgets';
 

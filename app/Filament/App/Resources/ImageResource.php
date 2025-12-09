@@ -45,7 +45,7 @@ class ImageResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 11;
 
     public static function form(Schema $schema): Schema
     {

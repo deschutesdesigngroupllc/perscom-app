@@ -47,7 +47,7 @@ class SubmissionResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Forms';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function getNavigationBadge(): ?string
     {

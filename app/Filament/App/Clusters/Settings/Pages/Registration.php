@@ -29,8 +29,6 @@ class Registration extends SettingsPage
 
     protected static string $settings = RegistrationSettings::class;
 
-    protected static ?int $navigationSort = 7;
-
     protected ?string $subheading = 'Configure user registration settings.';
 
     public static function canAccess(): bool

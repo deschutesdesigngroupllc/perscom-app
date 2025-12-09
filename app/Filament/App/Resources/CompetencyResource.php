@@ -36,7 +36,7 @@ class CompetencyResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Training';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {

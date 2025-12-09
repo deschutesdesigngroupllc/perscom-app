@@ -26,7 +26,7 @@ class Organization extends SettingsPage
 
     protected static ?string $navigationLabel = 'Organization';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 11;
 
     protected static string $settings = OrganizationSettings::class;
 

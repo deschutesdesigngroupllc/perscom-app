@@ -25,7 +25,6 @@ use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Actions\Action;
@@ -53,9 +52,6 @@ use Torchlight\Middleware\RenderTorchlight;
 
 class AppPanelProvider extends PanelProvider
 {
-    /**
-     * @throws ImplementationException
-     */
     public function panel(Panel $panel): Panel
     {
         $registration = $this->app->environment('demo')
