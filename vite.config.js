@@ -15,6 +15,7 @@ export default defineConfig({
         'resources/js/landing/app.jsx',
         'resources/css/filament/admin/theme.css',
         'resources/css/filament/app/theme.css',
+        'resources/js/filament/app/app.jsx',
         'resources/css/widgets/app.css',
         'resources/js/widgets/app.js'
       ],

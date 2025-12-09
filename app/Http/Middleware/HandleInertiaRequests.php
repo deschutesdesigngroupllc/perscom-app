@@ -15,6 +15,15 @@ class HandleInertiaRequests extends Middleware
 {
     protected $rootView = 'components.layouts.landing';
 
+    public function rootView(Request $request)
+    {
+        if ($request->routeIs('tenant.admin.*')) {
+            return 'components.layouts.filament.app';
+        }
+
+        return $this->rootView;
+    }
+
     public function handle(Request $request, Closure $next): Response
     {
         $response = parent::handle($request, $next);

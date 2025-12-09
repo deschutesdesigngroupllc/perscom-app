@@ -9,6 +9,7 @@ use App\Models\Page;
 use Filament\Exceptions\NoDefaultPanelSetException;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Support\Uri;
 use Stancl\Tenancy\Events\TenancyInitialized;
@@ -26,10 +27,14 @@ class RegisterCustomPages
             return;
         }
 
+        if (! Schema::hasTable('pages')) {
+            return;
+        }
+
         $pages = Page::all()->map(function (Page $page) {
             return NavigationItem::make($page->name)
                 ->url(FilamentPage::getUrl(['page' => $page->slug]))
-                ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->path(), request()->path()))
+                ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(), request()->getUri()))
                 ->group('Pages')
                 ->icon($page->icon)
                 ->sort($page->order)

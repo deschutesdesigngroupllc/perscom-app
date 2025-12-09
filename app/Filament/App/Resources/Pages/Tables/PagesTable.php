@@ -26,6 +26,9 @@ class PagesTable
                 TextColumn::make('slug')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('description')
+                    ->limit()
+                    ->wrap(),
                 ToggleColumn::make('hidden')
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -48,6 +51,6 @@ class PagesTable
                 ]),
             ])
             ->reorderable('order')
-            ->defaultSort('order', 'desc');
+            ->defaultSort('order');
     }
 }

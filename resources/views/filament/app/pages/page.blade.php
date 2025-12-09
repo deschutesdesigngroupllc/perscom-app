@@ -1,5 +1,5 @@
 @props(['html'])
 
 <x-filament-panels::page>
-    {!! $html !!}
+  {!! $html !!}
 </x-filament-panels::page>
