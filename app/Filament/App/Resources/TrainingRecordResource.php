@@ -35,6 +35,7 @@ use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -53,7 +54,7 @@ class TrainingRecordResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Training';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {
@@ -178,6 +179,7 @@ class TrainingRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedAcademicCap)
             ->emptyStateDescription('Create a new training record to get started.')
             ->columns([
                 TextColumn::make('user.name')

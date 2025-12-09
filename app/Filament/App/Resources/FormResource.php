@@ -29,6 +29,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -48,7 +49,7 @@ class FormResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Forms';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     public static function modelNotificationCreatedEvent(): string
     {
@@ -145,6 +146,7 @@ class FormResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedPencilSquare)
             ->emptyStateDescription('There are no forms to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')

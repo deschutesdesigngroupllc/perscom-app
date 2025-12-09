@@ -31,6 +31,6 @@ class DomainCreated extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): DomainCreatedMail
     {
-        return (new DomainCreatedMail($this->domain))->to($notifiable->email);
+        return new DomainCreatedMail($this->domain)->to($notifiable->email);
     }
 }

@@ -27,6 +27,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -41,6 +42,8 @@ class MessageResource extends BaseResource
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
@@ -69,6 +72,7 @@ class MessageResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedChatBubbleLeftRight)
             ->emptyStateDescription('There are no messages to view. Create one to get started.')
             ->columns([
                 TextColumn::make('message')

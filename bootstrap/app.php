@@ -48,7 +48,6 @@ use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
 use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
 use Symfony\Component\HttpFoundation\Response;
-use Torchlight\Middleware\RenderTorchlight;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -112,7 +111,6 @@ return Application::configure(basePath: dirname(__DIR__))
             IncrementMetrics::class,
             AttachTraceAndRequestId::class,
             CheckForMaintenanceMode::class,
-            RenderTorchlight::class,
         ]);
 
         /**

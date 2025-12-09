@@ -11,6 +11,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -27,7 +28,7 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationLabel = 'Forms';
 
@@ -40,6 +41,8 @@ class Forms extends Page implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedPencilSquare)
+            ->emptyStateDescription('There are no forms to display.')
             ->query(Form::query())
             ->recordAction('open')
             ->columns([

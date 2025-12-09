@@ -35,6 +35,7 @@ use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -54,7 +55,7 @@ class QualificationRecordResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
     {
@@ -171,6 +172,7 @@ class QualificationRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedStar)
             ->emptyStateDescription('Create a new qualification record to get started.')
             ->columns([
                 TextColumn::make('user.name')

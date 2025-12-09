@@ -58,7 +58,7 @@ class NewMessage extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): NewMessageMail
     {
-        return (new NewMessageMail($this->message))->to($notifiable->email);
+        return new NewMessageMail($this->message)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

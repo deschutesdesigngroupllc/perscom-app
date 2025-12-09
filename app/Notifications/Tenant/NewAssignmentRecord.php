@@ -84,7 +84,7 @@ HTML;
 
     public function toMail(User $notifiable): NewAssignmentRecordMail
     {
-        return (new NewAssignmentRecordMail($this->assignmentRecord, $this->url))->to($notifiable->email);
+        return new NewAssignmentRecordMail($this->assignmentRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

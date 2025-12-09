@@ -25,6 +25,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,7 +40,7 @@ class PassportTokenResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 9;
 
     protected static ?string $pluralModelLabel = 'API keys';
 
@@ -105,6 +106,7 @@ class PassportTokenResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedKey)
             ->emptyStateDescription("Create your first API key to start integrating with PERSCOM's powerful API.")
             ->columns([
                 TextColumn::make('name')

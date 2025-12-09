@@ -28,6 +28,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -44,7 +45,7 @@ class PassportClientResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 9;
 
     protected static ?string $pluralModelLabel = 'clients';
 
@@ -166,6 +167,7 @@ class PassportClientResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedRectangleStack)
             ->emptyStateDescription("Create your first OAuth 2.0 client to start integrating with PERSCOM's powerful API.")
             ->columns([
                 TextColumn::make('name')

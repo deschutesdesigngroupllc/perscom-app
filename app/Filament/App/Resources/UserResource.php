@@ -43,6 +43,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -64,7 +65,7 @@ class UserResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Personnel';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -378,6 +379,7 @@ class UserResource extends BaseResource
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedUser)
             ->emptyStateDescription('There are no users to view. Create one to get started.')
             ->columns([
                 ImageColumn::make('profile_photo')

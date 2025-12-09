@@ -29,6 +29,6 @@ class RegistrationVerificationRequired extends Notification implements ShouldQue
 
     public function toMail(object $notifiable): RegistrationVerificationMail
     {
-        return (new RegistrationVerificationMail($this->registration))->to($notifiable->email);
+        return new RegistrationVerificationMail($this->registration)->to($notifiable->email);
     }
 }

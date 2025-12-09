@@ -25,7 +25,6 @@ use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Actions\Action;
@@ -49,13 +48,9 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Padmission\DataLens\DataLensPlugin;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use Torchlight\Middleware\RenderTorchlight;
 
 class AppPanelProvider extends PanelProvider
 {
-    /**
-     * @throws ImplementationException
-     */
     public function panel(Panel $panel): Panel
     {
         $registration = $this->app->environment('demo')
@@ -137,7 +132,6 @@ class AppPanelProvider extends PanelProvider
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
-                RenderTorchlight::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
@@ -150,7 +144,7 @@ class AppPanelProvider extends PanelProvider
                 DataLensPlugin::make()
                     ->navigationGroup('Reporting')
                     ->navigationLabel('Custom Reports')
-                    ->navigationSort(6),
+                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)

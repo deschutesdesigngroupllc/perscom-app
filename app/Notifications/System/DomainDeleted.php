@@ -28,6 +28,6 @@ class DomainDeleted extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): DomainDeletedMail
     {
-        return (new DomainDeletedMail($this->domain, $this->url))->to($notifiable->email);
+        return new DomainDeletedMail($this->domain, $this->url)->to($notifiable->email);
     }
 }

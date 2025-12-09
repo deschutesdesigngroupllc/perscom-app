@@ -26,6 +26,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\TextSize;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
@@ -47,6 +48,8 @@ class NewsfeedResource extends BaseResource
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
     protected static ?string $slug = 'newsfeed';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {
@@ -85,6 +88,7 @@ class NewsfeedResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedNewspaper)
             ->emptyStateDescription('There are no newsfeed items to view. Perform an action to get started.')
             ->columns([
                 Split::make([

@@ -79,7 +79,7 @@ HTML;
 
     public function toMail(mixed $notifiable): NewServiceRecordMail
     {
-        return (new NewServiceRecordMail($this->serviceRecord, $this->url))->to($notifiable->email);
+        return new NewServiceRecordMail($this->serviceRecord, $this->url)->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage

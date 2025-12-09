@@ -36,7 +36,7 @@ class TenantCreated extends Notification implements ShouldBroadcast, ShouldQueue
 
     public function toMail(mixed $notifiable): TenantCreatedMail
     {
-        return (new TenantCreatedMail($this->tenant))->to($notifiable->email);
+        return new TenantCreatedMail($this->tenant)->to($notifiable->email);
     }
 
     public function toBroadcast($notifiable): BroadcastMessage

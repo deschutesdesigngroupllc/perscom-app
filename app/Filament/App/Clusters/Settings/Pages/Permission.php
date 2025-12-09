@@ -31,7 +31,7 @@ class Permission extends SettingsPage
 
     protected static string $settings = PermissionSettings::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 11;
 
     protected ?string $subheading = 'Adjust and configure authorization for your account.';
 

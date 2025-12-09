@@ -14,5 +14,5 @@ class Logs extends Cluster
 
     protected static string|UnitEnum|null $navigationGroup = 'System';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 9;
 }

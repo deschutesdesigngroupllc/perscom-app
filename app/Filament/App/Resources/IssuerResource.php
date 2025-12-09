@@ -18,6 +18,7 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -30,7 +31,7 @@ class IssuerResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Training';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {
@@ -48,6 +49,7 @@ class IssuerResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedBriefcase)
             ->emptyStateDescription('There are no issuers to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')

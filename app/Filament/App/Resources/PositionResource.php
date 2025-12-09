@@ -21,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
@@ -37,7 +38,7 @@ class PositionResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {
@@ -75,6 +76,7 @@ class PositionResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedIdentification)
             ->emptyStateDescription('There are no positions to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')
