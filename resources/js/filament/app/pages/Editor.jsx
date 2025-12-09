@@ -19,11 +19,7 @@ export default function Editor({ page, defaultHtml, defaultCss, defaultJavascrip
     <main className='h-screen w-full'>
       <Toaster />
 
-      <CodeEditor
-        html={page.content}
-        onSave={handleOnSave}
-        defaultHtml={defaultHtml}
-      />
+      <CodeEditor html={page.content} onSave={handleOnSave} defaultHtml={defaultHtml} />
       <Toaster />
     </main>
   )

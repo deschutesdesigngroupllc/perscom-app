@@ -19,14 +19,14 @@ import { Code2, Copy, Download, Eye, EyeOff, FileCode, Maximize2, Minimize2, Moo
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-const FONT_SIZES = [10, 12, 14, 16, 18, 20, 24];
+const FONT_SIZES = [10, 12, 14, 16, 18, 20, 24]
 
 export function CodeEditor({ html, onSave, defaultHtml }) {
   const { name } = usePage().props
   const previewRef = useRef(null)
   const editorRef = useRef(null)
   const [activeFileId, setActiveFileId] = useState(1)
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('dark')
   const [fontSize, setFontSize] = useState(14)
   const [lineNumbers, setLineNumbers] = useState(true)
   const [minimap, setMinimap] = useState(false)

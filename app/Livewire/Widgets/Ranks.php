@@ -10,6 +10,7 @@ use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\FontWeight;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -35,6 +36,8 @@ class Ranks extends Component implements HasActions, HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedChevronDoubleUp)
+            ->emptyStateDescription('There are no ranks to display.')
             ->query(Rank::query())
             ->heading('Ranks')
             ->paginated()

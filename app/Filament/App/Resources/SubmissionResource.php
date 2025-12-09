@@ -122,6 +122,7 @@ class SubmissionResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedFolderPlus)
             ->emptyStateDescription('There are no submissions to view. Create one to get started.')
             ->columns([
                 TextColumn::make('form.name')

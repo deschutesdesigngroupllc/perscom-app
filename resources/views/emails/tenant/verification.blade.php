@@ -5,7 +5,7 @@
 
 {{ __('Please click the button below to verify your email address and complete your registration. This link is only valid for 24 hours.') }}
 
-{{ __('Once verification is complete, we will begin setting up your organization. You’ll receive a second email with your new account details once the process is finished.') }}
+{{ __('Once verification is complete, we will begin setting up your new account. You’ll receive a second email with your login details once the process is finished.') }}
 
 @component('mail::button', ['url' => $verificationUrl])
 Verify Email Address

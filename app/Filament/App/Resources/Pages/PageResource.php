@@ -9,7 +9,6 @@ use App\Filament\App\Resources\Pages\Pages\CreatePage;
 use App\Filament\App\Resources\Pages\Pages\EditPage;
 use App\Filament\App\Resources\Pages\Pages\ListPages;
 use App\Filament\App\Resources\Pages\Schemas\PageForm;
-use App\Filament\App\Resources\Pages\Schemas\PageInfolist;
 use App\Filament\App\Resources\Pages\Tables\PagesTable;
 use App\Models\Page;
 use App\Models\Scopes\HiddenScope;
@@ -36,11 +35,6 @@ class PageResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return PageForm::configure($schema);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        return PageInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table

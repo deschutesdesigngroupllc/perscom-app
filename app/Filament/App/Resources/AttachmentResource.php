@@ -36,6 +36,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -146,6 +147,7 @@ class AttachmentResource extends BaseResource
     {
         return $table
             ->recordTitleAttribute('name')
+            ->emptyStateIcon(Heroicon::OutlinedPaperClip)
             ->emptyStateDescription('Create an attachment to get started.')
             ->columns([
                 TextColumn::make('name')

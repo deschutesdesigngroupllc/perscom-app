@@ -25,6 +25,7 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
@@ -110,6 +111,7 @@ class WebhookResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateIcon(Heroicon::OutlinedGlobeAlt)
             ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
                 TextColumn::make('url')

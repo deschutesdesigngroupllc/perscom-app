@@ -7,7 +7,7 @@
         </x-filament::tabs.item>
       @empty
         <x-filament::tabs.item>
-          No groups found
+          No Groups
         </x-filament::tabs.item>
       @endforelse
     </x-filament::tabs>
