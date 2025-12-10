@@ -79,6 +79,7 @@
     "filament/upgrade": "^4.3.0",
     "itsgoingd/clockwork": "^5.3.5",
     "larastan/larastan": "^3.8.0",
+    "laravel/boost": "^1.8",
     "laravel/pail": "^1.2.4",
     "laravel/pint": "^1.26.0",
     "mockery/mockery": "^1.6.12",
@@ -150,11 +151,16 @@
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
       "@php artisan migrate --graceful --ansi"
     ],
-    "prepare-project": [
-      "@post-root-package-install",
+    "setup": [
       "composer install",
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate -n",
+      "@php artisan jwt:secret -n --force",
+      "@php artisan passport:keys --force",
+      "@php artisan boost:install -n --ansi",
+      "@php artisan migrate --force",
       "npm install",
-      "@post-create-project-cmd"
+      "npm run build"
     ],
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "analyze": "vendor/bin/phpstan analyse --memory-limit=2G -v",

@@ -130,7 +130,7 @@ class AppPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 CaptureUserOnlineStatus::class,
                 CheckUserApprovalStatus::class,
-                PreventAccessFromCentralDomains::class,
+                //PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
             ])
             ->authMiddleware([

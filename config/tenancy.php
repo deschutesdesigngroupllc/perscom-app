@@ -12,6 +12,7 @@ return [
     'tenant_model' => Tenant::class,
     'id_generator' => null,
     'domain_model' => Domain::class,
+    'enabled' => (bool) env('TENANT_ENABLED', false),
 
     /**
      * The list of domains hosting your central app.

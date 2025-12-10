@@ -30,6 +30,11 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        if (! config('tenancy.enabled')) {
+            return $panel
+                ->id('admin');
+        }
+
         return $panel
             ->id('admin')
             ->path('admin')
