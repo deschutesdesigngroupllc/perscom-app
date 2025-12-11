@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Tenant;
+use App\Models\User;
 use Database\Seeders\ApiKeySeeder;
 use Database\Seeders\CentralDatabaseSeeder;
 use Database\Seeders\FireServiceSeeder;
@@ -17,12 +18,14 @@ use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
-class ResetCommand extends Command implements Isolatable
+use function Laravel\Prompts\table;
+
+class InstallCommand extends Command implements Isolatable
 {
-    protected $signature = 'perscom:reset
+    protected $signature = 'perscom:install
                             {--seeder=military : The seeder to use. Default: military}';
 
-    protected $description = "Reset's the perscom application.";
+    protected $description = 'Install the PERSCOM application.';
 
     /**
      * @throws DatabaseManagerNotRegisteredException
@@ -143,6 +146,21 @@ class ResetCommand extends Command implements Isolatable
             '--tenants' => $tenant->getTenantKey(),
             '--class' => ApiKeySeeder::class,
         ]);
+
+        $this->components->success('PERSCOM successfully installed.');
+        $this->components->info('Available tenants:');
+
+        table(['ID', 'Tenant', 'URL'], Tenant::all()->map(function (Tenant $tenant) {
+            return [$tenant->getTenantKey(), $tenant->name, $tenant->url];
+        }));
+
+        $this->components->info('Available user accounts:');
+
+        table(['ID', 'Name', 'Email', 'Roles', 'Password'], Tenant::first()->run(function () {
+            return User::all()->map(function (User $user) {
+                return [$user->id, $user->name, $user->email, $user->roles->map->name->implode(', '), '---'];
+            });
+        }));
 
         return static::SUCCESS;
     }

@@ -158,7 +158,8 @@
       "@php artisan passport:keys --force",
       "@php artisan migrate --force",
       "npm install",
-      "npm run build"
+      "npm run build",
+      "@php artisan perscom:install"
     ],
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "analyze": "vendor/bin/phpstan analyse --memory-limit=2G -v",

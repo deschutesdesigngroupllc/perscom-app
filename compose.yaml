@@ -3,6 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: development
+      args:
+        USER_ID: ${UID:-33}
+        GROUP_ID: ${GID:-33}
     depends_on:
       - mysql
     ports:
@@ -10,7 +14,6 @@ services:
     volumes:
       - ./:/var/www/html
     environment:
-      APP_URL: "http://localhost"
       DB_HOST: "mysql"
       REDIS_HOST: "redis"
       PHP_UPLOAD_MAX_FILE_SIZE: "250M"
