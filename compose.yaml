@@ -1,0 +1,106 @@
+services:
+  perscom:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        USER_ID: "${UID:-33}"
+        GROUP_ID: "${GID:-33}"
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - 80:8080
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_CONNECTION: '${DB_CONNECTION:-mysql}'
+      DB_DATABASE: '${DB_DATABASE:-perscom}'
+      DB_USERNAME: '${DB_USERNAME:-root}'
+      DB_HOST: "mysql"
+      REDIS_HOST: "redis"
+      PHP_UPLOAD_MAX_FILE_SIZE: "250M"
+      PHP_OPCACHE_ENABLE: "0"
+    networks:
+      - perscom
+
+  mysql:
+    image: 'mysql:8.4'
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: '${DB_DATABASE:-perscom}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_EXTRA_OPTIONS: '${MYSQL_EXTRA_OPTIONS:-}'
+    volumes:
+      - 'mysql:/var/lib/mysql'
+    networks:
+      - perscom
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+      retries: 3
+      timeout: 5s
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - 6379:6379
+    volumes:
+      - 'redis:/data'
+    environment:
+      DB_HOST: "mysql"
+      REDIS_HOST: "redis"
+    networks:
+      - perscom
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+  horizon:
+    image: serversideup/php:8.4-cli
+    depends_on:
+      - perscom
+      - redis
+      - mysql
+    volumes:
+      - ./:/var/www/html
+    environment:
+      DB_HOST: "mysql"
+      REDIS_HOST: "redis"
+    command: [ "php", "/var/www/html/artisan", "horizon" ]
+    stop_signal: SIGTERM
+    networks:
+      - perscom
+    healthcheck:
+      test: [ "CMD", "healthcheck-horizon" ]
+      start_period: 10s
+
+  scheduler:
+    image: serversideup/php:8.4-cli
+    depends_on:
+      - perscom
+      - mysql
+    volumes:
+      - ./:/var/www/html
+    command: [ "php", "/var/www/html/artisan", "schedule:work" ]
+    stop_signal: SIGTERM
+    networks:
+      - perscom
+    healthcheck:
+      test: [ "CMD", "healthcheck-schedule" ]
+      start_period: 10s
+
+networks:
+  perscom:
+    driver: bridge
+
+volumes:
+  mysql:
+  redis:

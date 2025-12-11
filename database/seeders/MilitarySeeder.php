@@ -228,9 +228,9 @@ class MilitarySeeder extends Seeder
             ->each(function (Award $award) {
                 $path = "$award->name.png";
 
-                if (! Storage::disk('s3')->exists($path)) {
+                if (! Storage::exists($path)) {
                     if ($file = file_get_contents(storage_path("app/images/awards/$award->name.png"))) {
-                        Storage::disk('s3')->put(
+                        Storage::put(
                             path: $path,
                             contents: $file,
                             options: 'public'
@@ -340,9 +340,9 @@ class MilitarySeeder extends Seeder
             ->each(function (Rank $rank) {
                 $path = "$rank->abbreviation.svg";
 
-                if (! Storage::disk('s3')->exists($path)) {
+                if (! Storage::exists($path)) {
                     if ($file = file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg"))) {
-                        Storage::disk('s3')->put(
+                        Storage::put(
                             path: $path,
                             contents: $file,
                             options: 'public'

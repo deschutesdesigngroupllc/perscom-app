@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Support\JwtAuth\Providers;
 use App\Models\User;
 use App\Settings\IntegrationSettings;
 use App\Support\JwtAuth\Providers\CustomJwtProvider;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -57,8 +58,8 @@ class CustomJwtProviderTest extends TenantTestCase
         );
 
         $token = $config->builder()
-            ->issuedAt(\Carbon\CarbonImmutable::now())
-            ->canOnlyBeUsedAfter(\Carbon\CarbonImmutable::now())
+            ->issuedAt(CarbonImmutable::now())
+            ->canOnlyBeUsedAfter(CarbonImmutable::now())
             ->expiresAt(now()->addHour()->toDateTimeImmutable())
             ->relatedTo((string) $user->getKey())
             ->withClaim('scopes', ['*'])
@@ -104,8 +105,8 @@ class CustomJwtProviderTest extends TenantTestCase
         );
 
         $token = $config->builder()
-            ->issuedAt(\Carbon\CarbonImmutable::now())
-            ->canOnlyBeUsedAfter(\Carbon\CarbonImmutable::now())
+            ->issuedAt(CarbonImmutable::now())
+            ->canOnlyBeUsedAfter(CarbonImmutable::now())
             ->expiresAt(now()->addHour()->toDateTimeImmutable())
             ->relatedTo((string) $user->getKey())
             ->withClaim('scopes', ['*'])

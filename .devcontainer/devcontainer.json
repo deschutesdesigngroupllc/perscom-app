@@ -2,25 +2,37 @@
 {
 	"name": "Existing Docker Compose (Extend)",
 	"dockerComposeFile": [
-		"../docker-compose.yml"
+		"../compose.yaml"
 	],
-	"service": "laravel.test",
+	"service": "perscom",
 	"workspaceFolder": "/var/www/html",
-	"customizations": {
+  "customizations": {
 		"vscode": {
 			"extensions": [
-				// "mikestead.dotenv",
-				// "amiralizadeh9480.laravel-extra-intellisense",
-				// "ryannaddy.laravel-artisan",
-				// "onecentlin.laravel5-snippets",
-				// "onecentlin.laravel-blade"
+        "mikestead.dotenv",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "ryannaddy.laravel-artisan",
+        "onecentlin.laravel-blade",
+        "onecentlin.laravel5-snippets"
 			],
 			"settings": {}
 		}
 	},
-	"remoteUser": "sail",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true"
-	// "forwardPorts": [],
-	// "runServices": [],
-	// "shutdownAction": "none",
+  "containerEnv": {
+    "COMPOSER_AUTH": "${codespaces:COMPOSER_AUTH}"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "forwardPorts": [
+    8080,
+    3306,
+    6379
+  ],
+  "postStartCommand": "/var/www/html/.devcontainer/bootstrap.sh",
+  "runServices": [
+    "perscom",
+    "mysql",
+    "redis"
+  ],
 }

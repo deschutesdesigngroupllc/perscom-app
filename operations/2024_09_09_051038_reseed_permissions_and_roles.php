@@ -17,6 +17,10 @@ return new class extends OneTimeOperation
     {
         $tenantIds = Tenant::pluck('id')->toArray();
 
+        if (empty($tenantIds)) {
+            return;
+        }
+
         $numChunks = 10;
         $chunkSize = ceil(count($tenantIds) / $numChunks);
         $tenantChunks = array_chunk($tenantIds, (int) $chunkSize);

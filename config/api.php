@@ -31,7 +31,7 @@ return [
     |
     */
 
-    'url' => env('API_URL', 'http://api.lvh.me'),
+    'url' => env('API_URL', 'http://api.localhost'),
 
     /*
     |--------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 name: Static Analysis and Linter
 
 on:
+  workflow_dispatch:
   pull_request:
 
 jobs:
@@ -11,34 +12,21 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v3
-
-      - name: Install NCC
-        run: npm install -g @vercel/ncc
+        uses: actions/checkout@v6
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: 22
           cache: 'npm'
 
       - name: Install Javascript Dependencies
         run: npm ci
 
-      - name: Build Alpine.js Components
-        run: |
-          for dir in resources/js/components/*/; do
-            echo "Building component in $dir"
-            cd $dir || continue
-            dirname=$(basename "$dir")
-            ncc build index.js -o "../../dist/components/$dirname" -m
-            cd - > /dev/null || continue
-          done
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: 8.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           ini-values: error_reporting=E_ALL
           tools: composer
@@ -50,14 +38,8 @@ jobs:
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-      - name: Configure Composer Authentication
-        run: |
-          composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
-          composer config http-basic.whizzy.dev ${{ secrets.FILAMENT_USERNAME }} ${{ secrets.FILAMENT_PASSWORD }}
-          composer config http-basic.filament-filter-sets.composer.sh ${{ secrets.FILTER_SETS_USERNAME }} ${{ secrets.FILTER_SETS_PASSWORD }}
-
       - name: Composer Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -66,12 +48,14 @@ jobs:
 
       - name: Install PHP Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Build Project
         run: npm run build
 
       - name: Rector Cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: /tmp/rector
           key: ${{ runner.os }}-rector-${{ github.run_id }}
