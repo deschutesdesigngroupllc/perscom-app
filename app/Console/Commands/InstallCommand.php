@@ -147,20 +147,24 @@ class InstallCommand extends Command implements Isolatable
             '--class' => ApiKeySeeder::class,
         ]);
 
-        $this->components->success('PERSCOM successfully installed.');
         $this->components->info('Available tenants:');
 
-        table(['ID', 'Tenant', 'URL'], Tenant::all()->map(function (Tenant $tenant) {
-            return [$tenant->getTenantKey(), $tenant->name, $tenant->url];
-        }));
+        table(['ID', 'Tenant', 'URL'], Tenant::all()->map(fn (Tenant $tenant): array => [$tenant->getTenantKey(), $tenant->name, $tenant->url]));
 
         $this->components->info('Available user accounts:');
 
-        table(['ID', 'Name', 'Email', 'Roles', 'Password'], Tenant::first()->run(function () {
-            return User::all()->map(function (User $user) {
-                return [$user->id, $user->name, $user->email, $user->roles->map->name->implode(', '), '---'];
-            });
-        }));
+        table(['ID', 'Name', 'Email', 'Roles', 'Password'], Tenant::first()->run(fn () => User::all()->map(fn (User $user): array => [$user->id, $user->name, $user->email, $user->roles->map->name->implode(', '), '---'])));
+
+        $this->components->info('Application URLs:');
+
+        table(['URL', 'Purpose'], [
+            [route('web.landing.home'), 'Main Landing Page'],
+            [config('api.url').DIRECTORY_SEPARATOR.config('api.version'), 'API Base URL'],
+            [route('filament.admin.pages.dashboard'), 'Administrative Dashboard'],
+            [Tenant::first()->url, 'Tenant Dashboard'],
+        ]);
+
+        $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');
 
         return static::SUCCESS;
     }
