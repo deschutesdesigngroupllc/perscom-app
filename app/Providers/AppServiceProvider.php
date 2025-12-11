@@ -29,8 +29,6 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
@@ -245,10 +243,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
-
-        FilamentAsset::register([
-            AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),
-        ]);
 
         FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
             ->afterLast('Resources\\')
