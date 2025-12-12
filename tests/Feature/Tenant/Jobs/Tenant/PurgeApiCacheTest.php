@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Tenant\Jobs;
+namespace Tests\Feature\Tenant\Jobs\Tenant;
 
 use App\Jobs\Tenant\PurgeApiCache;
 use App\Models\Rank;

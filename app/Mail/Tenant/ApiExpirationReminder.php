@@ -18,8 +18,8 @@ class ApiExpirationReminder extends Mailable
     use SerializesModels;
 
     public function __construct(
-        protected string $name,
-        protected Carbon $expiresAt,
+        public string $name,
+        public Carbon $expiresAt,
     ) {
         //
     }
