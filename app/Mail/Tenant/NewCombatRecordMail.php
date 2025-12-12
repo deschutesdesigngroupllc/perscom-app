@@ -24,7 +24,7 @@ class NewCombatRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-combat-record')
-            ->subject('New Combat Record')
+            ->subject('You have a new combat record')
             ->with([
                 'text' => $this->combatRecord->text,
                 'url' => $this->url,

@@ -17,6 +17,6 @@ class DeleteAccountOneWeek extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.system.delete-account-one-week')
-            ->subject('Account Deletion Warning - One Week Warning');
+            ->subject('Your account will be deleted in one week');
     }
 }

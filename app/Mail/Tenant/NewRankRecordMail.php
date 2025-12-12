@@ -24,7 +24,7 @@ class NewRankRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-rank-record')
-            ->subject('New Rank Record')
+            ->subject('You have received a new rank')
             ->with([
                 'rank' => $this->rankRecord->rank?->name,
                 'text' => $this->rankRecord->text,

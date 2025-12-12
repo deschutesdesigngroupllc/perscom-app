@@ -24,7 +24,7 @@ class NewTaskAssignmentMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-task-assignment')
-            ->subject('New Task Assignment')
+            ->subject('You have been assigned a new task')
             ->with([
                 'task' => $this->taskAssignment->task?->title,
                 'due' => $this->taskAssignment->due_at ? Carbon::parse($this->taskAssignment->due_at)->toDayDateTimeString() : 'No Due Date',

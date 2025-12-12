@@ -24,7 +24,7 @@ class TenantCreatedMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.admin.tenant.new')
-            ->subject('New Tenant Created')
+            ->subject('A new tenant organization has been created')
             ->with([
                 'organization' => $this->tenant->name,
                 'email' => $this->tenant->email,

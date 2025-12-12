@@ -28,10 +28,12 @@ class NewTenantMail extends Mailable implements ShouldQueue
 
     public function build(): static
     {
-        return $this->markdown('emails.tenant.new')->subject('Your Organization Is Now Ready')->with([
-            'url' => $this->url,
-            'email' => $this->email,
-            'password' => $this->password,
-        ]);
+        return $this->markdown('emails.tenant.new')
+            ->subject('Your organization is now ready')
+            ->with([
+                'url' => $this->url,
+                'email' => $this->email,
+                'password' => $this->password,
+            ]);
     }
 }

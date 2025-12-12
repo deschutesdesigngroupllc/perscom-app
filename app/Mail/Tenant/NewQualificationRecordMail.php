@@ -24,7 +24,7 @@ class NewQualificationRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-qualification-record')
-            ->subject('New Qualification Record')
+            ->subject('You have a new qualification record')
             ->with([
                 'qualification' => $this->qualificationRecord->qualification?->name,
                 'text' => $this->qualificationRecord->text,

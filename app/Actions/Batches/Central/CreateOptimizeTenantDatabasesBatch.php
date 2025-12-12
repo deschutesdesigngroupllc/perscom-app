@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Batches;
+namespace App\Actions\Batches\Central;
 
-use App\Jobs\Tenant\BackupDatabase;
+use App\Jobs\Tenant\OptimizeDatabase;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class BackupTenantDatabases
+class CreateOptimizeTenantDatabasesBatch
 {
     /**
      * @throws Throwable
@@ -19,13 +19,13 @@ class BackupTenantDatabases
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): BackupDatabase => new BackupDatabase(
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): OptimizeDatabase => new OptimizeDatabase(
                 tenantKey: $tenant->getKey()
             ))
         )->name(
-            name: 'Backup Tenant Databases'
+            name: 'Optimize Tenant Database'
         )->onQueue(
-            queue: 'backup'
+            queue: 'clean'
         )->onConnection(
             connection: 'central'
         )->dispatch();

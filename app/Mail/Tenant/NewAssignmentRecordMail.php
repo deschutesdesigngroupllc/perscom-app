@@ -24,7 +24,7 @@ class NewAssignmentRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-assignment-record')
-            ->subject('New Assignment Record')
+            ->subject('You have a new assignment record')
             ->with([
                 'status' => $this->assignmentRecord->status?->name,
                 'unit' => $this->assignmentRecord->unit?->name,

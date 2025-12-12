@@ -22,7 +22,7 @@ class TenantDeletedMail extends Mailable
     public function build(): static
     {
         return $this->markdown('emails.admin.tenant.deleted')
-            ->subject('Tenant Deleted')
+            ->subject('A tenant organization has been deleted')
             ->with([
                 'organization' => $this->tenant,
                 'email' => $this->email,

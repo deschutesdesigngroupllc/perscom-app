@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\SendTenantUpcomingEventNotifications;
+use App\Actions\Batches\Central\CreateSendUpcomingEventNotificationsBatch;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +19,7 @@ class SendUpcomingEventNotificationsCommand extends Command
      */
     public function handle(): int
     {
-        SendTenantUpcomingEventNotifications::handle();
+        CreateSendUpcomingEventNotificationsBatch::handle();
 
         $this->info('The event notification job has been dispatched.');
 

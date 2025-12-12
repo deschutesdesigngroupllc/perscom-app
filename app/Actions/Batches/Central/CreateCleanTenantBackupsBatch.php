@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Batches;
+namespace App\Actions\Batches\Central;
 
-use App\Jobs\Tenant\SendUpcomingEventNotifications;
+use App\Jobs\Tenant\CleanBackups;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class SendTenantUpcomingEventNotifications
+class CreateCleanTenantBackupsBatch
 {
     /**
      * @throws Throwable
@@ -19,13 +19,13 @@ class SendTenantUpcomingEventNotifications
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): SendUpcomingEventNotifications => new SendUpcomingEventNotifications(
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): CleanBackups => new CleanBackups(
                 tenantKey: $tenant->getKey()
             ))
         )->name(
-            name: 'Send Tenant Upcoming Event Notifications'
+            name: 'Clean Tenant Backups'
         )->onQueue(
-            queue: 'default'
+            queue: 'backup'
         )->onConnection(
             connection: 'central'
         )->dispatch();

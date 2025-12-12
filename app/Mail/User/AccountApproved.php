@@ -25,7 +25,7 @@ class AccountApproved extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.user.account-approved')
-            ->subject('Account Approved')
+            ->subject('Your account has been approved')
             ->with([
                 'url' => $this->url,
             ]);

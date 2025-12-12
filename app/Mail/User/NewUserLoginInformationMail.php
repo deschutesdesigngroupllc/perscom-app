@@ -29,7 +29,7 @@ class NewUserLoginInformationMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.user.new-login')
-            ->subject('Your New Account Information')
+            ->subject('Your new account is ready')
             ->with([
                 'url' => $this->url,
                 'email' => $this->email,

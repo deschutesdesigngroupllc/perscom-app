@@ -19,7 +19,7 @@ class PasswordChangedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Password Changed',
+            subject: 'Your password has been changed',
         );
     }
 

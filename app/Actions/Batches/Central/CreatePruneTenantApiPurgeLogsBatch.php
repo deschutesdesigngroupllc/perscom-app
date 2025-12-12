@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Batches;
+namespace App\Actions\Batches\Central;
 
 use App\Jobs\Tenant\PruneApiPurgeLogs;
 use App\Models\Tenant;
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class PruneTenantApiPurgeLogs
+class CreatePruneTenantApiPurgeLogsBatch
 {
     /**
      * @throws Throwable

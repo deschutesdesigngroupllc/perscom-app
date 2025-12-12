@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\CalculateTenantSchedules;
+use App\Actions\Batches\Central\CreateCalculateTenantSchedulesBatch;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +19,7 @@ class CalculateSchedulesCommand extends Command
      */
     public function handle(): int
     {
-        CalculateTenantSchedules::handle();
+        CreateCalculateTenantSchedulesBatch::handle();
 
         $this->info('The schedule job has been dispatched.');
 

@@ -17,6 +17,6 @@ class DeleteAccount extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.system.delete-account')
-            ->subject('Account Deleted');
+            ->subject('Your account has been deleted');
     }
 }
