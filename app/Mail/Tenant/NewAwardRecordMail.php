@@ -24,7 +24,7 @@ class NewAwardRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-award-record')
-            ->subject('New Award Record')
+            ->subject('You have received a new award')
             ->with([
                 'award' => $this->awardRecord->award?->name,
                 'text' => $this->awardRecord->text,

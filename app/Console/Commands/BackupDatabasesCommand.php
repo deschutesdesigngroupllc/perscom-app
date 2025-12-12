@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\BackupTenantDatabases;
+use App\Actions\Batches\Central\CreateBackupTenantDatabasesBatch;
 use App\Jobs\Central\BackupDatabase;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
@@ -21,7 +21,7 @@ class BackupDatabasesCommand extends Command implements Isolatable
      */
     public function handle(): int
     {
-        BackupTenantDatabases::handle();
+        CreateBackupTenantDatabasesBatch::handle();
 
         BackupDatabase::dispatch();
 

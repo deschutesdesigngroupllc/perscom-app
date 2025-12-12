@@ -24,7 +24,7 @@ class DomainCreatedMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.system.domain-created')
-            ->subject('Domain Successfully Created')
+            ->subject('Your domain has been successfully created')
             ->with([
                 'url' => $url = $this->domain->url,
                 'fallback_url' => $fallback = $this->domain->tenant->fallback_url,

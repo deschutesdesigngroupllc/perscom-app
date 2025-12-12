@@ -51,7 +51,7 @@ class UpcomingEvent extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Upcoming Event: '.$this->title,
+            subject: 'You have an upcoming event: '.$this->title,
         );
     }
 

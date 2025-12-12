@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\CleanTenantBackups;
+use App\Actions\Batches\Central\CreateCleanTenantBackupsBatch;
 use App\Jobs\Central\CleanBackups;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
@@ -21,7 +21,7 @@ class CleanBackupsCommand extends Command implements Isolatable
      */
     public function handle(): int
     {
-        CleanTenantBackups::handle();
+        CreateCleanTenantBackupsBatch::handle();
 
         CleanBackups::dispatch();
 

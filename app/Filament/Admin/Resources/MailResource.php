@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Actions\Batches\SendTenantMassEmails;
+use App\Actions\Batches\Central\CreateSendTenantMassEmailsBatch;
 use App\Filament\Admin\Resources\MailResource\Pages\CreateMail;
 use App\Filament\Admin\Resources\MailResource\Pages\EditMail;
 use App\Filament\Admin\Resources\MailResource\Pages\ListMails;
@@ -115,7 +115,7 @@ class MailResource extends Resource
                     ->successNotificationTitle('The email has been queued for sending.')
                     ->icon('heroicon-o-arrow-path')
                     ->action(function (Mail $record, Action $action): void {
-                        SendTenantMassEmails::handle($record);
+                        CreateSendTenantMassEmailsBatch::handle($record);
                         $action->success();
                     })
                     ->visible(fn (Mail $record): bool => (

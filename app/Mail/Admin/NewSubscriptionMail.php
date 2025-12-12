@@ -26,7 +26,7 @@ class NewSubscriptionMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Subscription',
+            subject: 'A new subscription has been created',
         );
     }
 

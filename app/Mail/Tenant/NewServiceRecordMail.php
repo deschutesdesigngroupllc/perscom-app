@@ -24,7 +24,7 @@ class NewServiceRecordMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.new-service-record')
-            ->subject('New Service Record')
+            ->subject('You have a new service record')
             ->with([
                 'text' => $this->serviceRecord->text,
                 'url' => $this->url,

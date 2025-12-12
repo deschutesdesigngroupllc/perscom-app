@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Batches;
+namespace App\Actions\Batches\Central;
 
 use App\Jobs\Central\SendMassEmail;
 use App\Models\Mail;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class SendTenantMassEmails
+class CreateSendTenantMassEmailsBatch
 {
     /**
      * @throws Throwable

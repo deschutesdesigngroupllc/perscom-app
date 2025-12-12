@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\OptimizeTenantDatabases;
+use App\Actions\Batches\Central\CreateOptimizeTenantDatabasesBatch;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
@@ -28,7 +28,7 @@ class OptimizeDatabasesCommand extends Command implements Isolatable
             return Command::FAILURE;
         }
 
-        OptimizeTenantDatabases::handle();
+        CreateOptimizeTenantDatabasesBatch::handle();
 
         $this->info('The optimize database jobs have been dispatched.');
 

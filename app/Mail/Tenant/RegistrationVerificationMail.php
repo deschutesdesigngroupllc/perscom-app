@@ -26,7 +26,7 @@ class RegistrationVerificationMail extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.tenant.verification')
-            ->subject('Verify Your Organization Registration')
+            ->subject('Please verify your organization registration')
             ->with([
                 'verificationUrl' => $this->verificationUrl,
             ]);

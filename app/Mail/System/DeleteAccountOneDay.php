@@ -17,6 +17,6 @@ class DeleteAccountOneDay extends Mailable implements ShouldQueue
     public function build(): static
     {
         return $this->markdown('emails.system.delete-account-one-day')
-            ->subject('Account Deletion Warning - Final Notice');
+            ->subject('Your account will be deleted tomorrow - Final notice');
     }
 }

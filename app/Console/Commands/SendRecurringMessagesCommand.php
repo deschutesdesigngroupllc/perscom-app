@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\SendTenantRecurringMessages;
+use App\Actions\Batches\Central\CreateSendTenantRecurringMessagesBatch;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +19,7 @@ class SendRecurringMessagesCommand extends Command
      */
     public function handle(): int
     {
-        SendTenantRecurringMessages::handle();
+        CreateSendTenantRecurringMessagesBatch::handle();
 
         $this->info('The recurring messages job has been dispatched.');
 
