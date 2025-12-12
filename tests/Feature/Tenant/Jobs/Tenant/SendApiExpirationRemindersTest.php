@@ -25,9 +25,7 @@ class SendApiExpirationRemindersTest extends TenantTestCase
         $job = new SendApiExpirationReminders($this->tenant->getKey());
         $job->handle();
 
-        Mail::assertSent(ApiExpirationReminder::class, function (ApiExpirationReminder $mail): bool {
-            return $mail->expiresAt->isSameDay(now()->addMonth());
-        });
+        Mail::assertSent(ApiExpirationReminder::class, fn (ApiExpirationReminder $mail): bool => $mail->expiresAt->isSameDay(now()->addMonth()));
     }
 
     public function test_sends_email_for_tokens_expiring_in_one_day(): void
@@ -42,9 +40,7 @@ class SendApiExpirationRemindersTest extends TenantTestCase
         $job = new SendApiExpirationReminders($this->tenant->getKey());
         $job->handle();
 
-        Mail::assertSent(ApiExpirationReminder::class, function (ApiExpirationReminder $mail): bool {
-            return $mail->expiresAt->isSameDay(now()->addDay());
-        });
+        Mail::assertSent(ApiExpirationReminder::class, fn (ApiExpirationReminder $mail): bool => $mail->expiresAt->isSameDay(now()->addDay()));
     }
 
     public function test_sends_emails_with_correct_token_names(): void
@@ -60,9 +56,7 @@ class SendApiExpirationRemindersTest extends TenantTestCase
         $job = new SendApiExpirationReminders($this->tenant->getKey());
         $job->handle();
 
-        Mail::assertSent(ApiExpirationReminder::class, function (ApiExpirationReminder $mail) use ($tokenName): bool {
-            return $mail->name === $tokenName;
-        });
+        Mail::assertSent(ApiExpirationReminder::class, fn (ApiExpirationReminder $mail): bool => $mail->name === $tokenName);
     }
 
     public function test_does_not_send_email_for_tokens_expiring_later(): void
@@ -137,9 +131,7 @@ class SendApiExpirationRemindersTest extends TenantTestCase
         $job = new SendApiExpirationReminders($this->tenant->getKey());
         $job->handle();
 
-        Mail::assertSent(ApiExpirationReminder::class, function (ApiExpirationReminder $mail): bool {
-            return $mail->hasTo($this->tenant->email);
-        });
+        Mail::assertSent(ApiExpirationReminder::class, fn (ApiExpirationReminder $mail): bool => $mail->hasTo($this->tenant->email));
     }
 
     public function test_job_uses_central_connection(): void
