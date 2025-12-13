@@ -34,17 +34,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.4
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
-          coverage: none
-          tools: composer
-
-      - name: Require Forge CLI
-        run: composer global require laravel/forge-cli
-
       - name: Setup Node
         uses: actions/setup-node@v6
         with:
@@ -53,6 +42,37 @@ jobs:
 
       - name: Install Javascript Dependencies
         run: npm ci
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, :psr
+          ini-values: error_reporting=E_ALL, xdebug.mode="develop,coverage"
+          tools: composer
+          coverage: xdebug
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Composer Cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Require Forge CLI
+        run: composer global require laravel/forge-cli
+
+      - name: Install PHP Dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Build Project
         run: npm run build
