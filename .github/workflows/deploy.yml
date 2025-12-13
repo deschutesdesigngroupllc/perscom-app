@@ -127,7 +127,8 @@ jobs:
         with:
           api-token: ${{ secrets.FASTLY_TOKEN_PRODUCTION }}
           service-id: ${{ secrets.FASTLY_SERVICE_PRODUCTION }}
-          target: ${{ secrets.FASTLY_URL_PRODUCTION }}
+          target: single-url
+          url: ${{ secrets.FASTLY_URL_PRODUCTION }}
           soft: true
 
   staging:
