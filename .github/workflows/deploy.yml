@@ -1,13 +1,12 @@
 name: Deploy Application
 
 env:
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: us-east-1
-
+  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+  SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+  SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 on:
   workflow_dispatch:
   push:
@@ -71,6 +70,34 @@ jobs:
           DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PRODUCTION }}
           PATHS: "/*"
 
+      - name: Purge Cloudflare Cache
+        uses: nathanvaughn/actions-cloudflare-purge@v4.0.0
+        with:
+          cf_zone: ${{ secrets.CLOUDFLARE_ZONE }}
+          cf_auth: ${{ secrets.CLOUDFLARE_API_KEY }}
+          hosts: |
+            perscom.io
+
+      - name: Detect API Related Changes
+        id: api-changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            api:
+              - app/Models/**
+              - app/Http/Controllers/Api/**
+              - app/Http/Requests/Api/**
+              - config/api.php
+
+      - name: Purge Fastly Cache
+        uses: yukukotani/fastly-purge-action@v1
+        if: steps.api-changes.outputs.api == 'true'
+        with:
+          api-token: ${{ secrets.FASTLY_TOKEN_PRODUCTION }}
+          service-id: ${{ secrets.FASTLY_SERVICE_PRODUCTION }}
+          target: ${{ secrets.FASTLY_URL_PRODUCTION }}
+          soft: true
+
   staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
@@ -119,3 +146,32 @@ jobs:
         env:
           DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_STAGING }}
           PATHS: "/*"
+
+      - name: Purge Cloudflare Cache
+        uses: nathanvaughn/actions-cloudflare-purge@v4.0.0
+        with:
+          cf_zone: ${{ secrets.CLOUDFLARE_ZONE }}
+          cf_auth: ${{ secrets.CLOUDFLARE_API_KEY }}
+          hosts: |
+            staging.perscom.io
+
+      - name: Detect API Related Changes
+        id: api-changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            api:
+              - app/Models/**
+              - app/Http/Controllers/Api/**
+              - app/Http/Requests/Api/**
+              - config/api.php
+
+      - name: Purge Fastly Cache
+        uses: yukukotani/fastly-purge-action@v1
+        if: steps.api-changes.outputs.api == 'true'
+        with:
+          api-token: ${{ secrets.FASTLY_TOKEN_STAGING }}
+          service-id: ${{ secrets.FASTLY_SERVICE_STAGING }}
+          target: single-url
+          url: ${{ secrets.FASTLY_URL_STAGING }}
+          soft: true
