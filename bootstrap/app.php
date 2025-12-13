@@ -207,16 +207,17 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Schedule $schedule): void {
         $schedule->command('cache:prune-stale-tags')->hourly();
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
-        $schedule->command('queue:prune-failed --hours=96')->dailyAt('06:00'); // 11 PM
-        $schedule->command('queue:prune-batches --hours=96')->dailyAt('06:15'); // 11:15 PM
-        $schedule->command('telescope:prune --hours=96')->dailyAt('06:30'); // 11:30 PM
-        $schedule->command('perscom:prune --force')->environments(['staging', 'production'])->dailyAt('07:00'); // 12 AM
+        $schedule->command('queue:prune-failed --hours=96')->dailyAt('06:00'); // 10 PM
+        $schedule->command('queue:prune-batches --hours=96')->dailyAt('06:15'); // 10:15 PM
+        $schedule->command('telescope:prune --hours=96')->dailyAt('06:30'); // 10:30 PM
+        $schedule->command('perscom:prune --force')->environments(['staging', 'production'])->dailyAt('07:00'); // 11 PM
         $schedule->command('perscom:optimize --force')->environments(['staging', 'production'])->weeklyOn(Schedule::SATURDAY);
-        $schedule->command('perscom:backup-clean')->environments('production')->dailyAt('08:00'); // 1 AM
-        $schedule->command('perscom:backup')->environments('production')->dailyAt('09:00'); // 2 AM
-        $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('10:00'); // 3 AM
-        $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('10:00'); // 3 AM
-        $schedule->command('perscom:recurring-messages')->environments('production')->dailyAt('10:00'); // 3 AM
+        $schedule->command('perscom:backup-clean')->environments('production')->dailyAt('08:00'); // 12 AM
+        $schedule->command('perscom:backup')->environments('production')->dailyAt('09:00'); // 1 AM
+        $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('10:00'); // 2 AM
+        $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('10:00'); // 2 AM
+        $schedule->command('perscom:recurring-messages')->environments('production')->dailyAt('10:00'); // 2 AM
+        $schedule->command('perscom:api-expiration-reminders')->environments('production')->dailyAt('15:00'); // 8 AM
 
         $schedule->command(RunHealthChecksCommand::class)->environments('production')->everyMinute();
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();

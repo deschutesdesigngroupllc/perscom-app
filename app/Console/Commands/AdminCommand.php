@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 use function Laravel\Prompts\confirm;
-use function Laravel\Prompts\info;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
@@ -75,7 +74,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             'password' => $password,
         ]);
 
-        info('The admin has been successfully created.');
+        $this->components->success('The admin has been successfully created.');
 
         return static::SUCCESS;
     }
@@ -102,7 +101,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             'password' => Hash::make($password),
         ])->save();
 
-        info("The admin's password been successfully updated.");
+        $this->components->success("The admin's password been successfully updated.");
 
         return static::SUCCESS;
     }
@@ -126,7 +125,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
         if ($confirmed) {
             Admin::where('id', '=', $id)->delete();
 
-            info('The admin has been successfully deleted.');
+            $this->components->success('The admin has been successfully deleted.');
         }
 
         return static::SUCCESS;

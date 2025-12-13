@@ -21,7 +21,7 @@ class CalculateSchedulesCommand extends Command
     {
         CreateCalculateTenantSchedulesBatch::handle();
 
-        $this->info('The schedule job has been dispatched.');
+        $this->components->info('The schedule job has been dispatched.');
 
         return static::SUCCESS;
     }

@@ -18,7 +18,7 @@ class ApplicationVersionCommand extends Command
     {
         $currentApplicationVersion = $this->getApplicationVersion();
 
-        $this->info('The current application version is: '.$currentApplicationVersion);
+        $this->components->info('The current application version is: '.$currentApplicationVersion);
 
         if ($newVersion = $this->option('set')) {
             return $this->setApplicationVersion($newVersion);
@@ -30,7 +30,7 @@ class ApplicationVersionCommand extends Command
     public function setApplicationVersion(string $version): int
     {
         if (in_array(preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version), [0, false], true)) {
-            $this->error('The supplied version is not a valid SemVer version.');
+            $this->components->error('The supplied version is not a valid SemVer version.');
 
             return static::FAILURE;
         }
@@ -39,13 +39,15 @@ class ApplicationVersionCommand extends Command
 
         $escaped = preg_quote('='.config('app.version'), '/');
 
-        $this->info('Setting the current application version to: '.$version);
+        $this->components->info('Setting the current application version to: '.$version);
 
         file_put_contents($path, preg_replace(
             sprintf('/^APP_VERSION%s/m', $escaped),
             'APP_VERSION='.$version,
             file_get_contents($path)
         ));
+
+        $this->components->success('The application version has been successfully set to: '.$version);
 
         return static::SUCCESS;
     }

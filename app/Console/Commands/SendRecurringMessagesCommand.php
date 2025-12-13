@@ -21,7 +21,7 @@ class SendRecurringMessagesCommand extends Command
     {
         CreateSendTenantRecurringMessagesBatch::handle();
 
-        $this->info('The recurring messages job has been dispatched.');
+        $this->components->info('The recurring messages job has been dispatched.');
 
         return static::SUCCESS;
     }

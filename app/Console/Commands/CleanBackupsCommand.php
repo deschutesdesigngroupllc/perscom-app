@@ -25,7 +25,7 @@ class CleanBackupsCommand extends Command implements Isolatable
 
         CleanBackups::dispatch();
 
-        $this->info('The database cleanup jobs have been dispatched.');
+        $this->components->info('The database cleanup jobs have been dispatched.');
 
         return static::SUCCESS;
     }

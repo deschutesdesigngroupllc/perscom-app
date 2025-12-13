@@ -32,7 +32,7 @@ class PruneActivityLogsCommand extends Command
         $days = intval($this->option('days') ?? 30);
 
         if ($days < 0) {
-            $this->error('The days argument must not be negative.');
+            $this->components->error('The days argument must not be negative.');
 
             return Command::FAILURE;
         }
@@ -45,7 +45,7 @@ class PruneActivityLogsCommand extends Command
             days: $days,
         );
 
-        $this->info('The prune activity logs job has been dispatched to the queue.');
+        $this->components->info('The prune activity logs job has been dispatched to the queue.');
 
         return static::SUCCESS;
     }

@@ -21,7 +21,7 @@ class SendUpcomingEventNotificationsCommand extends Command
     {
         CreateSendUpcomingEventNotificationsBatch::handle();
 
-        $this->info('The event notification job has been dispatched.');
+        $this->components->info('The event notification job has been dispatched.');
 
         return static::SUCCESS;
     }

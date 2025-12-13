@@ -17,7 +17,7 @@ class RemoveInactiveAccountsCommand extends Command
     {
         RemoveInactiveAccounts::dispatch();
 
-        $this->info('The remove inactive accounts job has been dispatched to the queue.');
+        $this->components->info('The remove inactive accounts job has been dispatched to the queue.');
 
         return static::SUCCESS;
     }

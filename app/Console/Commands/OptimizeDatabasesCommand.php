@@ -30,7 +30,7 @@ class OptimizeDatabasesCommand extends Command implements Isolatable
 
         CreateOptimizeTenantDatabasesBatch::handle();
 
-        $this->info('The optimize database jobs have been dispatched.');
+        $this->components->info('The optimize database jobs have been dispatched.');
 
         return static::SUCCESS;
     }

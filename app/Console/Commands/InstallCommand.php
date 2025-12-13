@@ -42,11 +42,11 @@ class InstallCommand extends Command implements Isolatable
     {
         try {
             if (! Schema::hasTable('migrations') || ! Schema::hasTable('tenants')) {
-                $this->info('Initial migrations not found. Running initial migration setup...');
+                $this->components->info('Initial migrations not found. Running initial migration setup...');
                 $this->call('migrate', ['--step' => true]);
             }
         } catch (Exception) {
-            $this->info('Database not properly initialized. Running initial migration setup...');
+            $this->components->info('Database not properly initialized. Running initial migration setup...');
             $this->call('migrate', ['--step' => true]);
         }
     }
@@ -54,7 +54,7 @@ class InstallCommand extends Command implements Isolatable
     protected function resetDemoEnvironment(): int
     {
         if (! app()->environment('demo', 'testing', 'local')) {
-            $this->error('You may only run this command in the demo, testing or local environment.');
+            $this->components->error('You may only run this command in the demo, testing or local environment.');
 
             return static::FAILURE;
         }
@@ -70,7 +70,7 @@ class InstallCommand extends Command implements Isolatable
         $tenant = Tenant::find(config('demo.tenant_id'));
 
         if (! $tenant) {
-            $this->error('Please set a demo tenant ID in the demo config.');
+            $this->components->error('Please set a demo tenant ID in the demo config.');
 
             return static::FAILURE;
         }
@@ -98,7 +98,7 @@ class InstallCommand extends Command implements Isolatable
     protected function resetLocalEnvironment(): int
     {
         if (! app()->environment('local')) {
-            $this->error('You may only run this command in the local environment.');
+            $this->components->error('You may only run this command in the local environment.');
 
             return static::FAILURE;
         }
@@ -120,7 +120,7 @@ class InstallCommand extends Command implements Isolatable
         $tenant = Tenant::first();
 
         if (! $tenant) {
-            $this->error('We could not find a tenant to reset. Please try again.');
+            $this->components->error('We could not find a tenant to reset. Please try again.');
 
             return static::FAILURE;
         }

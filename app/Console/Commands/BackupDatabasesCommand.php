@@ -25,7 +25,7 @@ class BackupDatabasesCommand extends Command implements Isolatable
 
         BackupDatabase::dispatch();
 
-        $this->info('The database backup jobs have been dispatched.');
+        $this->components->info('The database backup jobs have been dispatched.');
 
         return static::SUCCESS;
     }
