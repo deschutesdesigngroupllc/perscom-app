@@ -45,6 +45,18 @@ jobs:
       - name: Require Forge CLI
         run: composer global require laravel/forge-cli
 
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
       - name: Deploy Application
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
@@ -56,8 +68,8 @@ jobs:
         uses: getsentry/action-release@v3
         with:
           environment: production
-          version: ${{ env.VERSION }}
-          sourcemaps: ./dist ./build/static/js
+          release: ${{ env.VERSION }}
+          sourcemaps: ./public/build/assets
 
       - name: Setup AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4.1.0
