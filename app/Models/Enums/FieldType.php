@@ -128,12 +128,13 @@ enum FieldType: string implements HasColor, HasLabel
             ->hidden($field->hidden)
             ->rules($field->rules ?? [])
             ->helperText($field->help)
+            ->default($field->default)
             ->required($field->required);
     }
 
-    public function getFilamentEntry(string $name): FieldEntry
+    public function getFilamentEntry(string $name, Field $field): FieldEntry
     {
-        return match ($this) {
+        $filament = match ($this) {
             FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge(),
             FieldType::FIELD_CODE => CodeEntry::make($name),
             FieldType::FIELD_COUNTRY, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE, FieldType::FIELD_SELECT => TextEntry::make($name),
@@ -141,5 +142,7 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_DATETIME => TextEntry::make($name)->dateTime(),
             FieldType::FIELD_COLOR => ColorEntry::make($name),
         };
+
+        return $filament->label($field->name);
     }
 }

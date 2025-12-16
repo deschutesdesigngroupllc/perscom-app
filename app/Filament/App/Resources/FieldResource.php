@@ -89,6 +89,10 @@ class FieldResource extends BaseResource
                                     ->required()
                                     ->live()
                                     ->columnSpanFull(),
+                                TextInput::make('default')
+                                    ->nullable()
+                                    ->columnSpanFull()
+                                    ->helperText('The default value of the field.'),
                                 Radio::make('options_type')
                                     ->validationAttribute('type')
                                     ->default(FieldOptionsType::Array)

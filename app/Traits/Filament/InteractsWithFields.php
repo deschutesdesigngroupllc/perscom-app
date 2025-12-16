@@ -38,7 +38,7 @@ trait InteractsWithFields
                 ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'));
         }
 
-        return $record->fields->map(fn (FieldModel $field): FieldEntry => $field->type->getFilamentEntry($field->key))->toArray();
+        return $record->fields->map(fn (FieldModel $field): FieldEntry => $field->type->getFilamentEntry($field->key, $field))->toArray();
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
