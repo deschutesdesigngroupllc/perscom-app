@@ -16,7 +16,9 @@ use App\Filament\Exports\CombatRecordExporter;
 use App\Forms\Components\ModelNotification;
 use App\Livewire\Filament\App\ViewDocument;
 use App\Models\CombatRecord;
+use App\Models\Field;
 use App\Models\User;
+use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -34,6 +36,7 @@ use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -101,6 +104,29 @@ class CombatRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
+                        Tab::make('Custom Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function () {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->combat_records);
+
+                                if ($fields->isEmpty()) {
+                                    return [
+                                        TextEntry::make('empty')
+                                            ->color(Color::Gray)
+                                            ->hiddenLabel()
+                                            ->columnSpanFull()
+                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
+                                    ];
+                                }
+
+                                return $fields
+                                    ->map(fn (int $fieldId) => Field::find($fieldId))
+                                    ->filter()
+                                    ->map(fn (Field $field) => $field->type->getFilamentField('data.'.$field->key, $field))
+                                    ->toArray();
+                            }),
                         Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
@@ -135,6 +161,29 @@ class CombatRecordResource extends BaseResource
                                     ->prose()
                                     ->columnSpanFull(),
                             ]),
+                        Tab::make('Custom Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function () {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->combat_records);
+
+                                if ($fields->isEmpty()) {
+                                    return [
+                                        TextEntry::make('empty')
+                                            ->color(Color::Gray)
+                                            ->hiddenLabel()
+                                            ->columnSpanFull()
+                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
+                                    ];
+                                }
+
+                                return $fields
+                                    ->map(fn (int $fieldId) => Field::find($fieldId))
+                                    ->filter()
+                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key))
+                                    ->toArray();
+                            }),
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([

@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Models\Enums;
 
+use App\Models\Country;
+use App\Models\Field;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Field as FieldComponent;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\ColorEntry;
+use Filament\Infolists\Components\Entry as FieldEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
@@ -79,25 +85,61 @@ enum FieldType: string implements HasColor, HasLabel
         };
     }
 
-    public function getFilamentField(): string
+    public function getFilamentField(string $name, Field $field): FieldComponent
     {
-        return match ($this) {
-            FieldType::FIELD_BOOLEAN => Checkbox::class,
-            FieldType::FIELD_CODE, FieldType::FIELD_TEXTAREA => Textarea::class,
-            FieldType::FIELD_COLOR => ColorPicker::class,
-            FieldType::FIELD_COUNTRY, FieldType::FIELD_SELECT, FieldType::FIELD_TIMEZONE => Select::class,
-            FieldType::FIELD_DATE => DatePicker::class,
-            FieldType::FIELD_DATETIME => DateTimePicker::class,
-            FieldType::FIELD_EMAIL, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXT => TextInput::class,
-            FieldType::FIELD_FILE => FileUpload::class,
+        $filament = match ($this) {
+            FieldType::FIELD_BOOLEAN => Checkbox::make($name),
+            FieldType::FIELD_CODE => CodeEditor::make($name),
+            FieldType::FIELD_TEXTAREA => Textarea::make($name),
+            FieldType::FIELD_COLOR => ColorPicker::make($name),
+            FieldType::FIELD_SELECT => Select::make($name)
+                ->options($field->options)
+                ->preload()
+                ->searchable(),
+            FieldType::FIELD_COUNTRY => Select::make($name)
+                ->preload()
+                ->searchable()
+                ->options(Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray()),
+            FieldType::FIELD_TIMEZONE => Select::make($name)
+                ->preload()
+                ->searchable()
+                ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])),
+            FieldType::FIELD_DATE => DatePicker::make($name),
+            FieldType::FIELD_DATETIME => DateTimePicker::make($name),
+            FieldType::FIELD_TEXT => TextInput::make($name),
+            FieldType::FIELD_EMAIL => TextInput::make($name)
+                ->autocomplete('email')
+                ->email(),
+            FieldType::FIELD_NUMBER => TextInput::make($name)
+                ->numeric(),
+            FieldType::FIELD_FILE => FileUpload::make($name)
+                ->previewable()
+                ->openable()
+                ->downloadable()
+                ->visibility('public'),
+            FieldType::FIELD_PASSWORD => TextInput::make($name)
+                ->autocomplete('current-password')
+                ->revealable()
+                ->password(),
         };
+
+        return $filament
+            ->label($field->name)
+            ->hidden($field->hidden)
+            ->rules($field->rules ?? [])
+            ->helperText($field->help)
+            ->required($field->required);
     }
 
-    public function getFilamentEntry(): string
+    public function getFilamentEntry(string $name): FieldEntry
     {
         return match ($this) {
-            FieldType::FIELD_BOOLEAN, FieldType::FIELD_CODE, FieldType::FIELD_COUNTRY, FieldType::FIELD_DATE, FieldType::FIELD_DATETIME, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_SELECT, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE => TextEntry::class,
-            FieldType::FIELD_COLOR => ColorEntry::class,
+            FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge(),
+            FieldType::FIELD_CODE => CodeEntry::make($name),
+            FieldType::FIELD_COUNTRY, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE, FieldType::FIELD_SELECT => TextEntry::make($name),
+            FieldType::FIELD_DATE => TextEntry::make($name)->date(),
+            FieldType::FIELD_DATETIME => TextEntry::make($name)->dateTime(),
+            FieldType::FIELD_COLOR => ColorEntry::make($name),
         };
     }
 }

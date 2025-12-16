@@ -4,92 +4,41 @@ declare(strict_types=1);
 
 namespace App\Traits\Filament;
 
-use App\Models\Country;
-use App\Models\Enums\FieldType;
-use Filament\Forms\Components\Field;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Resources\Pages\EditRecord;
+use App\Models\Field as FieldModel;
+use Filament\Forms\Components\Field as FieldComponent;
+use Filament\Infolists\Components\Entry as FieldEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Colors\Color;
 use Illuminate\Support\Arr;
 
-/**
- * @mixin EditRecord
- */
 trait InteractsWithFields
 {
     public static function getFormSchemaFromFields($record): array
     {
-        $fields = [];
-
         // @phpstan-ignore-next-line
         if (is_null($record) || blank($record->fields)) {
-            return Arr::wrap(Placeholder::make('no_fields')
+            return Arr::wrap(TextEntry::make('no_fields')
+                ->color(Color::Gray)
                 ->hiddenLabel()
-                ->content('There are no custom fields assigned to this resource.'));
+                ->columnSpanFull()
+                ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'));
         }
 
-        foreach ($record->fields as $field) {
-            /** @var Field $class */
-            $class = $field->type->getFilamentField();
+        return $record->fields->map(fn (FieldModel $field): FieldComponent => $field->type->getFilamentField('data.'.$field->key, $field))->toArray();
+    }
 
-            $filamentField = $class::make('data.'.$field->key)
-                ->label($field->name)
-                ->hidden($field->hidden)
-                ->rules($field->rules ?? [])
-                ->helperText($field->help)
-                ->required($field->required);
-
-            if ($field->type === FieldType::FIELD_SELECT && $filamentField instanceof Select) {
-                $filamentField = $filamentField
-                    ->options($field->options)
-                    ->searchable();
-            }
-
-            if ($field->type === FieldType::FIELD_EMAIL && $filamentField instanceof TextInput) {
-                $filamentField = $filamentField
-                    ->autocomplete('email')
-                    ->email();
-            }
-
-            if ($field->type === FieldType::FIELD_NUMBER && $filamentField instanceof TextInput) {
-                $filamentField = $filamentField
-                    ->numeric();
-            }
-
-            if ($field->type === FieldType::FIELD_PASSWORD && $filamentField instanceof TextInput) {
-                $filamentField = $filamentField
-                    ->autocomplete('current-password')
-                    ->password()
-                    ->revealable();
-            }
-
-            if ($field->type === FieldType::FIELD_COUNTRY && $filamentField instanceof Select) {
-                $filamentField = $filamentField
-                    ->preload()
-                    ->searchable()
-                    ->options(Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray());
-            }
-
-            if ($field->type === FieldType::FIELD_TIMEZONE && $filamentField instanceof Select) {
-                $filamentField = $filamentField
-                    ->searchable()
-                    ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone]));
-            }
-
-            if ($field->type === FieldType::FIELD_FILE && $filamentField instanceof FileUpload) {
-                $filamentField = $filamentField
-                    ->previewable()
-                    ->openable()
-                    ->downloadable()
-                    ->visibility('public');
-            }
-
-            $fields[] = $filamentField;
+    public static function getInfolistSchemaFromFields($record): array
+    {
+        // @phpstan-ignore-next-line
+        if (is_null($record) || blank($record->fields)) {
+            return Arr::wrap(TextEntry::make('no_fields')
+                ->color(Color::Gray)
+                ->hiddenLabel()
+                ->columnSpanFull()
+                ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'));
         }
 
-        return $fields;
+        return $record->fields->map(fn (FieldModel $field): FieldEntry => $field->type->getFilamentEntry($field->key))->toArray();
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
