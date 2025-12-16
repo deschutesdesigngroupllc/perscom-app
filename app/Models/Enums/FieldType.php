@@ -143,6 +143,8 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_COLOR => ColorEntry::make($name),
         };
 
-        return $filament->label($field->name);
+        return $filament
+            ->label($field->name)
+            ->placeholder($field->placeholder);
     }
 }
