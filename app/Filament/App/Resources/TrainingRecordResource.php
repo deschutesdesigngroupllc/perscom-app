@@ -200,7 +200,7 @@ class TrainingRecordResource extends BaseResource
                                 return $fields
                                     ->map(fn (int $fieldId) => Field::find($fieldId))
                                     ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key))
+                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key, $field))
                                     ->toArray();
                             }),
                         Tab::make('Details')
