@@ -427,6 +427,9 @@ class UserResource extends BaseResource
                     ->badge()
                     ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                     ->sortable(),
+                TextColumn::make('roles.name')
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->hidden(fn (): bool => in_array('created_at', $hiddenFields))
                     ->sortable(),
@@ -451,6 +454,10 @@ class UserResource extends BaseResource
                     ->multiple(),
                 SelectFilter::make('rank')
                     ->relationship('rank', 'name')
+                    ->preload()
+                    ->multiple(),
+                SelectFilter::make('roles.name')
+                    ->relationship('roles', 'name')
                     ->preload()
                     ->multiple(),
                 SelectFilter::make('status')

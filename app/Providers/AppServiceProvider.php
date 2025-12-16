@@ -188,7 +188,7 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                default => null,
+                default => $field->toggleable(),
             };
 
             return value($closure, $field);
