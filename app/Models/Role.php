@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
+use Spatie\Permission\Models\Role as BaseRole;
 
 /**
  * @property int $id
@@ -41,7 +42,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-class Role extends \Spatie\Permission\Models\Role
+class Role extends BaseRole
 {
     use ClearsResponseCache;
     use HasFactory;
