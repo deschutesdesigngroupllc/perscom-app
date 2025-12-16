@@ -336,6 +336,9 @@ class UserResource extends BaseResource
                                             ->listWithLineBreaks(),
                                     ]),
                             ]),
+                        Tab::make('Custom Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(fn (?User $record): array => UserResource::getInfolistSchemaFromFields($record)),
                         Tab::make('Qualifications')
                             ->icon('heroicon-o-star')
                             ->schema([
