@@ -245,13 +245,19 @@ class AppServiceProvider extends ServiceProvider
 
         ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
 
-        FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
-            ->afterLast('Resources\\')
-            ->before('Resource')
-            ->replace('\\', '')
-            ->lower()
-            ->replace('_', '')
-            ->toString());
+        //        FilamentShield::buildPermissionKeyUsing(
+        //            function (string $entity, string $affix, string $subject, string $case, string $separator) {
+        //
+        //            }
+        //        )
+        //
+        //        FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
+        //            ->afterLast('Resources\\')
+        //            ->before('Resource')
+        //            ->replace('\\', '')
+        //            ->lower()
+        //            ->replace('_', '')
+        //            ->toString());
 
         Field::configureUsing(function (Field $field) {
             $closure = match ($field->getName()) {
