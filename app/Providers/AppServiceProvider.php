@@ -306,7 +306,9 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::BODY_START,
-            hook: fn () => view('filament.render-hooks.body-start.subscription-banner'),
+            hook: fn () => config('cashier.secret')
+                ? view('filament.render-hooks.body-start.subscription-banner')
+                : null,
         );
 
         FilamentView::registerRenderHook(
