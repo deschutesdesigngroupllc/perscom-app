@@ -212,10 +212,11 @@ class MilitarySeeder extends Seeder
             )
             ->create()
             ->each(function (Award $award) {
-                $path = "boilerplate/$award->name.png";
+                $path = "awards/$award->name.png";
+                $image = storage_path("app/images/awards/$award->name.png");
 
-                if (! Storage::exists($path)) {
-                    if ($file = file_get_contents(storage_path("app/images/awards/$award->name.png"))) {
+                if (! Storage::exists($path) && file_exists($image)) {
+                    if ($file = file_get_contents($image)) {
                         Storage::put(
                             path: $path,
                             contents: $file,
@@ -280,7 +281,27 @@ class MilitarySeeder extends Seeder
                     'description' => 'Following successful completion of Special Forces Assessment and Selection (SFAS) and any other prerequisite courses, selected Soldiers will be scheduled to attend Special Forces Qualification Course (SFQC). SFQC focuses on core Special Forces tactical competencies in support of surgical strike and special warfare; Career Management Field 18 MOS classification; Survival, Evasion, Resistance and Escape (SERE); language proficiency; and regional cultural understanding. The qualification course consists of six sequential phases of training, upon completion of which Soldiers earn the right to join the Special Forces brotherhood, wear the Special Forces tab and don the green beret.',
                 ],
             )
-            ->create();
+            ->create()
+            ->each(function (Qualification $qualification) {
+                $path = "qualifications/$qualification->name.png";
+                $image = storage_path("app/images/qualifications/$qualification->name.png");
+
+                if (! Storage::exists($path) && file_exists($image)) {
+                    if ($file = file_get_contents($image)) {
+                        Storage::put(
+                            path: $path,
+                            contents: $file,
+                            options: 'public'
+                        );
+                    }
+                }
+
+                $qualification->image()->create([
+                    'path' => $path,
+                    'name' => $qualification->name,
+                    'filename' => "$qualification->name.png",
+                ]);
+            });
 
         $ranks = Rank::factory()
             ->count(7)
@@ -324,10 +345,11 @@ class MilitarySeeder extends Seeder
             )
             ->create()
             ->each(function (Rank $rank) {
-                $path = "boilerplate/$rank->abbreviation.svg";
+                $path = "ranks/$rank->abbreviation.svg";
+                $image = storage_path("app/images/ranks/$rank->name.png");
 
-                if (! Storage::exists($path)) {
-                    if ($file = file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg"))) {
+                if (! Storage::exists($path) && file_exists($image)) {
+                    if ($file = file_get_contents($image)) {
                         Storage::put(
                             path: $path,
                             contents: $file,
