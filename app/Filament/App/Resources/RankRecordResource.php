@@ -14,7 +14,6 @@ use App\Filament\App\Resources\RankRecordResource\RelationManagers\AttachmentsRe
 use App\Filament\App\Resources\RankRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\RankRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\Filament\App\ViewDocument;
 use App\Models\Enums\RankRecordType;
 use App\Models\Field;
 use App\Models\RankRecord;
@@ -34,7 +33,6 @@ use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -68,9 +66,9 @@ class RankRecordResource extends BaseResource
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Details')
+                        Tab::make('Rank Record')
                             ->columns()
-                            ->icon('heroicon-o-information-circle')
+                            ->icon('heroicon-o-chevron-double-up')
                             ->schema([
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -118,7 +116,7 @@ class RankRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
-                        Tab::make('Custom Fields')
+                        Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function () {
                                 $settings = app(FieldSettings::class);
@@ -142,7 +140,7 @@ class RankRecordResource extends BaseResource
                                     ->toArray();
                             }),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
@@ -182,7 +180,15 @@ class RankRecordResource extends BaseResource
                                     ->prose()
                                     ->columnSpanFull(),
                             ]),
-                        Tab::make('Custom Fields')
+                        Tab::make('Details')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                TextEntry::make('author.name')
+                                    ->label('Author'),
+                                TextEntry::make('created_at'),
+                                TextEntry::make('updated_at'),
+                            ]),
+                        Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function () {
                                 $settings = app(FieldSettings::class);
@@ -205,24 +211,6 @@ class RankRecordResource extends BaseResource
                                     ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key, $field))
                                     ->toArray();
                             }),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
-                            ->schema([
-                                TextEntry::make('author.name'),
-                                TextEntry::make('created_at'),
-                                TextEntry::make('updated_at'),
-                            ]),
-                        Tab::make('Document')
-                            ->visible(fn (?RankRecord $record): bool => $record->document !== null)
-                            ->label(fn (?RankRecord $record) => $record->document->name ?? 'Document')
-                            ->icon('heroicon-o-document')
-                            ->schema([
-                                Livewire::make(ViewDocument::class, fn (?RankRecord $record): array => [
-                                    'document' => $record->document,
-                                    'user' => $record->user,
-                                    'model' => $record,
-                                ]),
-                            ]),
                     ]),
             ]);
     }
