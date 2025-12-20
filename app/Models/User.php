@@ -256,13 +256,20 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use SocialRelationships;
 
     protected $fillable = [
+        'id',
         'name',
         'email',
         'email_verified_at',
         'phone_number',
+        'position_id',
+        'rank_id',
+        'specialty_id',
+        'status_id',
+        'unit_id',
         'unit_slot_id',
         'approved',
         'password',
+        'remember_token',
         'notes',
         'notes_updated_at',
         'profile_photo',
@@ -290,41 +297,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'profile_photo_url',
         'cover_photo_url',
     ];
-
-    /**
-     * @return string[]
-     */
-    public static function getCustomColumns(): array
-    {
-        return [
-            'id',
-            'name',
-            'email',
-            'email_verified_at',
-            'phone_number',
-            'position_id',
-            'rank_id',
-            'specialty_id',
-            'status_id',
-            'unit_id',
-            'unit_slot_id',
-            'approved',
-            'password',
-            'remember_token',
-            'notes',
-            'notes_updated_at',
-            'profile_photo',
-            'cover_photo',
-            'last_seen_at',
-            'facebook_user_id',
-            'github_user_id',
-            'google_user_id',
-            'discord_user_id',
-            'discord_private_channel_id',
-            'created_at',
-            'updated_at',
-        ];
-    }
 
     /**
      * @return array<int, Tenant>|Collection<int, Tenant>

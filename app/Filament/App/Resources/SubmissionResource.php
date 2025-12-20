@@ -25,6 +25,7 @@ use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -96,32 +97,43 @@ class SubmissionResource extends BaseResource
     {
         return $schema
             ->components([
-                Tabs::make()
+                Section::make()
                     ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
-                            ->icon('heroicon-o-folder-plus')
-                            ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('form.name'),
+                    ->schema([
+                        Tabs::make()
+                            ->columnSpanFull()
+                            ->tabs([
+                                Tab::make('Submission')
+                                    ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                                    ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                                    ->icon('heroicon-o-folder-plus')
+                                    ->schema([
+                                        TextEntry::make('user.name'),
+                                        TextEntry::make('form.name'),
+                                    ]),
+                                Tab::make('Details')
+                                    ->icon('heroicon-o-information-circle')
+                                    ->schema([
+                                        TextEntry::make('read_at')
+                                            ->dateTime()
+                                            ->label('Read'),
+                                        TextEntry::make('created_at'),
+                                        TextEntry::make('updated_at'),
+                                    ]),
                             ]),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
-                            ->schema([
-                                TextEntry::make('read_at')
-                                    ->dateTime()
-                                    ->label('Read'),
-                                TextEntry::make('created_at'),
-                                TextEntry::make('updated_at'),
-                            ]),
-                        Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
-                            ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
-                            ->schema([
-                                ViewEntry::make('form')
-                                    ->view('models.submission'),
+                    ]),
+                Section::make()
+                    ->columnSpanFull()
+                    ->schema([
+                        Tabs::make()
+                            ->tabs([
+                                Tab::make('')
+                                    ->icon('heroicon-o-pencil-square')
+                                    ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
+                                    ->schema([
+                                        ViewEntry::make('form')
+                                            ->view('models.submission'),
+                                    ]),
                             ]),
                     ]),
             ]);

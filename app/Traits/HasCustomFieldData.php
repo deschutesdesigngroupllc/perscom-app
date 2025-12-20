@@ -8,6 +8,7 @@ use App\Models\Enums\FieldType;
 use App\Models\Field;
 use App\Models\Form;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -15,11 +16,19 @@ use Illuminate\Support\Str;
 use Stancl\VirtualColumn\VirtualColumn;
 
 /**
- * @mixin Eloquent
+ * @mixin Eloquent|Model
  */
 trait HasCustomFieldData
 {
     use VirtualColumn;
+
+    /**
+     * @return string[]
+     */
+    public static function getCustomColumns(): array
+    {
+        return (new self)->getFillable();
+    }
 
     protected static function bootHasCustomFieldData(): void
     {
@@ -73,8 +82,8 @@ trait HasCustomFieldData
     protected function initializeHasCustomFieldData(): void
     {
         $this->guard([]);
-        $this->setHidden(array_merge($this->getHidden(), [
+        $this->mergeHidden([
             'data',
-        ]));
+        ]);
     }
 }
