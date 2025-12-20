@@ -142,7 +142,7 @@ class UserResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UnitResource::form($form)),
                             ]),
-                        Tab::make('Custom Fields')
+                        Tab::make('Fields')
                             ->hiddenOn('create')
                             ->icon('heroicon-o-pencil')
                             ->schema(fn (?User $record): array => UserResource::getFormSchemaFromFields($record)),
@@ -330,7 +330,7 @@ class UserResource extends BaseResource
                                             ->listWithLineBreaks(),
                                     ]),
                             ]),
-                        Tab::make('Custom Fields')
+                        Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(fn (?User $record): array => UserResource::getInfolistSchemaFromFields($record)),
                         Tab::make('Qualifications')
