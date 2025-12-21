@@ -32,6 +32,8 @@ class Backups extends Page implements HasTable
 
     protected ?string $subheading = 'Your most recent account backups.';
 
+    protected static ?string $slug = 'dashboard/backups';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

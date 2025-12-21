@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\AttachmentResource\Pages\CreateAttachment;
 use App\Filament\App\Resources\AttachmentResource\Pages\EditAttachment;
 use App\Filament\App\Resources\AttachmentResource\Pages\ListAttachments;
@@ -45,11 +46,15 @@ class AttachmentResource extends BaseResource
 {
     protected static ?string $model = Attachment::class;
 
+    protected static ?string $cluster = Settings::class;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-paper-clip';
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $slug = 'resources/attachments';
 
     public static function form(Schema $schema): Schema
     {
@@ -147,6 +152,8 @@ class AttachmentResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('Manage Attachments')
+            ->description('As files are uploaded to specific resources such as documents, records, users, etc. they will appear here for central management.')
             ->recordTitleAttribute('name')
             ->emptyStateIcon(Heroicon::OutlinedPaperClip)
             ->emptyStateDescription('Create an attachment to get started.')

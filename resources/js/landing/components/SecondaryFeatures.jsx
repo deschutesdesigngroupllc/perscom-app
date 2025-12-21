@@ -12,7 +12,7 @@ const features = [
     name: 'Realtime Messaging and Notifications',
     summary: 'Instantly reach your team across multiple channels.',
     description:
-      "Keep your team informed and responsive with PERSCOM.io's Realtime Messaging & Notifications. Administrators can send critical updates, reminders, or alerts through a variety of channels, including email, SMS, Discord, and more—ensuring that your message is received no matter where your team is. With instant delivery and full control over your communication, you can improve efficiency, reduce delays, and keep everyone on the same page, all in real time.",
+      "Keep your team informed and responsive with PERSCOM's Realtime Messaging & Notifications. Administrators can send critical updates, reminders, or alerts through a variety of channels, including email, SMS, Discord, and more—ensuring that your message is received no matter where your team is. With instant delivery and full control over your communication, you can improve efficiency, reduce delays, and keep everyone on the same page, all in real time.",
     image: customFieldsImage,
     icon: function Icon() {
       return <NewspaperIcon className='h-8 w-8' role='img' />
@@ -32,7 +32,7 @@ const features = [
     name: 'Powerful Event Management',
     summary: 'Keep your team in sync with effortless scheduling.',
     description:
-      "Stay on top of all your organizational events with PERSCOM.io’s powerful Calendars and Events features. Effortlessly manage and coordinate meetings, trainings, drills, and more, ensuring that everyone is up-to-date and in the know. Whether you're planning a small meeting or a large-scale event, our intuitive tools streamline scheduling, reduce conflicts, and improve communication across your team.",
+      "Stay on top of all your organizational events with PERSCOM’s powerful Calendars and Events features. Effortlessly manage and coordinate meetings, trainings, drills, and more, ensuring that everyone is up-to-date and in the know. Whether you're planning a small meeting or a large-scale event, our intuitive tools streamline scheduling, reduce conflicts, and improve communication across your team.",
     image: searchImage,
     icon: function Icon() {
       return <CalendarDaysIcon className='h-8 w-8' role='img' />

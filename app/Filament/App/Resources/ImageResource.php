@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\ImageResource\Pages\CreateImage;
 use App\Filament\App\Resources\ImageResource\Pages\EditImage;
 use App\Filament\App\Resources\ImageResource\Pages\ListImages;
@@ -42,11 +43,15 @@ class ImageResource extends BaseResource
 {
     protected static ?string $model = Image::class;
 
+    protected static ?string $cluster = Settings::class;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $slug = 'resources/images';
 
     public static function form(Schema $schema): Schema
     {
@@ -138,6 +143,8 @@ class ImageResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('Manage Images')
+            ->description('As images are uploaded to specific resources such as awards, ranks, qualifications, etc. they will appear here for central management.')
             ->emptyStateIcon(Heroicon::OutlinedPhoto)
             ->emptyStateDescription('There are no images to view. Create one to get started.')
             ->columns([
