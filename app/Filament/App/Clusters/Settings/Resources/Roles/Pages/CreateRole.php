@@ -41,6 +41,7 @@ class CreateRole extends CreateRecord
             ]));
         });
 
+        /** @phpstan-ignore-next-line method.notFound */
         $this->record->syncPermissions($permissionModels);
     }
 }
