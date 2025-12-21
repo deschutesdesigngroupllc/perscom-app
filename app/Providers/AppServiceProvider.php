@@ -22,7 +22,6 @@ use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
-use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -246,20 +245,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
-
-        //        FilamentShield::buildPermissionKeyUsing(
-        //            function (string $entity, string $affix, string $subject, string $case, string $separator) {
-        //
-        //            }
-        //        )
-        //
-        //        FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
-        //            ->afterLast('Resources\\')
-        //            ->before('Resource')
-        //            ->replace('\\', '')
-        //            ->lower()
-        //            ->replace('_', '')
-        //            ->toString());
 
         Field::configureUsing(function (Field $field) {
             $closure = match ($field->getName()) {

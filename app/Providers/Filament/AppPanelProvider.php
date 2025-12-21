@@ -143,16 +143,20 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
-                    ->navigationLabel('Custom Reports')
-                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
                     ->favoritesBarSize(Size::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
-                FilamentShieldPlugin::make(),
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(10),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Users')
+                    ->navigationSort(3)
+                    ->navigationIcon('heroicon-o-shield-check')
+                    ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()

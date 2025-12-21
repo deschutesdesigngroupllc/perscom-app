@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\CarbonInterface;
 use Carbon\WeekDay;
 use Closure;
@@ -24,6 +25,8 @@ use Illuminate\Support\HtmlString;
 
 class CalendarWidget extends BaseCalendarWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = -1;
 
     protected string|HtmlString|null|bool $heading = 'Calendar';
