@@ -16,8 +16,8 @@ use BezhanSalleh\PluginEssentials\Concerns\Resource as Essentials;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Panel;
 use Filament\Resources\Resource;
@@ -47,10 +47,14 @@ class RoleResource extends Resource
         return $schema
             ->components([
                 Grid::make()
+                    ->columnSpanFull()
                     ->schema([
                         Section::make()
+                            ->columns(2)
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('name')
+                                    ->columnSpanFull()
                                     ->label(__('filament-shield::filament-shield.field.name'))
                                     ->unique(
                                         ignoreRecord: true, /** @phpstan-ignore-next-line */
@@ -58,23 +62,6 @@ class RoleResource extends Resource
                                     )
                                     ->required()
                                     ->maxLength(255),
-
-                                TextInput::make('guard_name')
-                                    ->label(__('filament-shield::filament-shield.field.guard_name'))
-                                    ->default(Utils::getFilamentAuthGuard())
-                                    ->nullable()
-                                    ->maxLength(255),
-
-                                Select::make(config('permission.column_names.team_foreign_key'))
-                                    ->label(__('filament-shield::filament-shield.field.team'))
-                                    ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
-                                    /** @phpstan-ignore-next-line */
-                                    ->default(Filament::getTenant()?->id)
-                                    ->options(fn (): array => in_array(Utils::getTenantModel(), [null, '', '0'], true) ? [] : Utils::getTenantModel()::pluck('name', 'id')->toArray())
-                                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled())
-                                    ->dehydrated(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
-                                static::getSelectAllFormComponent(),
-
                             ])
                             ->columns([
                                 'sm' => 2,
@@ -90,38 +77,36 @@ class RoleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('Manage Roles')
+            ->description('Roles define a group of permissions that may be applied to a user account to establish what they are allowed to access.')
             ->columns([
                 TextColumn::make('name')
+                    ->sortable()
                     ->weight(FontWeight::Medium)
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn (string $state): string => Str::headline($state))
                     ->searchable(),
-                TextColumn::make('guard_name')
-                    ->badge()
-                    ->color('warning')
-                    ->label(__('filament-shield::filament-shield.column.guard_name')),
-                TextColumn::make('team.name')
-                    ->default('Global')
-                    ->badge()
-                    ->color(fn (mixed $state): string => str($state)->contains('Global') ? 'gray' : 'primary')
-                    ->label(__('filament-shield::filament-shield.column.team'))
-                    ->searchable()
-                    ->visible(fn (): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
                 TextColumn::make('permissions_count')
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.permissions'))
                     ->counts('permissions')
                     ->color('primary'),
                 TextColumn::make('updated_at')
-                    ->label(__('filament-shield::filament-shield.column.updated_at'))
+                    ->sortable()
+                    ->dateTime(),
+                TextColumn::make('created_at')
+                    ->sortable()
                     ->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make()
+                    ->visible(fn (Role $record): bool => static::canEdit($record)),
+                DeleteAction::make()
+                    ->visible(fn (Role $record): bool => static::canDelete($record)),
             ])
             ->toolbarActions([
                 DeleteBulkAction::make(),
@@ -171,15 +156,15 @@ class RoleResource extends Resource
         return FilamentShieldPlugin::get();
     }
 
-    //    public static function canEdit(Model $record): bool
-    //    {
-    //        /** @var Role $record */
-    //        return $record->is_custom_role && parent::canEdit($record);
-    //    }
-    //
-    //    public static function canDelete(Model $record): bool
-    //    {
-    //        /** @var Role $record */
-    //        return $record->is_custom_role && parent::canDelete($record);
-    //    }
+    public static function canEdit(Model $record): bool
+    {
+        /** @var Role $record */
+        return $record->is_custom_role && parent::canEdit($record);
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        /** @var Role $record */
+        return $record->is_custom_role && parent::canDelete($record);
+    }
 }
