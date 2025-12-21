@@ -27,7 +27,7 @@ class ViewAwardRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (AwardRecord $record): string => $record->document->name)
-                ->visible(fn (AwardRecord $record) => filled($record->document))
+                ->visible(fn (AwardRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

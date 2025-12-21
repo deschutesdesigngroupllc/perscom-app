@@ -51,11 +51,6 @@ class FormResource extends BaseResource
 
     protected static ?int $navigationSort = 4;
 
-    public static function modelNotificationCreatedEvent(): string
-    {
-        return 'submission.created';
-    }
-
     public static function form(Schema $schema): Schema
     {
         return $schema
