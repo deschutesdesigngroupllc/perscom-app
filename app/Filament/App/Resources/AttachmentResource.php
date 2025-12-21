@@ -61,6 +61,7 @@ class AttachmentResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Attachment')
@@ -120,6 +121,7 @@ class AttachmentResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Attachment')

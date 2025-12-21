@@ -63,6 +63,7 @@ class ServiceRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Service Record')
@@ -136,6 +137,7 @@ class ServiceRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Service Record')

@@ -58,6 +58,7 @@ class TenantResource extends Resource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Tenant')

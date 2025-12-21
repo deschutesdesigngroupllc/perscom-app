@@ -103,6 +103,7 @@ class SubmissionResource extends BaseResource
                     ->columnSpanFull()
                     ->schema([
                         Tabs::make()
+                            ->persistTabInQueryString('submission-tab')
                             ->columnSpanFull()
                             ->tabs([
                                 Tab::make('Submission')
@@ -128,6 +129,7 @@ class SubmissionResource extends BaseResource
                     ->columnSpanFull()
                     ->schema([
                         Tabs::make()
+                            ->persistTabInQueryString('form-tab')
                             ->tabs([
                                 Tab::make('')
                                     ->icon('heroicon-o-pencil-square')

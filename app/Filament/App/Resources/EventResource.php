@@ -73,6 +73,7 @@ class EventResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Event')
@@ -209,7 +210,7 @@ class EventResource extends BaseResource
                                 Section::make()
                                     ->contained(false)
                                     ->hiddenLabel()
-                                    ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
+                                    ->relationship('image', fn ($state): bool => filled(data_get($state, 'path')))
                                     ->schema([
                                         FileUpload::make('path')
                                             ->hiddenLabel()
@@ -290,6 +291,7 @@ class EventResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Event')
@@ -350,13 +352,13 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 TextEntry::make('content')
-                                    ->visible(fn ($state) => filled($state))
+                                    ->visible(fn ($state): bool => filled($state))
                                     ->label('Details')
                                     ->html(),
                                 TextEntry::make('location')
-                                    ->visible(fn ($state) => filled($state)),
+                                    ->visible(fn ($state): bool => filled($state)),
                                 TextEntry::make('url')
-                                    ->visible(fn ($state) => filled($state))
+                                    ->visible(fn ($state): bool => filled($state))
                                     ->label('URL')
                                     ->url(fn (?Event $record) => $record->url),
                             ]),

@@ -56,6 +56,7 @@ class GroupResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Group')
@@ -79,7 +80,7 @@ class GroupResource extends BaseResource
                                 Section::make()
                                     ->contained(false)
                                     ->hiddenLabel()
-                                    ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
+                                    ->relationship('image', fn ($state): bool => filled(data_get($state, 'path')))
                                     ->schema([
                                         FileUpload::make('path')
                                             ->hiddenLabel()

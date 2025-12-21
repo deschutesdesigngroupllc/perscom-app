@@ -45,6 +45,7 @@ class ModelNotification
                     ->default(data_get($defaults, 'enabled', false))
                     ->helperText($description ?? 'Enable to send notifications.'),
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Recipients')
