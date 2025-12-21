@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -15,14 +15,12 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditSubmission extends EditRecord
 {
-    use InteractsWithFields;
+    use BuildsCustomFieldComponents;
 
     protected static string $resource = SubmissionResource::class;
 
-    public function mount(int|string $record): void
+    public function booted(): void
     {
-        parent::mount($record);
-
         /** @var Submission $submission */
         $submission = $this->record;
         $submission->markAsRead();

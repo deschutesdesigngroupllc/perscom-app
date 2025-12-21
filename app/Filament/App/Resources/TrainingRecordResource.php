@@ -20,6 +20,7 @@ use App\Models\TrainingRecord;
 use App\Models\User;
 use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -35,7 +36,6 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -49,6 +49,8 @@ use UnitEnum;
 
 class TrainingRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = TrainingRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-academic-cap';
@@ -125,21 +127,7 @@ class TrainingRecordResource extends BaseResource
 
                                 $fields = collect($settings->training_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentField('data.'.$field->key, $field))
-                                    ->toArray();
+                                return TrainingRecordResource::buildCustomFieldInputs(Field::findMany($fields));
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
@@ -193,21 +181,7 @@ class TrainingRecordResource extends BaseResource
 
                                 $fields = collect($settings->training_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key, $field))
-                                    ->toArray();
+                                return TrainingRecordResource::buildCustomFieldEntries(Field::findMany($fields));
                             }),
                     ]),
             ]);

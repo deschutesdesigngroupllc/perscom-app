@@ -172,7 +172,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Unit|null $unit
  * @property-read UnitSlot|null $unit_slot
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection|Credential[] $credentials
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Credential> $credentials
  * @property-read int|null $credentials_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])

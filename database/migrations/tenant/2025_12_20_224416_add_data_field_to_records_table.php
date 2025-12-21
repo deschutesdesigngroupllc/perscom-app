@@ -13,7 +13,31 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::table('records_assignments', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('text');
+        });
+
+        Schema::table('records_awards', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('text');
+        });
+
+        Schema::table('records_combat', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('text');
+        });
+
+        Schema::table('records_qualifications', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('text');
+        });
+
+        Schema::table('records_ranks', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('type');
+        });
+
         Schema::table('records_service', function (Blueprint $table) {
+            $table->json('data')->nullable()->after('text');
+        });
+
+        Schema::table('records_trainings', function (Blueprint $table) {
             $table->json('data')->nullable()->after('text');
         });
     }

@@ -13,6 +13,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
@@ -84,6 +85,7 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasFactory;
     use HasLogs;

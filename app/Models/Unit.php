@@ -61,7 +61,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read string|null $url
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
- * @property-read Collection|User[] $usersViaSecondaryAssignmentRecords
+ * @property-read Collection<int, User> $usersViaSecondaryAssignmentRecords
  * @property-read int|null $users_via_secondary_assignment_records_count
  *
  * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])

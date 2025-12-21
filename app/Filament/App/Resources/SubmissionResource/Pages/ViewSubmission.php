@@ -15,10 +15,8 @@ class ViewSubmission extends ViewRecord
 {
     protected static string $resource = SubmissionResource::class;
 
-    public function mount(int|string $record): void
+    public function booted(): void
     {
-        parent::mount($record);
-
         /** @var Submission $submission */
         $submission = $this->record;
         $submission->markAsRead();
