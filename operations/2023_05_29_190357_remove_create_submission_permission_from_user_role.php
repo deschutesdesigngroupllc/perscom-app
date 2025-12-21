@@ -14,7 +14,7 @@ return new class extends OneTimeOperation
             try {
                 $role = Role::where('name', 'User')->first();
                 $role?->revokePermissionTo('create:submission');
-            } catch (Exception $exception) {
+            } catch (Exception) {
             }
         });
     }
