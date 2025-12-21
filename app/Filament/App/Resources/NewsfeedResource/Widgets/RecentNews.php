@@ -26,7 +26,7 @@ class RecentNews extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->description('View you organization\'s most recent news.')
+            ->description("View you organization's most recent news.")
             ->emptyStateHeading('No recent news')
             ->emptyStateDescription('There are no recent news items to show.')
             ->emptyStateIcon('heroicon-o-newspaper')
