@@ -141,7 +141,7 @@ class AppPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn () => view('components.logo'))
+            ->brandLogo(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('components.logo'))
             ->plugins([
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
@@ -168,7 +168,7 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
+                    ->url(fn (): string => route('spark.portal'), shouldOpenInNewTab: true)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo())
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')

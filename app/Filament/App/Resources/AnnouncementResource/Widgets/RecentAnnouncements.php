@@ -26,7 +26,7 @@ class RecentAnnouncements extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->description('View you organization\'s most recent announcements.')
+            ->description("View you organization's most recent announcements.")
             ->emptyStateHeading('No recent announcements')
             ->emptyStateDescription('There are no recent announcements to show.')
             ->emptyStateIcon('heroicon-o-megaphone')

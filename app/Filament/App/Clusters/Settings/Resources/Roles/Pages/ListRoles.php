@@ -14,6 +14,9 @@ class ListRoles extends ListRecords
 
     protected ?string $subheading = 'Add and update account roles which define access to certain account resources.';
 
+    /**
+     * @return CreateAction[]
+     */
     protected function getActions(): array
     {
         return [
