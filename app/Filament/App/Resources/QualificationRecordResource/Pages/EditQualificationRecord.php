@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\QualificationRecordResource\Pages;
 
 use App\Filament\App\Resources\QualificationRecordResource;
+use App\Traits\Filament\SavesAndHydratesCustomFieldData;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
@@ -12,6 +13,8 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditQualificationRecord extends EditRecord
 {
+    use SavesAndHydratesCustomFieldData;
+
     protected static string $resource = QualificationRecordResource::class;
 
     /**

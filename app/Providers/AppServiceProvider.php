@@ -38,6 +38,7 @@ use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -341,6 +342,8 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
         });
+
+        Model::unguard();
 
         Number::macro('percentageDifference', function (int $oldValue, int $newValue): int|float {
             if ($oldValue === 0) {

@@ -23,7 +23,7 @@ use App\Models\User;
 use App\Settings\DashboardSettings;
 use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -39,7 +39,6 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -53,7 +52,7 @@ use UnitEnum;
 
 class AssignmentRecordResource extends BaseResource
 {
-    use InteractsWithFields;
+    use BuildsCustomFieldComponents;
 
     protected static ?string $model = AssignmentRecord::class;
 
@@ -82,7 +81,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->columnSpanFull()
                                     ->hiddenLabel()
                                     ->html()
-                                    ->getStateUsing(fn (): HtmlString => new HtmlString("<span class='font-bold text-gray-950 mr-1'>NOTE:</span><span class='text-gray-600'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
+                                    ->getStateUsing(fn (): HtmlString => new HtmlString("<span class='fi-sc-text'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
                                     ->visibleOn('edit'),
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -169,21 +168,7 @@ class AssignmentRecordResource extends BaseResource
 
                                 $fields = collect($settings->assignment_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this record.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentField('data.'.$field->key, $field))
-                                    ->toArray();
+                                return AssignmentRecordResource::buildCustomFieldInputs(Field::findMany($fields));
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
@@ -244,21 +229,7 @@ class AssignmentRecordResource extends BaseResource
 
                                 $fields = collect($settings->assignment_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this record.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key, $field))
-                                    ->toArray();
+                                return AssignmentRecordResource::buildCustomFieldEntries($fields);
                             }),
                     ]),
             ]);

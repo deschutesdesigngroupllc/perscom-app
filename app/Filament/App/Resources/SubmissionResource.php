@@ -13,6 +13,7 @@ use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelat
 use App\Filament\Exports\SubmissionExporter;
 use App\Models\Submission;
 use App\Rules\FieldDataRule;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -23,7 +24,6 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
@@ -42,6 +42,8 @@ use UnitEnum;
 
 class SubmissionResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = Submission::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-folder-plus';
@@ -129,11 +131,8 @@ class SubmissionResource extends BaseResource
                             ->tabs([
                                 Tab::make('')
                                     ->icon('heroicon-o-pencil-square')
-                                    ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
-                                    ->schema([
-                                        ViewEntry::make('form')
-                                            ->view('models.submission'),
-                                    ]),
+                                    ->label(fn (Submission $record) => $record->form->name ?? 'Form')
+                                    ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                             ]),
                     ]),
             ]);

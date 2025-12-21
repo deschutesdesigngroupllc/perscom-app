@@ -6,7 +6,7 @@ namespace App\Filament\App\Pages\Forms;
 
 use App\Models\Form as FormModel;
 use App\Models\Submission;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
@@ -25,9 +25,9 @@ use Illuminate\Support\HtmlString;
  */
 class Submit extends Page implements HasForms
 {
+    use BuildsCustomFieldComponents;
     use HasPageShield;
     use HasUnsavedDataChangesAlert;
-    use InteractsWithFields;
     use InteractsWithFormActions;
     use InteractsWithForms;
 
@@ -68,7 +68,7 @@ class Submit extends Page implements HasForms
     {
         return $schema
             ->statePath('data')
-            ->components(Submit::getFormSchemaFromFields($this->submissionForm));
+            ->components(Submit::buildCustomFieldInputs($this->submissionForm->fields));
     }
 
     public function submit(): void

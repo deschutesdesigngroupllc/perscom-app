@@ -7,7 +7,7 @@ namespace App\Livewire\Widgets\Forms;
 use App\Filament\App\Pages\Forms\Submit;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -26,7 +26,7 @@ use Livewire\Features\SupportEvents\Event;
  */
 class Create extends Component implements HasForms
 {
-    use InteractsWithFields;
+    use BuildsCustomFieldComponents;
     use InteractsWithForms;
     use InteractsWithRecord;
 
@@ -65,7 +65,7 @@ class Create extends Component implements HasForms
 <div class="text-green-600 font-bold">{$state}</div>
 HTML
                             )),
-                    ], Submit::getFormSchemaFromFields($this->record), [
+                    ], Submit::buildCustomFieldInputs($this->record), [
                         Actions::make([
                             Action::make('back')
                                 ->button()

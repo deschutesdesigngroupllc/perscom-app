@@ -15,7 +15,7 @@ use App\Services\SettingsService;
 use App\Services\UserSettingsService;
 use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterval;
@@ -57,7 +57,7 @@ use UnitEnum;
 
 class UserResource extends BaseResource
 {
-    use InteractsWithFields;
+    use BuildsCustomFieldComponents;
 
     protected static ?string $model = User::class;
 
@@ -146,7 +146,7 @@ class UserResource extends BaseResource
                         Tab::make('Fields')
                             ->hiddenOn('create')
                             ->icon('heroicon-o-pencil')
-                            ->schema(fn (?User $record): array => UserResource::getFormSchemaFromFields($record)),
+                            ->schema(fn (User $record): array => UserResource::buildCustomFieldInputs($record->fields)),
                         Tab::make('Details')
                             ->hiddenOn('create')
                             ->icon('heroicon-o-information-circle')
@@ -338,7 +338,7 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(fn (?User $record): array => UserResource::getInfolistSchemaFromFields($record)),
+                            ->schema(fn (User $record): array => UserResource::buildCustomFieldEntries($record->fields)),
                         Tab::make('Qualifications')
                             ->icon('heroicon-o-star')
                             ->schema([

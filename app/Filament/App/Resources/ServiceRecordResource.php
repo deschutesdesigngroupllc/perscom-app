@@ -19,6 +19,7 @@ use App\Models\ServiceRecord;
 use App\Models\User;
 use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -34,7 +35,6 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -48,6 +48,8 @@ use UnitEnum;
 
 class ServiceRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = ServiceRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
@@ -109,21 +111,7 @@ class ServiceRecordResource extends BaseResource
 
                                 $fields = collect($settings->service_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentField('data.'.$field->key, $field))
-                                    ->toArray();
+                                return ServiceRecordResource::buildCustomFieldInputs(Field::findMany($fields));
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
@@ -174,21 +162,7 @@ class ServiceRecordResource extends BaseResource
 
                                 $fields = collect($settings->service_records);
 
-                                if ($fields->isEmpty()) {
-                                    return [
-                                        TextEntry::make('empty')
-                                            ->color(Color::Gray)
-                                            ->hiddenLabel()
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (): string => 'There are no custom fields assigned to this resource.'),
-                                    ];
-                                }
-
-                                return $fields
-                                    ->map(fn (int $fieldId) => Field::find($fieldId))
-                                    ->filter()
-                                    ->map(fn (Field $field) => $field->type->getFilamentEntry($field->key, $field))
-                                    ->toArray();
+                                return ServiceRecordResource::buildCustomFieldEntries(Field::findMany($fields));
                             }),
                     ]),
             ]);

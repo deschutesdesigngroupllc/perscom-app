@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\QualificationRecordResource\Pages;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Traits\Filament\CanCreateBatchRecords;
 use App\Traits\Filament\ConfiguresModelNotifications;
+use App\Traits\Filament\SavesAndHydratesCustomFieldData;
 use App\Traits\Filament\SetsUserFromRequestQuery;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -14,6 +15,7 @@ class CreateQualificationRecord extends CreateRecord
 {
     use CanCreateBatchRecords;
     use ConfiguresModelNotifications;
+    use SavesAndHydratesCustomFieldData;
     use SetsUserFromRequestQuery;
 
     protected static string $resource = QualificationRecordResource::class;
