@@ -113,7 +113,7 @@ class AwardRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->award_records);
@@ -169,7 +169,7 @@ class AwardRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->award_records);

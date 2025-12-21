@@ -13,6 +13,9 @@ use Filament\Resources\Pages\EditRecord;
  */
 trait SavesAndHydratesCustomFieldData
 {
+    /**
+     * @param  array<string, mixed>  $data
+     */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         if (! method_exists(parent::class, 'mutateFormDataBeforeCreate')) {
@@ -26,6 +29,9 @@ trait SavesAndHydratesCustomFieldData
         return parent::mutateFormDataBeforeCreate($data);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     protected function mutateFormDataBeforeSave(array $data): array
     {
         if (! method_exists(parent::class, 'mutateFormDataBeforeSave')) {

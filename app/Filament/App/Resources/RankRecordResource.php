@@ -120,7 +120,7 @@ class RankRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->rank_records);
@@ -178,7 +178,7 @@ class RankRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->rank_records);

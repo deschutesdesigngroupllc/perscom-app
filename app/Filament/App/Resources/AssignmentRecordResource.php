@@ -163,7 +163,7 @@ class AssignmentRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->assignment_records);
@@ -224,7 +224,7 @@ class AssignmentRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->assignment_records);

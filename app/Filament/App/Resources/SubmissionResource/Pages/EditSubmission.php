@@ -34,7 +34,7 @@ class EditSubmission extends EditRecord
             ActionGroup::make([
                 Action::make('mark-as-unread')
                     ->label('Mark As Unread')
-                    ->visible(fn (Submission $record) => filled($record->read_at))
+                    ->visible(fn (Submission $record): bool => filled($record->read_at))
                     ->icon('heroicon-o-envelope-open')
                     ->action(function (Submission $record): void {
                         $record->markAsUnread();
