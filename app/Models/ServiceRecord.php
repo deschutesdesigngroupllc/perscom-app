@@ -13,6 +13,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
@@ -80,6 +81,7 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasFactory;
     use HasLogs;
@@ -91,8 +93,12 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
     protected $table = 'records_service';
 
     protected $fillable = [
+        'id',
+        'user_id',
+        'document_id',
+        'author_id',
         'text',
-        'created_at',
+        'updated_at',
         'created_at',
     ];
 

@@ -27,7 +27,7 @@ class ViewTrainingRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (TrainingRecord $record): string => $record->document->name)
-                ->visible(fn (TrainingRecord $record) => filled($record->document))
+                ->visible(fn (TrainingRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

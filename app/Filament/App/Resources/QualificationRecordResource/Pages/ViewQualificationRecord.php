@@ -27,7 +27,7 @@ class ViewQualificationRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (QualificationRecord $record): string => $record->document->name)
-                ->visible(fn (QualificationRecord $record) => filled($record->document))
+                ->visible(fn (QualificationRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

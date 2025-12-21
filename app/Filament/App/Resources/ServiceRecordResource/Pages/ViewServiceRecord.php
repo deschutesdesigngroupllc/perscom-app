@@ -27,7 +27,7 @@ class ViewServiceRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (ServiceRecord $record): string => $record->document->name)
-                ->visible(fn (ServiceRecord $record) => filled($record->document))
+                ->visible(fn (ServiceRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

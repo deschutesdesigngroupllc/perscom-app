@@ -12,13 +12,14 @@ use Illuminate\Support\Collection;
 /**
  * @mixin CreateRecord
  */
-trait InteractsWithBatchRecords
+trait CanCreateBatchRecords
 {
     protected function handleRecordCreation(array $data): Model
     {
-        $records = $this->performModelCreations($data);
+        /** @var Model $record */
+        $record = $this->performModelCreations($data)->first();
 
-        return $records->first();
+        return $record;
     }
 
     protected function performModelCreations(array $data, ?Closure $callback = null): Collection

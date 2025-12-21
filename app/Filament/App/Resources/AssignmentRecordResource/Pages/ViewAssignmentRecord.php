@@ -27,7 +27,7 @@ class ViewAssignmentRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (AssignmentRecord $record): string => $record->document->name)
-                ->visible(fn (AssignmentRecord $record) => filled($record->document))
+                ->visible(fn (AssignmentRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

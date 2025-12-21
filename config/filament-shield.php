@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'auth_provider_model' => 'App\\Models\\User',
+    'auth_provider_model' => App\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

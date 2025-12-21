@@ -27,7 +27,7 @@ class ViewRankRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (RankRecord $record): string => $record->document->name)
-                ->visible(fn (RankRecord $record) => filled($record->document))
+                ->visible(fn (RankRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([

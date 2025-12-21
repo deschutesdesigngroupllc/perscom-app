@@ -27,7 +27,7 @@ class ViewCombatRecord extends ViewRecord
                 ->color('gray')
                 ->slideOver()
                 ->modalHeading(fn (CombatRecord $record): string => $record->document->name)
-                ->visible(fn (CombatRecord $record) => filled($record->document))
+                ->visible(fn (CombatRecord $record): bool => filled($record->document))
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->schema([
