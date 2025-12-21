@@ -99,7 +99,7 @@ class Integration extends SettingsPage
                                 TextInput::make('single_sign_on_key')
                                     ->label('SSO Key')
                                     ->disabled()
-                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
+                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.resources on the fly through the PERSCOM API.')
                                     ->suffixAction(fn (): Action => Action::make('regenerate')
                                         ->icon('heroicon-o-arrow-path')
                                         ->successNotificationTitle('The SSO key has been successfully regenerated.')

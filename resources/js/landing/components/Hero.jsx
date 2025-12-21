@@ -22,7 +22,7 @@ export function Hero() {
         </h1>
         <p className='mx-auto mt-6 max-w-3xl text-base text-gray-700 sm:text-lg'>
           Mission-critical tools built specifically to meet the unique needs of police, fire, EMS, military, and public safety agencies.
-          Optimize your agency&apos;s communications, streamline data management, and improve overall efficiency with PERSCOM.io.
+          Optimize your agency&apos;s communications, streamline data management, and improve overall efficiency with PERSCOM.
         </p>
         <div className='mt-10 flex justify-center space-x-6'>
           <ButtonLink href={route('web.register.index')} color='slate'>

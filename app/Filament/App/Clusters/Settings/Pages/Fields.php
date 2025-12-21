@@ -27,6 +27,10 @@ class Fields extends SettingsPage
 
     protected ?string $subheading = 'Manage your default field settings.';
 
+    protected static ?string $slug = 'dashboard/fields';
+
+    protected static ?int $navigationSort = 1;
+
     public function form(Schema $schema): Schema
     {
         return $schema
