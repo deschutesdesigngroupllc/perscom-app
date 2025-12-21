@@ -5,63 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Competency;
-use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class CompetencyPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use HandlesAuthorization;
+
+    public function viewAny(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('view_any_competency');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Competency $competency): bool
+    public function view(AuthUser $authUser, Competency $competency): bool
     {
-        return false;
+        return $authUser->can('view_competency');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return false;
+        return $authUser->can('create_competency');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Competency $competency): bool
+    public function update(AuthUser $authUser, Competency $competency): bool
     {
-        return false;
+        return $authUser->can('update_competency');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Competency $competency): bool
+    public function delete(AuthUser $authUser, Competency $competency): bool
     {
-        return false;
+        return $authUser->can('delete_competency');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Competency $competency): bool
+    public function restore(AuthUser $authUser, Competency $competency): bool
     {
-        return false;
+        return $authUser->can('restore_competency');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Competency $competency): bool
+    public function forceDelete(AuthUser $authUser, Competency $competency): bool
     {
-        return false;
+        return $authUser->can('force_delete_competency');
+    }
+
+    public function forceDeleteAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('force_delete_any_competency');
+    }
+
+    public function restoreAny(AuthUser $authUser): bool
+    {
+        return $authUser->can('restore_any_competency');
+    }
+
+    public function replicate(AuthUser $authUser, Competency $competency): bool
+    {
+        return $authUser->can('replicate_competency');
+    }
+
+    public function reorder(AuthUser $authUser): bool
+    {
+        return $authUser->can('reorder_competency');
     }
 }

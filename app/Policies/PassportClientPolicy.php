@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\PassportClient;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class PassportClientPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_passportclient');
+        return $authUser->can('view_any_passport_client');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, PassportClient $passportClient): bool
+    public function view(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('view_passportclient');
+        return $authUser->can('view_passport_client');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_passportclient');
+        return $authUser->can('create_passport_client');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, PassportClient $passportClient): bool
+    public function update(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('update_passportclient');
+        return $authUser->can('update_passport_client');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, PassportClient $passportClient): bool
+    public function delete(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('delete_passportclient');
+        return $authUser->can('delete_passport_client');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('delete_any_passportclient');
+        return $authUser->can('restore_passport_client');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, PassportClient $passportClient): bool
+    public function forceDelete(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('force_delete_passportclient');
+        return $authUser->can('force_delete_passport_client');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_passportclient');
+        return $authUser->can('force_delete_any_passport_client');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, PassportClient $passportClient): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_passportclient');
+        return $authUser->can('restore_any_passport_client');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, PassportClient $passportClient): bool
     {
-        return $user->can('restore_any_passportclient');
+        return $authUser->can('replicate_passport_client');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, PassportClient $passportClient): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_passportclient');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_passportclient');
+        return $authUser->can('reorder_passport_client');
     }
 }
