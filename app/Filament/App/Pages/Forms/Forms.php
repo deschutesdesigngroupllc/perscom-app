@@ -33,7 +33,7 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static ?string $navigationLabel = 'Forms';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Forms';
 
     protected string $view = 'filament.app.pages.forms.list';
 
