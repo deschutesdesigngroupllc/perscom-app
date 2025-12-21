@@ -106,7 +106,7 @@ class ServiceRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->service_records);
@@ -157,7 +157,7 @@ class ServiceRecordResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 $settings = app(FieldSettings::class);
 
                                 $fields = collect($settings->service_records);

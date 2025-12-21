@@ -60,7 +60,7 @@ class Create extends Component implements HasForms
                             ->content(new HtmlString($formModel->instructions)),
                         Placeholder::make('success')
                             ->hiddenLabel()
-                            ->visible(fn ($state) => filled($state))
+                            ->visible(fn ($state): bool => filled($state))
                             ->content(fn ($state): HtmlString => new HtmlString(<<<HTML
 <div class="text-green-600 font-bold">{$state}</div>
 HTML
