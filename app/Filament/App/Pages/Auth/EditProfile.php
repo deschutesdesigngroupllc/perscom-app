@@ -57,6 +57,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                             ->icon('heroicon-o-device-phone-mobile')
                             ->schema([
                                 Section::make('Discord')
+                                    ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
                                     ->contained(false)
                                     ->icon('fab-discord')
                                     ->description(fn (): string => match (false) {
@@ -90,6 +91,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->schema([]),
                                 Section::make('Github')
                                     ->contained(false)
+                                    ->visible(fn (): bool => filled(config('services.github.client_id')) && filled(config('services.github.client_secret')))
                                     ->icon('fab-github')
                                     ->description(fn (): string => match (false) {
                                         Auth::user()->github_connected => 'Your Github account is not currently connected.',
@@ -122,6 +124,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->schema([]),
                                 Section::make('Google')
                                     ->contained(false)
+                                    ->visible(fn (): bool => filled(config('services.google.client_id')) && filled(config('services.google.client_secret')))
                                     ->icon('fab-google')
                                     ->description(fn (): string => match (false) {
                                         Auth::user()->google_connected => 'Your Google account is not currently connected.',

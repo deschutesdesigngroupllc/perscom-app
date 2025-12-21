@@ -22,6 +22,7 @@ class Login extends \Filament\Auth\Pages\Login
         $password = $this->getPasswordFormComponent();
 
         return $schema
+            ->columns(1)
             ->components([
                 $email->placeholder(fn (): ?string => $demo ? 'demo@perscom.io' : null),
                 $password->placeholder(fn (): ?string => $demo ? 'password' : null),
