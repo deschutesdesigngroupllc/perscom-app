@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\PassportToken;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class PassportTokenPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_passporttoken');
+        return $authUser->can('view_any_passport_token');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, PassportToken $passportToken): bool
+    public function view(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('view_passporttoken');
+        return $authUser->can('view_passport_token');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_passporttoken');
+        return $authUser->can('create_passport_token');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, PassportToken $passportToken): bool
+    public function update(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('update_passporttoken');
+        return $authUser->can('update_passport_token');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, PassportToken $passportToken): bool
+    public function delete(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('delete_passporttoken');
+        return $authUser->can('delete_passport_token');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('delete_any_passporttoken');
+        return $authUser->can('restore_passport_token');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, PassportToken $passportToken): bool
+    public function forceDelete(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('force_delete_passporttoken');
+        return $authUser->can('force_delete_passport_token');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_passporttoken');
+        return $authUser->can('force_delete_any_passport_token');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, PassportToken $passportToken): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_passporttoken');
+        return $authUser->can('restore_any_passport_token');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, PassportToken $passportToken): bool
     {
-        return $user->can('restore_any_passporttoken');
+        return $authUser->can('replicate_passport_token');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, PassportToken $passportToken): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_passporttoken');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_passporttoken');
+        return $authUser->can('reorder_passport_token');
     }
 }

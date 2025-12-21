@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Credential;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class CredentialPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_credential');
+        return $authUser->can('view_any_credential');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Credential $credential): bool
+    public function view(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('view_credential');
+        return $authUser->can('view_credential');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_credential');
+        return $authUser->can('create_credential');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Credential $credential): bool
+    public function update(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('update_credential');
+        return $authUser->can('update_credential');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Credential $credential): bool
+    public function delete(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('delete_credential');
+        return $authUser->can('delete_credential');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('delete_any_credential');
+        return $authUser->can('restore_credential');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, Credential $credential): bool
+    public function forceDelete(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('force_delete_credential');
+        return $authUser->can('force_delete_credential');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_credential');
+        return $authUser->can('force_delete_any_credential');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, Credential $credential): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_credential');
+        return $authUser->can('restore_any_credential');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, Credential $credential): bool
     {
-        return $user->can('restore_any_credential');
+        return $authUser->can('replicate_credential');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, Credential $credential): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_credential');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_credential');
+        return $authUser->can('reorder_credential');
     }
 }

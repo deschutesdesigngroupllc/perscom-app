@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Comment;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class CommentPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_comment');
+        return $authUser->can('view_any_comment');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Comment $comment): bool
+    public function view(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('view_comment');
+        return $authUser->can('view_comment');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_comment');
+        return $authUser->can('create_comment');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Comment $comment): bool
+    public function update(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('update_comment');
+        return $authUser->can('update_comment');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Comment $comment): bool
+    public function delete(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('delete_comment');
+        return $authUser->can('delete_comment');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('delete_any_comment');
+        return $authUser->can('restore_comment');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, Comment $comment): bool
+    public function forceDelete(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('force_delete_comment');
+        return $authUser->can('force_delete_comment');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_comment');
+        return $authUser->can('force_delete_any_comment');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, Comment $comment): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_comment');
+        return $authUser->can('restore_any_comment');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, Comment $comment): bool
     {
-        return $user->can('restore_any_comment');
+        return $authUser->can('replicate_comment');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, Comment $comment): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_comment');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_comment');
+        return $authUser->can('reorder_comment');
     }
 }
