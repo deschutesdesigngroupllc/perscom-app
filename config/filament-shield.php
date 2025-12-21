@@ -17,9 +17,9 @@ return [
     */
 
     'shield_resource' => [
-        'slug' => 'roles',
+        'slug' => 'users/roles',
         'show_model_path' => false,
-        'cluster' => null,
+        'cluster' => Settings::class,
         'tabs' => [
             'pages' => true,
             'widgets' => true,
@@ -102,8 +102,8 @@ return [
     */
 
     'permissions' => [
-        'separator' => ':',
-        'case' => 'pascal',
+        'separator' => '_',
+        'case' => 'lower_snake',
         'generate' => true,
     ],
 

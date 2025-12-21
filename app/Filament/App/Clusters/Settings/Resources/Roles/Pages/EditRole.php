@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\Shield\RoleResource\Pages;
+namespace App\Filament\App\Clusters\Settings\Resources\Roles\Pages;
 
-use App\Filament\Resources\Shield\RoleResource;
-use App\Models\Role;
+use App\Filament\App\Clusters\Settings\Resources\Roles\RoleResource;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
@@ -18,9 +17,6 @@ class EditRole extends EditRecord
 
     protected static string $resource = RoleResource::class;
 
-    /**
-     * @return DeleteAction[]
-     */
     protected function getActions(): array
     {
         return [
@@ -31,10 +27,14 @@ class EditRole extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $this->permissions = collect($data)
-            ->filter(fn ($permission, $key): bool => ! in_array($key, ['name', 'guard_name', 'select_all']))
+            ->filter(fn (mixed $permission, string $key): bool => ! in_array($key, ['name', 'guard_name', 'select_all', Utils::getTenantModelForeignKey()]))
             ->values()
             ->flatten()
             ->unique();
+
+        if (Utils::isTenancyEnabled() && Arr::has($data, Utils::getTenantModelForeignKey()) && filled($data[Utils::getTenantModelForeignKey()])) {
+            return Arr::only($data, ['name', 'guard_name', Utils::getTenantModelForeignKey()]);
+        }
 
         return Arr::only($data, ['name', 'guard_name']);
     }
@@ -42,15 +42,14 @@ class EditRole extends EditRecord
     protected function afterSave(): void
     {
         $permissionModels = collect();
-        $this->permissions->each(function ($permission) use ($permissionModels): void {
+        $this->permissions->each(function (string $permission) use ($permissionModels): void {
             $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $this->data['guard_name'],
             ]));
         });
 
-        /** @var Role $record */
-        $record = $this->record;
-        $record->syncPermissions($permissionModels);
+        // @phpstan-ignore-next-line
+        $this->record->syncPermissions($permissionModels);
     }
 }
