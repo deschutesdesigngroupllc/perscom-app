@@ -14,10 +14,10 @@ use App\Settings\IntegrationSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -58,7 +58,7 @@ class Integration extends SettingsPage
                     ->tabs([
                         Tab::make('Discord')
                             ->icon('fab-discord')
-                            ->visible(fn (): bool => filled(config('services.discord.client_id')))
+                            ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
                             ->schema([
                                 Toggle::make('discord_settings.discord_enabled')
                                     ->live()
@@ -120,16 +120,17 @@ class Integration extends SettingsPage
                             ]),
                         Tab::make('SMS')
                             ->icon('heroicon-o-phone')
+                            ->visible(fn (): bool => filled(config('services.twilio.auth_token')) && filled(config('services.twilio.sid')))
                             ->schema([
                                 Toggle::make('sms_settings.sms_enabled')
                                     ->live()
                                     ->helperText("Enable SMS notifications system wide. Text messages will be sent to a user's phone number if they have one on file.")
                                     ->label('Enabled'),
-                                Placeholder::make('attempts')
+                                TextEntry::make('attempts')
                                     ->visible(fn (Get $get): bool => $get('sms_settings.sms_enabled'))
                                     ->label('Daily SMS Limit')
                                     ->helperText('Each account is limited to a daily limit of SMS text messages. To increase your rate, please reach out to support.')
-                                    ->content(function (): string {
+                                    ->getStateUsing(function (): string {
                                         /** @var TwilioService $service */
                                         $service = app(TwilioService::class);
 
