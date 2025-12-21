@@ -53,10 +53,12 @@ class Integration extends SettingsPage
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Discord')
                             ->icon('fab-discord')
+                            ->visible(fn (): bool => filled(config('services.discord.client_id')))
                             ->schema([
                                 Toggle::make('discord_settings.discord_enabled')
                                     ->live()
@@ -99,10 +101,13 @@ class Integration extends SettingsPage
                                 TextInput::make('single_sign_on_key')
                                     ->label('SSO Key')
                                     ->disabled()
-                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.resources on the fly through the PERSCOM API.')
+                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM resources on the fly through the PERSCOM API.')
                                     ->suffixAction(fn (): Action => Action::make('regenerate')
                                         ->icon('heroicon-o-arrow-path')
                                         ->successNotificationTitle('The SSO key has been successfully regenerated.')
+                                        ->requiresConfirmation()
+                                        ->modalHeading('Regenerate SSO Key')
+                                        ->modalDescription('Are you sure you want to regenerate the SSO key? Any previous JWT access tokens signed with the existing SSO key will be invalid.')
                                         ->action(function (Action $action): void {
                                             $settings = app(IntegrationSettings::class);
                                             $settings->single_sign_on_key = Str::random(40);
