@@ -93,8 +93,11 @@ class TrainingRecord extends Model
     protected $table = 'records_trainings';
 
     protected $fillable = [
+        'id',
         'instructor_id',
         'text',
+        'created_at',
+        'updated_at',
     ];
 
     public function competencies(): BelongsToMany

@@ -96,9 +96,6 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
 
     protected $fillable = [
         'id',
-        'user_id',
-        'document_id',
-        'author_id',
         'text',
         'updated_at',
         'created_at',
