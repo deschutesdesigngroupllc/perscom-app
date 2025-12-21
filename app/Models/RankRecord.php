@@ -106,6 +106,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     ];
 
     protected $fillable = [
+        'id',
         'text',
         'type',
         'created_at',

@@ -97,6 +97,7 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
     protected $table = 'records_awards';
 
     protected $fillable = [
+        'id',
         'award_id',
         'text',
         'created_at',

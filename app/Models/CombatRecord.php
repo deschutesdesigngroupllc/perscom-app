@@ -93,6 +93,7 @@ class CombatRecord extends Model implements HasLabel, SendsModelNotifications, S
     protected $table = 'records_combat';
 
     protected $fillable = [
+        'id',
         'text',
         'created_at',
         'updated_at',

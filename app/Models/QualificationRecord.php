@@ -97,6 +97,7 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
     protected $table = 'records_qualifications';
 
     protected $fillable = [
+        'id',
         'qualification_id',
         'text',
         'created_at',
