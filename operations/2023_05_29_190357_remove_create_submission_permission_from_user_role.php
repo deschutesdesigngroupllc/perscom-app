@@ -11,8 +11,11 @@ return new class extends OneTimeOperation
     public function process(): void
     {
         tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
-            $role = Role::where('name', 'User')->first();
-            $role?->revokePermissionTo('create:submission');
+            try {
+                $role = Role::where('name', 'User')->first();
+                $role?->revokePermissionTo('create:submission');
+            } catch (Exception $exception) {
+            }
         });
     }
 };
