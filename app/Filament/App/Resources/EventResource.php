@@ -324,7 +324,7 @@ class EventResource extends BaseResource
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),
-                                TextEntry::make('next_occurrence')
+                                TextEntry::make('schedule.next_occurrence')
                                     ->label('Next Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
                                     ->suffix(fn (?Event $record): ?string => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
@@ -334,7 +334,7 @@ class EventResource extends BaseResource
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),
-                                TextEntry::make('last_occurrence')
+                                TextEntry::make('schedule.last_occurrence')
                                     ->label('Last Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->last_occurrence))
                                     ->timezone(UserSettingsService::get('timezone', function () {
