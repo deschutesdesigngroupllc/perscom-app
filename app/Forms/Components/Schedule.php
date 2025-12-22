@@ -16,9 +16,9 @@ use DateTimeInterface;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
@@ -159,10 +159,10 @@ class Schedule
 
                         return $until->setTimeFrom($start);
                     }),
-                Placeholder::make('schedule')
+                TextEntry::make('schedule')
                     ->helperText('The configured schedule will repeat using the pattern above.')
                     ->columnSpanFull()
-                    ->content(function (Get $get) use ($allDay, $shiftScheduleTimezone): string {
+                    ->getStateUsing(function (Get $get) use ($allDay, $shiftScheduleTimezone): string {
                         $start = Carbon::parse($get('start'));
 
                         if ($shiftScheduleTimezone) {
