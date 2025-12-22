@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasEvent;
 use App\Traits\HasLogs;
@@ -81,6 +82,7 @@ class TrainingRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasEvent;
     use HasFactory;
@@ -91,8 +93,11 @@ class TrainingRecord extends Model
     protected $table = 'records_trainings';
 
     protected $fillable = [
+        'id',
         'instructor_id',
         'text',
+        'created_at',
+        'updated_at',
     ];
 
     public function competencies(): BelongsToMany

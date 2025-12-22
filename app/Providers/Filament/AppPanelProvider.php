@@ -139,31 +139,35 @@ class AppPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn () => view('components.logo'))
+            ->brandLogo(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('components.logo'))
             ->plugins([
-                DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
-                    ->navigationLabel('Custom Reports')
-                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
                     ->favoritesBarSize(Size::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
-                Theme::make(),
-                FilamentShieldPlugin::make(),
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(10),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Users')
+                    ->navigationSort(3)
+                    ->navigationIcon('heroicon-o-shield-check')
+                    ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()
                     ->slug('app')
                     ->providers($socialProviders),
+                Theme::make(),
             ])
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
+                    ->url(fn (): string => route('spark.portal'), shouldOpenInNewTab: true)
                     ->visible(fn () => Gate::check('billing'))
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')

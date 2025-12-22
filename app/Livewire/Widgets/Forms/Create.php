@@ -7,11 +7,11 @@ namespace App\Livewire\Widgets\Forms;
 use App\Filament\App\Pages\Forms\Submit;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
@@ -26,7 +26,7 @@ use Livewire\Features\SupportEvents\Event;
  */
 class Create extends Component implements HasForms
 {
-    use InteractsWithFields;
+    use BuildsCustomFieldComponents;
     use InteractsWithForms;
     use InteractsWithRecord;
 
@@ -55,17 +55,17 @@ class Create extends Component implements HasForms
                 Section::make($formModel->name)
                     ->description($formModel->description)
                     ->schema(array_merge([
-                        Placeholder::make('instructions')
+                        TextEntry::make('instructions')
                             ->hiddenLabel()
-                            ->content(new HtmlString($formModel->instructions)),
-                        Placeholder::make('success')
+                            ->getStateUsing(fn (): HtmlString => new HtmlString($formModel->instructions)),
+                        TextEntry::make('success')
                             ->hiddenLabel()
-                            ->visible(fn ($state) => filled($state))
-                            ->content(fn ($state): HtmlString => new HtmlString(<<<HTML
+                            ->visible(fn ($state): bool => filled($state))
+                            ->getStateUsing(fn ($state): HtmlString => new HtmlString(<<<HTML
 <div class="text-green-600 font-bold">{$state}</div>
 HTML
                             )),
-                    ], Submit::getFormSchemaFromFields($this->record), [
+                    ], Submit::buildCustomFieldInputs($this->record), [
                         Actions::make([
                             Action::make('back')
                                 ->button()

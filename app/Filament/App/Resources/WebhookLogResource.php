@@ -175,54 +175,56 @@ class WebhookLogResource extends BaseResource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->components([
-            Tabs::make()
-                ->columnSpanFull()
-                ->tabs([
-                    Tab::make('Webhook')
-                        ->icon('heroicon-o-cloud-arrow-up')
-                        ->schema([
-                            TextEntry::make('request_id')
-                                ->copyable()
-                                ->label('Request ID'),
-                            TextEntry::make('trace_id')
-                                ->copyable()
-                                ->label('Trace ID'),
-                            TextEntry::make('status_code')
-                                ->label('Status')
-                                ->badge()
-                                ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
-                                ->color(fn ($state): string => match (true) {
-                                    (int) $state >= 200 && (int) $state < 300 => 'success',
-                                    default => 'danger'
-                                }),
-                            TextEntry::make('created_at')
-                                ->label('Sent'),
-                            TextEntry::make('causer.label')
-                                ->label('Resource')
-                                ->badge()
-                                ->openUrlInNewTab()
-                                ->icon('heroicon-o-arrow-top-right-on-square')
-                                ->iconPosition(IconPosition::After)
-                                ->url(fn (WebhookLog $record) => $record->resource_url),
-                            TextEntry::make('description')
-                                ->label('Webhook')
-                                ->badge()
-                                ->color('gray'),
-                            TextEntry::make('event')
-                                ->badge()
-                                ->color('gray'),
-                        ]),
-                    Tab::make('Payload')
-                        ->icon('heroicon-o-code-bracket')
-                        ->schema([
-                            CodeEntry::make('payload')
-                                ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))
-                                ->hiddenLabel()
-                                ->grammar(Grammar::Json),
-                        ]),
-                ]),
-        ]);
+        return $schema
+            ->components([
+                Tabs::make()
+                    ->persistTabInQueryString()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Webhook')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->schema([
+                                TextEntry::make('request_id')
+                                    ->copyable()
+                                    ->label('Request ID'),
+                                TextEntry::make('trace_id')
+                                    ->copyable()
+                                    ->label('Trace ID'),
+                                TextEntry::make('status_code')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
+                                    ->color(fn ($state): string => match (true) {
+                                        (int) $state >= 200 && (int) $state < 300 => 'success',
+                                        default => 'danger'
+                                    }),
+                                TextEntry::make('created_at')
+                                    ->label('Sent'),
+                                TextEntry::make('causer.label')
+                                    ->label('Resource')
+                                    ->badge()
+                                    ->openUrlInNewTab()
+                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->iconPosition(IconPosition::After)
+                                    ->url(fn (WebhookLog $record) => $record->resource_url),
+                                TextEntry::make('description')
+                                    ->label('Webhook')
+                                    ->badge()
+                                    ->color('gray'),
+                                TextEntry::make('event')
+                                    ->badge()
+                                    ->color('gray'),
+                            ]),
+                        Tab::make('Payload')
+                            ->icon('heroicon-o-code-bracket')
+                            ->schema([
+                                CodeEntry::make('payload')
+                                    ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))
+                                    ->hiddenLabel()
+                                    ->grammar(Grammar::Json),
+                            ]),
+                    ]),
+            ]);
     }
 
     /**

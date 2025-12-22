@@ -14,10 +14,12 @@ use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\Atta
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\QualificationRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\Filament\App\ViewDocument;
+use App\Models\Field;
 use App\Models\QualificationRecord;
 use App\Models\User;
+use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -31,7 +33,6 @@ use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -49,6 +50,8 @@ use UnitEnum;
 
 class QualificationRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = QualificationRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
@@ -62,11 +65,12 @@ class QualificationRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Details')
+                        Tab::make('Qualification Record')
                             ->columns()
-                            ->icon('heroicon-o-information-circle')
+                            ->icon('heroicon-o-star')
                             ->schema([
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -108,8 +112,17 @@ class QualificationRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->qualification_records);
+
+                                return QualificationRecordResource::buildCustomFieldInputs(Field::findMany($fields));
+                            }),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
@@ -131,6 +144,7 @@ class QualificationRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Qualification Record')
@@ -150,21 +164,20 @@ class QualificationRecordResource extends BaseResource
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                TextEntry::make('author.name'),
+                                TextEntry::make('author.name')
+                                    ->label('Author'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
-                        Tab::make('Document')
-                            ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
-                            ->label(fn (?QualificationRecord $record) => $record->document->name ?? 'Document')
-                            ->icon('heroicon-o-document')
-                            ->schema([
-                                Livewire::make(ViewDocument::class, fn (?QualificationRecord $record): array => [
-                                    'document' => $record->document,
-                                    'user' => $record->user,
-                                    'model' => $record,
-                                ]),
-                            ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->qualification_records);
+
+                                return QualificationRecordResource::buildCustomFieldEntries(Field::findMany($fields));
+                            }),
                     ]),
             ]);
     }

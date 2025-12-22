@@ -75,24 +75,18 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     use HasResourceUrl;
     use HasStatusRecords;
 
+    protected $fillable = [
+        'id',
+        'form_id',
+        'user_id',
+        'read_at',
+        'created_at',
+        'updated_at',
+    ];
+
     public function __toString(): string
     {
         return $this->toHtml();
-    }
-
-    /**
-     * @return string[]
-     */
-    public static function getCustomColumns(): array
-    {
-        return [
-            'id',
-            'form_id',
-            'user_id',
-            'read_at',
-            'created_at',
-            'updated_at',
-        ];
     }
 
     public function form(): BelongsTo

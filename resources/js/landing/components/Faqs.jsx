@@ -3,26 +3,26 @@ import { Container } from './Container'
 
 const faqs = [
   {
-    question: 'What kind of customer support is available with PERSCOM.io?',
+    question: 'What kind of customer support is available with PERSCOM?',
     answer:
       'We offer a range of customer support options, including email and forum support, as well as a comprehensive knowledge base and user guides. Our support team is available to help with any questions or issues you may encounter, and we are committed to providing prompt and reliable support to our customers.'
   },
   {
     question: 'Where does the name PERSCOM come from?',
     answer:
-      'In the military, "PERSCOM" stands for "Personnel Command," which is a term used to describe a unit or department responsible for managing military personnel. However, it\'s worth noting that "PERSCOM.io" is not affiliated with any particular military organization or entity, and its name is simply derived from the term "personnel command."'
+      'In the military, "PERSCOM" stands for "Personnel Command," which is a term used to describe a unit or department responsible for managing military personnel. However, it\'s worth noting that "PERSCOM" is not affiliated with any particular military organization or entity, and its name is simply derived from the term "personnel command."'
   },
   {
-    question: 'Can I integrate PERSCOM.io with other tools and systems we use?',
+    question: 'Can I integrate PERSCOM with other tools and systems we use?',
     answer:
-      "Yes, PERSCOM.io's API, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, allowing you to leverage the platform's powerful personnel management tools while still using the tools you're accustomed to."
+      "Yes, PERSCOM's API, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, allowing you to leverage the platform's powerful personnel management tools while still using the tools you're accustomed to."
   },
   {
     question: 'Can I change the URL of my account Dashboard?',
     answer: 'Yes. You must subscribe to the Pro plan and you can change it to whatever you would like.'
   },
   {
-    question: 'Can I try PERSCOM.io before I purchase a subscription?',
+    question: 'Can I try PERSCOM before I purchase a subscription?',
     answer:
       'Absolutely. Visit the registration page and sign up for an account. You will have a 7-day feel trial before you need to purchase a subscription.'
   },
@@ -31,17 +31,17 @@ const faqs = [
     answer: 'We use Stripe as our payment gateway and support all major payment methods.'
   },
   {
-    question: 'How secure is our data in PERSCOM.io?',
+    question: 'How secure is our data in PERSCOM?',
     answer:
-      "PERSCOM.io is designed with security in mind and employs industry-standard security measures, including data encryption, role-based access control, and multi-factor authentication. Each organization is also its own tenant in a multi-tenant structure, ensuring that no organization's data is accessible by any other."
+      "PERSCOM is designed with security in mind and employs industry-standard security measures, including data encryption, role-based access control, and multi-factor authentication. Each organization is also its own tenant in a multi-tenant structure, ensuring that no organization's data is accessible by any other."
   },
   {
-    question: 'What kind of organizations can benefit from PERSCOM.io?',
+    question: 'What kind of organizations can benefit from PERSCOM?',
     answer:
-      'PERSCOM.io is designed for paramilitary organizations, such as law enforcement agencies, military units, and emergency services organizations that utilize a chain of command or rigid organizational hierarchy.'
+      'PERSCOM is designed for paramilitary organizations, such as law enforcement agencies, military units, and emergency services organizations that utilize a chain of command or rigid organizational hierarchy.'
   },
   {
-    question: 'Why should I purchase a PERSCOM.io subscription?',
+    question: 'Why should I purchase a PERSCOM subscription?',
     answer:
       "We understand the complexity of managing personnel. We've taken this into account and offer all the services you need in one product."
   }

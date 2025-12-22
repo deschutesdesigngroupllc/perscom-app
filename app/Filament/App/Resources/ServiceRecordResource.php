@@ -14,10 +14,12 @@ use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\Attachment
 use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\ServiceRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\Filament\App\ViewDocument;
+use App\Models\Field;
 use App\Models\ServiceRecord;
 use App\Models\User;
+use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -30,7 +32,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -47,6 +48,8 @@ use UnitEnum;
 
 class ServiceRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = ServiceRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
@@ -60,11 +63,12 @@ class ServiceRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Details')
+                        Tab::make('Service Record')
                             ->columns()
-                            ->icon('heroicon-o-information-circle')
+                            ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -101,8 +105,17 @@ class ServiceRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->service_records);
+
+                                return ServiceRecordResource::buildCustomFieldInputs(Field::findMany($fields));
+                            }),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
@@ -124,6 +137,7 @@ class ServiceRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Service Record')
@@ -138,21 +152,20 @@ class ServiceRecordResource extends BaseResource
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                TextEntry::make('author.name'),
+                                TextEntry::make('author.name')
+                                    ->label('Author'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
-                        Tab::make('Document')
-                            ->visible(fn (?ServiceRecord $record): bool => $record->document !== null)
-                            ->label(fn (?ServiceRecord $record) => $record->document->name ?? 'Document')
-                            ->icon('heroicon-o-document')
-                            ->schema([
-                                Livewire::make(ViewDocument::class, fn (?ServiceRecord $record): array => [
-                                    'document' => $record->document,
-                                    'user' => $record->user,
-                                    'model' => $record,
-                                ]),
-                            ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->service_records);
+
+                                return ServiceRecordResource::buildCustomFieldEntries(Field::findMany($fields));
+                            }),
                     ]),
             ]);
     }

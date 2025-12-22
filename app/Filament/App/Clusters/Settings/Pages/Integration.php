@@ -14,10 +14,10 @@ use App\Settings\IntegrationSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -53,10 +53,12 @@ class Integration extends SettingsPage
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Discord')
                             ->icon('fab-discord')
+                            ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
                             ->schema([
                                 Toggle::make('discord_settings.discord_enabled')
                                     ->live()
@@ -99,10 +101,13 @@ class Integration extends SettingsPage
                                 TextInput::make('single_sign_on_key')
                                     ->label('SSO Key')
                                     ->disabled()
-                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
+                                    ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM resources on the fly through the PERSCOM API.')
                                     ->suffixAction(fn (): Action => Action::make('regenerate')
                                         ->icon('heroicon-o-arrow-path')
                                         ->successNotificationTitle('The SSO key has been successfully regenerated.')
+                                        ->requiresConfirmation()
+                                        ->modalHeading('Regenerate SSO Key')
+                                        ->modalDescription('Are you sure you want to regenerate the SSO key? Any previous JWT access tokens signed with the existing SSO key will be invalid.')
                                         ->action(function (Action $action): void {
                                             $settings = app(IntegrationSettings::class);
                                             $settings->single_sign_on_key = Str::random(40);
@@ -115,16 +120,17 @@ class Integration extends SettingsPage
                             ]),
                         Tab::make('SMS')
                             ->icon('heroicon-o-phone')
+                            ->visible(fn (): bool => filled(config('services.twilio.auth_token')) && filled(config('services.twilio.sid')))
                             ->schema([
                                 Toggle::make('sms_settings.sms_enabled')
                                     ->live()
                                     ->helperText("Enable SMS notifications system wide. Text messages will be sent to a user's phone number if they have one on file.")
                                     ->label('Enabled'),
-                                Placeholder::make('attempts')
+                                TextEntry::make('attempts')
                                     ->visible(fn (Get $get): bool => $get('sms_settings.sms_enabled'))
                                     ->label('Daily SMS Limit')
                                     ->helperText('Each account is limited to a daily limit of SMS text messages. To increase your rate, please reach out to support.')
-                                    ->content(function (): string {
+                                    ->getStateUsing(function (): string {
                                         /** @var TwilioService $service */
                                         $service = app(TwilioService::class);
 

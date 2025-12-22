@@ -31,9 +31,11 @@ class Permission extends SettingsPage
 
     protected static string $settings = PermissionSettings::class;
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 3;
 
     protected ?string $subheading = 'Adjust and configure authorization for your account.';
+
+    protected static ?string $slug = 'users/permissions';
 
     public static function canAccess(): bool
     {
@@ -47,6 +49,7 @@ class Permission extends SettingsPage
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Defaults')

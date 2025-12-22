@@ -14,10 +14,12 @@ use App\Filament\App\Resources\AwardRecordResource\RelationManagers\CommentsRela
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\AwardRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\Filament\App\ViewDocument;
 use App\Models\AwardRecord;
+use App\Models\Field;
 use App\Models\User;
+use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -31,7 +33,6 @@ use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -49,6 +50,8 @@ use UnitEnum;
 
 class AwardRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = AwardRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-trophy';
@@ -62,11 +65,12 @@ class AwardRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Details')
+                        Tab::make('Award Record')
                             ->columns()
-                            ->icon('heroicon-o-information-circle')
+                            ->icon('heroicon-o-trophy')
                             ->schema([
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -108,8 +112,17 @@ class AwardRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->award_records);
+
+                                return AwardRecordResource::buildCustomFieldInputs(Field::findMany($fields));
+                            }),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
@@ -131,6 +144,7 @@ class AwardRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Award Record')
@@ -150,21 +164,20 @@ class AwardRecordResource extends BaseResource
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                TextEntry::make('author.name'),
+                                TextEntry::make('author.name')
+                                    ->label('Author'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
-                        Tab::make('Document')
-                            ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
-                            ->label(fn (?AwardRecord $record) => $record->document->name ?? 'Document')
-                            ->icon('heroicon-o-document')
-                            ->schema([
-                                Livewire::make(ViewDocument::class, fn (?AwardRecord $record): array => [
-                                    'document' => $record->document,
-                                    'user' => $record->user,
-                                    'model' => $record,
-                                ]),
-                            ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->award_records);
+
+                                return AwardRecordResource::buildCustomFieldEntries(Field::findMany($fields));
+                            }),
                     ]),
             ]);
     }

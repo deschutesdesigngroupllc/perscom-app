@@ -39,6 +39,7 @@ class BannerResource extends Resource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Banner')

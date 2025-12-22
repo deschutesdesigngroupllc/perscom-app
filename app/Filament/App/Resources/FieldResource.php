@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\FieldResource\Pages\CreateField;
 use App\Filament\App\Resources\FieldResource\Pages\EditField;
 use App\Filament\App\Resources\FieldResource\Pages\ListFields;
@@ -50,17 +51,22 @@ class FieldResource extends BaseResource
 {
     protected static ?string $model = Field::class;
 
+    protected static ?string $cluster = Settings::class;
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil';
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $slug = 'resources/fields';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Field')
@@ -89,6 +95,10 @@ class FieldResource extends BaseResource
                                     ->required()
                                     ->live()
                                     ->columnSpanFull(),
+                                TextInput::make('default')
+                                    ->nullable()
+                                    ->columnSpanFull()
+                                    ->helperText('The default value of the field.'),
                                 Radio::make('options_type')
                                     ->validationAttribute('type')
                                     ->default(FieldOptionsType::Array)
@@ -164,6 +174,8 @@ class FieldResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->heading('Manage Fields')
+            ->description('Create custom fields to attach to resources such as records, users, forms etc. providing custom data collection.')
             ->emptyStateIcon(Heroicon::OutlinedPencil)
             ->emptyStateDescription('There are no custom fields to view. Create one to get started.')
             ->columns([

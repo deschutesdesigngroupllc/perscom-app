@@ -31,6 +31,10 @@ class Registration extends SettingsPage
 
     protected ?string $subheading = 'Configure user registration settings.';
 
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $slug = 'users/registration';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()
@@ -43,6 +47,7 @@ class Registration extends SettingsPage
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Settings')

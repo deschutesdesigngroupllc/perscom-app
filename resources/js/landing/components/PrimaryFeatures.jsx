@@ -12,25 +12,25 @@ import { Container } from './Container'
 const features = [
   {
     title: 'Personnel management',
-    description: "PERSCOM.io streamlines your organization's personnel management, allowing you to focus on what really matters.",
+    description: "PERSCOM streamlines your organization's personnel management, allowing you to focus on what really matters.",
     image: featureDashboard
   },
   {
     title: 'Fully customizable',
     description:
-      "PERSCOM.io's powerful features are fully customizable and scalable to meet the unique needs of your organization, while maintaining the highest levels of security.",
+      "PERSCOM's powerful features are fully customizable and scalable to meet the unique needs of your organization, while maintaining the highest levels of security.",
     image: featurePersonnelFiles
   },
   {
     title: 'Centralized data management',
     description:
-      'With PERSCOM.io, all of your personnel data is stored in a centralized location, making it easy to access, update, and manage.',
+      'With PERSCOM, all of your personnel data is stored in a centralized location, making it easy to access, update, and manage.',
     image: featureForms
   },
   {
     title: 'Seamless integrations',
     description:
-      "PERSCOM.io's API, SDK's, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
+      "PERSCOM's API, SDK's, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
     image: featureLogs
   }
 ]

@@ -27,11 +27,16 @@ class Notifications extends SettingsPage
 
     protected ?string $subheading = 'Manage your default notification settings.';
 
+    protected static ?int $navigationSort = 1;
+
+    protected static ?string $slug = 'dashboard/notifications';
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Assignment Records')
@@ -40,7 +45,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when an assignment record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -50,7 +55,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when an award record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -60,7 +65,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a combat record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -70,7 +75,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a qualification record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -80,7 +85,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a rank record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -90,7 +95,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a service record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),
@@ -100,7 +105,7 @@ class Notifications extends SettingsPage
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a training record is created.',
-                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    alert: new HtmlString("<div class='fi-sc-text'>Configure the default notifications to send when creating a record. Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
                                     statePath: ''
                                 ),
                             ]),

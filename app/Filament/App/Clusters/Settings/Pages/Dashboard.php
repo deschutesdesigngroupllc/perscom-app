@@ -59,6 +59,7 @@ class Dashboard extends SettingsPage
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Home Page')

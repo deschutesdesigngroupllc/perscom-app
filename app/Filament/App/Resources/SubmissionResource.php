@@ -13,6 +13,7 @@ use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelat
 use App\Filament\Exports\SubmissionExporter;
 use App\Models\Submission;
 use App\Rules\FieldDataRule;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -23,8 +24,8 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -41,6 +42,8 @@ use UnitEnum;
 
 class SubmissionResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = Submission::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-folder-plus';
@@ -88,32 +91,42 @@ class SubmissionResource extends BaseResource
     {
         return $schema
             ->components([
-                Tabs::make()
+                Section::make()
                     ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
-                            ->icon('heroicon-o-folder-plus')
-                            ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('form.name'),
+                    ->schema([
+                        Tabs::make()
+                            ->persistTabInQueryString('submission-tab')
+                            ->columnSpanFull()
+                            ->tabs([
+                                Tab::make('Submission')
+                                    ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                                    ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                                    ->icon('heroicon-o-folder-plus')
+                                    ->schema([
+                                        TextEntry::make('user.name'),
+                                        TextEntry::make('form.name'),
+                                    ]),
+                                Tab::make('Details')
+                                    ->icon('heroicon-o-information-circle')
+                                    ->schema([
+                                        TextEntry::make('read_at')
+                                            ->dateTime()
+                                            ->label('Read'),
+                                        TextEntry::make('created_at'),
+                                        TextEntry::make('updated_at'),
+                                    ]),
                             ]),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
-                            ->schema([
-                                TextEntry::make('read_at')
-                                    ->dateTime()
-                                    ->label('Read'),
-                                TextEntry::make('created_at'),
-                                TextEntry::make('updated_at'),
-                            ]),
-                        Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
-                            ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
-                            ->schema([
-                                ViewEntry::make('form')
-                                    ->view('models.submission'),
+                    ]),
+                Section::make()
+                    ->columnSpanFull()
+                    ->schema([
+                        Tabs::make()
+                            ->persistTabInQueryString('form-tab')
+                            ->tabs([
+                                Tab::make('')
+                                    ->icon('heroicon-o-pencil-square')
+                                    ->label(fn (Submission $record) => $record->form->name ?? 'Form')
+                                    ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                             ]),
                     ]),
             ]);
