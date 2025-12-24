@@ -156,7 +156,6 @@
       "@php artisan key:generate -n",
       "@php artisan jwt:secret -n --force",
       "@php artisan passport:keys --force",
-      "@php artisan migrate --force",
       "npm install",
       "npm run build",
       "@php artisan perscom:install"
