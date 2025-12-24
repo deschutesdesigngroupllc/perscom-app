@@ -18,14 +18,16 @@ class TenantDatabaseSeeder extends Seeder
     {
         /** @var SetupTenantAccount $action */
         $action = app(SetupTenantAccount::class);
-        $action->shouldCreateUser(false)->handle(tenant());
+        $action
+            ->shouldCreateUser(false)
+            ->shouldCreateAnnouncement(false)
+            ->shouldCreatePages(false)
+            ->handle(tenant());
 
         $user = User::factory()->unassigned()->createQuietly([
             'name' => 'Test User',
             'email' => 'test@deschutesdesigngroup.com',
         ]);
         $user->assignRole(Utils::getSuperAdminName());
-
-        $this->call(MilitarySeeder::class);
     }
 }

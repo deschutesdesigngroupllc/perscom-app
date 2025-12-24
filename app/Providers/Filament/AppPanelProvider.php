@@ -44,6 +44,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Padmission\DataLens\DataLensPlugin;
@@ -112,9 +113,12 @@ class AppPanelProvider extends PanelProvider
                 RecentAnnouncements::class,
                 RecentNews::class,
             ])
-            ->middleware([
+            ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([
                 InitializeTenancyBySubdomain::class,
-            ], isPersistent: true)
+            ], isPersistent: true))
+            ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([
+                PreventAccessFromCentralDomains::class,
+            ]))
             ->middleware([
                 CheckSubscription::class,
                 AttachTraceAndRequestId::class,
@@ -130,7 +134,6 @@ class AppPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 CaptureUserOnlineStatus::class,
                 CheckUserApprovalStatus::class,
-                PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
             ])
             ->authMiddleware([
@@ -164,7 +167,7 @@ class AppPanelProvider extends PanelProvider
                 Action::make('billing')
                     ->label('Billing')
                     ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
-                    ->visible(fn () => Gate::check('billing'))
+                    ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo())
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')
                     ->label('Documentation')

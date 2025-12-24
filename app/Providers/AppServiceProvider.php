@@ -131,7 +131,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
+        App::macro('isAdmin', fn (): bool => config('tenancy.enabled') && collect(config('tenancy.central_domains'))->contains(request()->getHost()));
         App::macro('isDemo', fn () => $this->app->environment('demo'));
 
         Auth::viaRequest('api', static fn () => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());

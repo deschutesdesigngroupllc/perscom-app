@@ -124,6 +124,10 @@ class ApiCacheService
 
     protected function getCachePrefix(Model $model): string
     {
+        if (! config('tenancy.enabled') || blank($this->tenant)) {
+            return class_basename($model);
+        }
+
         return strtolower($this->tenant->getKey().':'.class_basename($model));
     }
 

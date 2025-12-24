@@ -10,10 +10,14 @@ use Livewire\Component;
 
 class AlertBanner extends Component
 {
-    public ?array $alerts = null;
+    public array $alerts = [];
 
     public function mount(): void
     {
+        if (! config('tenancy.enabled')) {
+            return;
+        }
+
         $this->alerts = Alert::query()->orderBy('order', 'desc')->whereJsonContains('channels', 'dashboard')->get()->map(fn (Alert $alert): array => [
             'title' => $alert->title,
             'message' => $alert->message,

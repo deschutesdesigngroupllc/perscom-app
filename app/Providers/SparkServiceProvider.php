@@ -20,7 +20,7 @@ class SparkServiceProvider extends ServiceProvider
         Spark::billable(Tenant::class)->resolve(fn (Request $request) => tenant());
 
         Spark::billable(Tenant::class)->authorize(fn (Tenant $billable, Request $request): bool => tenant() &&
-            tenant()->getTenantKey() === $billable->id &&
+            tenant('id') === $billable->id &&
             Gate::check('billing'));
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan): void {

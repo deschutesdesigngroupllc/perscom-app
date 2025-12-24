@@ -65,12 +65,18 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/auth.php'));
 
             Route::as('oidc.')
-                ->domain('{tenant}'.config('app.base_url'))
+                ->domain(config('tenancy.enabled')
+                    ? '{tenant}'.config('app.base_url')
+                    : ''
+                )
                 ->group(base_path('routes/oidc.php'));
 
             Route::prefix('oauth')
                 ->as('passport.')
-                ->domain('{tenant}'.config('app.base_url'))
+                ->domain(config('tenancy.enabled')
+                    ? '{tenant}'.config('app.base_url')
+                    : ''
+                )
                 ->namespace('Laravel\\Passport\\Http\\Controllers')
                 ->group(base_path('routes/passport.php'));
         }

@@ -8,6 +8,8 @@ use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\ApiKeySeeder;
 use Database\Seeders\CentralDatabaseSeeder;
+use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\DemoSeeder;
 use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
@@ -41,13 +43,13 @@ class InstallCommand extends Command implements Isolatable
     protected function ensureInitialMigrationsRun(): void
     {
         try {
-            if (! Schema::hasTable('migrations') || ! Schema::hasTable('tenants')) {
+            if (! Schema::hasTable('migrations') || (config('tenancy.enabled') && ! Schema::hasTable('tenants'))) {
                 $this->components->info('Initial migrations not found. Running initial migration setup...');
-                $this->call('migrate', ['--step' => true]);
+                $this->call('migrate:fresh', ['--step' => true]);
             }
         } catch (Exception) {
             $this->components->info('Database not properly initialized. Running initial migration setup...');
-            $this->call('migrate', ['--step' => true]);
+            $this->call('migrate:fresh', ['--step' => true]);
         }
     }
 
@@ -59,12 +61,13 @@ class InstallCommand extends Command implements Isolatable
             return static::FAILURE;
         }
 
-        $this->ensureInitialMigrationsRun();
+        if (config('tenancy.enabled') === false) {
+            $this->components->error('The demo environment is meant to be run in tenancy mode. Please enable it to continue.');
 
-        $seeder = match (true) {
-            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
-            default => MilitarySeeder::class
-        };
+            return static::FAILURE;
+        }
+
+        $this->ensureInitialMigrationsRun();
 
         /** @var Tenant|null $tenant */
         $tenant = Tenant::find(config('demo.tenant_id'));
@@ -79,6 +82,13 @@ class InstallCommand extends Command implements Isolatable
             '--tenants' => $tenant->getTenantKey(),
         ]);
 
+        $this->call('tenants:migrate', [
+            '--tenants' => $tenant->getTenantKey(),
+            '--path' => database_path('settings/tenant'),
+            '--realpath' => true,
+            '--schema-path' => database_path('settings/tenant'),
+        ]);
+
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
             '--class' => TenantSeeder::class,
@@ -86,8 +96,20 @@ class InstallCommand extends Command implements Isolatable
 
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
+            '--class' => DemoSeeder::class,
+        ]);
+
+        $seeder = match (true) {
+            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
+            default => MilitarySeeder::class
+        };
+
+        $this->call('tenants:seed', [
+            '--tenants' => $tenant->getTenantKey(),
             '--class' => $seeder,
         ]);
+
+        $this->components->success('The demo environment has been successfully reset.');
 
         return static::SUCCESS;
     }
@@ -105,6 +127,16 @@ class InstallCommand extends Command implements Isolatable
 
         $this->ensureInitialMigrationsRun();
 
+        return config('tenancy.enabled')
+            ? $this->resetLocalEnvironmentWithTenancy()
+            : $this->resetLocalEnvironmentWithoutTenancy();
+    }
+
+    /**
+     * @throws DatabaseManagerNotRegisteredException
+     */
+    protected function resetLocalEnvironmentWithTenancy(): int
+    {
         tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
                 $tenant->database()->manager()->deleteDatabase($tenant);
@@ -147,6 +179,16 @@ class InstallCommand extends Command implements Isolatable
             '--class' => ApiKeySeeder::class,
         ]);
 
+        $seeder = match (true) {
+            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
+            default => MilitarySeeder::class
+        };
+
+        $this->call('tenants:seed', [
+            '--tenants' => $tenant->getTenantKey(),
+            '--class' => $seeder,
+        ]);
+
         $this->components->info('Available tenants:');
 
         table(['ID', 'Tenant', 'URL'], Tenant::all()->map(fn (Tenant $tenant): array => [$tenant->getTenantKey(), $tenant->name, $tenant->url]));
@@ -162,6 +204,49 @@ class InstallCommand extends Command implements Isolatable
             [config('api.url').DIRECTORY_SEPARATOR.config('api.version'), 'API Base URL'],
             [route('filament.admin.pages.dashboard'), 'Administrative Dashboard'],
             [Tenant::first()->url, 'Tenant Dashboard'],
+        ]);
+
+        $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');
+
+        return static::SUCCESS;
+    }
+
+    protected function resetLocalEnvironmentWithoutTenancy(): int
+    {
+        $this->call('migrate:fresh', [
+            '--path' => database_path('migrations/tenant'),
+            '--realpath' => true,
+            '--schema-path' => database_path('migrations/tenant'),
+        ]);
+
+        $this->call('migrate', [
+            '--path' => database_path('settings/tenant'),
+            '--realpath' => true,
+            '--schema-path' => database_path('settings/tenant'),
+        ]);
+
+        $this->call('db:seed', [
+            '--class' => DatabaseSeeder::class,
+        ]);
+
+        $seeder = match (true) {
+            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
+            default => MilitarySeeder::class
+        };
+
+        $this->call('db:seed', [
+            '--class' => $seeder,
+        ]);
+
+        $this->components->info('Available user accounts:');
+
+        table(['ID', 'Name', 'Email', 'Roles', 'Password'], User::all()->map(fn (User $user): array => [$user->id, $user->name, $user->email, $user->roles->map->name->implode(', '), '---']));
+
+        $this->components->info('Application URLs:');
+
+        table(['URL', 'Purpose'], [
+            [config('api.url').DIRECTORY_SEPARATOR.config('api.version'), 'API Base URL'],
+            [route('filament.app.pages.dashboard'), 'App Dashboard'],
         ]);
 
         $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');

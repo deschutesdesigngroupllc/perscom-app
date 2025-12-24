@@ -8,18 +8,13 @@ use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class DemoSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call([
-            PassportSeeder::class,
-            ShieldSeeder::class,
-        ]);
-
         $user = User::factory()->unassigned()->createQuietly([
-            'name' => 'Test User',
-            'email' => 'test@deschutesdesigngroup.com',
+            'name' => 'Demo User',
+            'email' => 'demo@perscom.io',
         ]);
         $user->assignRole(Utils::getSuperAdminName());
     }
