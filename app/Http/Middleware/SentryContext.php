@@ -62,13 +62,13 @@ class SentryContext
 
             if (tenant()) {
                 configureScope(function (Scope $scope): void {
-                    $scope->setTag('tenant.id', (string) tenant()->getTenantKey());
+                    $scope->setTag('tenant.id', (string) tenant('id'));
                     $scope->setTag('tenant.name', (string) tenant('name'));
                     $scope->setTag('tenant.email', (string) tenant('email'));
                     $scope->setTag('tenant.slug', (string) tenant('slug'));
 
                     $scope->setContext('Tenant', [
-                        'ID' => tenant()->getTenantKey(),
+                        'ID' => tenant('id'),
                         'Name' => tenant('name'),
                         'Email' => tenant('email'),
                     ]);

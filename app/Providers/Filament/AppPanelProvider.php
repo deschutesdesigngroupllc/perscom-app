@@ -87,6 +87,7 @@ class AppPanelProvider extends PanelProvider
 
         return $panel
             ->default()
+            ->domain(config('app.url'))
             ->id('app')
             ->login(Login::class)
             ->registration($registration)
@@ -112,9 +113,12 @@ class AppPanelProvider extends PanelProvider
                 RecentAnnouncements::class,
                 RecentNews::class,
             ])
-            ->middleware([
+            ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([
                 InitializeTenancyBySubdomain::class,
-            ], isPersistent: true)
+            ], isPersistent: true))
+            ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([
+                PreventAccessFromCentralDomains::class,
+            ]))
             ->middleware([
                 CheckSubscription::class,
                 AttachTraceAndRequestId::class,
@@ -130,7 +134,6 @@ class AppPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
                 CaptureUserOnlineStatus::class,
                 CheckUserApprovalStatus::class,
-                PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
             ])
             ->authMiddleware([

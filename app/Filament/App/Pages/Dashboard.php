@@ -28,7 +28,8 @@ class Dashboard extends BaseDashboard
     {
         return [
             CopyAction::make('perscom_id')
-                ->label(fn (): string => 'PERSCOM ID: '.tenant()->getTenantKey())
+                ->visible(fn () => config('tenancy.enabled'))
+                ->label(fn (): string => 'PERSCOM ID: '.tenant('id'))
                 ->copyable((string) tenant('id'))
                 ->icon('heroicon-o-document-duplicate')
                 ->iconPosition(IconPosition::After)

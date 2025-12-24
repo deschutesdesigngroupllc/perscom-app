@@ -39,7 +39,7 @@ trait JwtClaims
             'email_verified' => $this->hasVerifiedEmail(),
             'picture' => $this->profile_photo_url,
             'phone_number' => $this->phone_number,
-            'tenant' => (string) tenant()->getTenantKey(),
+            'tenant' => (string) tenant('id'),
             'roles' => $this->roles->pluck('name')->toArray(),
             'locale' => config('app.locale'),
             'zoneinfo' => $timezone,
