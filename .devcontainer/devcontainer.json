@@ -1,38 +1,39 @@
 // https://aka.ms/devcontainer.json
 {
-	"name": "Existing Docker Compose (Extend)",
-	"dockerComposeFile": [
-		"../compose.yaml"
-	],
-	"service": "perscom",
-	"workspaceFolder": "/var/www/html",
+  "name": "PERSCOM",
+  "dockerComposeFile": "compose.yaml",
+  "service": "perscom",
+  "workspaceFolder": "/var/www/html",
   "customizations": {
-		"vscode": {
-			"extensions": [
+    "vscode": {
+      "extensions": [
+        "laravel.vscode-laravel",
         "mikestead.dotenv",
         "amiralizadeh9480.laravel-extra-intellisense",
         "ryannaddy.laravel-artisan",
         "onecentlin.laravel-blade",
         "onecentlin.laravel5-snippets"
-			],
-			"settings": {}
-		}
-	},
-  "containerEnv": {
-    "COMPOSER_AUTH": "${codespaces:COMPOSER_AUTH}"
+      ]
+    }
   },
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
   },
-  "forwardPorts": [
-    8080,
-    3306,
-    6379
-  ],
+  "forwardPorts": [8080, 3306, 6379],
+  "portsAttributes": {
+    "8080": {
+      "label": "Web Server"
+    },
+    "3306": {
+      "label": "MySQL"
+    },
+    "6379": {
+      "label": "Redis"
+    }
+  },
   "postStartCommand": "/var/www/html/.devcontainer/bootstrap.sh",
-  "runServices": [
-    "perscom",
-    "mysql",
-    "redis"
-  ],
+  "containerEnv": {
+    "COMPOSER_AUTH": "${codespaces:COMPOSER_AUTH}"
+  },
+  "runServices": ["perscom", "mysql", "redis"]
 }

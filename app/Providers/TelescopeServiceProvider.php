@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Telescope\IncomingEntry;
@@ -73,6 +74,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
     protected function gate(): void
     {
-        Gate::define('viewTelescope', fn (Admin|User|null $user = null): bool => $user instanceof Admin);
+        Gate::define('viewTelescope', fn (Admin|User|null $user = null): bool => $user instanceof Admin
+            || (! config('tenancy.enabled') && $user->hasRole(Utils::getSuperAdminName()))
+        );
     }
 }

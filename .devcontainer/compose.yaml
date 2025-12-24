@@ -1,12 +1,13 @@
 services:
   perscom:
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile
-      target: development
+      target: devcontainer
       args:
-        USER_ID: "${UID:-33}"
-        GROUP_ID: "${GID:-33}"
+        USER_ID: "${UID:-1000}"
+        GROUP_ID: "${GID:-1000}"
+        USERNAME: "vscode"
     depends_on:
       - mysql
       - redis
@@ -15,15 +16,15 @@ services:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     volumes:
-      - ./:/var/www/html
+      - ../:/var/www/html
     environment:
       CACHE_STORE: 'redis'
       DB_CONNECTION: '${DB_CONNECTION:-mysql}'
       DB_DATABASE: '${DB_DATABASE:-perscom}'
       DB_USERNAME: '${DB_USERNAME:-root}'
-      DB_HOST: "mysql"
-      PHP_UPLOAD_MAX_FILE_SIZE: "250M"
-      PHP_OPCACHE_ENABLE: "0"
+      DB_HOST: 'mysql'
+      PHP_UPLOAD_MAX_FILE_SIZE: '250M'
+      PHP_OPCACHE_ENABLE: '0'
       QUEUE_CONNECTION: 'redis'
       REDIS_HOST: 'redis'
       SESSION_DRIVER: 'redis'
@@ -73,7 +74,7 @@ services:
       - redis
       - mysql
     volumes:
-      - ./:/var/www/html
+      - ../:/var/www/html
     environment:
       DB_HOST: "mysql"
       REDIS_HOST: "redis"
@@ -91,7 +92,7 @@ services:
       - perscom
       - mysql
     volumes:
-      - ./:/var/www/html
+      - ../:/var/www/html
     command: [ "php", "/var/www/html/artisan", "schedule:work" ]
     stop_signal: SIGTERM
     networks:
