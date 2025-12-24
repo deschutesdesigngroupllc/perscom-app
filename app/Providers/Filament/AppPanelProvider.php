@@ -44,6 +44,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Padmission\DataLens\DataLensPlugin;
@@ -166,7 +167,7 @@ class AppPanelProvider extends PanelProvider
                 Action::make('billing')
                     ->label('Billing')
                     ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
-                    ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled'))
+                    ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo())
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')
                     ->label('Documentation')

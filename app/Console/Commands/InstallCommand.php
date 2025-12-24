@@ -82,6 +82,13 @@ class InstallCommand extends Command implements Isolatable
             '--tenants' => $tenant->getTenantKey(),
         ]);
 
+        $this->call('tenants:migrate', [
+            '--tenants' => $tenant->getTenantKey(),
+            '--path' => database_path('settings/tenant'),
+            '--realpath' => true,
+            '--schema-path' => database_path('settings/tenant'),
+        ]);
+
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
             '--class' => TenantSeeder::class,
@@ -101,6 +108,8 @@ class InstallCommand extends Command implements Isolatable
             '--tenants' => $tenant->getTenantKey(),
             '--class' => $seeder,
         ]);
+
+        $this->components->success('The demo environment has been successfully reset.');
 
         return static::SUCCESS;
     }
