@@ -166,7 +166,7 @@ class AppPanelProvider extends PanelProvider
                 Action::make('billing')
                     ->label('Billing')
                     ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
-                    ->visible(fn () => Gate::check('billing'))
+                    ->visible(fn () => Gate::check('billing') && config('tenancy.enabled'))
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')
                     ->label('Documentation')
