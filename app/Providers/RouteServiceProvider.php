@@ -16,10 +16,12 @@ class RouteServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        Route::domain(config('app.url'))
-            ->as('web.')
-            ->middleware('web')
-            ->group(base_path('routes/web.php'));
+        if (config('tenancy.enabled')) {
+            Route::domain(config('app.url'))
+                ->as('web.')
+                ->middleware('web')
+                ->group(base_path('routes/web.php'));
+        }
     }
 
     public function boot(): void

@@ -87,7 +87,6 @@ class AppPanelProvider extends PanelProvider
 
         return $panel
             ->default()
-            ->domain(config('app.url'))
             ->id('app')
             ->login(Login::class)
             ->registration($registration)
