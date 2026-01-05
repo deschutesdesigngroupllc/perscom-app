@@ -45,7 +45,7 @@
     "sonner": "2.0.7",
     "svgo": "4.0.0",
     "tailwind-merge": "^3.3.0",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "4.1.18",
     "tailwindcss-animate": "^1.0.7",
     "vite": "^7.1.4",
     "vite-plugin-image-optimizer": "2.0.2"

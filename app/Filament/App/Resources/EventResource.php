@@ -13,7 +13,6 @@ use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationMa
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
-use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
@@ -39,7 +38,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -209,6 +207,7 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 Section::make()
+                                    ->contained(false)
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
@@ -361,27 +360,6 @@ class EventResource extends BaseResource
                                     ->label('URL')
                                     ->url(fn (?Event $record) => $record->url),
                             ]),
-                        Tab::make('Registration')
-                            ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->whereStatus(EventRegistrationStatus::Going)->count() : null)
-                            ->badgeColor('info')
-                            ->icon('heroicon-o-user-plus')
-                            ->visible(fn (?Event $record) => $record->registration_enabled)
-                            ->schema([
-                                TextEntry::make('registration_deadline')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->label('Deadline')
-                                    ->hidden(fn (?Event $record): bool => is_null($record->registration_deadline))
-                                    ->dateTime(),
-                                Livewire::make(RegistrationsRelationManager::class, fn (?Event $record): array => [
-                                    'ownerRecord' => $record,
-                                    'pageClass' => ViewEvent::class,
-                                ])->key('event-registrations'),
-                            ]),
                     ]),
             ]);
     }
@@ -454,6 +432,7 @@ class EventResource extends BaseResource
         return [
             AttachmentsRelationManager::class,
             CommentsRelationManager::class,
+            RegistrationsRelationManager::class,
         ];
     }
 

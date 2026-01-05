@@ -19,6 +19,16 @@ class RegistrationsRelationManager extends RelationManager
 
     protected $listeners = ['refreshRegistrations' => '$refresh'];
 
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
+    }
+
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function table(Table $table): Table
     {
         return $table

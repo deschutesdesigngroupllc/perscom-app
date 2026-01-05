@@ -46,7 +46,8 @@ class Forms extends Page implements HasForms, HasTable
             ->query(Form::query())
             ->recordAction('open')
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->toggleable(false),
             ])
             ->recordUrl(fn (?Form $record): string => Submit::getUrl([
                 'record' => $record,

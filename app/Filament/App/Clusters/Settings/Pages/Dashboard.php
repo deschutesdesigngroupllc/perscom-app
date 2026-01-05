@@ -73,6 +73,7 @@ class Dashboard extends SettingsPage
                                     ->helperText('This is the subheading text that will be displayed under the main heading on the dashboard home page.'),
                             ]),
                         Tab::make('Domain')
+                            ->visible(config('tenancy.enabled'))
                             ->icon('heroicon-o-globe-alt')
                             ->badgeColor('gray')
                             ->badge(fn () => tenant('url'))
@@ -184,6 +185,10 @@ class Dashboard extends SettingsPage
 
         /** @var ?Tenant $tenant */
         $tenant = tenant();
+
+        if (is_null($tenant)) {
+            return;
+        }
 
         $subdomain = data_get($data, 'subdomain');
 

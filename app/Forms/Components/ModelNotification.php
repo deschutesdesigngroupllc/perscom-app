@@ -30,6 +30,7 @@ class ModelNotification
     public static function make(?string $description = null, string|HtmlString|Closure|null $alert = null, ?array $defaults = null, ?string $statePath = null): Section
     {
         return Section::make()
+            ->contained(false)
             ->key('model_notifications')
             ->statePath($statePath ?? 'model_notifications')
             ->schema([

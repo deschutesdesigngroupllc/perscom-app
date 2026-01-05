@@ -26,17 +26,15 @@ class RecentAnnouncements extends BaseWidget
             ->emptyStateHeading('No recent announcements')
             ->emptyStateDescription('There are no recent announcements to show.')
             ->emptyStateIcon('heroicon-o-megaphone')
-            ->recordClasses([
-                'sm:-mx-6' => true,
-                '-mx-4' => true,
-            ])
             ->query(Announcement::query()->latest())
             ->recordAction('view')
             ->columns([
                 Stack::make([
                     TextColumn::make('title')
+                        ->toggleable(false)
                         ->weight(FontWeight::Bold),
                     TextColumn::make('content')
+                        ->toggleable(false)
                         ->html()
                         ->wrap(),
                     TextColumn::make('created_at')

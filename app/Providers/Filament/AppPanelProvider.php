@@ -37,7 +37,6 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
-use FilamentThemes\Minimal\Theme;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -144,16 +143,15 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
-                    ->navigationLabel('Custom Reports')
-                    ->navigationSort(10),
+                //                DataLensPlugin::make()
+                //                    ->navigationGroup('Reporting')
+                //                    ->navigationLabel('Custom Reports')
+                //                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
                     ->favoritesBarSize(Size::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
-                Theme::make(),
                 FilamentShieldPlugin::make(),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)

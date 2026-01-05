@@ -94,12 +94,15 @@ class NewsfeedResource extends BaseResource
                 Split::make([
                     Stack::make([
                         TextColumn::make('headline')
+                            ->toggleable(false)
                             ->weight(FontWeight::Bold),
                         TextColumn::make('text')
+                            ->toggleable(false)
                             ->html()
                             ->wrap()
                             ->formatStateUsing(fn ($state) => Str::limit($state, 250)),
                         TextColumn::make('created_at')
+                            ->toggleable(false)
                             ->weight(FontWeight::Light)
                             ->color(Color::Gray),
                     ]),

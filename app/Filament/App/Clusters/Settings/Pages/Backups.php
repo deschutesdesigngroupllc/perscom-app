@@ -32,6 +32,12 @@ class Backups extends Page implements HasTable
 
     protected ?string $subheading = 'Your most recent account backups.';
 
+    public static function canAccess(): bool
+    {
+        return parent::canAccess()
+            && config('tenancy.enabled');
+    }
+
     public static function table(Table $table): Table
     {
         return $table

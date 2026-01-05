@@ -95,6 +95,7 @@ class RankResource extends BaseResource
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 Section::make()
+                                    ->contained(false)
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([

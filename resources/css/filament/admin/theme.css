@@ -1,5 +1,4 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
-@import '../../../../vendor/filament-themes/minimal';
 
 @source '../../../../app/Filament/Admin/**/*';
 @source '../../../../resources/views/filament/**/*';

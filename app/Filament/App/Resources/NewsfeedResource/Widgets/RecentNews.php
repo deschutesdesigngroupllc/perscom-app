@@ -26,17 +26,15 @@ class RecentNews extends BaseWidget
             ->emptyStateHeading('No recent news')
             ->emptyStateDescription('There are no recent news items to show.')
             ->emptyStateIcon('heroicon-o-newspaper')
-            ->recordClasses([
-                'sm:-mx-6' => true,
-                '-mx-4' => true,
-            ])
             ->query(Newsfeed::query()->latest())
             ->recordAction('view')
             ->columns([
                 Stack::make([
                     TextColumn::make('headline')
+                        ->toggleable(false)
                         ->weight(FontWeight::Bold),
                     TextColumn::make('text')
+                        ->toggleable(false)
                         ->html()
                         ->wrap(),
                     TextColumn::make('created_at')

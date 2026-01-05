@@ -96,12 +96,14 @@ class RoleResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->toggleable(false)
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn ($state): string => Str::headline($state))
                     ->sortable()
                     ->colors(['primary']),
                 TextColumn::make('permissions_count')
+                    ->toggleable(false)
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.permissions'))
                     ->counts('permissions')

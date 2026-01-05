@@ -82,6 +82,7 @@ class UserResource extends BaseResource
                             ->columns()
                             ->schema([
                                 Grid::make(8)
+                                    ->columnSpanFull()
                                     ->schema([
                                         FileUpload::make('profile_photo')
                                             ->columnSpan(1)
@@ -236,6 +237,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-user')
                             ->schema([
                                 Section::make('Personnel File')
+                                    ->contained(false)
                                     ->description("The user's vital statistics.")
                                     ->schema([
                                         ImageEntry::make('cover_photo_url')
@@ -268,6 +270,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 Section::make('Primary Assignment')
+                                    ->contained(false)
                                     ->description("The user's current primary assignment.")
                                     ->columns(3)
                                     ->schema([
@@ -298,6 +301,7 @@ class UserResource extends BaseResource
                                             ->columnSpanFull(),
                                     ]),
                                 Section::make()
+                                    ->contained(false)
                                     ->hidden(fn (): bool => in_array('secondary_assignment_records', $hiddenFields))
                                     ->schema([
                                         Livewire::make(SecondaryAssignmentsRelationManager::class, fn (?User $record): array => [
@@ -310,6 +314,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-trophy')
                             ->schema([
                                 Section::make('Awards')
+                                    ->contained(false)
                                     ->description('The awards the user has received.')
                                     ->schema([
                                         TextEntry::make('awards.name')
@@ -322,6 +327,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-identification')
                             ->schema([
                                 Section::make('Credentials')
+                                    ->contained(false)
                                     ->description('The credentials the user has assigned.')
                                     ->schema([
                                         TextEntry::make('credentials.name')
@@ -334,6 +340,7 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-star')
                             ->schema([
                                 Section::make('Qualifications')
+                                    ->contained(false)
                                     ->description('The qualifications the user has earned.')
                                     ->schema([
                                         TextEntry::make('qualifications.name')
@@ -347,6 +354,8 @@ class UserResource extends BaseResource
                             ->columns()
                             ->schema([
                                 Section::make('Current Rank')
+                                    ->columnSpanFull()
+                                    ->contained(false)
                                     ->description("The user's current rank.")
                                     ->columns(3)
                                     ->schema([
