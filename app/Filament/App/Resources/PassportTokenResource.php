@@ -23,6 +23,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -49,28 +50,36 @@ class PassportTokenResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('An identifying name for the API key')
-                    ->required()
-                    ->maxLength(255),
-                Select::make('scopes')
-                    ->helperText(fn ($operation): string => match ($operation) {
-                        'edit' => 'Please create a new API key to change the scopes.',
-                        default => 'The scopes that the API key will have access to.'
-                    })
-                    ->multiple()
-                    ->live()
-                    ->disabled(fn ($operation): bool => $operation !== 'create')
-                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
-                Checkbox::make('all_scopes')
-                    ->visibleOn('create')
-                    ->default(true)
-                    ->live()
-                    ->inline()
-                    ->helperText('Select to allow access to all scopes.'),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('API Key')
+                            ->icon(Heroicon::OutlinedKey)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('An identifying name for the API key')
+                                    ->required()
+                                    ->maxLength(255),
+                                Select::make('scopes')
+                                    ->helperText(fn ($operation): string => match ($operation) {
+                                        'edit' => 'Please create a new API key to change the scopes.',
+                                        default => 'The scopes that the API key will have access to.'
+                                    })
+                                    ->multiple()
+                                    ->live()
+                                    ->disabled(fn ($operation): bool => $operation !== 'create')
+                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                                Checkbox::make('all_scopes')
+                                    ->visibleOn('create')
+                                    ->default(true)
+                                    ->live()
+                                    ->inline()
+                                    ->helperText('Select to allow access to all scopes.'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -78,28 +87,38 @@ class PassportTokenResource extends BaseResource
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('expires_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime(),
-                TextEntry::make('token')
-                    ->label('API key')
-                    ->badge()
-                    ->color('gray')
-                    ->helperText('Click to copy the API key to your clipboard.')
-                    ->copyable()
-                    ->columnSpan(1),
-                TextEntry::make('scopes')
+                Tabs::make()
                     ->columnSpanFull()
-                    ->listWithLineBreaks()
-                    ->limitList()
-                    ->expandableLimitedList()
-                    ->badge(),
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('API Key')
+                            ->icon(Heroicon::OutlinedKey)
+                            ->schema([
+                                TextEntry::make('name'),
+                                TextEntry::make('expires_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->dateTime(),
+                                TextEntry::make('token')
+                                    ->label('API key')
+                                    ->wrap()
+                                    ->badge()
+                                    ->color('gray')
+                                    ->helperText('Click to copy the API key to your clipboard.')
+                                    ->copyable()
+                                    ->columnSpan(1),
+                                TextEntry::make('scopes')
+                                    ->columnSpanFull()
+                                    ->listWithLineBreaks()
+                                    ->limitList()
+                                    ->expandableLimitedList()
+                                    ->badge(),
+                            ]),
+                    ]),
             ]);
     }
 

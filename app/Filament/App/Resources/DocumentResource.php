@@ -21,6 +21,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -45,60 +46,68 @@ class DocumentResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('The name of the document.')
-                    ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-                Select::make('categories')
-                    ->label('Category')
-                    ->createOptionForm([
-                        TextInput::make('name')
-                            ->required(),
-                        Hidden::make('resource')
-                            ->default(static::$model),
-                    ])
-                    ->helperText('The category the document belongs to.')
-                    ->nullable()
-                    ->preload()
-                    ->searchable()
-                    ->multiple()
-                    ->maxItems(1)
-                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the document.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                RichEditor::make('content')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
-                    ->hintIconTooltip('View available content tags.')
-                    ->hint('Content Tags')
-                    ->hintColor('gray')
-                    ->hintIcon('heroicon-o-tag')
-                    ->hintAction(Action::make('view')
-                        ->color('gray')
-                        ->modalHeading('Content Tags')
-                        ->modalContent(view('filament.app.model-tags'))
-                        ->modalSubmitAction(false)
-                        ->modalCancelActionLabel('Close')
-                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
-                        ->slideOver())
-                    ->required()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Select::make('author_id')
-                    ->preload()
-                    ->default(Auth::user()->getAuthIdentifier())
-                    ->helperText('The author of the document.')
-                    ->required()
-                    ->relationship('author', 'name')
+                Tabs::make()
                     ->columnSpanFull()
-                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Document')
+                            ->icon(Heroicon::OutlinedDocument)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('The name of the document.')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+                                Select::make('categories')
+                                    ->label('Category')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required(),
+                                        Hidden::make('resource')
+                                            ->default(static::$model),
+                                    ])
+                                    ->helperText('The category the document belongs to.')
+                                    ->nullable()
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->maxItems(1)
+                                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('A brief description of the document.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                RichEditor::make('content')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
+                                    ->hintIconTooltip('View available content tags.')
+                                    ->hint('Content Tags')
+                                    ->hintColor('gray')
+                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintAction(Action::make('view')
+                                        ->color('gray')
+                                        ->modalHeading('Content Tags')
+                                        ->modalContent(view('filament.app.model-tags'))
+                                        ->modalSubmitAction(false)
+                                        ->modalCancelActionLabel('Close')
+                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                        ->slideOver())
+                                    ->required()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Select::make('author_id')
+                                    ->preload()
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->helperText('The author of the document.')
+                                    ->required()
+                                    ->relationship('author', 'name')
+                                    ->columnSpanFull()
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                            ]),
+                    ]),
             ]);
     }
 

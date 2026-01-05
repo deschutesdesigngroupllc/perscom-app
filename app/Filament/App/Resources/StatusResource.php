@@ -18,6 +18,7 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
@@ -43,15 +44,24 @@ class StatusResource extends BaseResource
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->helperText('The name of the status.')
-                    ->required()
-                    ->maxLength(255),
-                ColorPicker::make('color')
-                    ->helperText('The color of the status.')
-                    ->required(),
-                IconPicker::make('icon')
-                    ->columnSpanFull(),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Status')
+                            ->icon(Heroicon::OutlinedScale)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('The name of the status.')
+                                    ->required()
+                                    ->maxLength(255),
+                                ColorPicker::make('color')
+                                    ->helperText('The color of the status.')
+                                    ->required(),
+                                IconPicker::make('icon')
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
             ]);
     }
 

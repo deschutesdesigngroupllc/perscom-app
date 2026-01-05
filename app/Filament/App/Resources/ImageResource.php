@@ -83,8 +83,9 @@ class ImageResource extends BaseResource
                             ->icon('heroicon-o-document')
                             ->schema([
                                 MorphToSelect::make('model')
+                                    ->contained(false)
                                     ->preload()
-                                    ->hiddenLabel()
+                                    ->label('Resource')
                                     ->types([
                                         Type::make(Award::class)
                                             ->titleAttribute('name'),

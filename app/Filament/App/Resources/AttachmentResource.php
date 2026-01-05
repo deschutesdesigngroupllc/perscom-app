@@ -78,8 +78,9 @@ class AttachmentResource extends BaseResource
                             ->icon('heroicon-o-document')
                             ->schema([
                                 MorphToSelect::make('model')
+                                    ->contained(false)
                                     ->preload()
-                                    ->hiddenLabel()
+                                    ->label('Resource')
                                     ->types([
                                         Type::make(Task::class)
                                             ->titleAttribute('title'),

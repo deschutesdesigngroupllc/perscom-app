@@ -15,37 +15,47 @@ use App\Models\Specialty;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 
 class CategoryForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('The name of the category.')
-                    ->required()
-                    ->maxLength(255),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the category.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Select::make('resource')
-                    ->helperText('The resource this category can be used with.')
-                    ->required()
-                    ->options([
-                        Award::class => 'Awards',
-                        Competency::class => 'Competencies',
-                        Document::class => 'Documents',
-                        Form::class => 'Forms',
-                        Position::class => 'Positions',
-                        Qualification::class => 'Qualifications',
-                        Rank::class => 'Ranks',
-                        Specialty::class => 'Specialties',
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Category')
+                            ->icon(Heroicon::OutlinedTag)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('The name of the category.')
+                                    ->required()
+                                    ->maxLength(255),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('A brief description of the category.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Select::make('resource')
+                                    ->helperText('The resource this category can be used with.')
+                                    ->required()
+                                    ->options([
+                                        Award::class => 'Awards',
+                                        Competency::class => 'Competencies',
+                                        Document::class => 'Documents',
+                                        Form::class => 'Forms',
+                                        Position::class => 'Positions',
+                                        Qualification::class => 'Qualifications',
+                                        Rank::class => 'Ranks',
+                                        Specialty::class => 'Specialties',
+                                    ]),
+                            ]),
                     ]),
             ]);
     }

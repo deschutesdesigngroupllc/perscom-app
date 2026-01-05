@@ -20,6 +20,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -43,37 +44,45 @@ class SpecialtyResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('The name of the specialty.')
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make('abbreviation')
-                    ->helperText('The abbreviation of the specialty.')
-                    ->nullable()
-                    ->maxLength(255),
-                Select::make('categories')
-                    ->label('Category')
-                    ->createOptionForm([
-                        TextInput::make('name')
-                            ->required(),
-                        Hidden::make('resource')
-                            ->default(static::$model),
-                    ])
-                    ->helperText('The category the specialty belongs to.')
-                    ->nullable()
-                    ->preload()
-                    ->searchable()
-                    ->multiple()
-                    ->maxItems(1)
-                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the specialty.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Specialty')
+                            ->icon(Heroicon::OutlinedBriefcase)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('The name of the specialty.')
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('abbreviation')
+                                    ->helperText('The abbreviation of the specialty.')
+                                    ->nullable()
+                                    ->maxLength(255),
+                                Select::make('categories')
+                                    ->label('Category')
+                                    ->createOptionForm([
+                                        TextInput::make('name')
+                                            ->required(),
+                                        Hidden::make('resource')
+                                            ->default(static::$model),
+                                    ])
+                                    ->helperText('The category the specialty belongs to.')
+                                    ->nullable()
+                                    ->preload()
+                                    ->searchable()
+                                    ->multiple()
+                                    ->maxItems(1)
+                                    ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('A brief description of the specialty.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
             ]);
     }
 

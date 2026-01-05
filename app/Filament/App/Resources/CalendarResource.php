@@ -20,6 +20,7 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ColorColumn;
@@ -42,21 +43,29 @@ class CalendarResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('The name of the calendar.')
-                    ->required()
-                    ->maxLength(255),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('The description of the calendar.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                ColorPicker::make('color')
-                    ->helperText('The color of the calendar.')
-                    ->required(),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Calendar')
+                            ->icon(Heroicon::OutlinedCalendar)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('The name of the calendar.')
+                                    ->required()
+                                    ->maxLength(255),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('The description of the calendar.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                ColorPicker::make('color')
+                                    ->helperText('The color of the calendar.')
+                                    ->required(),
+                            ]),
+                    ]),
             ]);
     }
 

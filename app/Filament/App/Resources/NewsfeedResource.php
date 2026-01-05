@@ -22,6 +22,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
@@ -55,33 +56,43 @@ class NewsfeedResource extends BaseResource
     {
         return $schema
             ->components([
-                TextInput::make('headline')
+                Tabs::make()
                     ->columnSpanFull()
-                    ->helperText("The newsfeed item's headline.")
-                    ->required()
-                    ->maxValue(255),
-                RichEditor::make('text')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->columnSpanFull()
-                    ->helperText("The newsfeed item's content.")
-                    ->required()
-                    ->maxLength(65535),
-                DateTimePicker::make('created_at')
-                    ->helperText('The date of the newsfeed item.')
-                    ->default(now())
-                    ->required(),
-                TextInput::make('causer_type')
-                    ->default(User::class)
-                    ->hidden(),
-                Select::make('causer_id')
-                    ->label('Author')
-                    ->required()
-                    ->default(Auth::user()->getAuthIdentifier())
-                    ->helperText('The author of the newsfeed item.')
-                    ->preload()
-                    ->options(User::query()->orderBy('name')->pluck('name', 'id')->all())
-                    ->searchable()
-                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tabs\Tab::make('Item')
+                            ->icon(Heroicon::OutlinedNewspaper)
+                            ->columns()
+                            ->schema([
+                                TextInput::make('headline')
+                                    ->columnSpanFull()
+                                    ->helperText("The newsfeed item's headline.")
+                                    ->required()
+                                    ->maxValue(255),
+                                RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->columnSpanFull()
+                                    ->helperText("The newsfeed item's content.")
+                                    ->required()
+                                    ->maxLength(65535),
+                                DateTimePicker::make('created_at')
+                                    ->helperText('The date of the newsfeed item.')
+                                    ->default(now())
+                                    ->required(),
+                                TextInput::make('causer_type')
+                                    ->default(User::class)
+                                    ->hidden(),
+                                Select::make('causer_id')
+                                    ->label('Author')
+                                    ->required()
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->helperText('The author of the newsfeed item.')
+                                    ->preload()
+                                    ->options(User::query()->orderBy('name')->pluck('name', 'id')->all())
+                                    ->searchable()
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                            ]),
+                    ]),
             ]);
     }
 

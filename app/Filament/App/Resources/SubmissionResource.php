@@ -63,24 +63,32 @@ class SubmissionResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                Select::make('form_id')
-                    ->preload()
-                    ->relationship(name: 'form', titleAttribute: 'name')
-                    ->searchable()
-                    ->createOptionForm(fn (Schema $form): Schema => FormResource::form($form)),
-                Select::make('user_id')
-                    ->preload()
-                    ->relationship(name: 'user', titleAttribute: 'name')
-                    ->searchable()
-                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                KeyValue::make('data')
+                Tabs::make()
                     ->columnSpanFull()
-                    ->helperText('The submission data.')
-                    ->keyLabel('Field Slug')
-                    ->visibleOn('edit')
-                    ->rule(new FieldDataRule),
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tab::make('Submission')
+                            ->icon(Heroicon::OutlinedFolderPlus)
+                            ->schema([
+                                Select::make('form_id')
+                                    ->preload()
+                                    ->relationship(name: 'form', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn (Schema $form): Schema => FormResource::form($form)),
+                                Select::make('user_id')
+                                    ->preload()
+                                    ->relationship(name: 'user', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                KeyValue::make('data')
+                                    ->columnSpanFull()
+                                    ->helperText('The submission data.')
+                                    ->keyLabel('Field Slug')
+                                    ->visibleOn('edit')
+                                    ->rule(new FieldDataRule),
+                            ]),
+                    ]),
             ]);
     }
 

@@ -44,37 +44,45 @@ class WebhookResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('url')
-                    ->helperText('The URL that the data will be sent to.')
-                    ->label('URL')
-                    ->url()
-                    ->required()
-                    ->maxLength(255),
-                RichEditor::make('description')
-                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                    ->helperText('A brief description of the webhook.')
-                    ->nullable()
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-                Select::make('method')
-                    ->helperText('The HTTP method that will be used to send the data.')
-                    ->options(WebhookMethod::class)
-                    ->required()
-                    ->default(WebhookMethod::POST),
-                Select::make('events')
-                    ->helperText('The events that will trigger the webhook.')
-                    ->multiple()
-                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->toArray())
-                    ->required(),
-                TextInput::make('secret')
-                    ->revealable()
-                    ->default(Str::random(32))
-                    ->helperText('A secret key that will be used to sign the data.')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tab::make('Webhook')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
+                            ->schema([
+                                TextInput::make('url')
+                                    ->helperText('The URL that the data will be sent to.')
+                                    ->label('URL')
+                                    ->url()
+                                    ->required()
+                                    ->maxLength(255),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('A brief description of the webhook.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Select::make('method')
+                                    ->helperText('The HTTP method that will be used to send the data.')
+                                    ->options(WebhookMethod::class)
+                                    ->required()
+                                    ->default(WebhookMethod::POST),
+                                Select::make('events')
+                                    ->helperText('The events that will trigger the webhook.')
+                                    ->multiple()
+                                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->toArray())
+                                    ->required(),
+                                TextInput::make('secret')
+                                    ->revealable()
+                                    ->default(Str::random(32))
+                                    ->helperText('A secret key that will be used to sign the data.')
+                                    ->password()
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ]),
             ]);
     }
 

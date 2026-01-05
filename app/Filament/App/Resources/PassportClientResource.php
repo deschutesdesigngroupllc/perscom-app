@@ -54,39 +54,47 @@ class PassportClientResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
-                TextInput::make('name')
-                    ->helperText('An identifying name for the client.')
-                    ->maxLength(255)
-                    ->required(),
-                Radio::make('type')
-                    ->disabled(fn ($operation): bool => $operation !== 'create')
-                    ->live()
-                    ->options(PassportClientType::class)
-                    ->required(),
-                TextInput::make('redirect')
-                    ->maxLength(255)
-                    ->label('Redirect URL')
-                    ->url()
-                    ->helperText('The URL to redirect to after authorization.')
-                    ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
-                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT])),
-                Textarea::make('description')
-                    ->maxLength(65535)
-                    ->helperText('An optional description of the client'),
-                Select::make('scopes')
-                    ->helperText('The scopes that the client application will have access to.')
-                    ->searchable()
-                    ->multiple()
-                    ->live()
-                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
-                Checkbox::make('all_scopes')
-                    ->default(true)
-                    ->live()
-                    ->inline()
-                    ->helperText('Select to allow access to all scopes.'),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString()
+                    ->tabs([
+                        Tab::make('Client')
+                            ->icon(Heroicon::OutlinedRectangleStack)
+                            ->schema([
+                                TextInput::make('name')
+                                    ->helperText('An identifying name for the client.')
+                                    ->maxLength(255)
+                                    ->required(),
+                                Radio::make('type')
+                                    ->disabled(fn ($operation): bool => $operation !== 'create')
+                                    ->live()
+                                    ->options(PassportClientType::class)
+                                    ->required(),
+                                TextInput::make('redirect')
+                                    ->maxLength(255)
+                                    ->label('Redirect URL')
+                                    ->url()
+                                    ->helperText('The URL to redirect to after authorization.')
+                                    ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT])),
+                                Textarea::make('description')
+                                    ->maxLength(65535)
+                                    ->helperText('An optional description of the client'),
+                                Select::make('scopes')
+                                    ->helperText('The scopes that the client application will have access to.')
+                                    ->searchable()
+                                    ->multiple()
+                                    ->live()
+                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                                Checkbox::make('all_scopes')
+                                    ->default(true)
+                                    ->live()
+                                    ->inline()
+                                    ->helperText('Select to allow access to all scopes.'),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -144,19 +152,19 @@ class PassportClientResource extends BaseResource
                                 ->valueLabel('URL')
                                 ->getStateUsing(fn (): array => [
                                     'Discovery Endpoint' => route('oidc.discovery', [
-                                        'tenant' => optional(tenant()->domain)->domain,
+                                        'tenant' => optional(tenant()?->domain)->domain,
                                     ]),
                                     'Authorization Endpoint' => route('passport.authorizations.authorize', [
-                                        'tenant' => optional(tenant()->domain)->domain,
+                                        'tenant' => optional(tenant()?->domain)->domain,
                                     ]),
                                     'Token Endpoint' => route('passport.token', [
-                                        'tenant' => optional(tenant()->domain)->domain,
+                                        'tenant' => optional(tenant()?->domain)->domain,
                                     ]),
                                     'Logout Endpoint' => route('oidc.logout', [
-                                        'tenant' => optional(tenant()->domain)->domain,
+                                        'tenant' => optional(tenant()?->domain)->domain,
                                     ]),
                                     'User Info Endpoint' => route('oidc.userinfo', [
-                                        'tenant' => optional(tenant()->domain)->domain,
+                                        'tenant' => optional(tenant()?->domain)->domain,
                                     ]),
                                 ]),
                         ]),
