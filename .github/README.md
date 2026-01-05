@@ -22,6 +22,14 @@ PERSCOM.io is a fully functioning, powerful, and robust personnel management sof
 
 Head on over to [https://perscom.io/register](https://perscom.io/register) to start a 7-day free trial.
 
+## Self-Hosted Deployment
+
+Want to host PERSCOM yourself? Deploy your own instance to Railway with one click:
+
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/perscom?referralCode=O-oe8s&utm_medium=integration&utm_source=template&utm_campaign=generic)
+
+For detailed deployment instructions, see the [Railway Deployment Guide](../docs/RAILWAY.md).
+
 ## Documentation
 
 Visit our documentation [here](https://docs.perscom.io) to get started.
