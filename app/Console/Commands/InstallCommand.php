@@ -138,6 +138,10 @@ class InstallCommand extends Command implements Isolatable
             }
         });
 
+        $this->call('migrate', [
+            '--force' => true,
+        ]);
+
         $this->call('db:seed', [
             '--class' => CentralDatabaseSeeder::class,
             '--force' => true,
@@ -214,6 +218,13 @@ class InstallCommand extends Command implements Isolatable
     protected function reinstallApplicationWithoutTenancy(): int
     {
         $this->call('migrate', [
+            '--path' => database_path('migrations/tenant'),
+            '--realpath' => true,
+            '--schema-path' => database_path('migrations/tenant'),
+            '--force' => true,
+        ]);
+
+        $this->call('migrate', [
             '--path' => database_path('settings/tenant'),
             '--realpath' => true,
             '--schema-path' => database_path('settings/tenant'),
@@ -253,7 +264,11 @@ class InstallCommand extends Command implements Isolatable
 
     protected function isInstalled(): bool
     {
-        return count(Schema::getTables()) > 0;
+        if (config('tenancy.enabled')) {
+            return Schema::hasTable('tenants') && Tenant::exists();
+        }
+
+        return Schema::hasTable('users') && User::exists();
     }
 
     protected function resetApplication(): void
