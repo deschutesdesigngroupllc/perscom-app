@@ -15,6 +15,7 @@
     "bezhansalleh/filament-shield": "4.0.0-beta2",
     "calebporzio/sushi": "^2.5.3",
     "dutchcodingcompany/filament-socialite": "^3.0",
+    "fakerphp/faker": "^1.24",
     "filament/filament": "^4.3",
     "filament/spark-billing-provider": ">=4.3",
     "filament/spatie-laravel-google-fonts-plugin": ">=4.3",
@@ -39,6 +40,7 @@
     "league/html-to-markdown": "^5.1.1",
     "lwwcas/laravel-countries": "^4.12.0.1",
     "owenvoke/blade-fontawesome": "^2.9.1",
+    "padmission/data-lens": "^2.1.0",
     "phiki/phiki": "^2.0.5",
     "php-open-source-saver/jwt-auth": "^2.8.3",
     "pusher/pusher-php-server": "^7.2.7",
@@ -73,7 +75,6 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^3.16.1",
     "barryvdh/laravel-ide-helper": "^3.6.0",
-    "fakerphp/faker": "^1.24.1",
     "filament/upgrade": "^4.3.0",
     "itsgoingd/clockwork": "^5.3.5",
     "larastan/larastan": "^3.8.0",
@@ -105,6 +106,10 @@
     {
       "type": "composer",
       "url": "https://filament-filter-sets.composer.sh"
+    },
+    {
+      "type": "composer",
+      "url": "https://data-lens.composer.sh"
     }
   ],
   "autoload": {
