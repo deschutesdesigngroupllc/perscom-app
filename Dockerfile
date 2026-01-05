@@ -30,7 +30,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 
 COPY --chown=www-data:www-data . /var/www/html
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader \
+RUN --mount=type=secret,id=COMPOSER_AUTH,env=COMPOSER_AUTH \
+    && composer install --no-interaction --prefer-dist --optimize-autoloader \
     && npm install \
     && npm run build \
     && rm -rf node_modules
@@ -96,11 +97,11 @@ ENV VITE_PUSHER_APP_CLUSTER=${VITE_PUSHER_APP_CLUSTER}
 
 COPY . /var/www/html
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-
-RUN npm install && \
-    npm run build && \
-    rm -rf node_modules
+RUN --mount=type=secret,id=COMPOSER_AUTH,env=COMPOSER_AUTH \
+    && composer install --no-interaction --prefer-dist --optimize-autoloader \
+    && npm install \
+    && npm run build \
+    && rm -rf node_modules
 
 USER www-data
 
@@ -123,6 +124,7 @@ USER root
 COPY --chmod=755 ./docker/entrypoint.d/production/ /etc/entrypoint.d/
 COPY --from=build --chown=www-data:www-data /var/www/html /var/www/html
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+RUN --mount=type=secret,id=COMPOSER_AUTH,env=COMPOSER_AUTH \
+    && composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
 USER www-data
