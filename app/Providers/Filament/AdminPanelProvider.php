@@ -17,7 +17,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
-use FilamentThemes\Minimal\Theme;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -90,9 +89,6 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn () => view('components.logo'))
-            ->plugins([
-                Theme::make(),
-            ]);
+            ->brandLogo(fn () => view('components.logo'));
     }
 }
