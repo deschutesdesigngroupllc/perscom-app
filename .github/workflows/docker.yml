@@ -2,6 +2,11 @@ name: Build and Publish Docker Image
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag (e.g., v1.2.3 or latest)'
+        required: false
+        default: 'latest'
   push:
     tags:
       - '*'
@@ -33,7 +38,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Metadata (tags, labels) for Docker
+      - name: Extract Metadata (tags, labels) for Docker (App)
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -44,7 +49,18 @@ jobs:
             type=semver,pattern={{major}}
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and Push Docker Image
+      - name: Extract Metadata (tags, labels) for Docker (CLI)
+        id: meta-cli
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-cli
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and Push Docker Image (App)
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -52,6 +68,20 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+          secrets: |
+            COMPOSER_AUTH=${{ secrets.COMPOSER_AUTH }}
+
+      - name: Build and Push Docker Image (CLI)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: cli
+          push: true
+          tags: ${{ steps.meta-cli.outputs.tags }}
+          labels: ${{ steps.meta-cli.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64

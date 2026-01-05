@@ -194,7 +194,7 @@ class AppServiceProvider extends ServiceProvider
             return value($closure, $field);
         });
 
-        DB::prohibitDestructiveCommands(App::isProduction());
+        DB::prohibitDestructiveCommands(App::isProduction() && ! App::runningConsoleCommand('perscom:install'));
 
         Entry::configureUsing(function (Entry $field) {
             $closure = match ($field->getName()) {

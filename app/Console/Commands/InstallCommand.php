@@ -14,9 +14,10 @@ use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
 use Database\Seeders\TenantSeeder;
-use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
@@ -24,8 +25,11 @@ use function Laravel\Prompts\table;
 
 class InstallCommand extends Command implements Isolatable
 {
+    use ConfirmableTrait;
+
     protected $signature = 'perscom:install
-                            {--seeder=military : The seeder to use. Default: military}';
+                            {--seeder=military : The seeder to use. Default: military}
+                            {--force : Force the operation to run when in production}';
 
     protected $description = 'Install the PERSCOM application.';
 
@@ -34,40 +38,39 @@ class InstallCommand extends Command implements Isolatable
      */
     public function handle(): int
     {
-        return match ($this->option('env')) {
-            'demo' => $this->resetDemoEnvironment(),
-            default => $this->resetLocalEnvironment(),
+        if (! $this->input->isInteractive()) {
+            $this->components->info('Running in non-interactive mode.');
+        }
+
+        if ($this->isInstalled()) {
+            if (! $this->option('force')) {
+                $this->components->info('Application is already installed.');
+                $this->components->info('Use --force to reinstall.');
+
+                return self::SUCCESS;
+            }
+
+            if (! $this->confirmToProceed('Application is already installed. This will RESET all data!')) {
+                return self::SUCCESS;
+            }
+
+            $this->components->warn('Resetting application...');
+            $this->resetApplication();
+        }
+
+        return match (App::environment()) {
+            'demo' => $this->reinstallDemo(),
+            default => $this->reinstallApplication(),
         };
     }
 
-    protected function ensureInitialMigrationsRun(): void
+    protected function reinstallDemo(): int
     {
-        try {
-            if (! Schema::hasTable('migrations') || (config('tenancy.enabled') && ! Schema::hasTable('tenants'))) {
-                $this->components->info('Initial migrations not found. Running initial migration setup...');
-                $this->call('migrate:fresh', ['--step' => true]);
-            }
-        } catch (Exception) {
-            $this->components->info('Database not properly initialized. Running initial migration setup...');
-            $this->call('migrate:fresh', ['--step' => true]);
-        }
-    }
-
-    protected function resetDemoEnvironment(): int
-    {
-        if (! app()->environment('demo', 'testing', 'local')) {
-            $this->components->error('You may only run this command in the demo, testing or local environment.');
-
-            return static::FAILURE;
-        }
-
         if (config('tenancy.enabled') === false) {
             $this->components->error('The demo environment is meant to be run in tenancy mode. Please enable it to continue.');
 
             return static::FAILURE;
         }
-
-        $this->ensureInitialMigrationsRun();
 
         /** @var Tenant|null $tenant */
         $tenant = Tenant::find(config('demo.tenant_id'));
@@ -117,25 +120,17 @@ class InstallCommand extends Command implements Isolatable
     /**
      * @throws DatabaseManagerNotRegisteredException
      */
-    protected function resetLocalEnvironment(): int
+    protected function reinstallApplication(): int
     {
-        if (! app()->environment('local')) {
-            $this->components->error('You may only run this command in the local environment.');
-
-            return static::FAILURE;
-        }
-
-        $this->ensureInitialMigrationsRun();
-
         return config('tenancy.enabled')
-            ? $this->resetLocalEnvironmentWithTenancy()
-            : $this->resetLocalEnvironmentWithoutTenancy();
+            ? $this->reinstallApplicationWithTenancy()
+            : $this->reinstallApplicationWithoutTenancy();
     }
 
     /**
      * @throws DatabaseManagerNotRegisteredException
      */
-    protected function resetLocalEnvironmentWithTenancy(): int
+    protected function reinstallApplicationWithTenancy(): int
     {
         tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
@@ -143,9 +138,9 @@ class InstallCommand extends Command implements Isolatable
             }
         });
 
-        $this->call('migrate:fresh');
         $this->call('db:seed', [
             '--class' => CentralDatabaseSeeder::class,
+            '--force' => true,
         ]);
 
         /** @var Tenant|null $tenant */
@@ -161,22 +156,26 @@ class InstallCommand extends Command implements Isolatable
             $tenant->database()->manager()->createDatabase($tenant);
         }
 
-        $this->call('tenants:migrate-fresh', [
+        $this->call('tenants:migrate', [
             '--tenants' => $tenant->getTenantKey(),
+            '--force' => true,
         ]);
 
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
+            '--force' => true,
         ]);
 
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
             '--class' => TenantDatabaseSeeder::class,
+            '--force' => true,
         ]);
 
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
             '--class' => ApiKeySeeder::class,
+            '--force' => true,
         ]);
 
         $seeder = match (true) {
@@ -187,6 +186,7 @@ class InstallCommand extends Command implements Isolatable
         $this->call('tenants:seed', [
             '--tenants' => $tenant->getTenantKey(),
             '--class' => $seeder,
+            '--force' => true,
         ]);
 
         $this->components->info('Available tenants:');
@@ -211,22 +211,18 @@ class InstallCommand extends Command implements Isolatable
         return static::SUCCESS;
     }
 
-    protected function resetLocalEnvironmentWithoutTenancy(): int
+    protected function reinstallApplicationWithoutTenancy(): int
     {
-        $this->call('migrate:fresh', [
-            '--path' => database_path('migrations/tenant'),
-            '--realpath' => true,
-            '--schema-path' => database_path('migrations/tenant'),
-        ]);
-
         $this->call('migrate', [
             '--path' => database_path('settings/tenant'),
             '--realpath' => true,
             '--schema-path' => database_path('settings/tenant'),
+            '--force' => true,
         ]);
 
         $this->call('db:seed', [
             '--class' => DatabaseSeeder::class,
+            '--force' => true,
         ]);
 
         $seeder = match (true) {
@@ -236,6 +232,7 @@ class InstallCommand extends Command implements Isolatable
 
         $this->call('db:seed', [
             '--class' => $seeder,
+            '--force' => true,
         ]);
 
         $this->components->info('Available user accounts:');
@@ -252,5 +249,30 @@ class InstallCommand extends Command implements Isolatable
         $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');
 
         return static::SUCCESS;
+    }
+
+    protected function isInstalled(): bool
+    {
+        return count(Schema::getTables()) > 0;
+    }
+
+    protected function resetApplication(): void
+    {
+        $this->components->info('Truncating all data...');
+
+        if (config('tenancy.enabled')) {
+            $this->call('migrate:fresh', [
+                '--force' => true,
+            ]);
+        } else {
+            $this->call('migrate:fresh', [
+                '--path' => database_path('migrations/tenant'),
+                '--realpath' => true,
+                '--schema-path' => database_path('migrations/tenant'),
+                '--force' => true,
+            ]);
+        }
+
+        $this->components->success('Application reset complete.');
     }
 }
