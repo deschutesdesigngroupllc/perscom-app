@@ -20,6 +20,7 @@ use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
+use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
@@ -47,7 +48,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Padmission\DataLens\DataLensPlugin;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -143,10 +143,10 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                //                DataLensPlugin::make()
-                //                    ->navigationGroup('Reporting')
-                //                    ->navigationLabel('Custom Reports')
-                //                    ->navigationSort(10),
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)

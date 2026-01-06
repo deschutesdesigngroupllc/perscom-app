@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
+use App\Http\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::group([
     'middleware' => [

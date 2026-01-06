@@ -84,12 +84,12 @@ use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
 use App\Http\Middleware\MoveApiKeyQueryParameterToHeader;
+use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
 use Livewire\Mechanisms\HandleRequests\HandleRequests;
 use Orion\Facades\Orion;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::get('health', HealthController::class)

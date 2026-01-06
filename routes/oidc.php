@@ -6,8 +6,8 @@ use App\Http\Controllers\Oidc\DiscoveryController;
 use App\Http\Controllers\Oidc\LogoutController;
 use App\Http\Controllers\Oidc\UserInfoController;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
+use App\Http\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::group(['middleware' => [InitializeTenancyBySubdomain::class, PreventAccessFromCentralDomains::class]], static function (): void {
     Route::group(['middleware' => 'web'], static function (): void {

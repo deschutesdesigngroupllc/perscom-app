@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Stancl\Tenancy\Features\UniversalRoutes;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain as BaseInitializeTenancyBySubdomain;
 use Stancl\Tenancy\Resolvers\DomainTenantResolver;
@@ -22,5 +23,14 @@ class InitializeTenancyBySubdomain extends BaseInitializeTenancyBySubdomain
         };
 
         parent::__construct($tenancy, $resolver);
+    }
+
+    public function handle($request, Closure $next)
+    {
+        if (! config('tenancy.enabled')) {
+            return $next($request);
+        }
+
+        return parent::handle($request, $next);
     }
 }
