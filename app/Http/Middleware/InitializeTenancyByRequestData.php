@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
 use Lcobucci\JWT\Encoding\JoseEncoder;
@@ -30,6 +31,15 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
         };
 
         parent::__construct($tenancy, $resolver);
+    }
+
+    public function handle($request, Closure $next)
+    {
+        if (! config('tenancy.enabled')) {
+            return $next($request);
+        }
+
+        return parent::handle($request, $next);
     }
 
     protected function getPayload(Request $request): ?string

@@ -31,7 +31,7 @@ trait JwtClaims
             return $settings->timezone ?? config('app.timezone');
         });
 
-        return [
+        $claims = [
             'name' => $this->name,
             'preferred_username' => $this->email,
             'profile' => $this->url,
@@ -39,11 +39,16 @@ trait JwtClaims
             'email_verified' => $this->hasVerifiedEmail(),
             'picture' => $this->profile_photo_url,
             'phone_number' => $this->phone_number,
-            'tenant' => (string) tenant('id'),
             'roles' => $this->roles->pluck('name')->toArray(),
             'locale' => config('app.locale'),
             'zoneinfo' => $timezone,
             'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
         ];
+
+        if (tenancy()->initialized) {
+            $claims['tenant'] = (string) tenant('id');
+        }
+
+        return $claims;
     }
 }

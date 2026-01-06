@@ -7,6 +7,7 @@ namespace App\Http\Resources\Api;
 use App\Services\ApiCacheService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Orion\Http\Resources\CollectionResource;
 
 class ApiResourceCollection extends CollectionResource
@@ -22,7 +23,7 @@ class ApiResourceCollection extends CollectionResource
         $response->withHeaders([
             'Surrogate-Key' => $apiCacheService->surrogateKeysForResource(
                 resource: $this
-            )->push($apiCacheService->getTenantCacheTag())->implode(' '),
+            )->when(config('tenancy.enabled'), fn (Collection $headers) => $headers->push($apiCacheService->getTenantCacheTag()))->implode(' '),
         ]);
     }
 

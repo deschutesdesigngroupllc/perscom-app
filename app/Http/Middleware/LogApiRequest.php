@@ -27,7 +27,7 @@ class LogApiRequest
     {
         $response = $next($request);
 
-        if (! tenancy()->initialized) {
+        if (! tenancy()->initialized && config('tenancy.enabled')) {
             return $response;
         }
 
@@ -71,9 +71,11 @@ class LogApiRequest
 
         config()->set('activitylog.activity_model', $currentActivityModel);
 
-        tenant()->updateQuietly([
-            'last_login_at' => now(),
-        ]);
+        if (tenancy()->initialized) {
+            tenant()->updateQuietly([
+                'last_login_at' => now(),
+            ]);
+        }
 
         return $response;
     }

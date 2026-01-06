@@ -100,6 +100,10 @@ class ApiCacheService
 
     public function getTenantCacheTag(): string
     {
+        if (is_null($this->tenant)) {
+            return '';
+        }
+
         return 'tenant:'.$this->tenant->getKey();
     }
 
