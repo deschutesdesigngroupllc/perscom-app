@@ -76,8 +76,12 @@ class Attachment extends Model implements HasLabel
     public function attachmentUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->path ? Storage::url($this->path) : null
-        );
+            get: fn (): ?string => $this->path ? (
+                Storage::providesTemporaryUrls()
+                    ? Storage::temporaryUrl($this->path, now()->addHour())
+                    : Storage::url($this->path)
+            ) : null
+        )->shouldCache();
     }
 
     public function modelUrl(): Attribute

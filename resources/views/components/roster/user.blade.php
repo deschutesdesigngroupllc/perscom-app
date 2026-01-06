@@ -5,7 +5,7 @@
   @if (!in_array('rank_id', $hiddenFields))
     <div class="w-10 overflow-hidden">
       @if ($user->rank->image ?? null)
-        <img src="{{ Storage::url($user->rank->image->path) }}" alt="{{ $user->rank->name }}" class="h-8 w-auto grow-0">
+        <img src="{{ $user->rank->image->image_url }}" alt="{{ $user->rank->name }}" class="h-8 w-auto grow-0">
       @else
         <div class="align-middle">
           {{ $user->rank->abbreviation ?? 'RNK' }}

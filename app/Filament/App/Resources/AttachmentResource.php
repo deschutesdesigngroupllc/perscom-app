@@ -207,6 +207,8 @@ class AttachmentResource extends BaseResource
                 TextColumn::make('filename')
                     ->sortable(),
                 TextColumn::make('attachment_url')
+                    ->limit()
+                    ->wrap()
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()

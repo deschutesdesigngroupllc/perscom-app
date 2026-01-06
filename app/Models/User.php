@@ -402,7 +402,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function coverPhotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->cover_photo ? Storage::url($this->cover_photo) : null
+            get: fn (): ?string => $this->cover_photo ? (
+                Storage::providesTemporaryUrls()
+                    ? Storage::temporaryUrl($this->cover_photo, now()->addHour())
+                    : Storage::url($this->cover_photo)
+            ) : null
         )->shouldCache();
     }
 

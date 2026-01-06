@@ -155,6 +155,8 @@ class ImageResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('image_url')
+                    ->limit()
+                    ->wrap()
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()
