@@ -26,7 +26,7 @@ class CalendarWidget extends BaseCalendarWidget
 {
     protected static ?int $sort = -1;
 
-    protected string|HtmlString|null|bool $heading = '';
+    protected string|HtmlString|null|bool $heading = 'Calendar';
 
     protected WeekDay $firstDay = WeekDay::Sunday;
 

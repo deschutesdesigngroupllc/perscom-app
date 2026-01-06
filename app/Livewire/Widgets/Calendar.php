@@ -12,4 +12,12 @@ class Calendar extends CalendarWidget
     protected string|bool|null|HtmlString $heading = 'Calendar';
 
     protected bool $eventClickEnabled = false;
+
+    /**
+     * @return array{}
+     */
+    public function getFooterActions(): array
+    {
+        return [];
+    }
 }

@@ -1,19 +1,130 @@
-.ec-title {
-    @apply text-base leading-6 font-semibold text-gray-950 dark:text-white;
-}
+@layer components {
+  /* Root */
+  [data-calendar] {
+    @apply rounded-lg bg-white
+    dark:bg-gray-900;
+  }
 
-.ec-day {
-    @apply font-bold tracking-tight text-gray-950 dark:text-white;
-}
+  /* Toolbar */
+  .ec-toolbar {
+    @apply flex items-center justify-between gap-4 mb-4;
+  }
 
-.ec-button {
-    @apply uppercase relative inline-grid grid-flow-col items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition duration-75 outline-none focus-visible:ring-2;
-}
+  .ec-title {
+    @apply text-xl font-semibold text-gray-900 dark:text-gray-100;
+  }
 
-.ec-prev {
-    @apply !rounded-r-none;
-}
+  /* Buttons */
+  .ec-button {
+    @apply inline-flex items-center justify-center rounded-md
+    border border-gray-300 bg-white px-3 py-2 text-sm font-medium
+    text-gray-700 shadow-sm hover:bg-gray-50
+    focus:outline-none focus:ring-2 focus:ring-blue-500
+    dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200
+    dark:hover:bg-gray-700;
+  }
 
-.ec-next {
-    @apply !rounded-l-none;
+  .ec-button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .ec-button-group {
+    @apply inline-flex rounded-md shadow-sm;
+  }
+
+  .ec-button-group .ec-button:not(:last-child) {
+    @apply rounded-r-none;
+  }
+
+  .ec-button-group .ec-button:not(:first-child) {
+    @apply rounded-l-none -ml-px;
+  }
+
+  /* Header (days of week) */
+  .ec-header {
+    @apply border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .ec-header .ec-day {
+    @apply py-2 text-center text-xs font-semibold uppercase
+    text-gray-600 dark:text-gray-400;
+  }
+
+  /* Grid */
+  .ec-days {
+    @apply grid grid-cols-7;
+  }
+
+  /* Day cells */
+  .ec-day {
+    @apply min-h-[7rem] border border-gray-200 p-1
+    dark:border-gray-700;
+  }
+
+  .ec-day.ec-other-month {
+    @apply bg-gray-50 text-gray-400
+    dark:bg-gray-800/50 dark:text-gray-500;
+  }
+
+  .ec-day.ec-today {
+    @apply bg-blue-50 border-blue-500
+    dark:bg-blue-900/20 dark:border-blue-400;
+  }
+
+  /* Day header (date number) */
+  .ec-day-head {
+    @apply flex items-center justify-end text-xs font-medium
+    text-gray-700 dark:text-gray-300;
+  }
+
+  .ec-day-head time {
+    @apply inline-flex h-6 w-6 items-center justify-center rounded-full;
+  }
+
+  .ec-day.ec-today .ec-day-head time {
+    @apply bg-blue-600 text-white;
+  }
+
+  /* Events container */
+  .ec-events {
+    @apply mt-1 space-y-1;
+  }
+
+  /* Event card */
+  .ec-event {
+    @apply cursor-pointer rounded-md px-2 py-1
+    text-xs font-medium text-white
+    shadow-sm transition
+    hover:brightness-110 focus:outline-none
+    focus:ring-2 focus:ring-offset-1 focus:ring-blue-500;
+  }
+
+  /* Event body */
+  .ec-event-body {
+    @apply flex gap-0.5 items-center px-1;
+  }
+
+  .ec-event-time {
+    @apply text-[10px] opacity-90;
+  }
+
+  .ec-event-title {
+    @apply truncate font-semibold;
+  }
+
+  /* All-day events */
+  .ec-event[style*="allDay"] {
+    @apply py-1.5;
+  }
+
+  /* "More" / overflow popover */
+  .ec-popover {
+    @apply rounded-lg border bg-white shadow-lg
+    dark:bg-gray-800 dark:border-gray-700;
+  }
+
+  .ec-popover-header {
+    @apply px-3 py-2 font-semibold
+    bg-gray-100 dark:bg-gray-900;
+  }
 }

@@ -13,10 +13,11 @@
   </x-filament::tabs>
 
   @forelse($groups as $index => $group)
-    <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm bg-white dark:bg-gray-900 rounded-xl overflow-hidden">
+    <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm rounded-xl mt-0.5">
       @forelse($group->units as $unit)
         @include('components.roster.unit-header', ['unit' => $unit])
-        <div class="py-1">
+        <div
+          class="my-1 rounded-xl shadow-xs ring-1 ring-gray-950/5 dark:ring-white/5 bg-white dark:bg-gray-900 ring-inset inset-2 overflow-hidden">
           @forelse($unit->users as $user)
             @include('components.roster.user', ['user' => $user])
           @empty
