@@ -8,7 +8,6 @@ use App\Filament\App\Resources\UserResource\Pages\CreateUser;
 use App\Filament\App\Resources\UserResource\Pages\EditUser;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
-use App\Filament\App\Resources\UserResource\RelationManagers\SecondaryAssignmentsRelationManager;
 use App\Filament\Exports\UserExporter;
 use App\Models\User;
 use App\Services\SettingsService;
@@ -33,15 +32,16 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
@@ -242,7 +242,7 @@ class UserResource extends BaseResource
                                     ->schema([
                                         ImageEntry::make('cover_photo_url')
                                             ->hidden(fn (User $record): bool => in_array('cover_photo', $hiddenFields) || is_null($record->cover_photo_url))
-                                            ->height(function () {
+                                            ->imageHeight(function () {
                                                 /** @var DashboardSettings $settings */
                                                 $settings = app(DashboardSettings::class);
 
@@ -276,16 +276,19 @@ class UserResource extends BaseResource
                                     ->schema([
                                         TextEntry::make('position.name')
                                             ->label('Current Position')
+                                            ->placeholder('No Position')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('position_id', $hiddenFields)),
                                         TextEntry::make('specialty.name')
                                             ->label('Current Specialty')
+                                            ->placeholder('No Specialty')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('specialty_id', $hiddenFields)),
                                         TextEntry::make('unit.name')
                                             ->label('Current Unit')
+                                            ->placeholder('No Specialty')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('unit_id', $hiddenFields)),
@@ -304,10 +307,27 @@ class UserResource extends BaseResource
                                     ->contained(false)
                                     ->hidden(fn (): bool => in_array('secondary_assignment_records', $hiddenFields))
                                     ->schema([
-                                        Livewire::make(SecondaryAssignmentsRelationManager::class, fn (?User $record): array => [
-                                            'ownerRecord' => $record,
-                                            'pageClass' => ViewUser::class,
-                                        ]),
+                                        RepeatableEntry::make('secondary_assignment_records')
+                                            ->placeholder('No Secondary Assignment Records')
+                                            ->label('Secondary Assignment Records')
+                                            ->table([
+                                                RepeatableEntry\TableColumn::make('Position'),
+                                                RepeatableEntry\TableColumn::make('Specialty'),
+                                                RepeatableEntry\TableColumn::make('Unit'),
+                                                RepeatableEntry\TableColumn::make('Status'),
+                                            ])
+                                            ->schema([
+                                                TextEntry::make('position.name')
+                                                    ->weight(FontWeight::Bold)
+                                                    ->placeholder(new HtmlString('&ndash;')),
+                                                TextEntry::make('specialty.name')
+                                                    ->placeholder(new HtmlString('&ndash;')),
+                                                TextEntry::make('unit.name')
+                                                    ->placeholder(new HtmlString('&ndash;')),
+                                                TextEntry::make('status.name')
+                                                    ->badge()
+                                                    ->placeholder(new HtmlString('&ndash;')),
+                                            ]),
                                     ]),
                             ]),
                         Tab::make('Awards')
@@ -407,6 +427,7 @@ class UserResource extends BaseResource
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 TextColumn::make('email')
+                    ->copyable()
                     ->hidden(fn (): bool => in_array('email', $hiddenFields))
                     ->sortable()
                     ->searchable(),
@@ -422,18 +443,23 @@ class UserResource extends BaseResource
                         default => 'Offline',
                     }),
                 TextColumn::make('position.name')
+                    ->placeholder('No Position')
                     ->hidden(fn (): bool => in_array('position_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('specialty.name')
+                    ->placeholder('No Specialty')
                     ->hidden(fn (): bool => in_array('specialty_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('unit.name')
+                    ->placeholder('No Unit')
                     ->hidden(fn (): bool => in_array('unit_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('rank.name')
+                    ->placeholder('No Rank')
                     ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('status.name')
+                    ->placeholder('No Status')
                     ->icon(fn (User $record): ?string => $record->status?->icon)
                     ->hidden(fn (): bool => in_array('status_id', $hiddenFields))
                     ->badge()

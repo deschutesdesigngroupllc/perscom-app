@@ -15,7 +15,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
     {
         $url = $this->faker->url;
 
-        Route::get('/redirect', static fn () => redirect($url))->middleware(HandleInertiaRequests::class);
+        Route::get('/redirect', static fn (): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse => redirect($url))->middleware(HandleInertiaRequests::class);
 
         $this->withHeader('X-Inertia', 'true')
             ->get('/redirect')

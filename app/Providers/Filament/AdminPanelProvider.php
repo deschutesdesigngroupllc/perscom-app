@@ -89,6 +89,6 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn () => view('components.logo'));
+            ->brandLogo(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('components.logo'));
     }
 }

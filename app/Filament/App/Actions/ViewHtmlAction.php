@@ -18,7 +18,7 @@ class ViewHtmlAction extends Action
         $this->visible(fn (): bool => $this->getHtml() !== null);
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
-        $this->modalContent(fn () => view('filament.app.view-html', [
+        $this->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.app.view-html', [
             'html' => $this->getHtml(),
         ]));
     }

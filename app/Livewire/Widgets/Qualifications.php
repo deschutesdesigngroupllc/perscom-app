@@ -45,7 +45,7 @@ class Qualifications extends Component implements HasActions, HasForms, HasTable
                 Split::make([
                     ImageColumn::make('image.image_url')
                         ->placeholder('No Image')
-                        ->visible(fn (?Qualification $record) => filled($record?->image))
+                        ->visible(fn (?Qualification $record): bool => filled($record?->image))
                         ->grow(false)
                         ->disk('s3'),
                     Stack::make([
