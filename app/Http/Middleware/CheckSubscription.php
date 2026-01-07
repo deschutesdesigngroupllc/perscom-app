@@ -23,8 +23,7 @@ class CheckSubscription extends VerifyBillableIsSubscribed
             App::isAdmin() ||
             ! $authenticated ||
             ! config('tenancy.enabled') ||
-            blank(config('cashier.secret')))
-        {
+            blank(config('cashier.secret'))) {
             return $next($request);
         }
 
