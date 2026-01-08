@@ -231,7 +231,7 @@ class AssignmentRecordResource extends BaseResource
 
                                 $fields = collect($settings->assignment_records);
 
-                                return AssignmentRecordResource::buildCustomFieldEntries($fields);
+                                return AssignmentRecordResource::buildCustomFieldEntries(Field::findMany($fields));
                             }),
                     ]),
             ]);
