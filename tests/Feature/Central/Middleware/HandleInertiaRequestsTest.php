@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Central\Middleware;
 
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Route;
 use Tests\Feature\Central\CentralTestCase;
 
@@ -15,7 +17,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
     {
         $url = $this->faker->url;
 
-        Route::get('/redirect', static fn (): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse => redirect($url))->middleware(HandleInertiaRequests::class);
+        Route::get('/redirect', static fn (): Redirector|RedirectResponse => redirect($url))->middleware(HandleInertiaRequests::class);
 
         $this->withHeader('X-Inertia', 'true')
             ->get('/redirect')

@@ -38,6 +38,8 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -141,7 +143,7 @@ class AppPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('components.logo'))
+            ->brandLogo(fn (): Factory|View => view('components.logo'))
             ->plugins([
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
