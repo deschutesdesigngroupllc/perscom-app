@@ -47,6 +47,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $author_id
  * @property AssignmentRecordType|null $type
  * @property string|null $text
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -85,6 +86,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AssignmentRecord user(\App\Models\User $user)
  * @method static Builder<static>|AssignmentRecord whereAuthorId($value)
  * @method static Builder<static>|AssignmentRecord whereCreatedAt($value)
+ * @method static Builder<static>|AssignmentRecord whereData($value)
  * @method static Builder<static>|AssignmentRecord whereDocumentId($value)
  * @method static Builder<static>|AssignmentRecord whereId($value)
  * @method static Builder<static>|AssignmentRecord wherePositionId($value)

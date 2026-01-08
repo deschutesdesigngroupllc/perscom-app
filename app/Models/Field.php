@@ -44,6 +44,8 @@ use function in_array;
  * @property ArrayObject $options
  * @property FieldOptionsType|null $options_type
  * @property FieldOptionsModel|null $options_model
+ * @property string|null $true_value
+ * @property string|null $false_value
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Form> $forms
@@ -65,6 +67,7 @@ use function in_array;
  * @method static Builder<static>|Field whereCreatedAt($value)
  * @method static Builder<static>|Field whereDefault($value)
  * @method static Builder<static>|Field whereDescription($value)
+ * @method static Builder<static>|Field whereFalseValue($value)
  * @method static Builder<static>|Field whereHelp($value)
  * @method static Builder<static>|Field whereHidden($value)
  * @method static Builder<static>|Field whereId($value)
@@ -78,6 +81,7 @@ use function in_array;
  * @method static Builder<static>|Field whereReadonly($value)
  * @method static Builder<static>|Field whereRequired($value)
  * @method static Builder<static>|Field whereRules($value)
+ * @method static Builder<static>|Field whereTrueValue($value)
  * @method static Builder<static>|Field whereType($value)
  * @method static Builder<static>|Field whereUpdatedAt($value)
  *

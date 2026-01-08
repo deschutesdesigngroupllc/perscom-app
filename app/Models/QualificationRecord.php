@@ -37,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string|null $text
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -67,6 +68,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|QualificationRecord user(\App\Models\User $user)
  * @method static Builder<static>|QualificationRecord whereAuthorId($value)
  * @method static Builder<static>|QualificationRecord whereCreatedAt($value)
+ * @method static Builder<static>|QualificationRecord whereData($value)
  * @method static Builder<static>|QualificationRecord whereDocumentId($value)
  * @method static Builder<static>|QualificationRecord whereId($value)
  * @method static Builder<static>|QualificationRecord whereQualificationId($value)

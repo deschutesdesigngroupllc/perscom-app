@@ -37,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string|null $text
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -68,6 +69,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AwardRecord whereAuthorId($value)
  * @method static Builder<static>|AwardRecord whereAwardId($value)
  * @method static Builder<static>|AwardRecord whereCreatedAt($value)
+ * @method static Builder<static>|AwardRecord whereData($value)
  * @method static Builder<static>|AwardRecord whereDocumentId($value)
  * @method static Builder<static>|AwardRecord whereId($value)
  * @method static Builder<static>|AwardRecord whereText($value)

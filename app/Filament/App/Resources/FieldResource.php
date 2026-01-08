@@ -145,6 +145,16 @@ class FieldResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
+                                TextInput::make('true_value')
+                                    ->label('True Value')
+                                    ->helperText('The text shown if the value is true.')
+                                    ->requiredIf('type', FieldType::FIELD_BOOLEAN)
+                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_BOOLEAN),
+                                TextInput::make('false_value')
+                                    ->label('False Value')
+                                    ->helperText('The text shown if the value is false.')
+                                    ->requiredIf('type', FieldType::FIELD_BOOLEAN)
+                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_BOOLEAN),
                             ]),
                         Tab::make('Validation')
                             ->icon('heroicon-o-shield-check')

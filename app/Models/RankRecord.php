@@ -39,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $author_id
  * @property string|null $text
  * @property RankRecordType $type
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -70,6 +71,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static Builder<static>|RankRecord whereAuthorId($value)
  * @method static Builder<static>|RankRecord whereCreatedAt($value)
+ * @method static Builder<static>|RankRecord whereData($value)
  * @method static Builder<static>|RankRecord whereDocumentId($value)
  * @method static Builder<static>|RankRecord whereId($value)
  * @method static Builder<static>|RankRecord whereRankId($value)

@@ -135,7 +135,10 @@ enum FieldType: string implements HasColor, HasLabel
     public function getFilamentEntry(string $name, Field $field): FieldEntry
     {
         $filament = match ($this) {
-            FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge(),
+            FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge()->formatStateUsing(fn ($state) => match ($state) {
+                true => $field->true_value,
+                default => $field->false_value,
+            }),
             FieldType::FIELD_CODE => CodeEntry::make($name),
             FieldType::FIELD_COUNTRY, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE, FieldType::FIELD_SELECT => TextEntry::make($name),
             FieldType::FIELD_DATE => TextEntry::make($name)->date(),
