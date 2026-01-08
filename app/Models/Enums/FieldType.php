@@ -20,12 +20,16 @@ use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\ColorEntry;
 use Filament\Infolists\Components\Entry as FieldEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Text;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 enum FieldType: string implements HasColor, HasLabel
 {
+    case COMPONENT_TEXT = 'component_text';
     case FIELD_BOOLEAN = 'boolean';
     case FIELD_CODE = 'code';
     case FIELD_COLOR = 'color';
@@ -44,6 +48,7 @@ enum FieldType: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            FieldType::COMPONENT_TEXT => 'Text',
             FieldType::FIELD_DATETIME => 'Datetime',
             default => Str::title($this->value),
         };
@@ -63,6 +68,13 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_NUMBER => 'integer',
             default => 'string',
         };
+    }
+
+    public function getType(): string
+    {
+        return Str::startsWith($this->value, 'component_')
+            ? 'component'
+            : 'field';
     }
 
     public function getField(): string
@@ -85,9 +97,10 @@ enum FieldType: string implements HasColor, HasLabel
         };
     }
 
-    public function getFilamentField(string $name, Field $field): FieldComponent
+    public function getFilamentField(string $name, Field $field): FieldComponent|Component
     {
         $filament = match ($this) {
+            FieldType::COMPONENT_TEXT => Text::make(new HtmlString($field->default)),
             FieldType::FIELD_BOOLEAN => Checkbox::make($name),
             FieldType::FIELD_CODE => CodeEditor::make($name),
             FieldType::FIELD_TEXTAREA => Textarea::make($name),
@@ -123,6 +136,10 @@ enum FieldType: string implements HasColor, HasLabel
                 ->password(),
         };
 
+        if (is_subclass_of($filament, Component::class)) {
+            return $filament;
+        }
+
         return $filament
             ->label($field->name)
             ->hidden($field->hidden)
@@ -132,7 +149,7 @@ enum FieldType: string implements HasColor, HasLabel
             ->required($field->required);
     }
 
-    public function getFilamentEntry(string $name, Field $field): FieldEntry
+    public function getFilamentEntry(string $name, Field $field): ?FieldEntry
     {
         $filament = match ($this) {
             FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge()->formatStateUsing(fn ($state) => match ($state) {
@@ -144,7 +161,12 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_DATE => TextEntry::make($name)->date(),
             FieldType::FIELD_DATETIME => TextEntry::make($name)->dateTime(),
             FieldType::FIELD_COLOR => ColorEntry::make($name),
+            default => null,
         };
+
+        if (is_null($filament)) {
+            return null;
+        }
 
         return $filament
             ->label($field->name)

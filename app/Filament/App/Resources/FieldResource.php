@@ -23,6 +23,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
@@ -90,14 +91,19 @@ class FieldResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 Select::make('type')
-                                    ->helperText('The type of field.')
-                                    ->options(FieldType::class)
+                                    ->helperText('The type of field. Fields allow user input while components provide the ability to decorate a form with static content.')
+                                    ->searchable()
+                                    ->options([
+                                        'Components' => collect(FieldType::cases())->filter(fn (FieldType $type): bool => $type->getType() === 'component')->mapWithKeys(fn (FieldType $type): array => [$type->value => $type->getLabel()])->all(),
+                                        'Fields' => collecT(FieldType::cases())->filter(fn (FieldType $type): bool => $type->getType() === 'field')->mapWithKeys(fn (FieldType $type): array => [$type->value => $type->getLabel()])->all(),
+                                    ])
                                     ->required()
                                     ->live()
                                     ->columnSpanFull(),
                                 TextInput::make('default')
                                     ->nullable()
                                     ->columnSpanFull()
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                                     ->helperText('The default value of the field.'),
                                 Radio::make('options_type')
                                     ->validationAttribute('type')
@@ -127,13 +133,20 @@ class FieldResource extends BaseResource
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A optional brief description of the field.')
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-
+                                CodeEditor::make('default')
+                                    ->label('Content')
+                                    ->helperText('The value of the component.')
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() === 'component')
+                                    ->columnSpanFull()
+                                    ->language(CodeEditor\Enums\Language::Html),
                             ]),
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
+                            ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('placeholder')
                                     ->helperText('If a text type field, this text will fill the field when no value is present.')
@@ -158,6 +171,7 @@ class FieldResource extends BaseResource
                             ]),
                         Tab::make('Validation')
                             ->icon('heroicon-o-shield-check')
+                            ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('rules')
                                     ->helperText(new HtmlString('A pipe delimited list of validation rules that can be found <a href="https://laravel.com/docs/11.x/validation#available-validation-rules" target="_blank" class="underline">here</a>.'))
@@ -172,6 +186,7 @@ class FieldResource extends BaseResource
                             ]),
                         Tab::make('Visibility')
                             ->icon('heroicon-o-eye')
+                            ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 Toggle::make('hidden')
                                     ->helperText('The field will only be shown if the user has editable permissions.')
