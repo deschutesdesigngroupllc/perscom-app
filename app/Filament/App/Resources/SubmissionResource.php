@@ -11,8 +11,8 @@ use App\Filament\App\Resources\SubmissionResource\Pages\ViewSubmission;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelationManager;
 use App\Filament\Exports\SubmissionExporter;
+use App\Models\Form;
 use App\Models\Submission;
-use App\Rules\FieldDataRule;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -21,12 +21,12 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
@@ -68,12 +68,15 @@ class SubmissionResource extends BaseResource
             ->components([
                 Tabs::make()
                     ->columnSpanFull()
-                    ->persistTabInQueryString()
+                    ->persistTabInQueryString('submission-tab')
                     ->tabs([
                         Tab::make('Submission')
+                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('form_id')
+                                    ->live()
                                     ->preload()
                                     ->relationship(name: 'form', titleAttribute: 'name')
                                     ->searchable()
@@ -83,13 +86,16 @@ class SubmissionResource extends BaseResource
                                     ->relationship(name: 'user', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                                KeyValue::make('data')
-                                    ->columnSpanFull()
-                                    ->helperText('The submission data.')
-                                    ->keyLabel('Field Slug')
-                                    ->visibleOn('edit')
-                                    ->rule(new FieldDataRule),
                             ]),
+                    ]),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString('form-tab')
+                    ->tabs([
+                        Tab::make('')
+                            ->icon('heroicon-o-pencil-square')
+                            ->label(fn (Get $get) => Form::find($get('form_id'))->name ?? 'Form')
+                            ->schema(fn (Get $get): array => SubmissionResource::buildCustomFieldInputs(collect(Form::find($get('form_id'))?->fields))),
                     ]),
             ]);
     }

@@ -81,6 +81,7 @@ class AttachmentResource extends BaseResource
                                     ->storeFileNamesIn('filename'),
                             ]),
                         Tab::make('Resource')
+                            ->visibleOn(CreateAttachment::class)
                             ->icon('heroicon-o-document')
                             ->schema([
                                 MorphToSelect::make('model')
@@ -212,10 +213,13 @@ class AttachmentResource extends BaseResource
             ->description('The attachments associated with this resource.')
             ->columns([
                 TextColumn::make('name')
+                    ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('filename')
+                    ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('attachment_url')
+                    ->toggleable(false)
                     ->limit()
                     ->wrap()
                     ->label('URL')

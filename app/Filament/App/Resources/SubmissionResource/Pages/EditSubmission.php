@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
-use App\Traits\Filament\BuildsCustomFieldComponents;
+use App\Traits\Filament\SavesAndHydratesCustomFieldData;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -15,7 +15,7 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditSubmission extends EditRecord
 {
-    use BuildsCustomFieldComponents;
+    use SavesAndHydratesCustomFieldData;
 
     protected static string $resource = SubmissionResource::class;
 
