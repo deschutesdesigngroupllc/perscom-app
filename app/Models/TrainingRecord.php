@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasEvent;
 use App\Traits\HasLogs;
@@ -30,6 +31,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $document_id
  * @property int|null $event_id
  * @property string|null $text
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -64,6 +66,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|TrainingRecord user(\App\Models\User $user)
  * @method static Builder<static>|TrainingRecord whereAuthorId($value)
  * @method static Builder<static>|TrainingRecord whereCreatedAt($value)
+ * @method static Builder<static>|TrainingRecord whereData($value)
  * @method static Builder<static>|TrainingRecord whereDocumentId($value)
  * @method static Builder<static>|TrainingRecord whereEventId($value)
  * @method static Builder<static>|TrainingRecord whereId($value)
@@ -81,6 +84,7 @@ class TrainingRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasEvent;
     use HasFactory;
@@ -91,8 +95,11 @@ class TrainingRecord extends Model
     protected $table = 'records_trainings';
 
     protected $fillable = [
+        'id',
         'instructor_id',
         'text',
+        'created_at',
+        'updated_at',
     ];
 
     public function competencies(): BelongsToMany

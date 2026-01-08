@@ -14,6 +14,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
@@ -38,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $author_id
  * @property string|null $text
  * @property RankRecordType $type
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -69,6 +71,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static Builder<static>|RankRecord whereAuthorId($value)
  * @method static Builder<static>|RankRecord whereCreatedAt($value)
+ * @method static Builder<static>|RankRecord whereData($value)
  * @method static Builder<static>|RankRecord whereDocumentId($value)
  * @method static Builder<static>|RankRecord whereId($value)
  * @method static Builder<static>|RankRecord whereRankId($value)
@@ -88,6 +91,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasFactory;
     use HasLogs;
@@ -104,6 +108,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     ];
 
     protected $fillable = [
+        'id',
         'text',
         'type',
         'created_at',

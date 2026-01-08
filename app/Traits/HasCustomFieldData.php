@@ -6,8 +6,10 @@ namespace App\Traits;
 
 use App\Models\Enums\FieldType;
 use App\Models\Field;
-use App\Models\Form;
+use App\Models\Submission;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -15,11 +17,19 @@ use Illuminate\Support\Str;
 use Stancl\VirtualColumn\VirtualColumn;
 
 /**
- * @mixin Eloquent
+ * @mixin Eloquent|Model
  */
 trait HasCustomFieldData
 {
     use VirtualColumn;
+
+    /**
+     * @return string[]
+     */
+    public static function getCustomColumns(): array
+    {
+        return (new self)->getFillable();
+    }
 
     protected static function bootHasCustomFieldData(): void
     {
@@ -51,14 +61,19 @@ trait HasCustomFieldData
             return;
         }
 
-        /** @var ?Form $form */
-        $form = $this->form;
-        if (! $form) {
+        /** @var ?MorphToMany $fields */
+        $fields = match (true) {
+            $this instanceof Submission => $this->form?->fields(),
+            method_exists($this, 'fields') => $this->fields(),
+            default => null,
+        };
+
+        if (is_null($fields)) {
             return;
         }
 
         /** @var Collection<Field> $fileFields */
-        $fileFields = $form->fields()->where('type', FieldType::FIELD_FILE)->get();
+        $fileFields = $fields->where('type', FieldType::FIELD_FILE)->get();
 
         foreach ($fileFields as $field) {
             $value = $this->getAttribute($field->key);
@@ -73,8 +88,8 @@ trait HasCustomFieldData
     protected function initializeHasCustomFieldData(): void
     {
         $this->guard([]);
-        $this->setHidden(array_merge($this->getHidden(), [
+        $this->mergeHidden([
             'data',
-        ]));
+        ]);
     }
 }

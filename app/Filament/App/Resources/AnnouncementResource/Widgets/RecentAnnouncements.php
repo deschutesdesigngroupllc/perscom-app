@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AnnouncementResource\Widgets;
 
 use App\Models\Announcement;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Colors\Color;
@@ -16,6 +17,8 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentAnnouncements extends BaseWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = -2;
 
     protected int|string|array $columnSpan = 'full';
@@ -23,6 +26,7 @@ class RecentAnnouncements extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->description("View you organization's most recent announcements.")
             ->emptyStateHeading('No recent announcements')
             ->emptyStateDescription('There are no recent announcements to show.')
             ->emptyStateIcon('heroicon-o-megaphone')

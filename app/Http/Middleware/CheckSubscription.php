@@ -19,7 +19,11 @@ class CheckSubscription extends VerifyBillableIsSubscribed
         $this->request = $request;
         $authenticated = array_any(['web', 'api'], fn ($guard) => Auth::guard($guard)->check());
 
-        if (App::isDemo() || App::isAdmin() || ! $authenticated || ! config('tenancy.enabled')) {
+        if (App::isDemo() ||
+            App::isAdmin() ||
+            ! $authenticated ||
+            ! config('tenancy.enabled') ||
+            blank(config('cashier.secret'))) {
             return $next($request);
         }
 

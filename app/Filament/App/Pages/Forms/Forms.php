@@ -17,6 +17,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class Forms extends Page implements HasForms, HasTable
 {
@@ -31,6 +32,8 @@ class Forms extends Page implements HasForms, HasTable
     protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationLabel = 'Forms';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Forms';
 
     protected string $view = 'filament.app.pages.forms.list';
 

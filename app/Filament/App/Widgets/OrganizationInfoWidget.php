@@ -7,10 +7,13 @@ namespace App\Filament\App\Widgets;
 use App\Models\Tenant;
 use App\Services\VersionService;
 use App\Settings\DashboardSettings;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Widget;
 
 class OrganizationInfoWidget extends Widget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = -4;
 
     protected static bool $isLazy = false;

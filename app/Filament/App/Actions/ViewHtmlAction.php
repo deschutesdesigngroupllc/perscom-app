@@ -6,6 +6,8 @@ namespace App\Filament\App\Actions;
 
 use Closure;
 use Filament\Actions\Action;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class ViewHtmlAction extends Action
 {
@@ -18,7 +20,7 @@ class ViewHtmlAction extends Action
         $this->visible(fn (): bool => $this->getHtml() !== null);
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
-        $this->modalContent(fn () => view('filament.app.view-html', [
+        $this->modalContent(fn (): Factory|View => view('filament.app.view-html', [
             'html' => $this->getHtml(),
         ]));
     }

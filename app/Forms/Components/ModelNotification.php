@@ -11,11 +11,11 @@ use App\Models\User;
 use Closure;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -33,17 +33,19 @@ class ModelNotification
             ->contained(false)
             ->key('model_notifications')
             ->statePath($statePath ?? 'model_notifications')
+            ->dehydrated(false)
             ->schema([
-                Placeholder::make('alert')
+                TextEntry::make('alert')
                     ->hiddenLabel()
                     ->dehydrated(false)
-                    ->visible(fn () => filled(value($alert)))
-                    ->content($alert),
+                    ->visible(fn (): bool => filled(value($alert)))
+                    ->getStateUsing(fn (): Closure|HtmlString|string|null => $alert),
                 Toggle::make('enabled')
                     ->live()
                     ->default(data_get($defaults, 'enabled', false))
                     ->helperText($description ?? 'Enable to send notifications.'),
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Recipients')

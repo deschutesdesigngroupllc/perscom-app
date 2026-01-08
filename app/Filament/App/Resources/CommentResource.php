@@ -34,6 +34,7 @@ class CommentResource extends BaseResource
         return $schema
             ->components([
                 RichEditor::make('comment')
+                    ->hiddenLabel()
                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
                     ->required()
@@ -76,11 +77,14 @@ class CommentResource extends BaseResource
             ->emptyStateDescription('Add the first comment!')
             ->columns([
                 TextColumn::make('comment')
+                    ->toggleable(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap(),
-                TextColumn::make('author.name'),
+                TextColumn::make('author.name')
+                    ->toggleable(false),
                 TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->label('Commented')
                     ->toggleable(false),
             ])

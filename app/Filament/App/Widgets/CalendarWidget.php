@@ -7,8 +7,7 @@ namespace App\Filament\App\Widgets;
 use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
 use App\Services\ScheduleService;
-use App\Services\UserSettingsService;
-use App\Settings\OrganizationSettings;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\CarbonInterface;
 use Carbon\WeekDay;
 use Closure;
@@ -24,11 +23,15 @@ use Illuminate\Support\HtmlString;
 
 class CalendarWidget extends BaseCalendarWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = -1;
 
     protected string|HtmlString|null|bool $heading = 'Calendar';
 
     protected WeekDay $firstDay = WeekDay::Sunday;
+
+    protected bool $useFilamentTimezone = true;
 
     protected bool $eventClickEnabled = true;
 
@@ -88,25 +91,18 @@ class CalendarWidget extends BaseCalendarWidget
      */
     protected function getEvents(array|FetchInfo $info = []): Collection|array
     {
-        $timezone = UserSettingsService::get('timezone', function () {
-            /** @var OrganizationSettings $settings */
-            $settings = app(OrganizationSettings::class);
-
-            return $settings->timezone ?? config('app.timezone');
-        });
-
         $calendarStart = Carbon::parse(data_get($info, 'start'));
         $calendarEnd = Carbon::parse(data_get($info, 'end'));
 
         $this->events = CalendarWidget::query($calendarStart, $calendarEnd)->get();
 
-        return array_merge($this->getOneTimeEvents($timezone), $this->getRepeatingEvents($timezone, $calendarStart, $calendarEnd));
+        return array_merge($this->getOneTimeEvents(), $this->getRepeatingEvents($calendarStart, $calendarEnd));
     }
 
     /**
      * @return array<CalendarEvent>
      */
-    private function getRepeatingEvents(string $timezone, CarbonInterface $calendarStart, CarbonInterface $calendarEnd): array
+    private function getRepeatingEvents(CarbonInterface $calendarStart, CarbonInterface $calendarEnd): array
     {
         if (! $this->events instanceof Collection) {
             return [];
@@ -114,8 +110,8 @@ class CalendarWidget extends BaseCalendarWidget
 
         return $this->events
             ->filter(fn (Event $event): bool => $event->repeats && filled($event->schedule))
-            ->flatMap(fn (Event $event) => collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event): CalendarEvent {
-                $start = $occurrence->setTimezone($timezone)->shiftTimezone('UTC');
+            ->flatMap(fn (Event $event) => collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($event): CalendarEvent {
+                $start = $occurrence;
                 $end = $start->copy()->addHours($event->schedule->duration);
 
                 return CalendarEvent::make()
@@ -133,15 +129,15 @@ class CalendarWidget extends BaseCalendarWidget
     /**
      * @return array<CalendarEvent>
      */
-    private function getOneTimeEvents(string $timezone): array
+    private function getOneTimeEvents(): array
     {
         if (! $this->events instanceof Collection) {
             return [];
         }
 
-        return $this->events->reject->repeats->map(function (Event $event) use ($timezone): CalendarEvent {
-            $start = $event->starts->setTimezone($timezone)->shiftTimezone('UTC');
-            $end = $event->ends->setTimezone($timezone)->shiftTimezone('UTC');
+        return $this->events->reject->repeats->map(function (Event $event): CalendarEvent {
+            $start = $event->starts;
+            $end = $event->ends;
 
             return CalendarEvent::make()
                 ->title($event->name)

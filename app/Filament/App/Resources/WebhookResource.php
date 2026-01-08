@@ -88,32 +88,34 @@ class WebhookResource extends BaseResource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->components([
-            Tabs::make()
-                ->columnSpanFull()
-                ->tabs([
-                    Tab::make('Webhook')
-                        ->icon('heroicon-o-globe-alt')
-                        ->schema([
-                            TextEntry::make('url')
-                                ->label('URL')
-                                ->copyable(),
-                            TextEntry::make('description')
-                                ->visible(fn ($state) => filled($state))
-                                ->html(),
-                            TextEntry::make('method')
-                                ->badge()
-                                ->color('gray'),
-                            TextEntry::make('events')
-                                ->listWithLineBreaks()
-                                ->limitList()
-                                ->expandableLimitedList()
-                                ->badge(),
-                            TextEntry::make('secret')
-                                ->copyable(),
-                        ]),
-                ]),
-        ]);
+        return $schema
+            ->components([
+                Tabs::make()
+                    ->persistTabInQueryString()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Webhook')
+                            ->icon('heroicon-o-globe-alt')
+                            ->schema([
+                                TextEntry::make('url')
+                                    ->label('URL')
+                                    ->copyable(),
+                                TextEntry::make('description')
+                                    ->visible(fn ($state): bool => filled($state))
+                                    ->html(),
+                                TextEntry::make('method')
+                                    ->badge()
+                                    ->color('gray'),
+                                TextEntry::make('events')
+                                    ->listWithLineBreaks()
+                                    ->limitList()
+                                    ->expandableLimitedList()
+                                    ->badge(),
+                                TextEntry::make('secret')
+                                    ->copyable(),
+                            ]),
+                    ]),
+            ]);
     }
 
     public static function table(Table $table): Table

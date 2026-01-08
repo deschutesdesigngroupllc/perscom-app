@@ -4,22 +4,32 @@ declare(strict_types=1);
 
 namespace App\Models\Enums;
 
+use App\Models\Country;
+use App\Models\Field;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Field as FieldComponent;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\ColorEntry;
+use Filament\Infolists\Components\Entry as FieldEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Component;
+use Filament\Schemas\Components\Text;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 enum FieldType: string implements HasColor, HasLabel
 {
+    case COMPONENT_TEXT = 'component_text';
     case FIELD_BOOLEAN = 'boolean';
     case FIELD_CODE = 'code';
     case FIELD_COLOR = 'color';
@@ -38,6 +48,7 @@ enum FieldType: string implements HasColor, HasLabel
     public function getLabel(): ?string
     {
         return match ($this) {
+            FieldType::COMPONENT_TEXT => 'Text',
             FieldType::FIELD_DATETIME => 'Datetime',
             default => Str::title($this->value),
         };
@@ -57,6 +68,13 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_NUMBER => 'integer',
             default => 'string',
         };
+    }
+
+    public function getType(): string
+    {
+        return Str::startsWith($this->value, 'component_')
+            ? 'component'
+            : 'field';
     }
 
     public function getField(): string
@@ -79,25 +97,79 @@ enum FieldType: string implements HasColor, HasLabel
         };
     }
 
-    public function getFilamentField(): string
+    public function getFilamentField(string $name, Field $field): FieldComponent|Component
     {
-        return match ($this) {
-            FieldType::FIELD_BOOLEAN => Checkbox::class,
-            FieldType::FIELD_CODE, FieldType::FIELD_TEXTAREA => Textarea::class,
-            FieldType::FIELD_COLOR => ColorPicker::class,
-            FieldType::FIELD_COUNTRY, FieldType::FIELD_SELECT, FieldType::FIELD_TIMEZONE => Select::class,
-            FieldType::FIELD_DATE => DatePicker::class,
-            FieldType::FIELD_DATETIME => DateTimePicker::class,
-            FieldType::FIELD_EMAIL, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXT => TextInput::class,
-            FieldType::FIELD_FILE => FileUpload::class,
+        $filament = match ($this) {
+            FieldType::COMPONENT_TEXT => Text::make(new HtmlString($field->default)),
+            FieldType::FIELD_BOOLEAN => Checkbox::make($name),
+            FieldType::FIELD_CODE => CodeEditor::make($name),
+            FieldType::FIELD_TEXTAREA => Textarea::make($name),
+            FieldType::FIELD_COLOR => ColorPicker::make($name),
+            FieldType::FIELD_SELECT => Select::make($name)
+                ->options($field->options)
+                ->preload()
+                ->searchable(),
+            FieldType::FIELD_COUNTRY => Select::make($name)
+                ->preload()
+                ->searchable()
+                ->options(Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray()),
+            FieldType::FIELD_TIMEZONE => Select::make($name)
+                ->preload()
+                ->searchable()
+                ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])),
+            FieldType::FIELD_DATE => DatePicker::make($name),
+            FieldType::FIELD_DATETIME => DateTimePicker::make($name),
+            FieldType::FIELD_TEXT => TextInput::make($name),
+            FieldType::FIELD_EMAIL => TextInput::make($name)
+                ->autocomplete('email')
+                ->email(),
+            FieldType::FIELD_NUMBER => TextInput::make($name)
+                ->numeric(),
+            FieldType::FIELD_FILE => FileUpload::make($name)
+                ->previewable()
+                ->openable()
+                ->downloadable()
+                ->visibility('public'),
+            FieldType::FIELD_PASSWORD => TextInput::make($name)
+                ->autocomplete('current-password')
+                ->revealable()
+                ->password(),
         };
+
+        if (is_subclass_of($filament, Component::class)) {
+            return $filament;
+        }
+
+        return $filament
+            ->label($field->name)
+            ->hidden($field->hidden)
+            ->rules($field->rules ?? [])
+            ->helperText($field->help)
+            ->default($field->default)
+            ->required($field->required);
     }
 
-    public function getFilamentEntry(): string
+    public function getFilamentEntry(string $name, Field $field): ?FieldEntry
     {
-        return match ($this) {
-            FieldType::FIELD_BOOLEAN, FieldType::FIELD_CODE, FieldType::FIELD_COUNTRY, FieldType::FIELD_DATE, FieldType::FIELD_DATETIME, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_SELECT, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE => TextEntry::class,
-            FieldType::FIELD_COLOR => ColorEntry::class,
+        $filament = match ($this) {
+            FieldType::FIELD_BOOLEAN => TextEntry::make($name)->badge()->formatStateUsing(fn ($state) => match ($state) {
+                true => $field->true_value,
+                default => $field->false_value,
+            }),
+            FieldType::FIELD_CODE => CodeEntry::make($name),
+            FieldType::FIELD_COUNTRY, FieldType::FIELD_EMAIL, FieldType::FIELD_FILE, FieldType::FIELD_NUMBER, FieldType::FIELD_PASSWORD, FieldType::FIELD_TEXTAREA, FieldType::FIELD_TEXT, FieldType::FIELD_TIMEZONE, FieldType::FIELD_SELECT => TextEntry::make($name),
+            FieldType::FIELD_DATE => TextEntry::make($name)->date(),
+            FieldType::FIELD_DATETIME => TextEntry::make($name)->dateTime(),
+            FieldType::FIELD_COLOR => ColorEntry::make($name),
+            default => null,
         };
+
+        if (is_null($filament)) {
+            return null;
+        }
+
+        return $filament
+            ->label($field->name)
+            ->placeholder($field->placeholder);
     }
 }

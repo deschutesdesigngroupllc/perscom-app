@@ -29,13 +29,16 @@ class StatusesRelationManager extends RelationManager
             ->description('The status history of this form submission.')
             ->columns([
                 TextColumn::make('name')
+                    ->toggleable(false)
                     ->badge()
                     ->color(fn (?Status $record): array => Color::generateV3Palette($record->color ?? '#2563eb')),
-                TextColumn::make('created_at')
-                    ->toggleable(false),
             ])
             ->headerActions([
                 AttachAction::make()
+                    ->label('Set status')
+                    ->modalHeading('Set Status')
+                    ->modalDescription('Set the current status of the submission.')
+                    ->modalSubmitActionLabel('Save')
                     ->preloadRecordSelect(),
             ])
             ->recordActions([

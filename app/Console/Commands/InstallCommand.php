@@ -132,12 +132,6 @@ class InstallCommand extends Command implements Isolatable
      */
     protected function reinstallApplicationWithTenancy(): int
     {
-        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
-            if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
-                $tenant->database()->manager()->deleteDatabase($tenant);
-            }
-        });
-
         $this->call('migrate', [
             '--force' => true,
         ]);
@@ -264,18 +258,29 @@ class InstallCommand extends Command implements Isolatable
 
     protected function isInstalled(): bool
     {
-        if (config('tenancy.enabled')) {
-            return Schema::hasTable('tenants') && Tenant::exists();
+        if (Schema::hasTable('tenants') && Tenant::exists()) {
+            return true;
         }
 
-        return Schema::hasTable('users') && User::exists();
+        return Schema::hasTable('users');
     }
 
+    /**
+     * @throws DatabaseManagerNotRegisteredException
+     */
     protected function resetApplication(): void
     {
         $this->components->info('Truncating all data...');
 
         if (config('tenancy.enabled')) {
+            if (Schema::hasTable('tenants')) {
+                tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
+                    if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
+                        $tenant->database()->manager()->deleteDatabase($tenant);
+                    }
+                });
+            }
+
             $this->call('migrate:fresh', [
                 '--force' => true,
             ]);

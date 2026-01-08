@@ -82,7 +82,7 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo(fn () => route('filament.app.auth.login'));
+        $middleware->redirectGuestsTo(fn (): string => route('filament.app.auth.login'));
 
         $middleware->validateCsrfTokens(except: [
             'spark/*',

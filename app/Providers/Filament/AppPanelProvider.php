@@ -38,6 +38,8 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -141,18 +143,22 @@ class AppPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->brandName('PERSCOM')
-            ->brandLogo(fn () => view('components.logo'))
+            ->brandLogo(fn (): Factory|View => view('components.logo'))
             ->plugins([
-                DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
-                    ->navigationLabel('Custom Reports')
-                    ->navigationSort(10),
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
                     ->favoritesBarSize(Size::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
-                FilamentShieldPlugin::make(),
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(10),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Users')
+                    ->navigationSort(3)
+                    ->navigationIcon('heroicon-o-shield-check')
+                    ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()
@@ -164,7 +170,7 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
+                    ->url(fn (): string => route('spark.portal'), shouldOpenInNewTab: true)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo())
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')

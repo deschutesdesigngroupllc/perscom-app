@@ -11,8 +11,9 @@ use App\Filament\App\Resources\SubmissionResource\Pages\ViewSubmission;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelationManager;
 use App\Filament\Exports\SubmissionExporter;
+use App\Models\Form;
 use App\Models\Submission;
-use App\Rules\FieldDataRule;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -20,13 +21,12 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Actions\ViewAction;
-use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
@@ -41,6 +41,8 @@ use UnitEnum;
 
 class SubmissionResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = Submission::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-folder-plus';
@@ -66,12 +68,15 @@ class SubmissionResource extends BaseResource
             ->components([
                 Tabs::make()
                     ->columnSpanFull()
-                    ->persistTabInQueryString()
+                    ->persistTabInQueryString('submission-tab')
                     ->tabs([
                         Tab::make('Submission')
+                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('form_id')
+                                    ->live()
                                     ->preload()
                                     ->relationship(name: 'form', titleAttribute: 'name')
                                     ->searchable()
@@ -81,13 +86,16 @@ class SubmissionResource extends BaseResource
                                     ->relationship(name: 'user', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                                KeyValue::make('data')
-                                    ->columnSpanFull()
-                                    ->helperText('The submission data.')
-                                    ->keyLabel('Field Slug')
-                                    ->visibleOn('edit')
-                                    ->rule(new FieldDataRule),
                             ]),
+                    ]),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString('form-tab')
+                    ->tabs([
+                        Tab::make('')
+                            ->icon('heroicon-o-pencil-square')
+                            ->label(fn (Get $get) => Form::find($get('form_id'))->name ?? 'Form')
+                            ->schema(fn (Get $get): array => SubmissionResource::buildCustomFieldInputs(collect(Form::find($get('form_id'))?->fields))),
                     ]),
             ]);
     }
@@ -97,6 +105,7 @@ class SubmissionResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString('submission-tab')
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Submission')
@@ -105,7 +114,8 @@ class SubmissionResource extends BaseResource
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
                                 TextEntry::make('user.name'),
-                                TextEntry::make('form.name'),
+                                TextEntry::make('form.name')
+                                    ->label('Form'),
                             ]),
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
@@ -116,13 +126,15 @@ class SubmissionResource extends BaseResource
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
+                    ]),
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->persistTabInQueryString('form-tab')
+                    ->tabs([
                         Tab::make('')
                             ->icon('heroicon-o-pencil-square')
-                            ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
-                            ->schema([
-                                ViewEntry::make('form')
-                                    ->view('models.submission'),
-                            ]),
+                            ->label(fn (Submission $record) => $record->form->name ?? 'Form')
+                            ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                     ]),
             ]);
     }

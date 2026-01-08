@@ -60,7 +60,9 @@
     <env name="SESSION_DRIVER" value="array"/>
     <env name="STRIPE_PRODUCT_MONTH" value="price_1REMW6Gt8lrL0dgCpyHaco4P"/>
     <env name="STRIPE_PRODUCT_YEARLY" value="price_1REMW6Gt8lrL0dgCKBUlqymC"/>
-    <env name="TENANT_ENABLED" value="true" />
+    <env name="STRIPE_KEY" value="stripekey"/>
+    <env name="STRIPE_SECRET" value="stripesecret"/>
+    <env name="TENANT_ENABLED" value="true"/>
     <env name="TELESCOPE_ENABLED" value="false"/>
     <env name="VIEW_CACHE" value="false"/>
   </php>

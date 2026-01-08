@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Widgets;
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
@@ -12,6 +13,8 @@ use Flowframe\Trend\TrendValue;
 
 class UsersOverview extends StatsOverviewWidget
 {
+    use HasWidgetShield;
+
     protected static ?int $sort = -3;
 
     protected ?string $heading = 'New Users';

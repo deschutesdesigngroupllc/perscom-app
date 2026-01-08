@@ -57,6 +57,7 @@ class AnnouncementResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Announcement')
@@ -93,7 +94,7 @@ class AnnouncementResource extends BaseResource
                                     ->helperText('If set, the announcement will disappear after this date.'),
                             ]),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 ModelNotification::make(),

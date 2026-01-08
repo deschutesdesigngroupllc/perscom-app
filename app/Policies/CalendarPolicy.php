@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\Calendar;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class CalendarPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_calendar');
+        return $authUser->can('view_any_calendar');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Calendar $calendar): bool
+    public function view(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('view_calendar');
+        return $authUser->can('view_calendar');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_calendar');
+        return $authUser->can('create_calendar');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Calendar $calendar): bool
+    public function update(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('update_calendar');
+        return $authUser->can('update_calendar');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Calendar $calendar): bool
+    public function delete(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('delete_calendar');
+        return $authUser->can('delete_calendar');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('delete_any_calendar');
+        return $authUser->can('restore_calendar');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, Calendar $calendar): bool
+    public function forceDelete(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('force_delete_calendar');
+        return $authUser->can('force_delete_calendar');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_calendar');
+        return $authUser->can('force_delete_any_calendar');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, Calendar $calendar): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_calendar');
+        return $authUser->can('restore_any_calendar');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, Calendar $calendar): bool
     {
-        return $user->can('restore_any_calendar');
+        return $authUser->can('replicate_calendar');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, Calendar $calendar): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_calendar');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_calendar');
+        return $authUser->can('reorder_calendar');
     }
 }

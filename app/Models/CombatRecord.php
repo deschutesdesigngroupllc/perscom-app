@@ -13,6 +13,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
@@ -34,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string $text
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, Activity> $activities
@@ -63,6 +65,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|CombatRecord user(\App\Models\User $user)
  * @method static Builder<static>|CombatRecord whereAuthorId($value)
  * @method static Builder<static>|CombatRecord whereCreatedAt($value)
+ * @method static Builder<static>|CombatRecord whereData($value)
  * @method static Builder<static>|CombatRecord whereDocumentId($value)
  * @method static Builder<static>|CombatRecord whereId($value)
  * @method static Builder<static>|CombatRecord whereText($value)
@@ -80,6 +83,7 @@ class CombatRecord extends Model implements HasLabel, SendsModelNotifications, S
     use HasAttachments;
     use HasAuthor;
     use HasComments;
+    use HasCustomFieldData;
     use HasDocument;
     use HasFactory;
     use HasLogs;
@@ -91,6 +95,7 @@ class CombatRecord extends Model implements HasLabel, SendsModelNotifications, S
     protected $table = 'records_combat';
 
     protected $fillable = [
+        'id',
         'text',
         'created_at',
         'updated_at',

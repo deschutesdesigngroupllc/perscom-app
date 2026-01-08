@@ -21,11 +21,11 @@ class Turnstile extends Field
     {
         parent::setUp();
 
-        $this->label('');
+        $this->hiddenLabel();
         $this->validationAttribute('CAPTCHA');
         $this->dehydrated(false);
         $this->rules(['required', new TurnstileRule]);
-        $this->hidden(fn () => blank(config('services.cloudflare.turnstile.site_key')));
+        $this->hidden(fn (): bool => blank(config('services.cloudflare.turnstile.site_key')));
     }
 
     public function language(string $language): static

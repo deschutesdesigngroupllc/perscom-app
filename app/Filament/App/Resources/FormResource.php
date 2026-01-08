@@ -47,20 +47,16 @@ class FormResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
-    protected static ?int $navigationSort = 4;
-
-    public static function modelNotificationCreatedEvent(): string
-    {
-        return 'submission.created';
-    }
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Form')

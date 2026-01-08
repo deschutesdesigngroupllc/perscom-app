@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
-use App\Traits\Filament\InteractsWithFields;
+use App\Traits\Filament\SavesAndHydratesCustomFieldData;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
@@ -15,14 +15,12 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditSubmission extends EditRecord
 {
-    use InteractsWithFields;
+    use SavesAndHydratesCustomFieldData;
 
     protected static string $resource = SubmissionResource::class;
 
-    public function mount(int|string $record): void
+    public function booted(): void
     {
-        parent::mount($record);
-
         /** @var Submission $submission */
         $submission = $this->record;
         $submission->markAsRead();
@@ -36,7 +34,7 @@ class EditSubmission extends EditRecord
             ActionGroup::make([
                 Action::make('mark-as-unread')
                     ->label('Mark As Unread')
-                    ->visible(fn (Submission $record) => filled($record->read_at))
+                    ->visible(fn (Submission $record): bool => filled($record->read_at))
                     ->icon('heroicon-o-envelope-open')
                     ->action(function (Submission $record): void {
                         $record->markAsUnread();

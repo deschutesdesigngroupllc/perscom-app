@@ -14,14 +14,16 @@ use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\Comment
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\AssignmentRecordExporter;
 use App\Forms\Components\ModelNotification;
-use App\Livewire\Filament\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\RosterMode;
+use App\Models\Field;
 use App\Models\Unit;
 use App\Models\User;
 use App\Settings\DashboardSettings;
+use App\Settings\FieldSettings;
 use App\Settings\NotificationSettings;
+use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -34,7 +36,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -51,6 +52,8 @@ use UnitEnum;
 
 class AssignmentRecordResource extends BaseResource
 {
+    use BuildsCustomFieldComponents;
+
     protected static ?string $model = AssignmentRecord::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -68,17 +71,18 @@ class AssignmentRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Details')
+                        Tab::make('Assignment Record')
                             ->columns()
-                            ->icon('heroicon-o-information-circle')
+                            ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 TextEntry::make('warning')
                                     ->columnSpanFull()
                                     ->hiddenLabel()
                                     ->html()
-                                    ->getStateUsing(fn (): HtmlString => new HtmlString("<span class='font-bold text-gray-950 mr-1'>NOTE:</span><span class='text-gray-600'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
+                                    ->getStateUsing(fn (): HtmlString => new HtmlString("<span class='fi-sc-text'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
                                     ->visibleOn('edit'),
                                 Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
@@ -119,8 +123,8 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                             ]),
-                        Tab::make('Assignment Record')
-                            ->icon('heroicon-o-rectangle-stack')
+                        Tab::make('Details')
+                            ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Select::make('position_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
@@ -158,8 +162,17 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                             ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->assignment_records);
+
+                                return AssignmentRecordResource::buildCustomFieldInputs(Field::findMany($fields));
+                            }),
                         Tab::make('Notifications')
-                            ->visible(fn ($operation): bool => $operation === 'create')
+                            ->visibleOn('create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
@@ -181,6 +194,7 @@ class AssignmentRecordResource extends BaseResource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Assignment Record')
@@ -205,21 +219,20 @@ class AssignmentRecordResource extends BaseResource
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                TextEntry::make('author.name'),
+                                TextEntry::make('author.name')
+                                    ->label('Author'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
-                        Tab::make('Document')
-                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
-                            ->label(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')
-                            ->icon('heroicon-o-document')
-                            ->schema([
-                                Livewire::make(ViewDocument::class, fn (?AssignmentRecord $record): array => [
-                                    'document' => $record->document,
-                                    'user' => $record->user,
-                                    'model' => $record,
-                                ]),
-                            ]),
+                        Tab::make('Fields')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(function (): array {
+                                $settings = app(FieldSettings::class);
+
+                                $fields = collect($settings->assignment_records);
+
+                                return AssignmentRecordResource::buildCustomFieldEntries(Field::findMany($fields));
+                            }),
                     ]),
             ]);
     }

@@ -22,7 +22,6 @@ use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
-use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -37,6 +36,8 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Contracts\Container\BindingResolutionException;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -137,7 +138,7 @@ class AppServiceProvider extends ServiceProvider
 
         Auth::viaRequest('api', static fn () => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());
 
-        $authenticationRedirect = fn () => match (App::isAdmin()) {
+        $authenticationRedirect = fn (): string => match (App::isAdmin()) {
             true => route('filament.admin.pages.dashboard'),
             default => route('filament.app.pages.dashboard', [
                 'tenant' => tenant(),
@@ -245,14 +246,6 @@ class AppServiceProvider extends ServiceProvider
 
         ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
 
-        FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
-            ->afterLast('Resources\\')
-            ->before('Resource')
-            ->replace('\\', '')
-            ->lower()
-            ->replace('_', '')
-            ->toString());
-
         Field::configureUsing(function (Field $field) {
             $closure = match ($field->getName()) {
                 'created_at' => function (Field $field): void {
@@ -301,22 +294,24 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::BODY_START,
-            hook: fn () => view('filament.render-hooks.body-start.demo-banner')
+            hook: fn (): \Illuminate\Contracts\View\Factory|View => view('filament.render-hooks.body-start.demo-banner')
         );
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::BODY_START,
-            hook: fn () => view('filament.render-hooks.body-start.subscription-banner'),
+            hook: fn (): \Illuminate\Contracts\View\Factory|View|null => config('cashier.secret')
+                ? view('filament.render-hooks.body-start.subscription-banner')
+                : null,
         );
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::BODY_START,
-            hook: fn () => view('filament.render-hooks.body-start.announcement-banner')
+            hook: fn (): \Illuminate\Contracts\View\Factory|View => view('filament.render-hooks.body-start.announcement-banner')
         );
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::PAGE_START,
-            hook: fn () => view('filament.render-hooks.page-start.alert-banner'),
+            hook: fn (): \Illuminate\Contracts\View\Factory|View => view('filament.render-hooks.page-start.alert-banner'),
             scopes: Dashboard::class,
         );
 
@@ -332,6 +327,8 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             }
         });
+
+        Model::unguard();
 
         Number::macro('percentageDifference', function (int $oldValue, int $newValue): int|float {
             if ($oldValue === 0) {

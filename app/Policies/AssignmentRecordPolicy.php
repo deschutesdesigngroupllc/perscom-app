@@ -5,106 +5,65 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\AssignmentRecord;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Foundation\Auth\User as AuthUser;
 
 class AssignmentRecordPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    public function viewAny(AuthUser $authUser): bool
     {
-        return $user->can('view_any_assignmentrecord');
+        return $authUser->can('view_any_assignment_record');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, AssignmentRecord $assignmentRecord): bool
+    public function view(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('view_assignmentrecord');
+        return $authUser->can('view_assignment_record');
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(AuthUser $authUser): bool
     {
-        return $user->can('create_assignmentrecord');
+        return $authUser->can('create_assignment_record');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, AssignmentRecord $assignmentRecord): bool
+    public function update(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('update_assignmentrecord');
+        return $authUser->can('update_assignment_record');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, AssignmentRecord $assignmentRecord): bool
+    public function delete(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('delete_assignmentrecord');
+        return $authUser->can('delete_assignment_record');
     }
 
-    /**
-     * Determine whether the user can bulk delete.
-     */
-    public function deleteAny(User $user): bool
+    public function restore(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('delete_any_assignmentrecord');
+        return $authUser->can('restore_assignment_record');
     }
 
-    /**
-     * Determine whether the user can permanently delete.
-     */
-    public function forceDelete(User $user, AssignmentRecord $assignmentRecord): bool
+    public function forceDelete(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('force_delete_assignmentrecord');
+        return $authUser->can('force_delete_assignment_record');
     }
 
-    /**
-     * Determine whether the user can permanently bulk delete.
-     */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(AuthUser $authUser): bool
     {
-        return $user->can('force_delete_any_assignmentrecord');
+        return $authUser->can('force_delete_any_assignment_record');
     }
 
-    /**
-     * Determine whether the user can restore.
-     */
-    public function restore(User $user, AssignmentRecord $assignmentRecord): bool
+    public function restoreAny(AuthUser $authUser): bool
     {
-        return $user->can('restore_assignmentrecord');
+        return $authUser->can('restore_any_assignment_record');
     }
 
-    /**
-     * Determine whether the user can bulk restore.
-     */
-    public function restoreAny(User $user): bool
+    public function replicate(AuthUser $authUser, AssignmentRecord $assignmentRecord): bool
     {
-        return $user->can('restore_any_assignmentrecord');
+        return $authUser->can('replicate_assignment_record');
     }
 
-    /**
-     * Determine whether the user can replicate.
-     */
-    public function replicate(User $user, AssignmentRecord $assignmentRecord): bool
+    public function reorder(AuthUser $authUser): bool
     {
-        return $user->can('replicate_assignmentrecord');
-    }
-
-    /**
-     * Determine whether the user can reorder.
-     */
-    public function reorder(User $user): bool
-    {
-        return $user->can('reorder_assignmentrecord');
+        return $authUser->can('reorder_assignment_record');
     }
 }

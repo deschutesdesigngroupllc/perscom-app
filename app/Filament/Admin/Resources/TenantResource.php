@@ -58,6 +58,7 @@ class TenantResource extends Resource
         return $schema
             ->components([
                 Tabs::make()
+                    ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Tenant')
@@ -98,7 +99,7 @@ class TenantResource extends Resource
                                     ->nullable(),
                             ]),
                         Tab::make('Billing')
-                            ->visible(fn ($operation): bool => $operation !== 'create')
+                            ->hiddenOn('create')
                             ->icon('heroicon-o-credit-card')
                             ->columns(2)
                             ->schema([
@@ -142,7 +143,7 @@ class TenantResource extends Resource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Database')
-                            ->visible(fn ($operation): bool => $operation !== 'create')
+                            ->hiddenOn('create')
                             ->icon('heroicon-o-circle-stack')
                             ->schema([
                                 TextInput::make('tenancy_db_name')
@@ -151,7 +152,7 @@ class TenantResource extends Resource
                                     ->disabled(),
                             ]),
                         Tab::make('Payment')
-                            ->visible(fn ($operation): bool => $operation !== 'create')
+                            ->hiddenOn('create')
                             ->icon('heroicon-o-currency-dollar')
                             ->schema([
                                 TextInput::make('stripe_id')
@@ -172,7 +173,7 @@ class TenantResource extends Resource
                                     ->disabled(),
                             ]),
                         Tab::make('Metadata')
-                            ->visible(fn ($operation): bool => $operation !== 'create')
+                            ->hiddenOn('create')
                             ->icon('heroicon-o-code-bracket')
                             ->schema([
                                 CodeEditor::make('data')

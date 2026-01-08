@@ -52,7 +52,7 @@ class AdminResource extends Resource
                             ->confirmed()
                             ->maxLength(255)
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                            ->dehydrated(fn ($state) => filled($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
                             ->required(fn (string $context): bool => $context === 'create')
                             ->live(),
                         TextInput::make('password_confirmation')

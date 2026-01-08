@@ -100,76 +100,78 @@ class PassportClientResource extends BaseResource
 
     public static function infolist(Schema $schema): Schema
     {
-        return $schema->components([
-            Tabs::make()
-                ->columnSpanFull()
-                ->tabs([
-                    Tab::make('Client')
-                        ->icon('heroicon-o-rectangle-stack')
-                        ->schema([
-                            TextEntry::make('name'),
-                            TextEntry::make('id')
-                                ->label('Client ID')
-                                ->color('gray')
-                                ->badge()
-                                ->copyable(),
-                            TextEntry::make('secret')
-                                ->label('Client Secret')
-                                ->color('gray')
-                                ->badge()
-                                ->copyable(),
-                            TextEntry::make('type')
-                                ->badge(),
-                            TextEntry::make('redirect')
-                                ->visible(fn (PassportClient $record): bool => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
-                                ->label('Redirect URL')
-                                ->url(fn ($state) => $state)
-                                ->copyable(),
-                            TextEntry::make('revoked')
-                                ->label('Status')
-                                ->badge()
-                                ->color(fn ($state): string => match ($state) {
-                                    '1', 1, true => 'danger',
-                                    default => 'success'
-                                })
-                                ->formatStateUsing(fn ($state): string => match ($state) {
-                                    '1', 1, true => 'Revoked',
-                                    default => 'In Use'
-                                }),
-                            TextEntry::make('scopes')
-                                ->columnSpanFull()
-                                ->listWithLineBreaks()
-                                ->limitList()
-                                ->expandableLimitedList()
-                                ->badge(),
-                        ]),
-                    Tab::make('Endpoints')
-                        ->icon('heroicon-o-link')
-                        ->schema([
-                            KeyValueEntry::make('endpoints')
-                                ->hiddenLabel()
-                                ->keyLabel('Endpoint')
-                                ->valueLabel('URL')
-                                ->getStateUsing(fn (): array => [
-                                    'Discovery Endpoint' => route('oidc.discovery', [
-                                        'tenant' => optional(tenant()?->domain)->domain,
+        return $schema
+            ->components([
+                Tabs::make()
+                    ->persistTabInQueryString()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tab::make('Client')
+                            ->icon('heroicon-o-rectangle-stack')
+                            ->schema([
+                                TextEntry::make('name'),
+                                TextEntry::make('id')
+                                    ->label('Client ID')
+                                    ->color('gray')
+                                    ->badge()
+                                    ->copyable(),
+                                TextEntry::make('secret')
+                                    ->label('Client Secret')
+                                    ->color('gray')
+                                    ->badge()
+                                    ->copyable(),
+                                TextEntry::make('type')
+                                    ->badge(),
+                                TextEntry::make('redirect')
+                                    ->visible(fn (PassportClient $record): bool => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                                    ->label('Redirect URL')
+                                    ->url(fn ($state) => $state)
+                                    ->copyable(),
+                                TextEntry::make('revoked')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->color(fn ($state): string => match ($state) {
+                                        '1', 1, true => 'danger',
+                                        default => 'success'
+                                    })
+                                    ->formatStateUsing(fn ($state): string => match ($state) {
+                                        '1', 1, true => 'Revoked',
+                                        default => 'In Use'
+                                    }),
+                                TextEntry::make('scopes')
+                                    ->columnSpanFull()
+                                    ->listWithLineBreaks()
+                                    ->limitList()
+                                    ->expandableLimitedList()
+                                    ->badge(),
+                            ]),
+                        Tab::make('Endpoints')
+                            ->icon('heroicon-o-link')
+                            ->schema([
+                                KeyValueEntry::make('endpoints')
+                                    ->hiddenLabel()
+                                    ->keyLabel('Endpoint')
+                                    ->valueLabel('URL')
+                                    ->getStateUsing(fn (): array => [
+                                        'Discovery Endpoint' => route('oidc.discovery', [
+                                            'tenant' => optional(tenant()->domain)->domain,
+                                        ]),
+                                        'Authorization Endpoint' => route('passport.authorizations.authorize', [
+                                            'tenant' => optional(tenant()->domain)->domain,
+                                        ]),
+                                        'Token Endpoint' => route('passport.token', [
+                                            'tenant' => optional(tenant()->domain)->domain,
+                                        ]),
+                                        'Logout Endpoint' => route('oidc.logout', [
+                                            'tenant' => optional(tenant()->domain)->domain,
+                                        ]),
+                                        'User Info Endpoint' => route('oidc.userinfo', [
+                                            'tenant' => optional(tenant()->domain)->domain,
+                                        ]),
                                     ]),
-                                    'Authorization Endpoint' => route('passport.authorizations.authorize', [
-                                        'tenant' => optional(tenant()?->domain)->domain,
-                                    ]),
-                                    'Token Endpoint' => route('passport.token', [
-                                        'tenant' => optional(tenant()?->domain)->domain,
-                                    ]),
-                                    'Logout Endpoint' => route('oidc.logout', [
-                                        'tenant' => optional(tenant()?->domain)->domain,
-                                    ]),
-                                    'User Info Endpoint' => route('oidc.userinfo', [
-                                        'tenant' => optional(tenant()?->domain)->domain,
-                                    ]),
-                                ]),
-                        ]),
-                ]),
-        ]);
+                            ]),
+                    ]),
+            ]);
     }
 
     public static function table(Table $table): Table
