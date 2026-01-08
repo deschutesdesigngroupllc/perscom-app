@@ -26,7 +26,7 @@ class TenantDatabaseSeeder extends Seeder
 
         $user = User::factory()->unassigned()->createQuietly([
             'name' => 'Test User',
-            'email' => 'test@deschutesdesigngroup.com',
+            'email' => 'test@deschutesdesigngroup.coms',
         ]);
         $user->assignRole(Utils::getSuperAdminName());
     }

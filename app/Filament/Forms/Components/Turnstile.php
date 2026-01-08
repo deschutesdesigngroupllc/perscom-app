@@ -21,7 +21,7 @@ class Turnstile extends Field
     {
         parent::setUp();
 
-        $this->label('');
+        $this->hiddenLabel();
         $this->validationAttribute('CAPTCHA');
         $this->dehydrated(false);
         $this->rules(['required', new TurnstileRule]);
