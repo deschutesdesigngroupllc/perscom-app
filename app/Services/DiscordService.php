@@ -40,6 +40,7 @@ class DiscordService
 
             $data = $response->json();
 
+            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
@@ -67,6 +68,7 @@ class DiscordService
 
             $data = $response->json();
 
+            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
