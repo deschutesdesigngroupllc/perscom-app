@@ -15,6 +15,7 @@ class EditorController
     public function index(Page $page): Response
     {
         return Inertia::render('Editor', [
+            'name' => $page->name,
             'page' => $page,
             'content' => $page->content,
             'previewUrl' => route('tenant.admin.pages.preview'),
