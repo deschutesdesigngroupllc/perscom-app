@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Contracts\RepositoryContract;
+use App\Contracts\Repository;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Database\TenantCollection;
 
-class TenantRepository implements RepositoryContract
+class TenantRepository implements Repository
 {
     public function getAll(): TenantCollection
     {

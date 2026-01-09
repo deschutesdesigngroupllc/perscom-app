@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
@@ -103,7 +102,7 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(AssignmentRecordObserver::class)]
 #[ScopedBy(AssignmentRecordScope::class)]
-class AssignmentRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
+class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;

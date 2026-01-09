@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Jobs\Tenant;
 
-use App\Contracts\SendsModelNotifications;
 use App\Models\Enums\NotificationChannel;
 use App\Models\ModelNotification;
 use App\Models\User;
@@ -24,16 +23,20 @@ class SendModelNotifications implements ShouldQueue
 
     public bool $deleteWhenMissingModels = true;
 
-    public function __construct(protected SendsModelNotifications|Model $model, protected string $event)
+    public function __construct(protected Model $model, protected string $event)
     {
         $this->afterCommit = true;
     }
 
     public function handle(): void
     {
+        if (! method_exists($this->model, 'modelNotifications')) {
+            return;
+        }
+
         $this->model->loadMissing('modelNotifications');
 
-        // @phpstan-ignore-next-line
+        /** @phpstan-ignore-next-line */
         if (blank($this->model->modelNotifications)) {
             return;
         }

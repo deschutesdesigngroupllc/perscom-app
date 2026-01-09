@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
@@ -66,7 +65,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-class Form extends Model implements HasLabel, SendsModelNotifications
+class Form extends Model implements HasLabel
 {
     use ClearsApiCache;
     use ClearsResponseCache;

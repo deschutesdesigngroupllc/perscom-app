@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\ServiceRecordScope;
 use App\Observers\ServiceRecordObserver;
@@ -76,7 +75,7 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(ServiceRecordObserver::class)]
 #[ScopedBy(ServiceRecordScope::class)]
-class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
+class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;

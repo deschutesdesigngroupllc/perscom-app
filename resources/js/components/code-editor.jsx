@@ -15,16 +15,34 @@ import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { usePage } from '@inertiajs/react'
 import { Editor } from '@monaco-editor/react'
-import { Code2, Copy, Download, Eye, EyeOff, FileCode, Maximize2, Minimize2, Moon, Sun } from 'lucide-react'
+import {
+  AlertCircle,
+  AlertTriangle,
+  Code2,
+  Copy,
+  Download,
+  Eye,
+  EyeOff,
+  FileCode,
+  Info,
+  Maximize2,
+  Minimize2,
+  Moon,
+  Sun,
+  Terminal,
+  Trash2
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 const FONT_SIZES = [10, 12, 14, 16, 18, 20, 24]
 
-export function CodeEditor({ html, onSave, defaultHtml }) {
-  const { name } = usePage().props
+export function CodeEditor({ html, onSave, defaultHtml, previewUrl }) {
+  const { name, csrf_token: csrfToken } = usePage().props
   const previewRef = useRef(null)
   const editorRef = useRef(null)
+  const formRef = useRef(null)
+  const debounceRef = useRef(null)
   const [activeFileId, setActiveFileId] = useState(1)
   const [theme, setTheme] = useState('dark')
   const [fontSize, setFontSize] = useState(14)
@@ -33,6 +51,18 @@ export function CodeEditor({ html, onSave, defaultHtml }) {
   const [wordWrap, setWordWrap] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [showConsole, setShowConsole] = useState(false)
+  const [consoleLogs, setConsoleLogs] = useState([])
+  const [consoleHeight, setConsoleHeight] = useState(192)
+  const [isDragging, setIsDragging] = useState(false)
+  const [editorWidth, setEditorWidth] = useState(50)
+  const isDraggingConsole = useRef(false)
+  const isDraggingDivider = useRef(false)
+  const consoleStartY = useRef(0)
+  const consoleStartHeight = useRef(0)
+  const dividerStartX = useRef(0)
+  const dividerStartWidth = useRef(0)
+  const containerRef = useRef(null)
   const [files, setFiles] = useState(() => [
     {
       id: 1,
@@ -67,7 +97,18 @@ export function CodeEditor({ html, onSave, defaultHtml }) {
 
   useEffect(() => {
     if (showPreview && previewRef.current && canPreview) {
-      updatePreview()
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+      debounceRef.current = setTimeout(() => {
+        updatePreview()
+      }, 500)
+    }
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
     }
   }, [activeFile.content, showPreview, canPreview, files])
 
@@ -86,95 +127,92 @@ export function CodeEditor({ html, onSave, defaultHtml }) {
     }
   }, [hasUnsavedChanges])
 
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data?.type === 'console') {
+        setConsoleLogs((prev) => [
+          ...prev,
+          {
+            id: Date.now(),
+            level: event.data.level,
+            message: event.data.message,
+            timestamp: event.data.timestamp
+          }
+        ])
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (isDraggingConsole.current) {
+        const delta = consoleStartY.current - e.clientY
+        const newHeight = Math.min(Math.max(consoleStartHeight.current + delta, 100), 600)
+        setConsoleHeight(newHeight)
+      }
+
+      if (isDraggingDivider.current && containerRef.current) {
+        const containerRect = containerRef.current.getBoundingClientRect()
+        const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100
+        setEditorWidth(Math.min(Math.max(newWidth, 20), 80))
+      }
+    }
+
+    const handleMouseUp = () => {
+      if (isDraggingConsole.current || isDraggingDivider.current) {
+        isDraggingConsole.current = false
+        isDraggingDivider.current = false
+        setIsDragging(false)
+        document.body.style.cursor = ''
+        document.body.style.userSelect = ''
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [])
+
+  const handleConsoleResizeStart = (e) => {
+    e.preventDefault()
+    isDraggingConsole.current = true
+    setIsDragging(true)
+    consoleStartY.current = e.clientY
+    consoleStartHeight.current = consoleHeight
+    document.body.style.cursor = 'ns-resize'
+    document.body.style.userSelect = 'none'
+  }
+
+  const handleDividerResizeStart = (e) => {
+    e.preventDefault()
+    isDraggingDivider.current = true
+    setIsDragging(true)
+    dividerStartX.current = e.clientX
+    dividerStartWidth.current = editorWidth
+    document.body.style.cursor = 'ew-resize'
+    document.body.style.userSelect = 'none'
+  }
+
   const updatePreview = () => {
-    if (!previewRef.current) return
-
-    const iframe = previewRef.current
-    const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document
-
-    if (!iframeDoc) return
+    if (!previewUrl || !formRef.current) return
 
     const htmlFile = files.find((f) => f.name === 'index.html')
+    const htmlInput = formRef.current.querySelector('input[name="html"]')
 
-    const bodyContent = htmlFile?.content || ''
-
-    const tailwindAndStyles = `
-            <script src="https://cdn.tailwindcss.com"></script>
-            <style>
-                :root {
-                    --background: oklch(1 0 0);
-                    --foreground: oklch(0.145 0 0);
-                    --card: oklch(1 0 0);
-                    --card-foreground: oklch(0.145 0 0);
-                    --popover: oklch(1 0 0);
-                    --popover-foreground: oklch(0.145 0 0);
-                    --primary: oklch(0.205 0 0);
-                    --primary-foreground: oklch(0.985 0 0);
-                    --secondary: oklch(0.97 0 0);
-                    --secondary-foreground: oklch(0.205 0 0);
-                    --muted: oklch(0.97 0 0);
-                    --muted-foreground: oklch(0.556 0 0);
-                    --accent: oklch(0.97 0 0);
-                    --accent-foreground: oklch(0.205 0 0);
-                    --destructive: oklch(0.577 0.245 27.325);
-                    --destructive-foreground: oklch(0.577 0.245 27.325);
-                    --border: oklch(0.922 0 0);
-                    --input: oklch(0.922 0 0);
-                    --ring: oklch(0.708 0 0);
-                    --chart-1: oklch(0.646 0.222 41.116);
-                    --chart-2: oklch(0.6 0.118 184.704);
-                    --chart-3: oklch(0.398 0.07 227.392);
-                    --chart-4: oklch(0.828 0.189 84.429);
-                    --chart-5: oklch(0.769 0.188 70.08);
-                    --radius: 0.625rem;
-                }
-                .dark {
-                    --background: oklch(0.145 0 0);
-                    --foreground: oklch(0.985 0 0);
-                    --card: oklch(0.145 0 0);
-                    --card-foreground: oklch(0.985 0 0);
-                    --popover: oklch(0.145 0 0);
-                    --popover-foreground: oklch(0.985 0 0);
-                    --primary: oklch(0.985 0 0);
-                    --primary-foreground: oklch(0.205 0 0);
-                    --secondary: oklch(0.269 0 0);
-                    --secondary-foreground: oklch(0.985 0 0);
-                    --muted: oklch(0.269 0 0);
-                    --muted-foreground: oklch(0.708 0 0);
-                    --accent: oklch(0.269 0 0);
-                    --accent-foreground: oklch(0.985 0 0);
-                    --destructive: oklch(0.396 0.141 25.723);
-                    --destructive-foreground: oklch(0.637 0.237 25.331);
-                    --border: oklch(0.269 0 0);
-                    --input: oklch(0.269 0 0);
-                    --ring: oklch(0.439 0 0);
-                    --chart-1: oklch(0.488 0.243 264.376);
-                    --chart-2: oklch(0.696 0.17 162.48);
-                    --chart-3: oklch(0.769 0.188 70.08);
-                    --chart-4: oklch(0.627 0.265 303.9);
-                    --chart-5: oklch(0.645 0.246 16.439);
-                }
-            </style>
-        `
-
-    const fullDocument = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview</title>
-    ${tailwindAndStyles}
-</head>
-<body>
-    ${bodyContent}
-</body>
-</html>
-    `
-
-    iframeDoc.open()
-    iframeDoc.write(fullDocument)
-    iframeDoc.close()
+    if (htmlInput) {
+      htmlInput.value = htmlFile?.content || ''
+      formRef.current.submit()
+    }
   }
 
   const handleEditorChange = (value) => {
@@ -367,13 +405,8 @@ export function CodeEditor({ html, onSave, defaultHtml }) {
         ))}
       </div>
 
-      <div className='flex flex-1 overflow-hidden'>
-        <div
-          className={cn('flex flex-col transition-all', {
-            'w-1/2': showPreview,
-            'w-full': !showPreview
-          })}
-        >
+      <div ref={containerRef} className='flex flex-1 overflow-hidden'>
+        <div className='flex flex-col' style={{ width: showPreview ? `${editorWidth}%` : '100%' }}>
           <Editor
             height='100%'
             language={activeFile.language}
@@ -406,25 +439,92 @@ export function CodeEditor({ html, onSave, defaultHtml }) {
 
         {showPreview && (
           <>
-            <Separator orientation='vertical' className='h-full' />
-            <div className='flex w-1/2 flex-col bg-background'>
+            <div
+              onMouseDown={handleDividerResizeStart}
+              className='group flex w-1 cursor-ew-resize items-center justify-center bg-border hover:bg-primary/50'
+            >
+              <div className='h-8 w-0.5 rounded-full bg-muted-foreground/30 group-hover:bg-primary' />
+            </div>
+            <div className='flex flex-col bg-background' style={{ width: `${100 - editorWidth}%` }}>
               <div className='flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2'>
                 <div className='flex items-center gap-2'>
                   <Eye className='h-4 w-4 text-muted-foreground' />
                   <span className='text-sm font-medium'>Preview</span>
                 </div>
-                <Badge variant='outline' className='text-xs'>
-                  Live
-                </Badge>
+                <div className='flex items-center gap-2'>
+                  <Button variant='ghost' size='sm' onClick={() => setShowConsole(!showConsole)} className='h-7 gap-1.5 px-2'>
+                    <Terminal className='size-3.5 text-muted-foreground' />
+                    <span className='text-xs font-medium'>Console</span>
+                    {consoleLogs.length > 0 && (
+                      <Badge
+                        variant={consoleLogs.some((log) => log.level === 'error') ? 'destructive' : 'secondary'}
+                        className='h-4 min-w-4 px-1 text-[10px]'
+                      >
+                        {consoleLogs.length}
+                      </Badge>
+                    )}
+                  </Button>
+                  <Badge variant='outline' className='text-xs'>
+                    Live
+                  </Badge>
+                </div>
               </div>
-              <div className='flex-1 overflow-auto bg-white'>
+              <div className='min-h-0 flex-1 overflow-auto bg-white'>
+                <form ref={formRef} action={previewUrl} method='POST' target='preview-iframe' className='hidden'>
+                  <input type='hidden' name='_token' value={csrfToken || ''} />
+                  <input type='hidden' name='html' value='' />
+                </form>
                 <iframe
                   ref={previewRef}
+                  name='preview-iframe'
                   title='Code Preview'
-                  className='h-full w-full border-0'
+                  className={cn('h-full w-full border-0', { 'pointer-events-none': isDragging })}
                   sandbox='allow-scripts allow-modals allow-forms allow-popups allow-same-origin'
                 />
               </div>
+              {showConsole && (
+                <div className='flex flex-shrink-0 flex-col' style={{ height: consoleHeight }}>
+                  <div
+                    onMouseDown={handleConsoleResizeStart}
+                    className='group flex h-1 cursor-ns-resize items-center justify-center border-t border-border bg-muted/30 hover:bg-muted/50'
+                  >
+                    <div className='h-0.5 w-8 rounded-full bg-muted-foreground/30 group-hover:bg-muted-foreground/50' />
+                  </div>
+                  <div className='flex items-center justify-between border-b border-border bg-muted/30 px-3 py-1.5'>
+                    <div className='flex items-center gap-2'>
+                      <Terminal className='size-4 text-muted-foreground' />
+                      <span className='text-sm font-medium'>Console</span>
+                    </div>
+                    <Button variant='ghost' size='sm' onClick={() => setConsoleLogs([])} className='h-6 px-2' title='Clear console'>
+                      <Trash2 className='h-3 w-3' />
+                    </Button>
+                  </div>
+                  <div className='flex-1 overflow-auto bg-zinc-950 p-2 font-mono text-xs'>
+                    {consoleLogs.length === 0 ? (
+                      <div className='text-zinc-500'>No console output</div>
+                    ) : (
+                      consoleLogs.map((log) => (
+                        <div
+                          key={log.id}
+                          className={cn('flex items-start gap-2 py-0.5', {
+                            'text-zinc-300': log.level === 'log',
+                            'text-yellow-400': log.level === 'warn',
+                            'text-red-400': log.level === 'error',
+                            'text-blue-400': log.level === 'info',
+                            'text-zinc-500': log.level === 'debug'
+                          })}
+                        >
+                          {log.level === 'error' && <AlertCircle className='mt-0.5 h-3 w-3 flex-shrink-0' />}
+                          {log.level === 'warn' && <AlertTriangle className='mt-0.5 h-3 w-3 flex-shrink-0' />}
+                          {log.level === 'info' && <Info className='mt-0.5 h-3 w-3 flex-shrink-0' />}
+                          {(log.level === 'log' || log.level === 'debug') && <span className='mt-0.5 h-3 w-3 flex-shrink-0' />}
+                          <span className='whitespace-pre-wrap break-all'>{log.message}</span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </>
         )}

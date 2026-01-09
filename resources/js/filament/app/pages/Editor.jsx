@@ -2,7 +2,7 @@ import { CodeEditor } from '@/components/code-editor.jsx'
 import { useForm } from '@inertiajs/react'
 import { Toaster } from 'sonner'
 
-export default function Editor({ page, defaultHtml, defaultCss, defaultJavascript }) {
+export default function Editor({ page, defaultHtml, defaultCss, defaultJavascript, previewUrl }) {
   const { post, transform } = useForm({
     files: ''
   })
@@ -17,9 +17,7 @@ export default function Editor({ page, defaultHtml, defaultCss, defaultJavascrip
 
   return (
     <main className='h-screen w-full'>
-      <Toaster />
-
-      <CodeEditor html={page.content} onSave={handleOnSave} defaultHtml={defaultHtml} />
+      <CodeEditor html={page.content} onSave={handleOnSave} defaultHtml={defaultHtml} previewUrl={previewUrl} />
       <Toaster />
     </main>
   )

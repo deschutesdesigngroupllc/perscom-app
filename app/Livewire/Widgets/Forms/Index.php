@@ -43,8 +43,10 @@ class Index extends Component implements HasActions, HasForms, HasTable
             ->columns([
                 Stack::make([
                     TextColumn::make('name')
+                        ->toggleable(false)
                         ->weight(FontWeight::Bold),
                     TextColumn::make('description')
+                        ->toggleable(false)
                         ->placeholder('No Description')
                         ->html(),
                 ]),

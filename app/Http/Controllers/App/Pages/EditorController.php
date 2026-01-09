@@ -17,6 +17,7 @@ class EditorController
         return Inertia::render('Editor', [
             'page' => $page,
             'content' => $page->content,
+            'previewUrl' => route('tenant.admin.pages.preview'),
         ]);
     }
 

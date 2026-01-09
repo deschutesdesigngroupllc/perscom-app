@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\RankRecordType;
 use App\Models\Scopes\RankRecordScope;
@@ -84,7 +83,7 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(RankRecordObserver::class)]
 #[ScopedBy(RankRecordScope::class)]
-class RankRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
+class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
