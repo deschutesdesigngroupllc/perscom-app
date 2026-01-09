@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\CombatRecordScope;
 use App\Observers\CombatRecordObserver;
@@ -76,7 +75,7 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(CombatRecordObserver::class)]
 #[ScopedBy(CombatRecordScope::class)]
-class CombatRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
+class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;

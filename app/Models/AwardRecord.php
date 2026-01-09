@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\AwardRecordScope;
 use App\Observers\AwardRecordObserver;
@@ -80,7 +79,7 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(AwardRecordObserver::class)]
 #[ScopedBy(AwardRecordScope::class)]
-class AwardRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
+class AwardRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;

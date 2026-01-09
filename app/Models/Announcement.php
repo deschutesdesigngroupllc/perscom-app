@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
-use App\Contracts\SendsModelNotifications;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -58,7 +57,7 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
-class Announcement extends Model implements Enableable, HasColor, HasLabel, SendsModelNotifications
+class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
     use CanBeEnabled;
     use ClearsApiCache;

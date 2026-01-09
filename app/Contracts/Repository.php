@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Stancl\Tenancy\Database\TenantCollection;
 
-interface RepositoryContract
+interface Repository
 {
     public function getAll(): TenantCollection;
 
