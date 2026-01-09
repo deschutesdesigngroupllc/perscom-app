@@ -477,99 +477,149 @@ class MilitarySeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Awards',
-                    'description' => 'An overview of your current awards. Manage this page in your System Settings or visit Widgets to use on your own website.',
+                    'description' => 'This is a custom page that has been built to display awards using the PERSCOM widgets.',
                     'slug' => 'awards',
                     'hidden' => false,
                     'icon' => 'heroicon-o-trophy',
                     'order' => 1,
                     'content' => <<<'HTML'
-<div id="perscom_widget_wrapper">
-    <script
-        id="perscom_widget"
-        data-apikey="{{ ssoJwt() }}"
-        data-widget="awards"
-        src="{{ widgetUrl() }}"
-        type="text/javascript"
-    ></script>
+<!-- This HTML uses Alpine.js to dynamically build the widget -->
+<div x-data="{
+      init() {
+        const script = document.createElement('script');
+        script.id = 'perscom_widget';
+        script.src = '{{ widgetUrl() }}';
+        script.type = 'text/javascript';
+        script.setAttribute('data-apikey', '{{ ssoJwt() }}');
+        script.setAttribute('data-widget', 'awards');
+
+        if (document.documentElement.classList.contains('dark')) {
+            script.setAttribute('data-dark', 'true');
+        }
+
+        document.getElementById('perscom_widget_wrapper')?.appendChild(script);
+      }
+  }" x-init="init">
+    <div id="perscom_widget_wrapper"></div>
 </div>
 HTML
                 ],
                 [
                     'name' => 'Positions',
-                    'description' => 'An overview of your current positions. Manage this page in your System Settings or visit Widgets to use on your own website.',
+                    'description' => 'This is a custom page that has been built to display positions using the PERSCOM widgets.',
                     'slug' => 'positions',
                     'hidden' => false,
                     'icon' => 'heroicon-o-identification',
                     'order' => 2,
                     'content' => <<<'HTML'
-<div id="perscom_widget_wrapper">
-    <script
-        id="perscom_widget"
-        data-apikey="{{ ssoJwt() }}"
-        data-widget="positions"
-        src="{{ widgetUrl() }}"
-        type="text/javascript"
-    ></script>
+<!-- This HTML uses Alpine.js to dynamically build the widget -->
+<div x-data="{
+      init() {
+        const script = document.createElement('script');
+        script.id = 'perscom_widget';
+        script.src = '{{ widgetUrl() }}';
+        script.type = 'text/javascript';
+        script.setAttribute('data-apikey', '{{ ssoJwt() }}');
+        script.setAttribute('data-widget', 'positions');
+
+        if (document.documentElement.classList.contains('dark')) {
+            script.setAttribute('data-dark', 'true');
+        }
+
+        document.getElementById('perscom_widget_wrapper')?.appendChild(script);
+      }
+  }" x-init="init">
+    <div id="perscom_widget_wrapper"></div>
 </div>
 HTML
                 ],
                 [
                     'name' => 'Qualifications',
-                    'description' => 'An overview of your current qualifications. Manage this page in your System Settings or visit Widgets to use on your own website.',
+                    'description' => 'This is a custom page that has been built to display qualifications using the PERSCOM widgets.',
                     'slug' => 'qualifications',
                     'hidden' => false,
                     'icon' => 'heroicon-o-star',
                     'order' => 3,
                     'content' => <<<'HTML'
-<div id="perscom_widget_wrapper">
-    <script
-        id="perscom_widget"
-        data-apikey="{{ ssoJwt() }}"
-        data-widget="qualifications"
-        src="{{ widgetUrl() }}"
-        type="text/javascript"
-    ></script>
+<!-- This HTML uses Alpine.js to dynamically build the widget -->
+<div x-data="{
+      init() {
+        const script = document.createElement('script');
+        script.id = 'perscom_widget';
+        script.src = '{{ widgetUrl() }}';
+        script.type = 'text/javascript';
+        script.setAttribute('data-apikey', '{{ ssoJwt() }}');
+        script.setAttribute('data-widget', 'qualifications');
+
+        if (document.documentElement.classList.contains('dark')) {
+            script.setAttribute('data-dark', 'true');
+        }
+
+        document.getElementById('perscom_widget_wrapper')?.appendChild(script);
+      }
+  }" x-init="init">
+    <div id="perscom_widget_wrapper"></div>
 </div>
 HTML
                 ],
                 [
                     'name' => 'Ranks',
-                    'description' => 'An overview of your current ranks. Manage this page in your System Settings or visit Widgets to use on your own website.',
+                    'description' => 'This is a custom page that has been built to display ranks using the PERSCOM widgets.',
                     'slug' => 'ranks',
                     'hidden' => false,
                     'icon' => 'heroicon-o-chevron-double-up',
                     'order' => 4,
                     'content' => <<<'HTML'
-<div id="perscom_widget_wrapper">
-    <script
-        id="perscom_widget"
-        data-apikey="{{ ssoJwt() }}"
-        data-widget="ranks"
-        src="{{ widgetUrl() }}"
-        type="text/javascript"
-    ></script>
+<!-- This HTML uses Alpine.js to dynamically build the widget -->
+<div x-data="{
+      init() {
+        const script = document.createElement('script');
+        script.id = 'perscom_widget';
+        script.src = '{{ widgetUrl() }}';
+        script.type = 'text/javascript';
+        script.setAttribute('data-apikey', '{{ ssoJwt() }}');
+        script.setAttribute('data-widget', 'ranks');
+
+        if (document.documentElement.classList.contains('dark')) {
+            script.setAttribute('data-dark', 'true');
+        }
+
+        document.getElementById('perscom_widget_wrapper')?.appendChild(script);
+      }
+  }" x-init="init">
+    <div id="perscom_widget_wrapper"></div>
 </div>
 HTML
                 ],
                 [
                     'name' => 'Specialties',
-                    'description' => 'An overview of your current specialties. Manage this page in your System Settings or visit Widgets to use on your own website.',
+                    'description' => 'This is a custom page that has been built to display specialties using the PERSCOM widgets.',
                     'slug' => 'specialties',
                     'hidden' => false,
                     'icon' => 'heroicon-o-briefcase',
                     'order' => 5,
                     'content' => <<<'HTML'
-<div id="perscom_widget_wrapper">
-    <script
-        id="perscom_widget"
-        data-apikey="{{ ssoJwt() }}"
-        data-widget="specialties"
-        src="{{ widgetUrl() }}"
-        type="text/javascript"
-    ></script>
+<!-- This HTML uses Alpine.js to dynamically build the widget -->
+<div x-data="{
+      init() {
+        const script = document.createElement('script');
+        script.id = 'perscom_widget';
+        script.src = '{{ widgetUrl() }}';
+        script.type = 'text/javascript';
+        script.setAttribute('data-apikey', '{{ ssoJwt() }}');
+        script.setAttribute('data-widget', 'specialties');
+
+        if (document.documentElement.classList.contains('dark')) {
+            script.setAttribute('data-dark', 'true');
+        }
+
+        document.getElementById('perscom_widget_wrapper')?.appendChild(script);
+      }
+  }" x-init="init">
+    <div id="perscom_widget_wrapper"></div>
 </div>
 HTML
-                ]
+                ],
             )
             ->create();
     }
