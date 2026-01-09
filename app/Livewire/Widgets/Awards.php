@@ -50,8 +50,10 @@ class Awards extends Component implements HasActions, HasForms, HasTable
                         ->disk('s3'),
                     Stack::make([
                         TextColumn::make('name')
+                            ->toggleable(false)
                             ->weight(FontWeight::Bold),
                         TextColumn::make('description')
+                            ->toggleable(false)
                             ->placeholder('No Description')
                             ->html(),
                     ]),
