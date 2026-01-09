@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'tenant' => tenant('name'),
             'tenant_id' => tenant('id'),
+            'csrf_token' => csrf_token(),
             'flash' => [
                 'banner' => fn () => $request->session()->get('banner'),
                 'status' => fn () => $request->session()->get('status'),
