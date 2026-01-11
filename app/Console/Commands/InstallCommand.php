@@ -13,11 +13,9 @@ use Database\Seeders\DemoSeeder;
 use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
-use Database\Seeders\TenantSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
@@ -29,6 +27,7 @@ class InstallCommand extends Command implements Isolatable
 
     protected $signature = 'perscom:install
                             {--seeder=military : The seeder to use. Default: military}
+                            {--demo : Run the demo seeder}
                             {--force : Force the operation to run when in production}';
 
     protected $description = 'Install the PERSCOM application.';
@@ -58,61 +57,7 @@ class InstallCommand extends Command implements Isolatable
             $this->resetApplication();
         }
 
-        return match (App::environment()) {
-            'demo' => $this->reinstallDemo(),
-            default => $this->reinstallApplication(),
-        };
-    }
-
-    protected function reinstallDemo(): int
-    {
-        if (config('tenancy.enabled') === false) {
-            $this->components->error('The demo environment is meant to be run in tenancy mode. Please enable it to continue.');
-
-            return static::FAILURE;
-        }
-
-        /** @var Tenant|null $tenant */
-        $tenant = Tenant::find(config('demo.tenant_id'));
-
-        if (! $tenant) {
-            $this->components->error('Please set a demo tenant ID in the demo config.');
-
-            return static::FAILURE;
-        }
-
-        $this->call('tenants:migrate-fresh', [
-            '--tenants' => $tenant->getTenantKey(),
-        ]);
-
-        $this->call('tenants:migrate', [
-            '--tenants' => $tenant->getTenantKey(),
-            '--path' => database_path('settings/tenant'),
-            '--realpath' => true,
-            '--schema-path' => database_path('settings/tenant'),
-        ]);
-
-        $this->call('tenants:seed', [
-            '--tenants' => $tenant->getTenantKey(),
-            '--class' => TenantSeeder::class,
-        ]);
-
-        $this->call('tenants:seed', [
-            '--tenants' => $tenant->getTenantKey(),
-            '--class' => DemoSeeder::class,
-        ]);
-
-        $seeder = match (true) {
-            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
-            default => MilitarySeeder::class
-        };
-
-        $this->call('tenants:seed', [
-            '--tenants' => $tenant->getTenantKey(),
-            '--class' => $seeder,
-        ]);
-
-        $this->components->success('The demo environment has been successfully reset.');
+        $this->reinstallApplication();
 
         return static::SUCCESS;
     }
@@ -239,6 +184,13 @@ class InstallCommand extends Command implements Isolatable
             '--class' => $seeder,
             '--force' => true,
         ]);
+
+        if ($this->option('demo')) {
+            $this->call('db:seed', [
+                '--class' => DemoSeeder::class,
+                '--force' => true,
+            ]);
+        }
 
         $this->components->info('Available user accounts:');
 
