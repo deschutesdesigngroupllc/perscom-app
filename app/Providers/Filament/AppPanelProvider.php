@@ -15,6 +15,8 @@ use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
+use App\Filament\App\Widgets\RecentRecordsWidget;
+use App\Filament\App\Widgets\UserProfileWidget;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckSubscription;
@@ -110,6 +112,8 @@ class AppPanelProvider extends PanelProvider
             ->widgets([
                 OrganizationInfoWidget::class,
                 AccountWidget::class,
+                UserProfileWidget::class,
+                RecentRecordsWidget::class,
                 UsersOverview::class,
                 RecentAnnouncements::class,
                 RecentNews::class,

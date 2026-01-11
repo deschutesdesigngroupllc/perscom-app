@@ -17,8 +17,6 @@ class UsersOverview extends StatsOverviewWidget
 
     protected static ?int $sort = -3;
 
-    protected ?string $heading = 'New Users';
-
     /**
      * @return Stat[]
      */
