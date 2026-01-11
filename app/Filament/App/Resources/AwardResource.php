@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\AwardResource\Pages\CreateAward;
 use App\Filament\App\Resources\AwardResource\Pages\EditAward;
 use App\Filament\App\Resources\AwardResource\Pages\ListAwards;
+use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\Exports\AwardExporter;
 use App\Models\Award;
 use BackedEnum;
@@ -16,7 +17,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -63,17 +63,12 @@ class AwardResource extends BaseResource
                                     ->columnSpanFull(),
                                 Select::make('categories')
                                     ->label('Category')
-                                    ->createOptionForm([
-                                        TextInput::make('name')
-                                            ->required(),
-                                        Hidden::make('resource')
-                                            ->default(static::$model),
-                                    ])
+                                    ->createOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
+                                    ->editOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
                                     ->helperText('The category the award belongs to.')
                                     ->nullable()
                                     ->preload()
                                     ->searchable()
-                                    ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                                 RichEditor::make('description')

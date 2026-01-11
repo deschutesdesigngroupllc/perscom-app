@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\EventResource\Pages\CreateEvent;
 use App\Filament\App\Resources\EventResource\Pages\EditEvent;
 use App\Filament\App\Resources\EventResource\Pages\ListEvents;
@@ -30,7 +31,6 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -103,12 +103,8 @@ class EventResource extends BaseResource
                                 Select::make('categories')
                                     ->columnSpanFull()
                                     ->label('Category')
-                                    ->createOptionForm([
-                                        TextInput::make('name')
-                                            ->required(),
-                                        Hidden::make('resource')
-                                            ->default(static::$model),
-                                    ])
+                                    ->createOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
+                                    ->editOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
                                     ->helperText('The category the event belongs to.')
                                     ->nullable()
                                     ->preload()
