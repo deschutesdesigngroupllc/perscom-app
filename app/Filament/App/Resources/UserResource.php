@@ -85,6 +85,7 @@ class UserResource extends BaseResource
                                     ->columnSpanFull()
                                     ->schema([
                                         FileUpload::make('profile_photo')
+                                            ->label('Profile Photo')
                                             ->columnSpan(1)
                                             ->visibility('public')
                                             ->image()
@@ -109,6 +110,7 @@ class UserResource extends BaseResource
                                             ]),
                                     ]),
                                 FileUpload::make('cover_photo')
+                                    ->label('Cover Photo')
                                     ->columnSpanFull()
                                     ->visibility('public')
                                     ->image()
@@ -118,6 +120,7 @@ class UserResource extends BaseResource
                                     ->previewable(),
                             ]),
                         Tab::make('Assignment')
+                            ->badge(fn (?User $record) => $record?->position?->name)
                             ->icon('heroicon-o-rectangle-stack')
                             ->columns()
                             ->schema([
@@ -189,6 +192,7 @@ class UserResource extends BaseResource
                                     ->helperText('Use this optional area to keep notes on the user.'),
                             ]),
                         Tab::make('Rank')
+                            ->badge(fn (?User $record) => $record?->rank?->name)
                             ->icon('heroicon-o-chevron-double-up')
                             ->columns()
                             ->schema([
