@@ -20,7 +20,9 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Components\ViewComponent;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Stringable;
 use Illuminate\Support\Traits\Conditionable;
 
 class ViewUser extends ViewRecord
@@ -44,6 +46,18 @@ class ViewUser extends ViewRecord
         $this->when(! in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
 
         return $relationManagers->toArray();
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        /** @phpstan-ignore-next-line property.notFound */
+        return new Stringable()
+            ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->abbreviation)->append(' ')->append($this->getRecord()->rank->name))
+            ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
+            ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
+            ->limit()
+            ->wrap('<div class="fi-header-subheading">', '</div>')
+            ->toHtmlString();
     }
 
     /**

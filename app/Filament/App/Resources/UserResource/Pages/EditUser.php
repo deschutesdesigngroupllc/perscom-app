@@ -12,6 +12,8 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Stringable;
 
 class EditUser extends EditRecord
 {
@@ -24,6 +26,17 @@ class EditUser extends EditRecord
             FieldsRelationManager::class,
             RolesRelationManager::class,
         ];
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        /** @phpstan-ignore-next-line property.notFound */
+        return new Stringable()
+            ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->abbreviation)->append(' ')->append($this->getRecord()->rank->name))
+            ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
+            ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
+            ->wrap('<div class="fi-header-subheading">', '</div>')
+            ->toHtmlString();
     }
 
     /**
