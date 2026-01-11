@@ -30,10 +30,12 @@ class EditUser extends EditRecord
 
     public function getSubheading(): string|Htmlable|null
     {
-        /** @phpstan-ignore-next-line property.notFound */
         return new Stringable()
+            /** @phpstan-ignore-next-line property.notFound */
             ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->abbreviation)->append(' ')->append($this->getRecord()->rank->name))
+            /** @phpstan-ignore-next-line property.notFound */
             ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
+            /** @phpstan-ignore-next-line property.notFound */
             ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
             ->wrap('<div class="fi-header-subheading">', '</div>')
             ->toHtmlString();
