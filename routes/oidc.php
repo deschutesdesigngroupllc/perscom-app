@@ -9,7 +9,13 @@ use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => [InitializeTenancyBySubdomain::class, PreventAccessFromCentralDomains::class]], static function (): void {
+Route::group([
+    'domain' => config('tenancy.enabled') ? '' : config('app.url'),
+    'middleware' => [
+        InitializeTenancyBySubdomain::class,
+        PreventAccessFromCentralDomains::class,
+    ],
+], static function (): void {
     Route::group(['middleware' => 'web'], static function (): void {
         Route::get('.well-known/openid-configuration', [DiscoveryController::class, 'index'])
             ->name('discovery');

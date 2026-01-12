@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
  * @property int $id
  * @property string $model_type
  * @property int $model_id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null $group_type
  * @property int|null $group_id
  * @property string|null $unit_type
@@ -28,8 +30,6 @@ use Illuminate\Support\Collection;
  * @property string|null $subject
  * @property string|null $message
  * @property Collection<int, NotificationChannel>|null $channels
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  * @property-read Model|Eloquent|null $group
  * @property-read Model|Eloquent $model
  * @property-read Model|Eloquent|null $unit

@@ -96,6 +96,7 @@ class AppPanelProvider extends PanelProvider
             ->registration($registration)
             ->passwordReset($passwordReset)
             ->emailVerification($emailVerification)
+            ->domain(config('tenancy.enabled') ? null : config('app.url'))
             ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Blue,

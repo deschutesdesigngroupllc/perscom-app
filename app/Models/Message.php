@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\MessageStatus;
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
 use App\Traits\ClearsApiCache;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -34,6 +36,7 @@ use Illuminate\Support\Collection;
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read Schedule|null $schedule
+ * @property-read MessageStatus $status
  * @property-read string|null $url
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
@@ -76,6 +79,14 @@ class Message extends Model implements HasLabel
         'created_at',
         'updated_at',
     ];
+
+    public function status(): Attribute
+    {
+        return Attribute::get(fn (): MessageStatus => match (true) {
+            isset($this->sent_at) => MessageStatus::Sent,
+            default => MessageStatus::Pending,
+        });
+    }
 
     protected function casts(): array
     {

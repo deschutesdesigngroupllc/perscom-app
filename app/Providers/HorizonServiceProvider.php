@@ -14,8 +14,9 @@ class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {
     protected function gate(): void
     {
-        Gate::define('viewHorizon', fn (Admin|User|null $user = null): bool => $user instanceof Admin
-            || (! config('tenancy.enabled') && $user->hasRole(Utils::getSuperAdminName()))
-        );
+        Gate::define('viewHorizon', fn (Admin|User|null $user = null): bool => match (config('tenancy.enabled')) {
+            true => $user instanceof Admin,
+            false => $user->hasRole(Utils::getSuperAdminName())
+        });
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Middleware\PreventAccessFromCentralDomains;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
+    'domain' => config('tenancy.enabled') ? '' : config('app.url'),
     'middleware' => [
         InitializeTenancyBySubdomain::class,
         PreventAccessFromCentralDomains::class,

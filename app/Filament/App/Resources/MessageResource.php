@@ -85,7 +85,10 @@ class MessageResource extends BaseResource
                 TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),
+                TextColumn::make('status')
+                    ->badge(),
                 TextColumn::make('send_at')
+                    ->placeholder('Sent Immediately')
                     ->label('Send')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
@@ -96,6 +99,7 @@ class MessageResource extends BaseResource
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('sent_at')
+                    ->placeholder('Not Sent Yet')
                     ->label('Sent')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
@@ -118,7 +122,8 @@ class MessageResource extends BaseResource
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->modalDescription('View the message details.'),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
@@ -194,6 +199,7 @@ class MessageResource extends BaseResource
     {
         return [
             DateTimePicker::make('send_at')
+                ->label('Send At')
                 ->timezone(UserSettingsService::get('timezone', function () {
                     /** @var OrganizationSettings $settings */
                     $settings = app(OrganizationSettings::class);
