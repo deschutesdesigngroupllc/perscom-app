@@ -149,7 +149,7 @@ class UserResource extends BaseResource
                         Tab::make('Fields')
                             ->hiddenOn('create')
                             ->icon('heroicon-o-pencil')
-                            ->schema(fn (User $record): array => UserResource::buildCustomFieldInputs($record->fields)),
+                            ->schema(fn (?User $record): array => UserResource::buildCustomFieldInputs($record?->fields ?? collect())),
                         Tab::make('Details')
                             ->hiddenOn('create')
                             ->icon('heroicon-o-information-circle')
