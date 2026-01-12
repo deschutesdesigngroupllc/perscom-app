@@ -9,6 +9,7 @@ use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
+use App\Http\Middleware\EnabledInEnvironment;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\IncrementMetrics;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
@@ -108,6 +109,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth_api' => AuthenticateApi::class,
             'approved' => CheckUserApprovalStatus::class,
             'cache.headers' => SetCacheHeaders::class,
+            'env' => EnabledInEnvironment::class,
             'feature' => EnsureFeaturesAreActive::class,
             'scope' => CheckForAnyScope::class,
             'subscribed' => CheckSubscription::class,

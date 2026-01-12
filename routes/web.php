@@ -39,7 +39,7 @@ Route::group(['domain' => config('app.url'), 'middleware' => ['landing', CacheRe
             ->name('terms-of-service');
     });
 
-    Route::group(['prefix' => 'register'], static function (): void {
+    Route::group(['prefix' => 'register', 'middleware' => ['env:production']], static function (): void {
         Route::get('/', [RegisterController::class, 'index'])
             ->name('register.index');
         Route::post('/', [RegisterController::class, 'store'])
