@@ -33,7 +33,7 @@
     "concurrently": "^9.2.0",
     "laravel-echo": "^2.2.0",
     "laravel-vite-plugin": "^2.0.0",
-    "lucide-react": "^0.561.0",
+    "lucide-react": "^0.562.0",
     "postcss": "^8.5.3",
     "postcss-nesting": "^13.0.1",
     "prettier": "^3.6.2",
