@@ -17,12 +17,15 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
+use stdClass;
 use Throwable;
+use Twig\Environment;
 
 class AutomationService
 {
     public function __construct(
         protected ExpressionLanguageService $expressionLanguageService,
+        protected Environment $twig,
     ) {}
 
     /**
@@ -149,6 +152,65 @@ class AutomationService
     }
 
     /**
+     * Preview a webhook payload template with sample context.
+     *
+     * @param  array<string, mixed>  $context
+     * @return array{valid: bool, result: array<string, mixed>|null, error: string|null}
+     */
+    public function previewWebhookPayload(string $template, array $context): array
+    {
+        try {
+            $decoded = json_decode($template, true);
+            if (! is_array($decoded)) {
+                return [
+                    'valid' => false,
+                    'result' => null,
+                    'error' => 'Invalid JSON format',
+                ];
+            }
+
+            $result = $this->evaluatePayloadTemplate($decoded, $context);
+
+            return [
+                'valid' => true,
+                'result' => $result,
+                'error' => null,
+            ];
+        } catch (Throwable $throwable) {
+            return [
+                'valid' => false,
+                'result' => null,
+                'error' => $throwable->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * Preview a message template with sample context.
+     *
+     * @param  array<string, mixed>  $context
+     * @return array{valid: bool, result: string|null, error: string|null}
+     */
+    public function previewMessageTemplate(string $template, array $context): array
+    {
+        try {
+            $result = $this->evaluateMessageTemplate($template, $context);
+
+            return [
+                'valid' => true,
+                'result' => $result,
+                'error' => null,
+            ];
+        } catch (Throwable $throwable) {
+            return [
+                'valid' => false,
+                'result' => null,
+                'error' => $throwable->getMessage(),
+            ];
+        }
+    }
+
+    /**
      * Execute webhook action.
      *
      * @param  array<string, mixed>  $context
@@ -227,25 +289,42 @@ class AutomationService
     }
 
     /**
-     * Evaluate a single template value, replacing {{ placeholders }} with context values.
+     * Evaluate a single template value using Twig.
      *
      * @param  array<string, mixed>  $context
      */
     protected function evaluateTemplateValue(string $value, array $context): mixed
     {
-        // Check if entire value is a single placeholder like "{{ model.id }}"
-        if (preg_match('/^\{\{\s*([^}]+)\s*\}\}$/', $value, $matches)) {
-            $path = trim($matches[1]);
-
-            return data_get($context, $path);
+        // If no Twig syntax, return as-is
+        if (! str_contains($value, '{{')) {
+            return $value;
         }
 
-        // Otherwise do string interpolation for multiple placeholders
-        return preg_replace_callback('/\{\{\s*([^}]+)\s*\}\}/', function ($matches) use ($context): string {
-            $path = trim($matches[1]);
+        // Convert stdClass objects to arrays for Twig compatibility
+        $twigContext = $this->prepareContextForTwig($context);
 
-            return (string) data_get($context, $path, $matches[0]);
-        }, $value) ?? $value;
+        return $this->twig->createTemplate($value)->render($twigContext);
+    }
+
+    /**
+     * Prepare context for Twig by converting stdClass objects to arrays.
+     *
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>
+     */
+    protected function prepareContextForTwig(array $context): array
+    {
+        return array_map(function ($value) {
+            if ($value instanceof stdClass) {
+                return (array) $value;
+            }
+
+            if (is_array($value)) {
+                return $this->prepareContextForTwig($value);
+            }
+
+            return $value;
+        }, $context);
     }
 
     /**
@@ -291,18 +370,21 @@ class AutomationService
     }
 
     /**
-     * Evaluate message template, replacing placeholders with context values.
+     * Evaluate message template using Twig.
      *
      * @param  array<string, mixed>  $context
      */
     protected function evaluateMessageTemplate(string $template, array $context): string
     {
-        // Replace {{ variable }} placeholders
-        return preg_replace_callback('/\{\{\s*([^}]+)\s*\}\}/', function ($matches) use ($context): string {
-            $path = trim((string) $matches[1]);
+        // If no Twig syntax, return as-is
+        if (! str_contains($template, '{{')) {
+            return $template;
+        }
 
-            return (string) data_get($context, $path, $matches[0]);
-        }, $template) ?? $template;
+        // Convert stdClass objects to arrays for Twig compatibility
+        $twigContext = $this->prepareContextForTwig($context);
+
+        return $this->twig->createTemplate($template)->render($twigContext);
     }
 
     /**

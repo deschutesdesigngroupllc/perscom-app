@@ -31,6 +31,7 @@ class ExpressionLanguageService
             'starts_with(haystack, needle)' => 'Check if string starts with prefix',
             'ends_with(haystack, needle)' => 'Check if string ends with suffix',
             'changed(key)' => 'Check if attribute was changed (requires changes context)',
+            'strip_characters(text)' => 'Check if attribute was changed (requires changes context)',
             'old_value(key)' => 'Get old value of changed attribute',
             'new_value(key)' => 'Get new value of changed attribute',
             'blank(value)' => 'Check if value is empty',
@@ -119,35 +120,30 @@ class ExpressionLanguageService
      */
     protected function registerCustomFunctions(): void
     {
-        // in_array function
         $this->expressionLanguage->register(
             'in_array',
             fn (string $needle, $haystack): string => sprintf('in_array(%s, %s)', $needle, $haystack),
             fn ($arguments, $needle, $haystack): bool => is_array($haystack) && in_array($needle, $haystack, false)
         );
 
-        // contains function (string contains)
         $this->expressionLanguage->register(
             'contains',
             fn (string $haystack, $needle): string => sprintf('str_contains(%s, %s)', $haystack, $needle),
             fn ($arguments, $haystack, $needle): bool => is_string($haystack) && is_string($needle) && str_contains($haystack, $needle)
         );
 
-        // starts_with function
         $this->expressionLanguage->register(
             'starts_with',
             fn (string $haystack, $needle): string => sprintf('str_starts_with(%s, %s)', $haystack, $needle),
             fn ($arguments, $haystack, $needle): bool => is_string($haystack) && is_string($needle) && str_starts_with($haystack, $needle)
         );
 
-        // ends_with function
         $this->expressionLanguage->register(
             'ends_with',
             fn (string $haystack, $needle): string => sprintf('str_ends_with(%s, %s)', $haystack, $needle),
             fn ($arguments, $haystack, $needle): bool => is_string($haystack) && is_string($needle) && str_ends_with($haystack, $needle)
         );
 
-        // changed function - checks if a key was changed
         $this->expressionLanguage->register(
             'changed',
             fn (string $key): string => sprintf('isset($changes[%s])', $key),
@@ -158,7 +154,6 @@ class ExpressionLanguageService
             }
         );
 
-        // old_value function - gets the old value of a changed attribute
         $this->expressionLanguage->register(
             'old_value',
             fn (string $key): string => sprintf('$changes[%s]["old"] ?? null', $key),
@@ -169,7 +164,6 @@ class ExpressionLanguageService
             }
         );
 
-        // new_value function - gets the new value of a changed attribute
         $this->expressionLanguage->register(
             'new_value',
             fn (string $key): string => sprintf('$changes[%s]["new"] ?? null', $key),
@@ -180,14 +174,12 @@ class ExpressionLanguageService
             }
         );
 
-        // empty function
         $this->expressionLanguage->register(
             'blank',
             fn (string $value): string => sprintf('blank(%s)', $value),
             fn ($arguments, $value): bool => blank($value)
         );
 
-        // filled function
         $this->expressionLanguage->register(
             'filled',
             fn (string $value): string => sprintf('filled(%s)', $value),

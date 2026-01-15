@@ -17,11 +17,11 @@ class TwigServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->singleton('twig', function (Container $app): Environment {
+        $this->app->singleton(Environment::class, function (Container $app): Environment {
             $loader = new FilesystemLoader(resource_path('views/twig'));
             $policy = new SecurityPolicy(
                 allowedTags: ['apply', 'if', 'for', 'set'],
-                allowedFilters: ['capitalize', 'date', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'join', 'last', 'length', 'lower', 'map', 'plural', 'reduce', 'round', 'singular', 'slice', 'split', 'title', 'trim', 'upper'],
+                allowedFilters: ['capitalize', 'date', 'default', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'join', 'last', 'length', 'lower', 'map', 'nl2br', 'plural', 'reduce', 'replace', 'round', 'singular', 'slice', 'split', 'striptags', 'title', 'trim', 'upper'],
                 allowedMethods: [],
                 allowedProperties: [],
                 allowedFunctions: []
@@ -39,5 +39,7 @@ class TwigServiceProvider extends ServiceProvider
 
             return $twig;
         });
+
+        $this->app->alias(Environment::class, 'twig');
     }
 }

@@ -45,6 +45,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use Phiki\Grammar\Grammar;
 use UnitEnum;
 
 class AutomationResource extends BaseResource
@@ -163,6 +164,7 @@ class AutomationResource extends BaseResource
                                             ->schema(fn (Get $get): array => [
                                                 CodeEntry::make('example')
                                                     ->hiddenLabel()
+                                                    ->grammar(Grammar::Json)
                                                     ->state(json_encode(
                                                         AutomationTrigger::from($get('trigger'))->getExampleContext(),
                                                         JSON_PRETTY_PRINT
@@ -193,10 +195,39 @@ class AutomationResource extends BaseResource
                                             ->searchable()
                                             ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::WEBHOOK),
                                         CodeEditor::make('webhook_payload_template')
-                                            ->helperText('Optional: Define a custom JSON payload. Use {{ model.field }} for dynamic values. Leave empty to send full model data.')
+                                            ->helperText('Optional: Define a custom JSON payload. Use Twig syntax like {{ model.field }} or {{ model.text | striptags }}. Leave empty to send full model data.')
                                             ->label('Payload Template (JSON)')
+                                            ->live(onBlur: true)
                                             ->json()
-                                            ->hintAction(
+                                            ->hintActions([
+                                                Action::make('previewWebhookPayload')
+                                                    ->label('Preview')
+                                                    ->icon('heroicon-o-eye')
+                                                    ->color('success')
+                                                    ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('webhook_payload_template')))
+                                                    ->modalHeading('Payload Preview')
+                                                    ->modalDescription('This is what your webhook payload will look like with sample data.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->schema(fn (Get $get): array => [
+                                                        CodeEntry::make('preview')
+                                                            ->hiddenLabel()
+                                                            ->grammar(Grammar::Json)
+                                                            ->state(function () use ($get): string {
+                                                                $trigger = AutomationTrigger::from($get('trigger'));
+                                                                $context = $trigger->getExampleContext();
+                                                                $result = app(AutomationService::class)->previewWebhookPayload(
+                                                                    $get('webhook_payload_template'),
+                                                                    $context
+                                                                );
+
+                                                                if (! $result['valid']) {
+                                                                    return 'Error: '.$result['error'];
+                                                                }
+
+                                                                return json_encode($result['result'], JSON_PRETTY_PRINT);
+                                                            }),
+                                                    ]),
                                                 Action::make('viewAvailableFields')
                                                     ->label('View Fields')
                                                     ->icon('heroicon-o-code-bracket')
@@ -208,12 +239,44 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (Get $get): array => [
                                                         CodeEntry::make('example')
                                                             ->hiddenLabel()
+                                                            ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
                                                                 JSON_PRETTY_PRINT
                                                             )),
-                                                    ])
-                                            )
+                                                    ]),
+                                                Action::make('viewAvailableFilters')
+                                                    ->label('View Filters')
+                                                    ->icon('heroicon-o-funnel')
+                                                    ->modalHeading('Available Twig Filters')
+                                                    ->modalDescription('Use these filters with the pipe syntax: {{ value | filter }}')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->schema(fn (): array => [
+                                                        CodeEntry::make('filters')
+                                                            ->hiddenLabel()
+                                                            ->state(implode("\n", [
+                                                                'capitalize  → Capitalize the first character',
+                                                                'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
+                                                                'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
+                                                                'escape      → Escape HTML entities',
+                                                                'first       → Get the first element of an array',
+                                                                'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
+                                                                'last        → Get the last element of an array',
+                                                                'length      → Get the length of a string or array',
+                                                                'lower       → Convert to lowercase',
+                                                                'nl2br       → Convert newlines to <br> tags',
+                                                                'replace     → Replace text (e.g., {{ model.text | replace({"foo": "bar"}) }})',
+                                                                'round       → Round a number',
+                                                                'slice       → Extract a portion (e.g., {{ model.text | slice(0, 100) }})',
+                                                                'split       → Split a string into an array',
+                                                                'striptags   → Remove HTML tags',
+                                                                'title       → Convert to title case',
+                                                                'trim        → Remove whitespace from both ends',
+                                                                'upper       → Convert to uppercase',
+                                                            ])),
+                                                    ]),
+                                            ])
                                             ->columnSpanFull(),
                                     ]),
                                 Fieldset::make('Message Configuration')
@@ -229,10 +292,39 @@ class AutomationResource extends BaseResource
                                             ->preload()
                                             ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MESSAGE),
                                         RichEditor::make('message_template')
-                                            ->helperText("Override the message content. Use {{ model.field }} for dynamic values. Leave empty to use the selected message's content.")
+                                            ->helperText("Override the message content. Use Twig syntax like {{ model.field }} or {{ model.name | upper }}. Leave empty to use the selected message's content.")
                                             ->label('Message Content Override')
                                             ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                            ->hintAction(
+                                            ->live(onBlur: true)
+                                            ->hintActions([
+                                                Action::make('previewMessageTemplate')
+                                                    ->label('Preview')
+                                                    ->icon('heroicon-o-eye')
+                                                    ->color('success')
+                                                    ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('message_template')))
+                                                    ->modalHeading('Message Preview')
+                                                    ->modalDescription('This is what your message will look like with sample data.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->schema(fn (Get $get): array => [
+                                                        TextEntry::make('preview')
+                                                            ->hiddenLabel()
+                                                            ->html()
+                                                            ->state(function () use ($get): string {
+                                                                $trigger = AutomationTrigger::from($get('trigger'));
+                                                                $context = $trigger->getExampleContext();
+                                                                $result = app(AutomationService::class)->previewMessageTemplate(
+                                                                    $get('message_template'),
+                                                                    $context
+                                                                );
+
+                                                                if (! $result['valid']) {
+                                                                    return '<span class="text-danger-500">Error: '.$result['error'].'</span>';
+                                                                }
+
+                                                                return $result['result'];
+                                                            }),
+                                                    ]),
                                                 Action::make('viewAvailableFieldsMessage')
                                                     ->label('View Fields')
                                                     ->icon('heroicon-o-code-bracket')
@@ -244,12 +336,44 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (Get $get): array => [
                                                         CodeEntry::make('example')
                                                             ->hiddenLabel()
+                                                            ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
                                                                 JSON_PRETTY_PRINT
                                                             )),
-                                                    ])
-                                            )
+                                                    ]),
+                                                Action::make('viewAvailableFiltersMessage')
+                                                    ->label('View Filters')
+                                                    ->icon('heroicon-o-funnel')
+                                                    ->modalHeading('Available Twig Filters')
+                                                    ->modalDescription('Use these filters with the pipe syntax: {{ value | filter }}')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->schema(fn (): array => [
+                                                        CodeEntry::make('filters')
+                                                            ->hiddenLabel()
+                                                            ->state(implode("\n", [
+                                                                'capitalize  → Capitalize the first character',
+                                                                'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
+                                                                'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
+                                                                'escape      → Escape HTML entities',
+                                                                'first       → Get the first element of an array',
+                                                                'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
+                                                                'last        → Get the last element of an array',
+                                                                'length      → Get the length of a string or array',
+                                                                'lower       → Convert to lowercase',
+                                                                'nl2br       → Convert newlines to <br> tags',
+                                                                'replace     → Replace text (e.g., {{ model.text | replace({"foo": "bar"}) }})',
+                                                                'round       → Round a number',
+                                                                'slice       → Extract a portion (e.g., {{ model.text | slice(0, 100) }})',
+                                                                'split       → Split a string into an array',
+                                                                'striptags   → Remove HTML tags',
+                                                                'title       → Convert to title case',
+                                                                'trim        → Remove whitespace from both ends',
+                                                                'upper       → Convert to uppercase',
+                                                            ])),
+                                                    ]),
+                                            ])
                                             ->nullable()
                                             ->columnSpanFull(),
                                         Textarea::make('message_recipients_expression')
