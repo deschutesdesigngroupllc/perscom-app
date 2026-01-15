@@ -1,0 +1,83 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\Automation;
+use App\Models\Enums\AutomationActionType;
+use App\Models\Enums\AutomationTrigger;
+use App\Models\Message;
+use App\Models\Webhook;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Automation>
+ */
+class AutomationFactory extends Factory
+{
+    public function definition(): array
+    {
+        $actionType = $this->faker->randomElement(AutomationActionType::cases());
+
+        return [
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->sentence,
+            'trigger' => $this->faker->randomElement(AutomationTrigger::cases()),
+            'condition' => null,
+            'action_type' => $actionType,
+            'webhook_id' => $actionType === AutomationActionType::WEBHOOK ? Webhook::factory() : null,
+            'webhook_payload_template' => null,
+            'message_id' => $actionType === AutomationActionType::MESSAGE ? Message::factory() : null,
+            'message_template' => null,
+            'message_recipients_expression' => null,
+            'enabled' => true,
+            'priority' => 0,
+        ];
+    }
+
+    public function webhookAction(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'action_type' => AutomationActionType::WEBHOOK,
+            'webhook_id' => Webhook::factory(),
+            'webhook_payload_template' => null,
+            'message_id' => null,
+            'message_template' => null,
+            'message_recipients_expression' => null,
+        ]);
+    }
+
+    public function messageAction(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'action_type' => AutomationActionType::MESSAGE,
+            'webhook_id' => null,
+            'webhook_payload_template' => null,
+            'message_id' => Message::factory(),
+            'message_template' => null,
+            'message_recipients_expression' => null,
+        ]);
+    }
+
+    public function disabled(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'enabled' => false,
+        ]);
+    }
+
+    public function withCondition(string $condition = 'model.status == "active"'): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'condition' => $condition,
+        ]);
+    }
+
+    public function forTrigger(AutomationTrigger $trigger): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'trigger' => $trigger,
+        ]);
+    }
+}

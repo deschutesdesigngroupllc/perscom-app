@@ -63,6 +63,7 @@ class WebhookLogResource extends BaseResource
                     ->sortable()
                     ->searchable(['properties']),
                 TextColumn::make('causer.label')
+                    ->placeholder('No Resource')
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
@@ -201,6 +202,7 @@ class WebhookLogResource extends BaseResource
                                 TextEntry::make('created_at')
                                     ->label('Sent'),
                                 TextEntry::make('causer.label')
+                                    ->placeholder('No Resource')
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()

@@ -109,6 +109,10 @@ class WebhookLog extends Activity
     public function resourceUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
+            if (blank($this->causer)) {
+                return null;
+            }
+
             /** @var resource $resource */
             $resource = Filament::getModelResource($this->causer);
 

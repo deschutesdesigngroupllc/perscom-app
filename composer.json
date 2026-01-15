@@ -63,6 +63,7 @@
     "staudenmeir/belongs-to-through": "^2.17",
     "staudenmeir/eloquent-has-many-deep": "^1.21.2",
     "staudenmeir/eloquent-json-relations": "^1.14.1",
+    "symfony/expression-language": "^8.0",
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.6.0",
     "timokoerber/laravel-one-time-operations": "^1.4.5",
