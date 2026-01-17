@@ -1,22 +1,14 @@
 {
     "mcpServers": {
-        "playwright": {
-            "type": "stdio",
-            "command": "npx",
-            "args": [
-                "@playwright/mcp@latest"
-            ],
-            "env": []
-        },
         "laravel-boost": {
-            "command": "php",
+            "command": "/Users/jonerickson/Library/Application Support/Herd/bin/php84",
             "args": [
-                "artisan",
+                "/Users/jonerickson/Code/perscom/artisan",
                 "boost:mcp"
             ]
         },
         "herd": {
-            "command": "php",
+            "command": "/Users/jonerickson/Library/Application Support/Herd/bin/php84",
             "args": [
                 "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
             ],
