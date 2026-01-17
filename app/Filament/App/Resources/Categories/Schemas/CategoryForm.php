@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\Categories\Schemas;
 
+use App\Filament\App\Resources\Categories\Pages\CreateCategory;
+use App\Filament\App\Resources\Categories\Pages\EditCategory;
 use App\Models\Award;
 use App\Models\Competency;
 use App\Models\Document;
@@ -15,6 +17,7 @@ use App\Models\Specialty;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\Page;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -45,6 +48,9 @@ class CategoryForm
                                 Select::make('resource')
                                     ->helperText('The resource this category can be used with.')
                                     ->required()
+                                    ->dehydrated()
+                                    ->disabled(fn (Page $livewire): bool => ! in_array($livewire::class, [EditCategory::class, CreateCategory::class]))
+                                    ->default(fn (Page $livewire): string => $livewire->getModel())
                                     ->options([
                                         Award::class => 'Awards',
                                         Competency::class => 'Competencies',

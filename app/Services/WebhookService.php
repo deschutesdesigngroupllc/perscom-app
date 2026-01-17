@@ -15,7 +15,7 @@ use Spatie\WebhookServer\WebhookCall;
 
 class WebhookService
 {
-    public static function dispatch(Webhook $webhook, string $event, mixed $model): PendingDispatch
+    public static function dispatch(Webhook $webhook, string $event, mixed $data): PendingDispatch
     {
         $payload = [
             'event' => $event,
@@ -24,12 +24,12 @@ class WebhookService
             'trace_id' => Context::get('trace_id'),
         ];
 
-        if (is_array($model)) {
-            data_set($payload, 'data', $model);
+        if (is_array($data)) {
+            data_set($payload, 'data', $data);
             data_set($payload, 'changes', null);
-        } elseif ($model instanceof Model) {
-            data_set($payload, 'data', $model->toArray());
-            data_set($payload, 'changes', $model->getChanges());
+        } elseif ($data instanceof Model) {
+            data_set($payload, 'data', $data->toArray());
+            data_set($payload, 'changes', $data->getChanges());
         }
 
         /** @var WebhookLog $log */
@@ -37,8 +37,8 @@ class WebhookService
             ->withProperties([
                 'payload' => $payload,
             ])
-            ->when($model instanceof Model, fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy($model))
-            ->when(is_array($model), fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy(Auth::user()))
+            ->when($data instanceof Model, fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy($data))
+            ->when(is_array($data), fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy(Auth::user()))
             ->performedOn($webhook)
             ->log($webhook->url);
 

@@ -7,6 +7,7 @@ namespace App\Observers;
 use App\Actions\Notifications\SendSms;
 use App\Metrics\Metric;
 use App\Metrics\UserCreationMetric;
+use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
@@ -17,12 +18,15 @@ use App\Notifications\User\PasswordChanged;
 use App\Services\WebhookService;
 use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
+use App\Traits\DispatchesAutomationEvents;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Notification;
 use NotificationChannels\Discord\Discord;
 
 class UserObserver
 {
+    use DispatchesAutomationEvents;
+
     public function created(User $user): void
     {
         /** @var PermissionSettings $permissionSettings */
@@ -34,6 +38,8 @@ class UserObserver
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_CREATED->value, $user);
         });
+
+        $this->dispatchAutomationCreated($user, AutomationTrigger::USER_CREATED);
 
         /** @var RegistrationSettings $registrationSettings */
         $registrationSettings = app(RegistrationSettings::class);
@@ -85,6 +91,8 @@ class UserObserver
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_UPDATED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_UPDATED->value, $user);
         });
+
+        $this->dispatchAutomationUpdated($user, AutomationTrigger::USER_UPDATED);
     }
 
     public function deleted(User $user): void
@@ -92,5 +100,7 @@ class UserObserver
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_DELETED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_DELETED->value, $user);
         });
+
+        $this->dispatchAutomationDeleted($user, AutomationTrigger::USER_DELETED);
     }
 }

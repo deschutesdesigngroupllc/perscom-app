@@ -23,6 +23,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
@@ -145,12 +146,12 @@ class MessageResource extends BaseResource
     }
 
     /**
-     * @return RichEditor[]
+     * @return Component[]
      */
-    public static function messageSchema(): array
+    public static function messageSchema(string $name = 'message'): array
     {
         return [
-            RichEditor::make('message')
+            RichEditor::make($name)
                 ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                 ->helperText('Enter the message you would like to send.')
                 ->required()
@@ -161,10 +162,10 @@ class MessageResource extends BaseResource
     /**
      * @return CheckboxList[]
      */
-    public static function channelSchema(): array
+    public static function channelSchema(string $name = 'channels'): array
     {
         return [
-            CheckboxList::make('channels')
+            CheckboxList::make($name)
                 ->required()
                 ->searchable()
                 ->hiddenLabel()

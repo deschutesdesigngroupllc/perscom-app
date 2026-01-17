@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\CompetencyResource\Pages\CreateCompetency;
 use App\Filament\App\Resources\CompetencyResource\Pages\EditCompetency;
 use App\Filament\App\Resources\CompetencyResource\Pages\ListCompetencies;
@@ -15,7 +16,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -58,12 +58,8 @@ class CompetencyResource extends BaseResource
                                     ->columnSpanFull(),
                                 Select::make('categories')
                                     ->label('Category')
-                                    ->createOptionForm([
-                                        TextInput::make('name')
-                                            ->required(),
-                                        Hidden::make('resource')
-                                            ->default(static::$model),
-                                    ])
+                                    ->createOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
+                                    ->editOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
                                     ->helperText('The category the competency belongs to.')
                                     ->nullable()
                                     ->preload()
