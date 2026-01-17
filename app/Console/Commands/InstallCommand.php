@@ -27,6 +27,7 @@ class InstallCommand extends Command implements Isolatable
 
     protected $signature = 'perscom:install
                             {--seeder=military : The seeder to use. Default: military}
+                            {--no-seed : Do not seed the database}
                             {--demo : Run the demo seeder}
                             {--force : Force the operation to run when in production}';
 
@@ -126,11 +127,13 @@ class InstallCommand extends Command implements Isolatable
             default => MilitarySeeder::class
         };
 
-        $this->call('tenants:seed', [
-            '--tenants' => $tenant->getTenantKey(),
-            '--class' => $seeder,
-            '--force' => true,
-        ]);
+        if (! $this->option('no-seed')) {
+            $this->call('tenants:seed', [
+                '--tenants' => $tenant->getTenantKey(),
+                '--class' => $seeder,
+                '--force' => true,
+            ]);
+        }
 
         $this->components->info('Available tenants:');
 
@@ -180,12 +183,14 @@ class InstallCommand extends Command implements Isolatable
             default => MilitarySeeder::class
         };
 
-        $this->call('db:seed', [
-            '--class' => $seeder,
-            '--force' => true,
-        ]);
+        if (! $this->option('no-seed')) {
+            $this->call('db:seed', [
+                '--class' => $seeder,
+                '--force' => true,
+            ]);
+        }
 
-        if ($this->option('demo')) {
+        if (! $this->option('no-seed') && $this->option('demo')) {
             $this->call('db:seed', [
                 '--class' => DemoSeeder::class,
                 '--force' => true,
