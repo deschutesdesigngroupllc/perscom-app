@@ -12,7 +12,6 @@ use App\Filament\App\Resources\AutomationResource\RelationManagers\LogsRelationM
 use App\Models\Automation;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
-use App\Models\Message;
 use App\Models\Webhook;
 use App\Services\AutomationService;
 use App\Services\ExpressionLanguageService;
@@ -44,7 +43,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
@@ -105,9 +103,9 @@ class AutomationResource extends BaseResource
                             ->schema([
                                 Textarea::make('condition')
                                     ->live(onBlur: true)
-                                    ->helperText('An optional expression to evaluate. If it returns false, the action will not run. E.g., model.status == "active"')
+                                    ->helperText('An optional expression to evaluate. If it returns false, the action will not run. E.g., model.status !== "active"')
                                     ->label('Condition Expression')
-                                    ->placeholder('Select a trigger to view     available fields and test a condition.')
+                                    ->placeholder('Select a trigger to view available fields and test a condition.')
                                     ->rows(4)
                                     ->hintActions([
                                         Action::make('testCondition')
@@ -157,7 +155,7 @@ class AutomationResource extends BaseResource
                                             ->label('View Fields')
                                             ->icon('heroicon-o-code-bracket')
                                             ->modalHeading('Available Condition Fields')
-                                            ->modalDescription('Use these field paths in your condition. E.g., model.status == "active"')
+                                            ->modalDescription('Use these field paths in your condition. E.g., model.status !== "active"')
                                             ->modalSubmitAction(false)
                                             ->modalCancelActionLabel('Close')
                                             ->visible(fn (Get $get): bool => filled($get('trigger')))
@@ -282,26 +280,19 @@ class AutomationResource extends BaseResource
                                 Fieldset::make('Message Configuration')
                                     ->visible(fn (Get $get): bool => $get('action_type') === AutomationActionType::MESSAGE)
                                     ->schema([
-                                        Select::make('message_id')
-                                            ->columnSpanFull()
-                                            ->helperText('Select the message template to use. Channels will be inherited from this message.')
-                                            ->label('Message Template')
-                                            ->relationship('message', 'message')
-                                            ->getOptionLabelFromRecordUsing(fn (Message $record): string => Str::limit(strip_tags($record->message), 50))
-                                            ->searchable()
-                                            ->preload()
-                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MESSAGE),
-                                        RichEditor::make('message_template')
-                                            ->helperText("Override the message content. Use Twig syntax like {{ model.field }} or {{ model.name | upper }}. Leave empty to use the selected message's content.")
-                                            ->label('Message Content Override')
+                                        ...MessageResource::channelSchema('message_channels'),
+                                        RichEditor::make('message_content')
+                                            ->helperText('The message content. Use Twig syntax like {{ model.field }} or {{ model.name | upper }}.')
+                                            ->label('Message Content')
                                             ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                             ->live(onBlur: true)
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MESSAGE)
                                             ->hintActions([
-                                                Action::make('previewMessageTemplate')
+                                                Action::make('previewMessageContent')
                                                     ->label('Preview')
                                                     ->icon('heroicon-o-eye')
                                                     ->color('success')
-                                                    ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('message_template')))
+                                                    ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('message_content')))
                                                     ->modalHeading('Message Preview')
                                                     ->modalDescription('This is what your message will look like with sample data.')
                                                     ->modalSubmitAction(false)
@@ -314,7 +305,7 @@ class AutomationResource extends BaseResource
                                                                 $trigger = AutomationTrigger::from($get('trigger'));
                                                                 $context = $trigger->getExampleContext();
                                                                 $result = app(AutomationService::class)->previewMessageTemplate(
-                                                                    $get('message_template'),
+                                                                    $get('message_content'),
                                                                     $context
                                                                 );
 
@@ -374,7 +365,6 @@ class AutomationResource extends BaseResource
                                                             ])),
                                                     ]),
                                             ])
-                                            ->nullable()
                                             ->columnSpanFull(),
                                         Textarea::make('message_recipients_expression')
                                             ->helperText('Expression to determine recipients. E.g., [model.user_id] or [model.user.id]. Leave empty to use context user.')
@@ -433,14 +423,13 @@ class AutomationResource extends BaseResource
                                     ->label('Webhook URL')
                                     ->visible(fn (Automation $record): bool => $record->isWebhookAction())
                                     ->copyable(),
-                                TextEntry::make('message.message')
-                                    ->label('Source Message')
+                                TextEntry::make('message_channels')
+                                    ->label('Channels')
                                     ->visible(fn (Automation $record): bool => $record->isMessageAction())
-                                    ->html()
-                                    ->limit(100),
-                                TextEntry::make('message_template')
-                                    ->label('Message Content Override')
-                                    ->visible(fn (Automation $record): bool => $record->isMessageAction() && filled($record->message_template))
+                                    ->badge(),
+                                TextEntry::make('message_content')
+                                    ->label('Message')
+                                    ->visible(fn (Automation $record): bool => $record->isMessageAction())
                                     ->html(),
                                 TextEntry::make('message_recipients_expression')
                                     ->label('Recipients Expression')

@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
+use App\Models\Enums\NotificationChannel;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,15 +25,14 @@ use Illuminate\Support\Carbon;
  * @property AutomationActionType $action_type
  * @property int|null $webhook_id
  * @property array<string, mixed>|null $webhook_payload_template
- * @property int|null $message_id
- * @property string|null $message_template
+ * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $message_channels
+ * @property string|null $message_content
  * @property string|null $message_recipients_expression
  * @property bool $enabled
  * @property int $priority
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Webhook|null $webhook
- * @property-read Message|null $message
  * @property-read Collection<int, AutomationLog> $logs
  * @property-read int|null $logs_count
  *
@@ -58,8 +59,8 @@ class Automation extends Model
         'action_type',
         'webhook_id',
         'webhook_payload_template',
-        'message_id',
-        'message_template',
+        'message_channels',
+        'message_content',
         'message_recipients_expression',
         'enabled',
         'priority',
@@ -71,14 +72,6 @@ class Automation extends Model
     public function webhook(): BelongsTo
     {
         return $this->belongsTo(Webhook::class);
-    }
-
-    /**
-     * @return BelongsTo<Message, $this>
-     */
-    public function message(): BelongsTo
-    {
-        return $this->belongsTo(Message::class);
     }
 
     /**
@@ -157,6 +150,7 @@ class Automation extends Model
             'trigger' => AutomationTrigger::class,
             'action_type' => AutomationActionType::class,
             'webhook_payload_template' => 'array',
+            'message_channels' => AsEnumCollection::of(NotificationChannel::class),
             'enabled' => 'boolean',
             'priority' => 'integer',
         ];

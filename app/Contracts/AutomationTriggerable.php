@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Contracts;
 
+use App\Data\Automations\AutomationContextData;
 use Illuminate\Database\Eloquent\Model;
 
 interface AutomationTriggerable
@@ -28,10 +29,8 @@ interface AutomationTriggerable
 
     /**
      * Get context data available for expression evaluation.
-     *
-     * @return array<string, mixed>
      */
-    public function getExpressionContext(): array;
+    public function getExpressionContext(): AutomationContextData;
 
     /**
      * Get the user who caused this event (if applicable).

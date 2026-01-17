@@ -7,7 +7,7 @@ namespace Database\Factories;
 use App\Models\Automation;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
-use App\Models\Message;
+use App\Models\Enums\NotificationChannel;
 use App\Models\Webhook;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,8 +28,8 @@ class AutomationFactory extends Factory
             'action_type' => $actionType,
             'webhook_id' => $actionType === AutomationActionType::WEBHOOK ? Webhook::factory() : null,
             'webhook_payload_template' => null,
-            'message_id' => $actionType === AutomationActionType::MESSAGE ? Message::factory() : null,
-            'message_template' => null,
+            'message_channels' => $actionType === AutomationActionType::MESSAGE ? [NotificationChannel::DATABASE] : null,
+            'message_content' => $actionType === AutomationActionType::MESSAGE ? $this->faker->sentence : null,
             'message_recipients_expression' => null,
             'enabled' => true,
             'priority' => 0,
@@ -42,8 +42,8 @@ class AutomationFactory extends Factory
             'action_type' => AutomationActionType::WEBHOOK,
             'webhook_id' => Webhook::factory(),
             'webhook_payload_template' => null,
-            'message_id' => null,
-            'message_template' => null,
+            'message_channels' => null,
+            'message_content' => null,
             'message_recipients_expression' => null,
         ]);
     }
@@ -54,8 +54,8 @@ class AutomationFactory extends Factory
             'action_type' => AutomationActionType::MESSAGE,
             'webhook_id' => null,
             'webhook_payload_template' => null,
-            'message_id' => Message::factory(),
-            'message_template' => null,
+            'message_channels' => [NotificationChannel::DATABASE],
+            'message_content' => $this->faker->sentence,
             'message_recipients_expression' => null,
         ]);
     }

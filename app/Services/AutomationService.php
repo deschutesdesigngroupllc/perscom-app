@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\AutomationTriggerable;
+use App\Data\Automations\AutomationContextData;
 use App\Data\Automations\AutomationResultData;
 use App\Exceptions\ExpressionEvaluationException;
 use App\Models\Automation;
@@ -51,18 +52,17 @@ class AutomationService
     {
         $startTime = microtime(true);
         $context = $event->getExpressionContext();
+        $contextArray = $context->toExpressionArray();
 
         try {
-            // Evaluate condition if present
             $conditionResult = true;
             if (filled($automation->condition)) {
                 $conditionResult = (bool) $this->expressionLanguageService->evaluate(
                     $automation->condition,
-                    $context
+                    $contextArray
                 );
             }
 
-            // If condition failed, log and return
             if (! $conditionResult) {
                 $executionTimeMs = (int) ((microtime(true) - $startTime) * 1000);
 
@@ -80,7 +80,6 @@ class AutomationService
                 );
             }
 
-            // Execute the appropriate action
             $actionPayload = match ($automation->action_type) {
                 AutomationActionType::WEBHOOK => $this->executeWebhookAction($automation, $event, $context),
                 AutomationActionType::MESSAGE => $this->executeMessageAction($automation, $context),
@@ -213,10 +212,9 @@ class AutomationService
     /**
      * Execute webhook action.
      *
-     * @param  array<string, mixed>  $context
      * @return array<string, mixed>
      */
-    protected function executeWebhookAction(Automation $automation, AutomationTriggerable $event, array $context): array
+    protected function executeWebhookAction(Automation $automation, AutomationTriggerable $event, AutomationContextData $context): array
     {
         $webhook = $automation->webhook;
 
@@ -224,7 +222,6 @@ class AutomationService
             throw new RuntimeException('Automation webhook not found');
         }
 
-        // If a custom payload template is defined, use it; otherwise use the model
         $payload = $this->buildWebhookPayload($automation, $context, $event);
 
         WebhookService::dispatch($webhook, $event->getTriggerType(), $payload);
@@ -240,19 +237,16 @@ class AutomationService
     /**
      * Build the webhook payload from template or use default model.
      *
-     * @param  array<string, mixed>  $context
      * @return array<string, mixed>|Model
      */
-    protected function buildWebhookPayload(Automation $automation, array $context, AutomationTriggerable $event): array|Model
+    protected function buildWebhookPayload(Automation $automation, AutomationContextData $context, AutomationTriggerable $event): array|Model
     {
         $template = $automation->webhook_payload_template;
 
-        // If no custom template, return the subject model directly
         if (blank($template)) {
             return $event->getSubject();
         }
 
-        // Handle JSON string (from form) or array (from cast)
         if (is_string($template)) {
             $template = json_decode($template, true);
             if (! is_array($template)) {
@@ -260,8 +254,7 @@ class AutomationService
             }
         }
 
-        // Recursively evaluate template values
-        return $this->evaluatePayloadTemplate($template, $context);
+        return $this->evaluatePayloadTemplate($template, $context->toExpressionArray());
     }
 
     /**
@@ -295,12 +288,10 @@ class AutomationService
      */
     protected function evaluateTemplateValue(string $value, array $context): mixed
     {
-        // If no Twig syntax, return as-is
         if (! str_contains($value, '{{')) {
             return $value;
         }
 
-        // Convert stdClass objects to arrays for Twig compatibility
         $twigContext = $this->prepareContextForTwig($context);
 
         return $this->twig->createTemplate($value)->render($twigContext);
@@ -328,28 +319,20 @@ class AutomationService
     }
 
     /**
-     * Execute message action - creates Message model using channels from referenced message.
+     * Execute message action - creates Message model using automation's configured channels and content.
      *
-     * @param  array<string, mixed>  $context
      * @return array<string, mixed>
      */
-    protected function executeMessageAction(Automation $automation, array $context): array
+    protected function executeMessageAction(Automation $automation, AutomationContextData $context): array
     {
-        $sourceMessage = $automation->message;
-
-        if (! $sourceMessage) {
-            throw new RuntimeException('Automation message not found');
+        if (blank($automation->message_content) || blank($automation->message_channels)) {
+            throw new RuntimeException('Automation message content or channels not configured');
         }
 
-        // Use automation's template override, or fall back to source message content
-        $template = filled($automation->message_template)
-            ? $automation->message_template
-            : $sourceMessage->message;
-        $messageContent = $this->evaluateMessageTemplate($template ?? '', $context);
-        $recipients = $this->evaluateRecipients($automation->message_recipients_expression ?? '', $context);
-
-        // Use channels from the referenced message
-        $channels = $sourceMessage->channels;
+        $contextArray = $context->toExpressionArray();
+        $messageContent = $this->evaluateMessageTemplate($automation->message_content, $contextArray);
+        $recipients = $this->evaluateRecipients($automation->message_recipients_expression ?? '', $contextArray);
+        $channels = $automation->message_channels;
 
         $message = Message::create([
             'message' => $messageContent,
@@ -361,7 +344,6 @@ class AutomationService
 
         return [
             'type' => 'message',
-            'source_message_id' => $sourceMessage->id,
             'created_message_id' => $message->id,
             'message_content' => $messageContent,
             'recipients' => $recipients,
@@ -376,12 +358,10 @@ class AutomationService
      */
     protected function evaluateMessageTemplate(string $template, array $context): string
     {
-        // If no Twig syntax, return as-is
         if (! str_contains($template, '{{')) {
             return $template;
         }
 
-        // Convert stdClass objects to arrays for Twig compatibility
         $twigContext = $this->prepareContextForTwig($context);
 
         return $this->twig->createTemplate($template)->render($twigContext);
@@ -402,7 +382,6 @@ class AutomationService
         try {
             $result = $this->expressionLanguageService->evaluate($expression, $context);
 
-            // Normalize result to array
             if (is_numeric($result)) {
                 return [(int) $result];
             }
@@ -420,13 +399,12 @@ class AutomationService
     /**
      * Create an automation log entry.
      *
-     * @param  array<string, mixed>  $context
      * @param  array<string, mixed>  $attributes
      */
     protected function createLog(
         Automation $automation,
         AutomationTriggerable $event,
-        array $context,
+        AutomationContextData $context,
         array $attributes
     ): AutomationLog {
         return AutomationLog::create([
@@ -436,7 +414,7 @@ class AutomationService
             'subject_id' => $event->getSubject()->getKey(),
             'causer_type' => $event->getCauser() instanceof Model ? $event->getCauser()::class : null,
             'causer_id' => $event->getCauser()?->getKey(),
-            'context' => $context,
+            'context' => $context->toExpressionArray(),
             ...$attributes,
         ]);
     }

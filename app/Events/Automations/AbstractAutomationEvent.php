@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Events\Automations;
 
 use App\Contracts\AutomationTriggerable;
+use App\Data\Automations\AutomationContextData;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 abstract class AbstractAutomationEvent implements AutomationTriggerable
@@ -18,11 +18,13 @@ abstract class AbstractAutomationEvent implements AutomationTriggerable
 
     protected ?Model $causer = null;
 
-    public function __construct(protected Model $subject, /**
-     * @var array<string, array{old: mixed, new: mixed}>|null
+    /**
+     * @param  array<string, array{old: mixed, new: mixed}>|null  $changedAttributes
      */
-        protected ?array $changedAttributes = null)
-    {
+    public function __construct(
+        protected Model $subject,
+        protected ?array $changedAttributes = null,
+    ) {
         $this->causer = Auth::user();
     }
 
@@ -67,18 +69,12 @@ abstract class AbstractAutomationEvent implements AutomationTriggerable
         return $this->causer;
     }
 
-    public function getExpressionContext(): array
+    public function getExpressionContext(): AutomationContextData
     {
-        $modelArray = $this->subject->toArray();
-
-        return [
-            'model' => $modelArray,
-            'model_type' => $this->subject::class,
-            'model_id' => $this->subject->getKey(),
-            'changes' => $this->changedAttributes,
-            'causer' => $this->causer?->toArray(),
-            'causer_id' => $this->causer?->getKey(),
-            'now' => Carbon::now(),
-        ];
+        return AutomationContextData::fromModel(
+            subject: $this->subject,
+            causer: $this->causer,
+            changedAttributes: $this->changedAttributes,
+        );
     }
 }

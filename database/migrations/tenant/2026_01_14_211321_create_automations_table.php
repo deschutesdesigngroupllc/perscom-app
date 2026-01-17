@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('action_type')->default('webhook');
             $table->foreignId('webhook_id')->nullable()->constrained()->nullOnDelete();
             $table->json('webhook_payload_template')->nullable();
-            $table->foreignId('message_id')->nullable()->constrained()->nullOnDelete();
-            $table->text('message_template')->nullable();
+            $table->json('message_channels')->nullable();
+            $table->text('message_content')->nullable();
             $table->text('message_recipients_expression')->nullable();
             $table->boolean('enabled')->default(true);
             $table->unsignedInteger('priority')->default(0);
