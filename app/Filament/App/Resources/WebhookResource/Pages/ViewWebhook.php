@@ -37,7 +37,8 @@ class ViewWebhook extends ViewRecord
                         ->helperText('Provide an example JSON payload to test.'),
                 ])
                 ->color('gray')
-                ->modalHeading('Send a test webhook payload')
+                ->modalHeading('Test Webhook')
+                ->modalDescription('Send a test webhook payload')
                 ->modalSubmitActionLabel('Send')
                 ->successNotificationTitle('The test webhook has been successfully sent.')
                 ->action(function (array $data, Action $action, Webhook $record): void {

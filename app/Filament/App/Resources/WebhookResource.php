@@ -123,7 +123,8 @@ class WebhookResource extends BaseResource
                                     ->expandableLimitedList()
                                     ->badge(),
                                 TextEntry::make('secret')
-                                    ->copyable(),
+                                    ->formatStateUsing(fn ($state): string => str_repeat('*', strlen((string) $state)))
+                                    ->helperText('Edit the webhook to view the secret.'),
                             ]),
                     ]),
             ]);
