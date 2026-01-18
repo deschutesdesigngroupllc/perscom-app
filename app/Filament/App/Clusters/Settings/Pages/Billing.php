@@ -8,6 +8,7 @@ use App\Filament\App\Clusters\Settings;
 use BackedEnum;
 use Filament\Pages\Page;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 
 class Billing extends Page
@@ -29,6 +30,7 @@ class Billing extends Page
     {
         return Gate::check('billing')
             && config('tenancy.enabled')
+            && ! App::isDemo()
             && filled(config('cashier.secret'));
     }
 }

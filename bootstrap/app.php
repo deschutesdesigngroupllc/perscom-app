@@ -55,30 +55,28 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function (): void {
-            Route::middleware('api')
+            Route::domain(config('api.url'))
+                ->middleware('api')
                 ->name('api.')
-                ->domain(config('api.url'))
                 ->group(base_path('routes/api.php'));
 
+            Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
+                ->name('app.')
+                ->group(base_path('routes/app.php'));
+
             Route::domain(config('app.auth_url'))
-                ->as('auth.')
                 ->middleware('web')
+                ->name('auth.')
                 ->group(base_path('routes/auth.php'));
 
-            Route::as('oidc.')
-                ->domain(config('tenancy.enabled')
-                    ? '{tenant}'.config('app.base_url')
-                    : ''
-                )
+            Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
+                ->name('oidc.')
                 ->group(base_path('routes/oidc.php'));
 
-            Route::prefix('oauth')
-                ->as('passport.')
-                ->domain(config('tenancy.enabled')
-                    ? '{tenant}'.config('app.base_url')
-                    : ''
-                )
+            Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
+                ->name('passport.')
                 ->namespace('Laravel\\Passport\\Http\\Controllers')
+                ->prefix('oauth')
                 ->group(base_path('routes/passport.php'));
         }
     )

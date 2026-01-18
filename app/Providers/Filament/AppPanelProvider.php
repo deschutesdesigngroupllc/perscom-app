@@ -96,7 +96,7 @@ class AppPanelProvider extends PanelProvider
             ->registration($registration)
             ->passwordReset($passwordReset)
             ->emailVerification($emailVerification)
-            ->domain(config('tenancy.enabled') ? null : config('app.url'))
+            ->domain(config('tenancy.enabled') ? '' : config('app.url'))
             ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Blue,
@@ -176,7 +176,7 @@ class AppPanelProvider extends PanelProvider
                 Action::make('billing')
                     ->label('Billing')
                     ->url(fn (): string => route('spark.portal'), shouldOpenInNewTab: true)
-                    ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo())
+                    ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')
                     ->label('Documentation')

@@ -10,7 +10,7 @@ use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Illuminate\Http\RedirectResponse;
 use Stancl\Tenancy\Features\UserImpersonation;
 
-Route::group(['as' => 'tenant.', 'middleware' => ['web', InitializeTenancyBySubdomain::class]], function (): void {
+Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], function (): void {
     Route::get('impersonate/{token}', fn ($token): RedirectResponse => UserImpersonation::makeResponse($token))->name('impersonation');
 
     Route::group(['middleware' => ['auth:web']], function (): void {

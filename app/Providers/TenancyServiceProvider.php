@@ -8,7 +8,6 @@ use App\Jobs\Tenant\RemoveTenantAccount;
 use App\Jobs\Tenant\SetupTenantAccount;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events\BootstrappingTenancy;
@@ -122,7 +121,6 @@ class TenancyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->bootEvents();
-        $this->mapRoutes();
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
@@ -137,16 +135,6 @@ class TenancyServiceProvider extends ServiceProvider
                 Event::listen($event, $listener);
             }
         }
-    }
-
-    protected function mapRoutes(): void
-    {
-        $this->app->booted(function (): void {
-            if (file_exists(base_path('routes/tenant.php'))) {
-                Route::namespace(static::$controllerNamespace)
-                    ->group(base_path('routes/tenant.php'));
-            }
-        });
     }
 
     protected function makeTenancyMiddlewareHighestPriority(): void

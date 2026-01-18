@@ -9,14 +9,14 @@ $providers = [
     App\Providers\HealthServiceProvider::class,
     App\Providers\HorizonServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
-    App\Providers\SparkServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\TwigServiceProvider::class,
 ];
 
 if (config('tenancy.enabled')) {
-    $providers[] = App\Providers\TenancyServiceProvider::class;
     $providers[] = App\Providers\Filament\AdminPanelProvider::class;
+    $providers[] = App\Providers\SparkServiceProvider::class;
+    $providers[] = App\Providers\TenancyServiceProvider::class;
 }
 
 return $providers;
