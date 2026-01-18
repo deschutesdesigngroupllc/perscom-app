@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Models\Automation;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
+use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Webhook;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -57,6 +58,23 @@ class AutomationFactory extends Factory
             'message_channels' => [NotificationChannel::DATABASE],
             'message_content' => $this->faker->sentence,
             'message_recipients_expression' => null,
+        ]);
+    }
+
+    public function modelUpdateAction(): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'action_type' => AutomationActionType::MODEL_UPDATE,
+            'webhook_id' => null,
+            'webhook_payload_template' => null,
+            'message_channels' => null,
+            'message_content' => null,
+            'message_recipients_expression' => null,
+            'model_update_target' => 'user',
+            'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+            'model_update_lookup_expression' => 'model["id"]',
+            'model_update_lookup_conditions' => null,
+            'model_update_fields' => ['notes' => 'Updated via automation'],
         ]);
     }
 
