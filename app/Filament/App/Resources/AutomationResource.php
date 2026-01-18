@@ -254,26 +254,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", [
-                                                                'capitalize  → Capitalize the first character',
-                                                                'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
-                                                                'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
-                                                                'escape      → Escape HTML entities',
-                                                                'first       → Get the first element of an array',
-                                                                'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
-                                                                'last        → Get the last element of an array',
-                                                                'length      → Get the length of a string or array',
-                                                                'lower       → Convert to lowercase',
-                                                                'nl2br       → Convert newlines to <br> tags',
-                                                                'replace     → Replace text (e.g., {{ model.text | replace({"foo": "bar"}) }})',
-                                                                'round       → Round a number',
-                                                                'slice       → Extract a portion (e.g., {{ model.text | slice(0, 100) }})',
-                                                                'split       → Split a string into an array',
-                                                                'striptags   → Remove HTML tags',
-                                                                'title       → Convert to title case',
-                                                                'trim        → Remove whitespace from both ends',
-                                                                'upper       → Convert to uppercase',
-                                                            ])),
+                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -344,26 +325,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", [
-                                                                'capitalize  → Capitalize the first character',
-                                                                'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
-                                                                'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
-                                                                'escape      → Escape HTML entities',
-                                                                'first       → Get the first element of an array',
-                                                                'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
-                                                                'last        → Get the last element of an array',
-                                                                'length      → Get the length of a string or array',
-                                                                'lower       → Convert to lowercase',
-                                                                'nl2br       → Convert newlines to <br> tags',
-                                                                'replace     → Replace text (e.g., {{ model.text | replace({"foo": "bar"}) }})',
-                                                                'round       → Round a number',
-                                                                'slice       → Extract a portion (e.g., {{ model.text | slice(0, 100) }})',
-                                                                'split       → Split a string into an array',
-                                                                'striptags   → Remove HTML tags',
-                                                                'title       → Convert to title case',
-                                                                'trim        → Remove whitespace from both ends',
-                                                                'upper       → Convert to uppercase',
-                                                            ])),
+                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -520,6 +482,35 @@ class AutomationResource extends BaseResource
     {
         return [
             LogsRelationManager::class,
+        ];
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function getAvailableTwigFilters(): array
+    {
+        return [
+            'capitalize  → Capitalize the first character',
+            'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
+            'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
+            'escape      → Escape HTML entities',
+            'first       → Get the first element of an array',
+            'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
+            'json_encode → Convert to JSON (e.g., {{ model.data | json_encode }})',
+            'last        → Get the last element of an array',
+            'length      → Get the length of a string or array',
+            'lower       → Convert to lowercase',
+            'nl2br       → Convert newlines to <br> tags',
+            'raw         → Output without escaping (use carefully)',
+            'replace     → Replace text (e.g., {{ model.text | replace({"foo": "bar"}) }})',
+            'round       → Round a number',
+            'slice       → Extract a portion (e.g., {{ model.text | slice(0, 100) }})',
+            'split       → Split a string into an array',
+            'striptags   → Remove HTML tags',
+            'title       → Convert to title case',
+            'trim        → Remove whitespace from both ends',
+            'upper       → Convert to uppercase',
         ];
     }
 }

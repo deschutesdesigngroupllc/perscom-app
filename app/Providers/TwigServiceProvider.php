@@ -21,7 +21,7 @@ class TwigServiceProvider extends ServiceProvider
             $loader = new FilesystemLoader(resource_path('views/twig'));
             $policy = new SecurityPolicy(
                 allowedTags: ['apply', 'if', 'for', 'set'],
-                allowedFilters: ['capitalize', 'date', 'default', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'join', 'last', 'length', 'lower', 'map', 'nl2br', 'plural', 'reduce', 'replace', 'round', 'singular', 'slice', 'split', 'striptags', 'title', 'trim', 'upper'],
+                allowedFilters: ['capitalize', 'date', 'default', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'join', 'json_encode', 'last', 'length', 'lower', 'map', 'nl2br', 'plural', 'raw', 'reduce', 'replace', 'round', 'singular', 'slice', 'split', 'striptags', 'title', 'trim', 'upper'],
                 allowedMethods: [],
                 allowedProperties: [],
                 allowedFunctions: []
