@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Widgets;
+namespace App\Filament\App\Resources\AutomationLogResource\Widgets;
 
 use App\Filament\App\Resources\AutomationResource;
 use App\Services\AutomationService;

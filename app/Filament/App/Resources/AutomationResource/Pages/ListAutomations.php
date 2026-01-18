@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AutomationResource\Pages;
 
 use App\Filament\App\Resources\AutomationLogResource;
+use App\Filament\App\Resources\AutomationLogResource\Widgets\AutomationTemplatesWidget;
 use App\Filament\App\Resources\AutomationResource;
-use App\Filament\App\Widgets\AutomationTemplatesWidget;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;

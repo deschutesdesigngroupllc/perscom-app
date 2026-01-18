@@ -32,6 +32,7 @@ class RecentNews extends BaseWidget
             ->emptyStateIcon('heroicon-o-newspaper')
             ->query(Newsfeed::query()->latest())
             ->recordAction('view')
+            ->paginated([5])
             ->columns([
                 Stack::make([
                     TextColumn::make('headline')
@@ -56,7 +57,6 @@ class RecentNews extends BaseWidget
                             ->hiddenLabel()
                             ->html(),
                     ]),
-            ])
-            ->paginated([5]);
+            ]);
     }
 }

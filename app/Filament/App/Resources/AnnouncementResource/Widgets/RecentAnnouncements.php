@@ -30,8 +30,9 @@ class RecentAnnouncements extends BaseWidget
             ->emptyStateHeading('No recent announcements')
             ->emptyStateDescription('There are no recent announcements to show.')
             ->emptyStateIcon('heroicon-o-megaphone')
-            ->query(Announcement::query()->latest())
+            ->query(Announcement::query()->latest()->limit(5))
             ->recordAction('view')
+            ->paginated(false)
             ->columns([
                 Stack::make([
                     TextColumn::make('title')
@@ -56,7 +57,6 @@ class RecentAnnouncements extends BaseWidget
                             ->hiddenLabel()
                             ->html(),
                     ]),
-            ])
-            ->paginated([5]);
+            ]);
     }
 }
