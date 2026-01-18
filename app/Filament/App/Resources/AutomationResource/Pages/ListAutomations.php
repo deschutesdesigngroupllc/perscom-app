@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\AutomationResource\Pages;
 
 use App\Filament\App\Resources\AutomationLogResource;
 use App\Filament\App\Resources\AutomationResource;
+use App\Filament\App\Widgets\AutomationTemplatesWidget;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
@@ -16,6 +17,16 @@ class ListAutomations extends ListRecords
     protected static string $resource = AutomationResource::class;
 
     protected ?string $subheading = 'Automations execute actions automatically when events occur in your system.';
+
+    /**
+     * @return class-string[]
+     */
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            AutomationTemplatesWidget::class,
+        ];
+    }
 
     /**
      * @return ViewComponent[]

@@ -46,6 +46,19 @@ class AutomationService
     }
 
     /**
+     * Get all automation templates.
+     *
+     * @return array<string, array{name: string, description: string, category: string, data: array<string, mixed>}>
+     */
+    public static function getTemplates(): array
+    {
+        /** @var array<string, array{name: string, description: string, category: string, data: array<string, mixed>}> $templates */
+        $templates = config('automations.templates', []);
+
+        return $templates;
+    }
+
+    /**
      * Process an automation-triggerable event.
      *
      * @return Collection<int, AutomationResultData>
