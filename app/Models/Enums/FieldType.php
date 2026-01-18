@@ -136,7 +136,7 @@ enum FieldType: string implements HasColor, HasLabel
                 ->password(),
         };
 
-        if (is_subclass_of($filament, Component::class)) {
+        if ($this === FieldType::COMPONENT_TEXT) {
             return $filament;
         }
 
@@ -170,6 +170,6 @@ enum FieldType: string implements HasColor, HasLabel
 
         return $filament
             ->label($field->name)
-            ->placeholder($field->placeholder);
+            ->placeholder($field->placeholder ?? $field->default);
     }
 }

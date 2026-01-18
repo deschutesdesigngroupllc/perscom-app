@@ -16,6 +16,7 @@ use App\Notifications\User\AdminApprovalRequired;
 use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
 use App\Services\WebhookService;
+use App\Settings\FieldSettings;
 use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
 use App\Traits\DispatchesAutomationEvents;
@@ -34,6 +35,8 @@ class UserObserver
 
         $user->assignRole($permissionSettings->default_roles);
         $user->givePermissionTo($permissionSettings->default_permissions);
+
+        $this->initializeCustomFields($user);
 
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_CREATED->value, $user);
@@ -102,5 +105,18 @@ class UserObserver
         });
 
         $this->dispatchAutomationDeleted($user, AutomationTrigger::USER_DELETED);
+    }
+
+    protected function initializeCustomFields(User $user): void
+    {
+        /** @var FieldSettings $fieldSettings */
+        $fieldSettings = app(FieldSettings::class);
+
+        $fieldIds = $fieldSettings->users ?? [];
+        if ($fieldIds === []) {
+            return;
+        }
+
+        $user->fields()->sync($fieldIds);
     }
 }
