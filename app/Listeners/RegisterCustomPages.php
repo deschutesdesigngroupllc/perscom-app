@@ -9,6 +9,7 @@ use App\Models\Page;
 use Filament\Exceptions\NoDefaultPanelSetException;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Support\Uri;
@@ -23,7 +24,7 @@ class RegisterCustomPages
     {
         $panel = Filament::getCurrentOrDefaultPanel();
 
-        if (is_null($panel)) {
+        if (is_null($panel) || App::isAdmin() || $panel->getId() === 'admin') {
             return;
         }
 
