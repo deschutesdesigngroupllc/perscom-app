@@ -18,7 +18,6 @@ use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
 use ReflectionClass;
-use stdClass;
 
 enum AutomationTrigger: string implements HasLabel
 {
@@ -209,7 +208,7 @@ enum AutomationTrigger: string implements HasLabel
     }
 
     /**
-     * @return array<string, stdClass>
+     * @return array<string, mixed>
      */
     public function getExampleContext(): array
     {

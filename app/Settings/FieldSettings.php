@@ -22,6 +22,8 @@ class FieldSettings extends Settings
 
     public ?array $training_records = null;
 
+    public ?array $users = null;
+
     public static function group(): string
     {
         return 'fields';
