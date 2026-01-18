@@ -18,7 +18,7 @@ class EditorController
             'name' => $page->name,
             'page' => $page,
             'content' => $page->content,
-            'previewUrl' => route('tenant.admin.pages.preview'),
+            'previewUrl' => route('app.admin.pages.preview'),
         ]);
     }
 
@@ -30,7 +30,7 @@ class EditorController
             'content' => data_get($files->firstWhere('language', 'html'), 'content'),
         ]);
 
-        return to_route('tenant.admin.pages.index', $page)
+        return to_route('app.admin.pages.index', $page)
             ->with('message', 'The page was updated successfully.');
     }
 }

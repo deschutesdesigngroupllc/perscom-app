@@ -17,7 +17,7 @@ class HandleInertiaRequests extends Middleware
 
     public function rootView(Request $request)
     {
-        if ($request->routeIs('tenant.admin.*')) {
+        if ($request->routeIs('app.admin.*')) {
             return 'components.layouts.filament.app';
         }
 

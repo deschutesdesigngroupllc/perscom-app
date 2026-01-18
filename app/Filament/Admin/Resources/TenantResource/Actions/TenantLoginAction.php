@@ -36,7 +36,7 @@ class TenantLoginAction extends Action
             // @phpstan-ignore-next-line
             $token = tenancy()->impersonate($record, data_get($data, 'user'), $record->url, 'web');
 
-            return redirect()->to($record->route('tenant.impersonation', [
+            return redirect()->to($record->route('app.impersonation', [
                 'token' => $token,
             ]));
         });

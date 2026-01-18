@@ -22,7 +22,7 @@ class CodeEditorAction extends Action
         $this->label('Open Code Editor');
         $this->icon(Heroicon::OutlinedCodeBracket);
         $this->color('gray');
-        $this->url(fn (): string => route('tenant.admin.pages.index', [
+        $this->url(fn (): string => route('app.admin.pages.index', [
             'page' => $this->getPage(),
         ]), shouldOpenInNewTab: true);
     }

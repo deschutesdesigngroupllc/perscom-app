@@ -35,6 +35,6 @@ class CheckUserApprovalStatus
             'Your account is awaiting approval by an administrator. Please try again later.'
         );
 
-        return redirect()->route('tenant.approval-required');
+        return redirect()->route('app.approval-required');
     }
 }

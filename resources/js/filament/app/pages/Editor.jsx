@@ -12,7 +12,7 @@ export default function Editor({ page, defaultHtml, defaultCss, defaultJavascrip
       files: files
     }))
 
-    post(route('tenant.admin.pages.store', { page: page.id }))
+    post(route('app.admin.pages.store', { page: page.id }))
   }
 
   return (
