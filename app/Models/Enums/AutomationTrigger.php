@@ -16,6 +16,7 @@ use App\Models\ServiceRecord;
 use App\Models\Submission;
 use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Support\Carbon;
 use ReflectionClass;
 use stdClass;
 
@@ -216,16 +217,20 @@ enum AutomationTrigger: string implements HasLabel
         $modelFields = $this->getModelFields($modelClass);
         ksort($modelFields);
 
-        $causer = (object) [
+        $causer = [
             'email' => 'john@example.com',
             'id' => 1,
             'name' => 'John Doe',
         ];
 
         return [
+            'now' => Carbon::now(),
+            'model' => $modelFields,
+            'model_type' => $modelClass,
+            'model_id' => $modelFields['id'] ?? null,
             'causer' => $causer,
-            'model' => (object) $modelFields,
-            'original' => (object) $modelFields,
+            'causer_id' => $causer['id'],
+            'changes' => null,
         ];
     }
 
@@ -286,7 +291,7 @@ enum AutomationTrigger: string implements HasLabel
             'bool', 'boolean' => true,
             'string' => 'example',
             'array' => [],
-            'Carbon', \Illuminate\Support\Carbon::class => '2026-01-14T12:00:00Z',
+            'Carbon', Carbon::class => '2026-01-14T12:00:00Z',
             default => 'value',
         };
     }

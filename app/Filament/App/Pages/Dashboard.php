@@ -441,7 +441,7 @@ class Dashboard extends BaseDashboard
             'description' => data_get($data, 'unit.description'),
         ]);
 
-        if ($group) {
+        if ($group instanceof Group) {
             $unit->groups()->attach($group->id);
         }
 

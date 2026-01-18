@@ -13,7 +13,7 @@ class OnboardingSettings extends Settings
 
     public bool $dismissed;
 
-    public ?string $completed_at;
+    public ?string $completed_at = null;
 
     public static function group(): string
     {

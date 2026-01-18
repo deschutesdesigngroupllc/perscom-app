@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
 /**
  * @property int $id
  * @property int $automation_id
- * @property string $trigger
+ * @property AutomationTrigger $trigger
  * @property string|null $subject_type
  * @property int|null $subject_id
  * @property string|null $causer_type
@@ -24,20 +24,36 @@ use Illuminate\Support\Carbon;
  * @property AutomationLogStatus $status
  * @property string|null $condition_expression
  * @property bool|null $condition_result
- * @property array<string, mixed>|null $context
- * @property array<string, mixed>|null $action_payload
+ * @property array<array-key, mixed>|null $context
+ * @property array<array-key, mixed>|null $action_payload
  * @property string|null $error_message
  * @property int|null $execution_time_ms
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Automation $automation
- * @property-read Model|null $subject
  * @property-read Model|null $causer
+ * @property-read Model|null $subject
  *
  * @method static \Database\Factories\AutomationLogFactory factory($count = null, $state = [])
  * @method static Builder<static>|AutomationLog newModelQuery()
  * @method static Builder<static>|AutomationLog newQuery()
  * @method static Builder<static>|AutomationLog query()
+ * @method static Builder<static>|AutomationLog whereActionPayload($value)
+ * @method static Builder<static>|AutomationLog whereAutomationId($value)
+ * @method static Builder<static>|AutomationLog whereCauserId($value)
+ * @method static Builder<static>|AutomationLog whereCauserType($value)
+ * @method static Builder<static>|AutomationLog whereConditionExpression($value)
+ * @method static Builder<static>|AutomationLog whereConditionResult($value)
+ * @method static Builder<static>|AutomationLog whereContext($value)
+ * @method static Builder<static>|AutomationLog whereCreatedAt($value)
+ * @method static Builder<static>|AutomationLog whereErrorMessage($value)
+ * @method static Builder<static>|AutomationLog whereExecutionTimeMs($value)
+ * @method static Builder<static>|AutomationLog whereId($value)
+ * @method static Builder<static>|AutomationLog whereStatus($value)
+ * @method static Builder<static>|AutomationLog whereSubjectId($value)
+ * @method static Builder<static>|AutomationLog whereSubjectType($value)
+ * @method static Builder<static>|AutomationLog whereTrigger($value)
+ * @method static Builder<static>|AutomationLog whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Support\Twig\Extensions\MathExtension;
 use App\Support\Twig\Extensions\SsoJwtExtension;
 use App\Support\Twig\Extensions\WidgetUrlExtension;
 use Illuminate\Contracts\Container\Container;
@@ -21,7 +22,7 @@ class TwigServiceProvider extends ServiceProvider
             $loader = new FilesystemLoader(resource_path('views/twig'));
             $policy = new SecurityPolicy(
                 allowedTags: ['apply', 'if', 'for', 'set'],
-                allowedFilters: ['capitalize', 'date', 'default', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'join', 'json_encode', 'last', 'length', 'lower', 'map', 'nl2br', 'plural', 'raw', 'reduce', 'replace', 'round', 'singular', 'slice', 'split', 'striptags', 'title', 'trim', 'upper'],
+                allowedFilters: ['capitalize', 'date', 'decrement', 'default', 'escape', 'find', 'first', 'format_currency', 'format_date', 'format_number', 'format_time', 'increment', 'join', 'json_encode', 'last', 'length', 'lower', 'map', 'nl2br', 'plural', 'raw', 'reduce', 'replace', 'round', 'singular', 'slice', 'split', 'striptags', 'title', 'trim', 'upper'],
                 allowedMethods: [],
                 allowedProperties: [],
                 allowedFunctions: []
@@ -34,6 +35,7 @@ class TwigServiceProvider extends ServiceProvider
             ]);
 
             $twig->addExtension(new SandboxExtension($policy));
+            $twig->addExtension($app->make(MathExtension::class));
             $twig->addExtension($app->make(SsoJwtExtension::class));
             $twig->addExtension($app->make(WidgetUrlExtension::class));
 

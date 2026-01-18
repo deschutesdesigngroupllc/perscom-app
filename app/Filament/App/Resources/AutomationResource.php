@@ -12,6 +12,7 @@ use App\Filament\App\Resources\AutomationResource\RelationManagers\LogsRelationM
 use App\Models\Automation;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
+use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Webhook;
 use App\Services\AutomationService;
 use App\Services\ExpressionLanguageService;
@@ -23,6 +24,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\CodeEditor;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -30,6 +32,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Fieldset;
@@ -104,7 +107,7 @@ class AutomationResource extends BaseResource
                             ->schema([
                                 Textarea::make('condition')
                                     ->live(onBlur: true)
-                                    ->helperText('An optional expression to evaluate. If it returns false, the action will not run. E.g., model.status !== "active"')
+                                    ->helperText('An optional expression to evaluate. If it returns false, the action will not run. E.g., model["status"] !== "active"')
                                     ->label('Condition Expression')
                                     ->placeholder('Select a trigger to view available fields and test a condition.')
                                     ->rows(4)
@@ -153,10 +156,10 @@ class AutomationResource extends BaseResource
                                                         ->implode("\n\n")),
                                             ]),
                                         Action::make('viewAvailableFieldsCondition')
-                                            ->label('View Fields')
+                                            ->label('View Context')
                                             ->icon('heroicon-o-code-bracket')
                                             ->modalHeading('Available Condition Fields')
-                                            ->modalDescription('Use these field paths in your condition. E.g., model.status !== "active"')
+                                            ->modalDescription('Use these field paths in your condition. E.g., model["status"] !== "active"')
                                             ->modalSubmitAction(false)
                                             ->modalCancelActionLabel('Close')
                                             ->visible(fn (Get $get): bool => filled($get('trigger')))
@@ -228,7 +231,7 @@ class AutomationResource extends BaseResource
                                                             }),
                                                     ]),
                                                 Action::make('viewAvailableFields')
-                                                    ->label('View Fields')
+                                                    ->label('View Context')
                                                     ->icon('heroicon-o-code-bracket')
                                                     ->modalHeading('Available Template Fields')
                                                     ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
@@ -299,7 +302,7 @@ class AutomationResource extends BaseResource
                                                             }),
                                                     ]),
                                                 Action::make('viewAvailableFieldsMessage')
-                                                    ->label('View Fields')
+                                                    ->label('View Context')
                                                     ->icon('heroicon-o-code-bracket')
                                                     ->modalHeading('Available Template Fields')
                                                     ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
@@ -330,10 +333,118 @@ class AutomationResource extends BaseResource
                                             ])
                                             ->columnSpanFull(),
                                         Textarea::make('message_recipients_expression')
-                                            ->helperText('Expression to determine recipients. E.g., [model.user_id] or [model.user.id]. Leave empty to use context user.')
+                                            ->helperText('An expression to determine the recipients. E.g., model["user_id"] or [model.["user.id"]]. Leave empty to use context user.')
                                             ->label('Recipients Expression')
                                             ->rows(2)
                                             ->nullable()
+                                            ->columnSpanFull(),
+                                    ]),
+                                Fieldset::make('Resource Update Configuration')
+                                    ->visible(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE)
+                                    ->schema([
+                                        Select::make('model_update_target')
+                                            ->label('Target Resource')
+                                            ->helperText('Select the resource type to update.')
+                                            ->options(fn (): array => collect(AutomationService::getUpdatableModels())
+                                                ->mapWithKeys(fn (array $config, string $key): array => [$key => $config['label']])
+                                                ->toArray())
+                                            ->live()
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE)
+                                            ->columnSpanFull(),
+                                        Select::make('model_update_lookup_type')
+                                            ->label('Find Record By')
+                                            ->helperText('How to find the record to update.')
+                                            ->options(ModelUpdateLookupType::class)
+                                            ->live()
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE)
+                                            ->columnSpanFull(),
+                                        Textarea::make('model_update_lookup_expression')
+                                            ->label('Lookup Expression')
+                                            ->helperText('An expression that returns the record ID. E.g., model["user_id"] or causer["id"]')
+                                            ->placeholder('model.user_id')
+                                            ->rows(2)
+                                            ->visible(fn (Get $get): bool => $get('model_update_lookup_type') === ModelUpdateLookupType::EXPRESSION)
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE && $get('model_update_lookup_type') === ModelUpdateLookupType::EXPRESSION)
+                                            ->hintActions([
+                                                Action::make('viewAvailableFieldsLookup')
+                                                    ->label('View Context')
+                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->modalHeading('Available Fields')
+                                                    ->modalDescription('Use these field paths in your expression.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->visible(fn (Get $get): bool => filled($get('trigger')))
+                                                    ->schema(fn (Get $get): array => [
+                                                        CodeEntry::make('example')
+                                                            ->hiddenLabel()
+                                                            ->grammar(Grammar::Json)
+                                                            ->state(json_encode(
+                                                                AutomationTrigger::from($get('trigger'))->getExampleContext(),
+                                                                JSON_PRETTY_PRINT
+                                                            )),
+                                                    ]),
+                                            ])
+                                            ->columnSpanFull(),
+                                        KeyValue::make('model_update_lookup_conditions')
+                                            ->label('Query Conditions')
+                                            ->helperText('A set of field-value pairs to find the record. Values support Twig syntax.')
+                                            ->keyLabel('Field')
+                                            ->valueLabel('Value (Twig)')
+                                            ->keyPlaceholder('email')
+                                            ->valuePlaceholder('{{ model.email }}')
+                                            ->visible(fn (Get $get): bool => $get('model_update_lookup_type') === ModelUpdateLookupType::QUERY)
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE && $get('model_update_lookup_type') === ModelUpdateLookupType::QUERY)
+                                            ->columnSpanFull(),
+                                        KeyValue::make('model_update_fields')
+                                            ->label('Field Updates')
+                                            ->helperText('The field-value pairs to update. Values support Twig syntax like {{ model.custom_fields.rank }}')
+                                            ->keyLabel('Field')
+                                            ->valueLabel('Value (Twig)')
+                                            ->keyPlaceholder('rank_id')
+                                            ->valuePlaceholder('{{ model.custom_fields.new_rank }}')
+                                            ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE)
+                                            ->hintActions([
+                                                Action::make('viewUpdatableFields')
+                                                    ->label('View Updatable Fields')
+                                                    ->icon('heroicon-o-list-bullet')
+                                                    ->modalHeading('Updatable Fields')
+                                                    ->modalDescription('These fields can be updated on the selected resource.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->visible(fn (Get $get): bool => filled($get('model_update_target')))
+                                                    ->schema(fn (Get $get): array => [
+                                                        CodeEntry::make('fields')
+                                                            ->hiddenLabel()
+                                                            ->state(function () use ($get): string {
+                                                                $models = AutomationService::getUpdatableModels();
+                                                                $target = $get('model_update_target');
+                                                                if (! isset($models[$target])) {
+                                                                    return 'Select a target resource first.';
+                                                                }
+
+                                                                return collect($models[$target]['fields'])
+                                                                    ->map(fn (array $config, string $field): string => sprintf('%s (%s) → %s', $field, $config['type'], $config['label']))
+                                                                    ->implode("\n");
+                                                            }),
+                                                    ]),
+                                                Action::make('viewAvailableFieldsUpdate')
+                                                    ->label('View Context')
+                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->modalHeading('Available Context Fields')
+                                                    ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
+                                                    ->modalSubmitAction(false)
+                                                    ->modalCancelActionLabel('Close')
+                                                    ->visible(fn (Get $get): bool => filled($get('trigger')))
+                                                    ->schema(fn (Get $get): array => [
+                                                        CodeEntry::make('example')
+                                                            ->hiddenLabel()
+                                                            ->grammar(Grammar::Json)
+                                                            ->state(json_encode(
+                                                                AutomationTrigger::from($get('trigger'))->getExampleContext(),
+                                                                JSON_PRETTY_PRINT
+                                                            )),
+                                                    ]),
+                                            ])
                                             ->columnSpanFull(),
                                     ]),
                             ]),
@@ -398,6 +509,22 @@ class AutomationResource extends BaseResource
                                     ->label('Recipients Expression')
                                     ->visible(fn (Automation $record): bool => $record->isMessageAction() && filled($record->message_recipients_expression))
                                     ->copyable(),
+                                TextEntry::make('model_update_target')
+                                    ->label('Target Resource')
+                                    ->visible(fn (Automation $record): bool => $record->isModelUpdateAction())
+                                    ->formatStateUsing(fn (string $state): string => AutomationService::getUpdatableModels()[$state]['label'] ?? $state),
+                                TextEntry::make('model_update_lookup_type')
+                                    ->label('Lookup Type')
+                                    ->visible(fn (Automation $record): bool => $record->isModelUpdateAction())
+                                    ->badge(),
+                                TextEntry::make('model_update_lookup_expression')
+                                    ->label('Lookup Expression')
+                                    ->visible(fn (Automation $record): bool => $record->isModelUpdateAction() && filled($record->model_update_lookup_expression))
+                                    ->copyable(),
+                                KeyValueEntry::make('model_update_fields')
+                                    ->label('Field Updates')
+                                    ->visible(fn (Automation $record): bool => $record->isModelUpdateAction())
+                                    ->keyLabel('Field'),
                             ]),
                     ]),
             ]);
@@ -493,9 +620,11 @@ class AutomationResource extends BaseResource
         return [
             'capitalize  → Capitalize the first character',
             'date        → Format a date (e.g., {{ model.created_at | date("Y-m-d") }})',
+            'decrement   → Subtract from a number (e.g., {{ target.points | decrement }} or {{ target.level | decrement(5) }})',
             'default     → Provide a default value (e.g., {{ model.name | default("N/A") }})',
             'escape      → Escape HTML entities',
             'first       → Get the first element of an array',
+            'increment   → Add to a number (e.g., {{ target.points | increment }} or {{ target.level | increment(10) }})',
             'join        → Join array elements (e.g., {{ model.tags | join(", ") }})',
             'json_encode → Convert to JSON (e.g., {{ model.data | json_encode }})',
             'last        → Get the last element of an array',

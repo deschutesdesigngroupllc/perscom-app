@@ -12,6 +12,7 @@ use App\Models\Automation;
 use App\Models\AutomationLog;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationLogStatus;
+use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,8 @@ use RuntimeException;
 use stdClass;
 use Throwable;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 
 class AutomationService
 {
@@ -28,6 +31,19 @@ class AutomationService
         protected ExpressionLanguageService $expressionLanguageService,
         protected Environment $twig,
     ) {}
+
+    /**
+     * Get all updatable models configuration.
+     *
+     * @return array<string, array{model: class-string<Model>, label: string, fields: array<string, array{type: string, label: string}>}>
+     */
+    public static function getUpdatableModels(): array
+    {
+        /** @var array<string, array{model: class-string<Model>, label: string, fields: array<string, array{type: string, label: string}>}> $models */
+        $models = config('automations.updatable_models', []);
+
+        return $models;
+    }
 
     /**
      * Process an automation-triggerable event.
@@ -83,6 +99,7 @@ class AutomationService
             $actionPayload = match ($automation->action_type) {
                 AutomationActionType::WEBHOOK => $this->executeWebhookAction($automation, $event, $context),
                 AutomationActionType::MESSAGE => $this->executeMessageAction($automation, $context),
+                AutomationActionType::MODEL_UPDATE => $this->executeModelUpdateAction($automation, $context),
             };
 
             $executionTimeMs = (int) ((microtime(true) - $startTime) * 1000);
@@ -185,7 +202,7 @@ class AutomationService
     }
 
     /**
-     * Preview a message template with sample context.
+     * Preview a message template with a sample context.
      *
      * @param  array<string, mixed>  $context
      * @return array{valid: bool, result: string|null, error: string|null}
@@ -193,7 +210,8 @@ class AutomationService
     public function previewMessageTemplate(string $template, array $context): array
     {
         try {
-            $result = $this->evaluateMessageTemplate($template, $context);
+            $twigContext = $this->prepareContextForTwig($context);
+            $result = $this->twig->createTemplate($template)->render($twigContext);
 
             return [
                 'valid' => true,
@@ -258,7 +276,7 @@ class AutomationService
     }
 
     /**
-     * Recursively evaluate payload template, replacing {{ placeholders }} with context values.
+     * Recursively evaluate the payload template, replacing {{ placeholders }} with context values.
      *
      * @param  array<string, mixed>  $template
      * @param  array<string, mixed>  $context
@@ -294,7 +312,11 @@ class AutomationService
 
         $twigContext = $this->prepareContextForTwig($context);
 
-        return $this->twig->createTemplate($value)->render($twigContext);
+        try {
+            return $this->twig->createTemplate($value)->render($twigContext);
+        } catch (LoaderError|SyntaxError) {
+            return $value;
+        }
     }
 
     /**
@@ -319,7 +341,7 @@ class AutomationService
     }
 
     /**
-     * Execute message action - creates Message model using automation's configured channels and content.
+     * Execute message action - creates a Message model using automation's configured channels and content.
      *
      * @return array<string, mixed>
      */
@@ -352,6 +374,169 @@ class AutomationService
     }
 
     /**
+     * Execute model update action - updates a model in the database.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws ExpressionEvaluationException
+     */
+    protected function executeModelUpdateAction(Automation $automation, AutomationContextData $context): array
+    {
+        $targetKey = $automation->model_update_target;
+        $lookupType = $automation->model_update_lookup_type;
+        $fieldMappings = $automation->model_update_fields;
+
+        if (blank($targetKey) || blank($lookupType) || blank($fieldMappings)) {
+            throw new RuntimeException('Model update action not properly configured');
+        }
+
+        $modelConfig = $this->getUpdatableModelConfig($targetKey);
+        if ($modelConfig === null) {
+            throw new RuntimeException(sprintf("Model '%s' is not configured for updates", $targetKey));
+        }
+
+        $modelClass = $modelConfig['model'];
+        $contextArray = $context->toExpressionArray();
+
+        $targetModel = $this->findTargetModel($automation, $modelClass, $contextArray);
+        if (! $targetModel instanceof Model) {
+            throw new RuntimeException('Target model not found');
+        }
+
+        $contextWithTarget = array_merge($contextArray, [
+            'target' => $targetModel->toArray(),
+        ]);
+
+        $evaluatedFields = $this->evaluateFieldMappings($fieldMappings, $contextWithTarget);
+        $filteredFields = $this->filterAllowedFields($evaluatedFields, $modelConfig);
+
+        if ($filteredFields === []) {
+            throw new RuntimeException('No valid fields to update after filtering');
+        }
+
+        $originalValues = [];
+        foreach (array_keys($filteredFields) as $field) {
+            $originalValues[$field] = $targetModel->{$field};
+        }
+
+        $targetModel->fill($filteredFields);
+        $targetModel->save();
+
+        return [
+            'type' => 'model_update',
+            'target_model' => $targetKey,
+            'target_id' => $targetModel->getKey(),
+            'updated_fields' => array_keys($filteredFields),
+            'original_values' => $originalValues,
+            'new_values' => $filteredFields,
+        ];
+    }
+
+    /**
+     * Get the configuration for an updatable model.
+     *
+     * @return array{model: class-string<Model>, label: string, allowed_fields: list<string>, denied_fields: list<string>}|null
+     */
+    protected function getUpdatableModelConfig(string $key): ?array
+    {
+        /** @var array<string, array{model: class-string<Model>, label: string, allowed_fields: list<string>, denied_fields: list<string>}> $models */
+        $models = config('automations.updatable_models', []);
+
+        return $models[$key] ?? null;
+    }
+
+    /**
+     * Filter fields based on allowed and denied lists.
+     *
+     * @param  array<string, mixed>  $fields
+     * @param  array{model: class-string<Model>, label: string, allowed_fields: list<string>, denied_fields: list<string>}  $modelConfig
+     * @return array<string, mixed>
+     */
+    protected function filterAllowedFields(array $fields, array $modelConfig): array
+    {
+        $allowedFields = $modelConfig['allowed_fields'] ?? [];
+        $deniedFields = $modelConfig['denied_fields'] ?? [];
+
+        $filtered = in_array('*', $allowedFields, true) ? $fields : array_intersect_key($fields, array_flip($allowedFields));
+
+        foreach ($deniedFields as $deniedField) {
+            unset($filtered[$deniedField]);
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Find the target model based on lookup configuration.
+     *
+     * @param  class-string<Model>  $modelClass
+     * @param  array<string, mixed>  $context
+     *
+     * @throws ExpressionEvaluationException
+     */
+    protected function findTargetModel(Automation $automation, string $modelClass, array $context): ?Model
+    {
+        if ($automation->model_update_lookup_type === ModelUpdateLookupType::EXPRESSION) {
+            $expression = $automation->model_update_lookup_expression;
+            if (blank($expression)) {
+                return null;
+            }
+
+            $id = $this->expressionLanguageService->evaluate($expression, $context);
+            if (! is_numeric($id)) {
+                return null;
+            }
+
+            return $modelClass::query()->find((int) $id);
+        }
+
+        if ($automation->model_update_lookup_type === ModelUpdateLookupType::QUERY) {
+            $conditions = $automation->model_update_lookup_conditions;
+            if (blank($conditions) || ! is_array($conditions)) {
+                return null;
+            }
+
+            $query = $modelClass::query();
+            foreach ($conditions as $field => $valueTemplate) {
+                $value = $this->evaluateTemplateValue((string) $valueTemplate, $context);
+                $query->where($field, $value);
+            }
+
+            return $query->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Evaluate field mappings using Twig templates.
+     *
+     * @param  array<string, mixed>  $fieldMappings
+     * @param  array<string, mixed>  $context
+     * @return array<string, mixed>
+     */
+    protected function evaluateFieldMappings(array $fieldMappings, array $context): array
+    {
+        $result = [];
+
+        foreach ($fieldMappings as $field => $valueTemplate) {
+            $evaluated = $this->evaluateTemplateValue((string) $valueTemplate, $context);
+
+            if (is_numeric($evaluated) && ! str_contains((string) $valueTemplate, '{{')) {
+                $result[$field] = is_float($evaluated + 0) ? (float) $evaluated : (int) $evaluated;
+            } elseif ($evaluated === 'true' || $evaluated === 'false') {
+                $result[$field] = $evaluated === 'true';
+            } elseif (is_numeric($evaluated)) {
+                $result[$field] = is_float($evaluated + 0) ? (float) $evaluated : (int) $evaluated;
+            } else {
+                $result[$field] = $evaluated;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Evaluate message template using Twig.
      *
      * @param  array<string, mixed>  $context
@@ -364,11 +549,15 @@ class AutomationService
 
         $twigContext = $this->prepareContextForTwig($context);
 
-        return $this->twig->createTemplate($template)->render($twigContext);
+        try {
+            return $this->twig->createTemplate($template)->render($twigContext);
+        } catch (LoaderError|SyntaxError) {
+            return $template;
+        }
     }
 
     /**
-     * Evaluate recipients expression to get array of user IDs.
+     * Evaluate recipients expression to get an array of user IDs.
      *
      * @param  array<string, mixed>  $context
      * @return array<int>

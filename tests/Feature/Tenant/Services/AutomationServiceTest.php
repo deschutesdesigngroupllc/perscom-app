@@ -9,6 +9,7 @@ use App\Models\Automation;
 use App\Models\AutomationLog;
 use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\AutomationTrigger;
+use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
 use App\Models\User;
 use App\Models\Webhook;
@@ -583,5 +584,283 @@ class AutomationServiceTest extends TenantTestCase
             'automation_id' => $automation->id,
             'status' => AutomationLogStatus::FAILED->value,
         ]);
+    }
+
+    public function test_it_processes_automation_with_model_update_action(): void
+    {
+        $user = User::factory()->createQuietly(['notes' => 'Original notes']);
+
+        $automation = Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => ['notes' => 'Updated via automation'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $this->assertDatabaseHas('automations_logs', [
+            'automation_id' => $automation->id,
+            'trigger' => AutomationTrigger::USER_CREATED->value,
+            'status' => AutomationLogStatus::EXECUTED->value,
+        ]);
+
+        $user->refresh();
+        $this->assertEquals('Updated via automation', $user->notes);
+    }
+
+    public function test_it_supports_twig_templating_in_model_update_fields(): void
+    {
+        $user = User::factory()->createQuietly(['name' => 'John Doe', 'notes' => null]);
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => ['notes' => 'Welcome {{ model.name }}!'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $user->refresh();
+        $this->assertEquals('Welcome John Doe!', $user->notes);
+    }
+
+    public function test_it_finds_model_by_query_conditions(): void
+    {
+        $targetUser = User::factory()->createQuietly(['email' => 'target@example.com', 'notes' => null]);
+        $triggerUser = User::factory()->createQuietly(['name' => 'Trigger User']);
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::QUERY,
+                'model_update_lookup_expression' => null,
+                'model_update_lookup_conditions' => ['email' => 'target@example.com'],
+                'model_update_fields' => ['notes' => 'Found by query'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $triggerUser,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $targetUser->refresh();
+        $this->assertEquals('Found by query', $targetUser->notes);
+    }
+
+    public function test_it_supports_twig_in_query_conditions(): void
+    {
+        $triggerUser = User::factory()->createQuietly(['email' => 'trigger@example.com', 'notes' => null]);
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::QUERY,
+                'model_update_lookup_expression' => null,
+                'model_update_lookup_conditions' => ['email' => '{{ model.email }}'],
+                'model_update_fields' => ['notes' => 'Self-updated'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $triggerUser,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $triggerUser->refresh();
+        $this->assertEquals('Self-updated', $triggerUser->notes);
+    }
+
+    public function test_it_only_updates_whitelisted_fields(): void
+    {
+        $user = User::factory()->createQuietly([
+            'notes' => 'Original notes',
+            'name' => 'Original Name',
+        ]);
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => [
+                    'notes' => 'Updated notes',
+                    'password' => 'should_not_update', // password not in whitelist
+                ],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $originalPassword = $user->password;
+
+        $this->service->process($event);
+
+        $user->refresh();
+        $this->assertEquals('Updated notes', $user->notes);
+        $this->assertEquals($originalPassword, $user->password);
+    }
+
+    public function test_it_logs_original_and_new_values(): void
+    {
+        $user = User::factory()->createQuietly(['notes' => 'Original notes']);
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => ['notes' => 'New notes'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $log = AutomationLog::query()->first();
+        $this->assertEquals('model_update', $log->action_payload['type']);
+        $this->assertEquals('user', $log->action_payload['target_model']);
+        $this->assertEquals($user->id, $log->action_payload['target_id']);
+        $this->assertEquals('Original notes', $log->action_payload['original_values']['notes']);
+        $this->assertEquals('New notes', $log->action_payload['new_values']['notes']);
+    }
+
+    public function test_it_fails_when_target_model_not_found(): void
+    {
+        $user = User::factory()->createQuietly();
+
+        $automation = Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => '99999999', // Non-existent ID
+                'model_update_fields' => ['notes' => 'Should not work'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $this->assertDatabaseHas('automations_logs', [
+            'automation_id' => $automation->id,
+            'status' => AutomationLogStatus::FAILED->value,
+        ]);
+    }
+
+    public function test_it_fails_when_model_update_not_configured(): void
+    {
+        $user = User::factory()->createQuietly();
+
+        $automation = Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => null,
+                'model_update_lookup_type' => null,
+                'model_update_fields' => null,
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $this->assertDatabaseHas('automations_logs', [
+            'automation_id' => $automation->id,
+            'status' => AutomationLogStatus::FAILED->value,
+        ]);
+    }
+
+    public function test_it_fails_when_target_model_not_in_whitelist(): void
+    {
+        $user = User::factory()->createQuietly();
+
+        $automation = Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'nonexistent_model',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => ['notes' => 'Should not work'],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $this->assertDatabaseHas('automations_logs', [
+            'automation_id' => $automation->id,
+            'status' => AutomationLogStatus::FAILED->value,
+        ]);
+    }
+
+    public function test_it_converts_numeric_values_correctly(): void
+    {
+        $user = User::factory()->createQuietly(['notes' => null]);
+        $rank = \App\Models\Rank::factory()->createQuietly();
+
+        Automation::factory()
+            ->modelUpdateAction()
+            ->forTrigger(AutomationTrigger::USER_CREATED)
+            ->createQuietly([
+                'model_update_target' => 'user',
+                'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
+                'model_update_lookup_expression' => 'model["id"]',
+                'model_update_fields' => ['rank_id' => (string) $rank->id],
+            ]);
+
+        $event = new UserCreated(
+            subject: $user,
+            changedAttributes: [],
+        );
+
+        $this->service->process($event);
+
+        $user->refresh();
+        $this->assertEquals($rank->id, $user->rank_id);
     }
 }
