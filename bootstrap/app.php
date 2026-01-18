@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Filament\App\Pages\Dashboard;
 use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\AuthenticateApi;
@@ -20,6 +21,7 @@ use App\Http\Middleware\SentryContext;
 use App\Jobs\System\DeleteUnverifiedRegistrations;
 use App\Jobs\System\RemoveInactiveAccounts;
 use App\Jobs\System\ResetDemoAccount;
+use Filament\Facades\Filament;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
@@ -81,7 +83,8 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->redirectGuestsTo(fn (): string => route('filament.app.auth.login'));
+        $middleware->redirectGuestsTo(fn (): string => Filament::getLoginUrl());
+        $middleware->redirectUsersTo(fn (): string => Dashboard::getUrl());
 
         $middleware->validateCsrfTokens(except: [
             'spark/*',

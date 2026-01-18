@@ -7,6 +7,7 @@ namespace App\Filament\App\Pages;
 use App\Models\Tenant;
 use App\Models\User;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Pages\SimplePage;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,6 +44,6 @@ class AccountRequiresApproval extends SimplePage
             ->color('info')
             ->submit('logout')
             ->link()
-            ->action(fn () => $this->redirect('filament.app.login'));
+            ->action(fn () => Filament::getLoginUrl());
     }
 }

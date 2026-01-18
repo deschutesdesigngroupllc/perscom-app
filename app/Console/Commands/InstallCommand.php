@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Filament\App\Pages\Dashboard;
 use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\ApiKeySeeder;
@@ -205,7 +206,7 @@ class InstallCommand extends Command implements Isolatable
 
         table(['URL', 'Purpose'], [
             [config('api.url').DIRECTORY_SEPARATOR.config('api.version'), 'API Base URL'],
-            [route('filament.app.pages.dashboard'), 'App Dashboard'],
+            [Dashboard::getUrl(), 'App Dashboard'],
         ]);
 
         $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');
