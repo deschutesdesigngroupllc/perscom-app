@@ -48,7 +48,7 @@ return [
             'description' => "Automatically adds promotion points to a user when a service record is created. The points value is taken from the service record's custom fields.",
             'category' => 'User Management',
             'prerequisites' => [
-                'Create a "Promotion Points" field with key `promotion_points` and add it to the Service Record form.',
+                'Create a "Promotion Points" field with key `promotion_points` and add it to the Service Record and Users form.',
             ],
             'data' => [
                 'name' => 'Increment Promotion Points on Service Record',
