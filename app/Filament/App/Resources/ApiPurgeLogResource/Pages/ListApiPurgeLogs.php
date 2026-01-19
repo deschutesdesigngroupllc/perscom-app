@@ -11,5 +11,5 @@ class ListApiPurgeLogs extends ListRecords
 {
     protected static string $resource = ApiPurgeLogResource::class;
 
-    protected ?string $subheading = 'Your most recent API cache purge requests.';
+    protected ?string $subheading = 'View recent API cache purge activity.';
 }

@@ -19,7 +19,7 @@ class ListPassportTokens extends ListRecords
 {
     protected static string $resource = PassportTokenResource::class;
 
-    protected ?string $subheading = "Manage your application's API keys.";
+    protected ?string $subheading = 'Create and manage API keys for external integrations.';
 
     /**
      * @return ViewComponent[]

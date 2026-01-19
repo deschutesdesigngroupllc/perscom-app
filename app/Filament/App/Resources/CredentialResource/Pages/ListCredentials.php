@@ -12,7 +12,7 @@ class ListCredentials extends ListRecords
 {
     protected static string $resource = CredentialResource::class;
 
-    protected ?string $subheading = "An official document, certificate, or digital badge issued by an authorized entity that attests to an individual's qualifications, competencies, or achievements in a specific field or area of expertise";
+    protected ?string $subheading = 'Track official documents and certificates that verify personnel qualifications.';
 
     /**
      * @return CreateAction[]

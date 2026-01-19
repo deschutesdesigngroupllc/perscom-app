@@ -12,7 +12,7 @@ class ListStatuses extends ListRecords
 {
     protected static string $resource = StatusResource::class;
 
-    protected ?string $subheading = 'Statuses provide a way to add additional meaning to a resource at a moment in time.';
+    protected ?string $subheading = 'Indicate the current state or availability of certain resources.';
 
     /**
      * @return CreateAction[]

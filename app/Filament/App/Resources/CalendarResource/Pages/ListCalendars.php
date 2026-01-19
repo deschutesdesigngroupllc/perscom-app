@@ -12,7 +12,7 @@ class ListCalendars extends ListRecords
 {
     protected static string $resource = CalendarResource::class;
 
-    protected ?string $subheading = 'Manage your system-wide calendars.';
+    protected ?string $subheading = 'Organize events and schedules into separate calendars.';
 
     /**
      * @return CreateAction[]

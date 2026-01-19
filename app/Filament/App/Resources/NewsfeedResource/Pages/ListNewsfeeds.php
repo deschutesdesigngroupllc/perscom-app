@@ -12,7 +12,7 @@ class ListNewsfeeds extends ListRecords
 {
     protected static string $resource = NewsfeedResource::class;
 
-    protected ?string $subheading = 'Keep your users up-to-date with the latest news happening in your organization.';
+    protected ?string $subheading = 'Share news and updates with your organization.';
 
     /**
      * @return CreateAction[]

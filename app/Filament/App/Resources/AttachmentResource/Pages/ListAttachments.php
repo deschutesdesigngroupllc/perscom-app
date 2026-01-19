@@ -12,7 +12,7 @@ class ListAttachments extends ListRecords
 {
     protected static string $resource = AttachmentResource::class;
 
-    protected ?string $subheading = 'A record of all attachments in your account.';
+    protected ?string $subheading = 'Manage files attached to various resources in your account.';
 
     /**
      * @return CreateAction[]

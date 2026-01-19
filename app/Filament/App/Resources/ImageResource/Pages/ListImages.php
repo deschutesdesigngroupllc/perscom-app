@@ -12,7 +12,7 @@ class ListImages extends ListRecords
 {
     protected static string $resource = ImageResource::class;
 
-    protected ?string $subheading = 'A record of all images in your account.';
+    protected ?string $subheading = 'Manage images used for ranks, awards, and other resources.';
 
     /**
      * @return CreateAction[]

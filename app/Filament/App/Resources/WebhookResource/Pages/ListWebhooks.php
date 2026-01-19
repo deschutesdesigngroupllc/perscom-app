@@ -16,7 +16,7 @@ class ListWebhooks extends ListRecords
 {
     protected static string $resource = WebhookResource::class;
 
-    protected ?string $subheading = 'Webhooks provide real-time outbound notifications to ensure your services stay in sync.';
+    protected ?string $subheading = 'Send real-time notifications to external services when data changes.';
 
     /**
      * @return ViewComponent[]

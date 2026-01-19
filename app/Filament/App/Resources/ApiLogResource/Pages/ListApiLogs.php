@@ -11,5 +11,5 @@ class ListApiLogs extends ListRecords
 {
     protected static string $resource = ApiLogResource::class;
 
-    protected ?string $subheading = 'Your most recent API requests.';
+    protected ?string $subheading = 'View recent API request activity and responses.';
 }

@@ -18,7 +18,7 @@ class ListGroups extends ListRecords
 
     protected static string $resource = GroupResource::class;
 
-    protected ?string $subheading = 'Groups provide logical sorting and grouping of units within the organization.';
+    protected ?string $subheading = 'Define major divisions, departments, or branches that contain units.';
 
     /**
      * @return PresetView[]

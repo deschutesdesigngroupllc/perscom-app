@@ -18,7 +18,7 @@ class ListUnits extends ListRecords
 
     protected static string $resource = UnitResource::class;
 
-    protected ?string $subheading = 'Units provide grouping and sorting of personnel within the organization.';
+    protected ?string $subheading = 'Organize personnel into teams, squads, and other operational subdivisions.';
 
     /**
      * @return PresetView[]

@@ -12,7 +12,7 @@ class ListTasks extends ListRecords
 {
     protected static string $resource = TaskResource::class;
 
-    protected ?string $subheading = 'Tasks allow administrators to assign instructions to a user or group of personnel.';
+    protected ?string $subheading = 'Assign and track instructions for personnel to complete.';
 
     /**
      * @return CreateAction[]

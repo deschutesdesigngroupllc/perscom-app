@@ -20,7 +20,7 @@ class ListRankRecords extends ListRecords
 
     protected static string $resource = RankRecordResource::class;
 
-    protected ?string $subheading = 'Keep track of promotions, demotions and lateral transfers throughout the organization.';
+    protected ?string $subheading = 'Track promotions, demotions, and lateral transfers.';
 
     public function getPresetViews(): array
     {

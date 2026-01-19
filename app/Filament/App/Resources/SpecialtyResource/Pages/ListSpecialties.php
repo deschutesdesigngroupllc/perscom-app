@@ -18,7 +18,7 @@ class ListSpecialties extends ListRecords
 
     protected static string $resource = SpecialtyResource::class;
 
-    protected ?string $subheading = 'Specialities help to further delineate personnel responsibilities and capabilities.';
+    protected ?string $subheading = 'Track additional qualifications, skills, or secondary roles that personnel hold.';
 
     public function getPresetViews(): array
     {

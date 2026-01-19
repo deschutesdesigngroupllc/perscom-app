@@ -18,7 +18,7 @@ class ListPositions extends ListRecords
 
     protected static string $resource = PositionResource::class;
 
-    protected ?string $subheading = 'Positions outline responsibilities assigned to certain personnel.';
+    protected ?string $subheading = 'Define roles and job titles that personnel hold within the organization.';
 
     public function getPresetViews(): array
     {

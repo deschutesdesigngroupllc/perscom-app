@@ -18,7 +18,7 @@ class ListCompetencies extends ListRecords
 
     protected static string $resource = CompetencyResource::class;
 
-    protected ?string $subheading = 'Specific skills, knowledge, and abilities an individual has acquired and demonstrated through training to perform their job effectively.';
+    protected ?string $subheading = 'Define skills and knowledge areas that personnel acquire through training.';
 
     public function getPresetViews(): array
     {

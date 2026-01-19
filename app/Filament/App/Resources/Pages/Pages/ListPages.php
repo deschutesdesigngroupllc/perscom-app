@@ -12,7 +12,7 @@ class ListPages extends ListRecords
 {
     protected static string $resource = PageResource::class;
 
-    protected ?string $subheading = 'Pages provide a way to create custom web pages within your dashboard using the Twig Template Engine.';
+    protected ?string $subheading = 'Create custom web pages for your dashboard using templates.';
 
     /**
      * @return CreateAction[]

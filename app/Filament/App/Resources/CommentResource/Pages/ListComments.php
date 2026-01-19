@@ -12,6 +12,8 @@ class ListComments extends ListRecords
 {
     protected static string $resource = CommentResource::class;
 
+    protected ?string $subheading = 'Track discussions and notes on submissions and other resources.';
+
     /**
      * @return CreateAction[]
      */

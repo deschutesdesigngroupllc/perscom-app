@@ -12,7 +12,7 @@ class ListCategories extends ListRecords
 {
     protected static string $resource = CategoryResource::class;
 
-    protected ?string $subheading = 'Categories provide a way to logically group similar resources.';
+    protected ?string $subheading = 'Organize resources into logical groupings for easier management.';
 
     /**
      * @return CreateAction[]

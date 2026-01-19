@@ -19,7 +19,7 @@ class ListForms extends ListRecords
 
     protected static string $resource = FormResource::class;
 
-    protected ?string $subheading = 'Create custom forms to collect valuable organizational data.';
+    protected ?string $subheading = 'Collect structured data through customizable input forms.';
 
     /**
      * @return PresetView[]

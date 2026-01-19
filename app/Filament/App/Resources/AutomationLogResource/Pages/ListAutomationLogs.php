@@ -11,5 +11,5 @@ class ListAutomationLogs extends ListRecords
 {
     protected static string $resource = AutomationLogResource::class;
 
-    protected ?string $subheading = 'Your most recent automation executions.';
+    protected ?string $subheading = 'View recent automation execution results.';
 }

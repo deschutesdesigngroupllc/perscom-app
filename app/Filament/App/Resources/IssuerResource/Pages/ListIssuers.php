@@ -12,7 +12,7 @@ class ListIssuers extends ListRecords
 {
     protected static string $resource = IssuerResource::class;
 
-    protected ?string $subheading = 'The organization or entity that authorizes and provides an official document, certificate, or digital badge to personnel, verifying their competencies, credentials, or qualifications.';
+    protected ?string $subheading = 'Define organizations that authorize credentials and certificates.';
 
     /**
      * @return CreateAction[]

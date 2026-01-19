@@ -19,7 +19,7 @@ class ListSubmissions extends ListRecords
 
     protected static string $resource = SubmissionResource::class;
 
-    protected ?string $subheading = 'View form submissions and collect data.';
+    protected ?string $subheading = 'Review and process form responses.';
 
     /**
      * @return PresetView[]

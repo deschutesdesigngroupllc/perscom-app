@@ -19,7 +19,7 @@ class ListEvents extends ListRecords
 
     protected static string $resource = EventResource::class;
 
-    protected ?string $subheading = 'Manage your organizational events and schedules.';
+    protected ?string $subheading = 'Schedule and manage organizational activities and meetings.';
 
     public function getPresetViews(): array
     {

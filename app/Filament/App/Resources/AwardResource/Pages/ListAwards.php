@@ -18,7 +18,7 @@ class ListAwards extends ListRecords
 
     protected static string $resource = AwardResource::class;
 
-    protected ?string $subheading = 'Awards are used to recognize personnel achievements.';
+    protected ?string $subheading = 'Recognize personnel achievements with decorations, medals, and commendations.';
 
     public function getPresetViews(): array
     {

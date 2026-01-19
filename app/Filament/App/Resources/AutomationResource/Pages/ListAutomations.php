@@ -16,7 +16,7 @@ class ListAutomations extends ListRecords
 {
     protected static string $resource = AutomationResource::class;
 
-    protected ?string $subheading = 'Automations execute actions automatically when events occur in your system.';
+    protected ?string $subheading = 'Trigger actions automatically when specific events occur.';
 
     /**
      * @return class-string[]

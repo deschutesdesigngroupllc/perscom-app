@@ -12,7 +12,7 @@ class ListFields extends ListRecords
 {
     protected static string $resource = FieldResource::class;
 
-    protected ?string $subheading = 'Custom fields provide advanced data collection customization to several PERSCOM features.';
+    protected ?string $subheading = 'Extend PERSCOM with custom data fields for various resources in your account.';
 
     /**
      * @return CreateAction[]

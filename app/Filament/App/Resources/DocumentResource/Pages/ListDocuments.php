@@ -18,7 +18,7 @@ class ListDocuments extends ListRecords
 
     protected static string $resource = DocumentResource::class;
 
-    protected ?string $subheading = 'Documents provide additional context and meaning to other resources in the platform.';
+    protected ?string $subheading = 'Store and manage organizational documents and files.';
 
     public function getPresetViews(): array
     {

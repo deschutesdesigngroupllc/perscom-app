@@ -12,7 +12,7 @@ class ListAnnouncements extends ListRecords
 {
     protected static string $resource = AnnouncementResource::class;
 
-    protected ?string $subheading = 'Keep your organization up-to-date with dashboard-wide announcements.';
+    protected ?string $subheading = 'Broadcast important information across the dashboard.';
 
     /**
      * @return CreateAction[]

@@ -16,7 +16,7 @@ class ListServiceRecords extends ListRecords
 
     protected static string $resource = ServiceRecordResource::class;
 
-    protected ?string $subheading = 'Maintain general records that don’t fit into any specific category.';
+    protected ?string $subheading = 'Maintain general service entries and administrative notes.';
 
     /**
      * @return CreateAction[]

@@ -11,5 +11,5 @@ class ListWebhookLogs extends ListRecords
 {
     protected static string $resource = WebhookLogResource::class;
 
-    protected ?string $subheading = 'Your most recent webhook requests.';
+    protected ?string $subheading = 'View recent webhook delivery attempts and responses.';
 }

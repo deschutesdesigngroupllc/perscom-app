@@ -18,7 +18,7 @@ class ListQualifications extends ListRecords
 
     protected static string $resource = QualificationResource::class;
 
-    protected ?string $subheading = 'Qualifications establish what a user is allowed to do based on performance and/or training.';
+    protected ?string $subheading = 'Track certifications and skills that personnel earn through training and performance.';
 
     public function getPresetViews(): array
     {
