@@ -6,6 +6,7 @@ $providers = [
     App\Providers\AppServiceProvider::class,
     App\Providers\ContextServiceProvider::class,
     App\Providers\Filament\AppPanelProvider::class,
+    App\Providers\Filament\PublicPanelProvider::class,
     App\Providers\HealthServiceProvider::class,
     App\Providers\HorizonServiceProvider::class,
     App\Providers\RouteServiceProvider::class,

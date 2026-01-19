@@ -24,7 +24,7 @@ class RegisterCustomPages
     {
         $panel = Filament::getCurrentOrDefaultPanel();
 
-        if (is_null($panel) || App::isAdmin() || $panel->getId() === 'admin') {
+        if (is_null($panel) || App::isAdmin() || in_array($panel->getId(), ['admin', 'public'])) {
             return;
         }
 

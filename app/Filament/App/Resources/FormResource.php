@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
+use App\Filament\App\Resources\FormResource\Actions\PublicUrlAction;
 use App\Filament\App\Resources\FormResource\Pages\CreateForm;
 use App\Filament\App\Resources\FormResource\Pages\EditForm;
 use App\Filament\App\Resources\FormResource\Pages\ListForms;
@@ -174,6 +175,7 @@ class FormResource extends BaseResource
                     ->label('Public'),
             ])
             ->recordActions([
+                PublicUrlAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
             ])

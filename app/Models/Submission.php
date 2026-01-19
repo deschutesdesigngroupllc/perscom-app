@@ -28,7 +28,7 @@ use Stringable;
 /**
  * @property int $id
  * @property int $form_id
- * @property int $user_id
+ * @property int|null $user_id
  * @property array<array-key, mixed>|null $data
  * @property string|null $read_at
  * @property Carbon|null $created_at
@@ -96,7 +96,10 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+            ->withDefault([
+                'name' => 'Guest',
+            ]);
     }
 
     public function toHtml(): string
