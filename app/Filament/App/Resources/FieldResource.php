@@ -111,7 +111,7 @@ class FieldResource extends BaseResource
                                     ->label('Options Type')
                                     ->helperText('The source of the options.')
                                     ->options(FieldOptionsType::class)
-                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_SELECT)
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT)
                                     ->requiredIf('type', 'select')
                                     ->live()
                                     ->columnSpanFull(),
@@ -119,17 +119,18 @@ class FieldResource extends BaseResource
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
                                     ->formatStateUsing(fn (?Field $record, $state): mixed => filled($record?->getRawOriginal('options')) ? json_decode((string) $record->getRawOriginal('options'), true) : null)
-                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Array)
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Array)
                                     ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::Array)
                                     ->dehydrateStateUsing(fn ($state): string => Collection::wrap($state)->filter()->toJson()),
                                 Select::make('options_model')
                                     ->validationAttribute('resource')
                                     ->label('Resource')
+                                    ->searchable()
                                     ->helperText('The resource to use for the options.')
                                     ->options(FieldOptionsModel::class)
                                     ->columnSpanFull()
                                     ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::Model)
-                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Model),
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Model),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A optional brief description of the field.')
@@ -162,12 +163,12 @@ class FieldResource extends BaseResource
                                     ->label('True Value')
                                     ->helperText('The text shown if the value is true.')
                                     ->requiredIf('type', FieldType::FIELD_BOOLEAN)
-                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_BOOLEAN),
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_BOOLEAN),
                                 TextInput::make('false_value')
                                     ->label('False Value')
                                     ->helperText('The text shown if the value is false.')
                                     ->requiredIf('type', FieldType::FIELD_BOOLEAN)
-                                    ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_BOOLEAN),
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_BOOLEAN),
                             ]),
                         Tab::make('Validation')
                             ->icon('heroicon-o-shield-check')
