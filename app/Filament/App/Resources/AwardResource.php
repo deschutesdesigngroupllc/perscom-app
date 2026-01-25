@@ -69,6 +69,7 @@ class AwardResource extends BaseResource
                                     ->nullable()
                                     ->preload()
                                     ->searchable()
+                                    ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
                                 RichEditor::make('description')
