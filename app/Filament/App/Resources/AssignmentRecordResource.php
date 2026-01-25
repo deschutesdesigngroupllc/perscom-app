@@ -200,16 +200,21 @@ class AssignmentRecordResource extends BaseResource
                         Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
-                                TextEntry::make('user.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
                                 TextEntry::make('type')
                                     ->badge(),
                                 TextEntry::make('position.name')
+                                    ->label('Position')
                                     ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->position)),
                                 TextEntry::make('specialty.name')
+                                    ->label('Specialty')
                                     ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->specialty)),
                                 TextEntry::make('unit.name')
+                                    ->label('Unit')
                                     ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->unit)),
                                 TextEntry::make('status.name')
+                                    ->label('Status')
                                     ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->status)),
                                 TextEntry::make('text')
                                     ->html()

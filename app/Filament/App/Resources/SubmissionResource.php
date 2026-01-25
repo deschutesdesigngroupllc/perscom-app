@@ -113,7 +113,8 @@ class SubmissionResource extends BaseResource
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
-                                TextEntry::make('user.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
                                 TextEntry::make('form.name')
                                     ->label('Form'),
                             ]),

@@ -143,7 +143,8 @@ class CombatRecordResource extends BaseResource
                         Tab::make('Combat Record')
                             ->icon('heroicon-o-fire')
                             ->schema([
-                                TextEntry::make('user.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()

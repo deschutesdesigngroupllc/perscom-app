@@ -150,8 +150,10 @@ class AwardRecordResource extends BaseResource
                         Tab::make('Award Record')
                             ->icon('heroicon-o-trophy')
                             ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('award.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
+                                TextEntry::make('award.name')
+                                    ->label('Award'),
                                 ImageEntry::make('award.image.path')
                                     ->visible(fn (?AwardRecord $record): bool => isset($record->award->image))
                                     ->height(32)

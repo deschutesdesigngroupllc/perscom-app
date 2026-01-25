@@ -143,7 +143,8 @@ class ServiceRecordResource extends BaseResource
                         Tab::make('Service Record')
                             ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
-                                TextEntry::make('user.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()

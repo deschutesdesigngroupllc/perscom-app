@@ -157,8 +157,10 @@ class RankRecordResource extends BaseResource
                         Tab::make('Rank Record')
                             ->icon('heroicon-o-chevron-double-up')
                             ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('rank.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
+                                TextEntry::make('rank.name')
+                                    ->label('Rank'),
                                 ImageEntry::make('rank.image.path')
                                     ->visible(fn (?RankRecord $record): bool => isset($record->rank->image))
                                     ->height(32)

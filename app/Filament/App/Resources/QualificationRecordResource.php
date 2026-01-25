@@ -150,8 +150,10 @@ class QualificationRecordResource extends BaseResource
                         Tab::make('Qualification Record')
                             ->icon('heroicon-o-star')
                             ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('qualification.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
+                                TextEntry::make('qualification.name')
+                                    ->label('Qualification'),
                                 ImageEntry::make('qualification.image.path')
                                     ->visible(fn (?QualificationRecord $record): bool => isset($record->qualification->image))
                                     ->height(32)

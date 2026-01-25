@@ -88,9 +88,8 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'instructor', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                                Select::make('credentials.name')
+                                Select::make('credentials')
                                     ->columnSpanFull()
-                                    ->required()
                                     ->helperText('The credentials that were earned.')
                                     ->preload()
                                     ->relationship(name: 'credentials', titleAttribute: 'name')
@@ -159,9 +158,12 @@ class TrainingRecordResource extends BaseResource
                         Tab::make('Training Record')
                             ->icon('heroicon-o-academic-cap')
                             ->schema([
-                                TextEntry::make('user.name'),
-                                TextEntry::make('instructor.name'),
+                                TextEntry::make('user.name')
+                                    ->label('User'),
+                                TextEntry::make('instructor.name')
+                                    ->label('Instructor'),
                                 TextEntry::make('credentials.name')
+                                    ->label('Credentials')
                                     ->listWithLineBreaks(),
                                 TextEntry::make('text')
                                     ->html()
