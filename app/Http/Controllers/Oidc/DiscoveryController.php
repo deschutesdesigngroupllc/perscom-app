@@ -10,13 +10,26 @@ use Illuminate\Http\JsonResponse;
 
 class DiscoveryController extends Controller
 {
-    public function index(Tenant $tenant): JsonResponse
+    public function __construct(protected ?Tenant $tenant = null)
+    {
+        $this->tenant = tenant();
+    }
+
+    public function index(): JsonResponse
     {
         return response()->json([
-            'issuer' => $tenant->url,
-            'authorization_endpoint' => $tenant->route('passport.authorizations.authorize'),
-            'token_endpoint' => $tenant->route('passport.token'),
-            'userinfo_endpoint' => $tenant->route('oidc.userinfo'),
+            'issuer' => $this->tenant
+                ? $this->tenant->url
+                : config('app.url'),
+            'authorization_endpoint' => $this->tenant
+                ? $this->tenant->route('passport.authorizations.authorize')
+                : route('passport.authorizations.authorize'),
+            'token_endpoint' => $this->tenant
+                ? $this->tenant->route('passport.token')
+                : route('passport.token'),
+            'userinfo_endpoint' => $this->tenant
+                ? $this->tenant->route('oidc.userinfo')
+                : route('oidc.userinfo'),
             'grant_types_supported' => [
                 'authorization_code',
                 'implicit',
@@ -62,7 +75,9 @@ class DiscoveryController extends Controller
                 'zoneinfo',
                 'updated_at',
             ],
-            'end_session_endpoint' => $tenant->route('oidc.logout'),
+            'end_session_endpoint' => $this->tenant
+                ? $this->tenant->route('oidc.logout')
+                : route('oidc.logout'),
         ]);
     }
 }
