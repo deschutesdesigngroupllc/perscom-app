@@ -17,6 +17,7 @@ use Database\Seeders\TenantDatabaseSeeder;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
@@ -41,6 +42,12 @@ class InstallCommand extends Command implements Isolatable
     {
         if (! $this->input->isInteractive()) {
             $this->components->info('Running in non-interactive mode.');
+        }
+
+        if ($this->option('demo') && ! App::environment('demo')) {
+            $this->components->error('The demo option can only be used in the demo environment.');
+
+            return static::FAILURE;
         }
 
         if ($this->isInstalled()) {
@@ -132,6 +139,14 @@ class InstallCommand extends Command implements Isolatable
             $this->call('tenants:seed', [
                 '--tenants' => $tenant->getTenantKey(),
                 '--class' => $seeder,
+                '--force' => true,
+            ]);
+        }
+
+        if (! $this->option('no-seed') && $this->option('demo')) {
+            $this->call('tenants:seed', [
+                '--tenants' => $tenant->getTenantKey(),
+                '--class' => DemoSeeder::class,
                 '--force' => true,
             ]);
         }

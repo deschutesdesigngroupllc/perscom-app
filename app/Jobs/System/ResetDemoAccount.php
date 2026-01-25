@@ -27,9 +27,10 @@ class ResetDemoAccount implements ShouldQueue
 
     public function handle(): void
     {
-        Artisan::call('perscom:reset', [
-            '--env' => 'demo',
-            '--seeder' => $this->seeder,
+        Artisan::call('perscom:install', [
+            '-n' => true,
+            '--demo' => true,
+            '--force' => true,
         ]);
     }
 
