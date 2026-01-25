@@ -91,10 +91,6 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://filamentthemes.com/composer"
-    },
-    {
-      "type": "composer",
       "url": "https://spark.laravel.com"
     },
     {
