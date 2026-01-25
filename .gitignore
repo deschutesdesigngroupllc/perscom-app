@@ -31,3 +31,4 @@ clover.xml
 tests/Coverage
 phpunit.xml
 herd.yml
+.ai

@@ -7,6 +7,7 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use App\Jobs\Tenant\BackupDatabase;
 use App\Models\Backup;
+use Aws\S3\S3Client;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
@@ -14,6 +15,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Filesystem\AwsS3V3Adapter;
+use Illuminate\Support\Facades\Storage;
 use UnitEnum;
 
 class Backups extends Page implements HasTable
@@ -36,8 +39,18 @@ class Backups extends Page implements HasTable
 
     public static function canAccess(): bool
     {
-        return parent::canAccess()
+        $can = parent::canAccess()
             && config('tenancy.enabled');
+
+        /** @var AwsS3V3Adapter $disk */
+        $disk = Storage::disk('backups');
+        $driver = $disk->getClient();
+
+        if (! $driver instanceof S3Client) {
+            return $can;
+        }
+
+        return $can && $driver->doesBucketExist(config('filesystems.disks.backups.bucket'));
     }
 
     public static function table(Table $table): Table

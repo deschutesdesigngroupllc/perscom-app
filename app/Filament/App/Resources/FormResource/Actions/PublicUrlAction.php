@@ -15,7 +15,7 @@ class PublicUrlAction extends Action
 
         $this->label('Public URL');
         $this->color('gray');
-        $this->tooltip(fn (Form $record) => route('filament.public.pages.forms.{slug}', ['slug' => $record->slug]));
+        $this->tooltip(fn (Form $record): string => route('filament.public.pages.forms.{slug}', ['slug' => $record->slug]));
         $this->openUrlInNewTab();
         $this->icon('heroicon-o-link');
         $this->visible(fn (Form $record) => $record->is_public);
