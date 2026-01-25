@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\FormResource\Pages;
 use App\Filament\App\Resources\FormResource;
 use App\Filament\App\Resources\FormResource\Actions\PublicUrlAction;
 use App\Traits\Filament\ConfiguresModelNotifications;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Contracts\Support\Htmlable;
@@ -28,7 +29,7 @@ class EditForm extends EditRecord
     }
 
     /**
-     * @return DeleteAction[]
+     * @return Action[]
      */
     protected function getHeaderActions(): array
     {

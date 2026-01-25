@@ -18,16 +18,16 @@ class DiscoveryController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'issuer' => $this->tenant
+            'issuer' => $this->tenant instanceof Tenant
                 ? $this->tenant->url
                 : config('app.url'),
-            'authorization_endpoint' => $this->tenant
+            'authorization_endpoint' => $this->tenant instanceof Tenant
                 ? $this->tenant->route('passport.authorizations.authorize')
                 : route('passport.authorizations.authorize'),
-            'token_endpoint' => $this->tenant
+            'token_endpoint' => $this->tenant instanceof Tenant
                 ? $this->tenant->route('passport.token')
                 : route('passport.token'),
-            'userinfo_endpoint' => $this->tenant
+            'userinfo_endpoint' => $this->tenant instanceof Tenant
                 ? $this->tenant->route('oidc.userinfo')
                 : route('oidc.userinfo'),
             'grant_types_supported' => [
@@ -75,7 +75,7 @@ class DiscoveryController extends Controller
                 'zoneinfo',
                 'updated_at',
             ],
-            'end_session_endpoint' => $this->tenant
+            'end_session_endpoint' => $this->tenant instanceof Tenant
                 ? $this->tenant->route('oidc.logout')
                 : route('oidc.logout'),
         ]);
