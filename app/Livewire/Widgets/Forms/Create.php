@@ -50,6 +50,7 @@ class Create extends Component implements HasForms
 
         return $schema
             ->model(Submission::class)
+            ->operation('create')
             ->statePath('data')
             ->components([
                 Section::make($formModel->name)
@@ -62,10 +63,10 @@ class Create extends Component implements HasForms
                             ->hiddenLabel()
                             ->visible(fn ($state): bool => filled($state))
                             ->getStateUsing(fn ($state): HtmlString => new HtmlString(<<<HTML
-<div class="text-green-600 font-bold">{$state}</div>
+<div class="text-green-600 font-bold">$state</div>
 HTML
                             )),
-                    ], Submit::buildCustomFieldInputs($this->record), [
+                    ], Submit::buildCustomFieldInputs($formModel->fields), [
                         Actions::make([
                             Action::make('back')
                                 ->button()
