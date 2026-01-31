@@ -35,7 +35,7 @@
     "laravel-vite-plugin": "^2.0.0",
     "lucide-react": "^0.563.0",
     "postcss": "^8.5.3",
-    "postcss-nesting": "^13.0.1",
+    "postcss-nesting": "^14.0.0",
     "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-tailwindcss": "0.7.2",
