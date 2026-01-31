@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "156dddce0e9e4eee68f440fec16176e7",
+    "content-hash": "ddc3a13de7000daa3c7f208fd00709ec",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -7634,12 +7634,12 @@
         },
         {
             "name": "padmission/data-lens",
-            "version": "2.2.1",
+            "version": "2.2.5",
             "dist": {
                 "type": "zip",
-                "url": "https://data-lens.composer.sh/download/a0ba2294-ec58-4dac-8edb-1e696d93acc7/data-lens-2.2.1.zip",
-                "reference": "f012ca98857a3a0c1993c1aba46be4e0b7a27c90",
-                "shasum": "f829df60538443497005f6dffdb75e7559c1c300"
+                "url": "https://data-lens.composer.sh/download/a0e0057e-7600-4914-8145-add301cc80a4/data-lens-2.2.5.zip",
+                "reference": "c5812ac0fe4427d2695b4c51ef1ad6c66b4ab6b9",
+                "shasum": "51fcb5b6b6406b78356bff76f93c0e31e15845aa"
             },
             "require": {
                 "filament/filament": "^4.0",
@@ -7741,7 +7741,7 @@
             "support": {
                 "issues": "https://datalens.padmission.com"
             },
-            "time": "2025-12-31T20:30:46+00:00"
+            "time": "2026-01-19T16:30:54+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

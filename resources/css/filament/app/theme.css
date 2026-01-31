@@ -12,6 +12,7 @@
 @source '../../../../resources/views/components/**/*';
 @source '../../../../vendor/guava/filament-icon-picker/resources/**/*';
 @source '../../../../vendor/archilex/filament-filter-sets/resources/views/**/*';
+@source '../../../../vendor/padmission/data-lens';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
