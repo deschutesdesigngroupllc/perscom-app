@@ -15,7 +15,7 @@
     "@headlessui/react": "^2.2.7",
     "@heroicons/react": "^2.2.0",
     "@iframe-resizer/child": "5.3.2",
-    "@inertiajs/react": "^2.2.6",
+    "@inertiajs/react": "^2.3.11",
     "@marsidev/react-turnstile": "1.4.1",
     "@monaco-editor/react": "4.7.0",
     "@radix-ui/react-select": "^2.2.4",
