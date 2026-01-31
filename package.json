@@ -36,7 +36,7 @@
     "lucide-react": "^0.563.0",
     "postcss": "^8.5.3",
     "postcss-nesting": "^13.0.1",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "4.3.0",
     "prettier-plugin-tailwindcss": "0.7.2",
     "prop-types": "^15.8.1",
