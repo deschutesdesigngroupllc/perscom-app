@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Clusters\Settings\Resources\Roles\Pages;
 
 use App\Filament\App\Clusters\Settings\Resources\Roles\RoleResource;
+use App\Models\Permission;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
@@ -35,9 +36,10 @@ class CreateRole extends CreateRecord
     {
         $permissionModels = collect();
         $this->permissions->each(function (string $permission) use ($permissionModels): void {
-            $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
+            /** @var class-string<Permission> $permissionModel */
+            $permissionModel = Utils::getPermissionModel();
+            $permissionModels->push($permissionModel::firstOrCreate([
                 'name' => $permission,
-                'guard_name' => $this->data['guard_name'],
             ]));
         });
 

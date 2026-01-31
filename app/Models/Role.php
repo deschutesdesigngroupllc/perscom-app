@@ -47,6 +47,10 @@ class Role extends BaseRole
     use ClearsResponseCache;
     use HasFactory;
 
+    protected $attributes = [
+        'guard_name' => 'web',
+    ];
+
     protected $appends = [
         'is_custom_role',
         'is_application_role',
