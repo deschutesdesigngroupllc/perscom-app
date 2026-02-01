@@ -8,10 +8,13 @@ use App\Filament\App\Clusters\Settings;
 use App\Forms\Components\ModelNotification;
 use App\Settings\NotificationSettings;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
@@ -30,6 +33,13 @@ class Notifications extends SettingsPage
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'dashboard/notifications';
+
+    public static function canAccess(): bool
+    {
+        return parent::canAccess()
+            && Auth::user()->hasRole(Utils::getSuperAdminName())
+            && ! App::isDemo();
+    }
 
     public function form(Schema $schema): Schema
     {
