@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Filament\App\Clusters\Settings;
+use App\Filament\App\Resources\UserResource;
 
 return [
     /*
@@ -24,7 +25,7 @@ return [
             'pages' => true,
             'widgets' => true,
             'resources' => true,
-            'custom_permissions' => false,
+            'custom_permissions' => true,
         ],
     ],
 
@@ -166,12 +167,26 @@ return [
     'resources' => [
         'subject' => 'model',
         'manage' => [
-            BezhanSalleh\FilamentShield\Resources\Roles\RoleResource::class => [
+            Settings\Resources\Roles\RoleResource::class => [
                 'viewAny',
                 'view',
                 'create',
                 'update',
                 'delete',
+            ],
+            UserResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+                'restore',
+                'forceDelete',
+                'forceDeleteAny',
+                'restoreAny',
+                'replicate',
+                'reorder',
+                'approve',
             ],
         ],
         'exclude' => [
@@ -229,7 +244,9 @@ return [
     |
     */
 
-    'custom_permissions' => [],
+    'custom_permissions' => [
+        '',
+    ],
 
     /*
     |--------------------------------------------------------------------------

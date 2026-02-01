@@ -9,6 +9,7 @@ use App\Models\Field;
 use App\Models\User;
 use App\Settings\FieldSettings;
 use BackedEnum;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
@@ -18,6 +19,8 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 class Fields extends SettingsPage
@@ -35,6 +38,13 @@ class Fields extends SettingsPage
     protected static ?string $slug = 'dashboard/fields';
 
     protected static ?int $navigationSort = 1;
+
+    public static function canAccess(): bool
+    {
+        return parent::canAccess()
+            && Auth::user()->hasRole(Utils::getSuperAdminName())
+            && ! App::isDemo();
+    }
 
     public function form(Schema $schema): Schema
     {

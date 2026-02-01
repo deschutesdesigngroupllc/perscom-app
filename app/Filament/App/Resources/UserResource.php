@@ -16,7 +16,6 @@ use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterval;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -216,6 +215,7 @@ class UserResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                                 Toggle::make('approved')
+                                    ->visible(fn (?User $record): bool => Auth::user()->can('approve', $record))
                                     ->helperText('Turn off to disable account access.')
                                     ->required()
                                     ->default(true),
@@ -427,7 +427,7 @@ class UserResource extends BaseResource
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
                     ->sortable()
                     ->searchable()
-                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->hasRole(Utils::getSuperAdminName()) ? 'heroicon-o-exclamation-circle' : null)
+                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? 'heroicon-o-exclamation-circle' : null)
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 TextColumn::make('email')
@@ -511,7 +511,7 @@ class UserResource extends BaseResource
                 Action::make('approve')
                     ->color('success')
                     ->icon('heroicon-o-check-circle')
-                    ->visible(fn (?User $record): bool => ! $record->approved && Auth::user()->hasRole(Utils::getSuperAdminName()))
+                    ->visible(fn (?User $record): bool => ! $record->approved && Auth::user()->can('approve', $record))
                     ->successNotificationTitle('The user has been successfully approved.')
                     ->action(function (Action $action, User $record): void {
                         $record->forceFill([

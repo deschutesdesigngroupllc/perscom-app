@@ -28,7 +28,8 @@ class Billing extends Page
 
     public static function canAccess(): bool
     {
-        return Gate::check('billing')
+        return parent::canAccess()
+            && Gate::check('billing')
             && config('tenancy.enabled')
             && ! App::isDemo()
             && filled(config('cashier.secret'));
