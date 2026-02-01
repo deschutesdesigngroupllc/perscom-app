@@ -68,6 +68,11 @@ class UserPolicy
         return $authUser->can('reorder_user');
     }
 
+    public function approve(AuthUser $authUser): bool
+    {
+        return $authUser->can('approve_user');
+    }
+
     public function billing(User $user): bool
     {
         return $user->hasRole(Utils::getSuperAdminName());
