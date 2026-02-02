@@ -32,7 +32,7 @@
     "clsx": "^2.1.1",
     "concurrently": "^9.2.0",
     "laravel-echo": "^2.3.0",
-    "laravel-vite-plugin": "^2.0.0",
+    "laravel-vite-plugin": "^2.1.0",
     "lucide-react": "^0.563.0",
     "postcss": "^8.5.3",
     "postcss-nesting": "^13.0.1",
