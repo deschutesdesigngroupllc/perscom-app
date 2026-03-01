@@ -1,6 +1,10 @@
 {
-  "agents": ["claude_code", "opencode", "phpstorm"],
-  "editors": ["claude_code", "opencode", "phpstorm", "vscode"],
-  "guidelines": ["filament/filament"],
-  "herd_mcp": true
+  "agents": ["claude_code", "opencode", "cursor"],
+  "guidelines": true,
+  "herd_mcp": true,
+  "mcp": true,
+  "nightwatch_mcp": false,
+  "packages": ["filament/filament"],
+  "sail": false,
+  "skills": ["pennant-development", "pest-testing", "inertia-react-development", "tailwindcss-development"]
 }
