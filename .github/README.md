@@ -74,6 +74,31 @@ The application configuration is set with sensible defaults to get you started. 
 
 See [CLAUDE.md](../CLAUDE.md) for a complete list of available development commands including testing, code quality tools, and database management.
 
+## Premium Plugins
+
+The application supports optional premium Filament plugins that enhance functionality. The application works fully without them.
+
+### Advanced Tables (archilex/filament-filter-sets)
+
+Adds advanced table filtering, preset views, and a favorites bar.
+
+1. **Purchase a license** at [filamentphp.com](https://filamentphp.com/plugins/kenneth-sese-advanced-tables)
+
+2. **Authenticate** with the private Composer repository:
+   ```bash
+   composer config http-basic.filament-filter-sets.composer.sh your-email@example.com your-license-key
+   ```
+
+3. **Install the package:**
+   ```bash
+   composer require archilex/filament-filter-sets "^4.0.18"
+   ```
+
+4. **Rebuild frontend assets:**
+   ```bash
+   npm run build
+   ```
+
 ## Contributing
 
 Please see [here](../.github/CONTRIBUTING.md) for more details about contributing.

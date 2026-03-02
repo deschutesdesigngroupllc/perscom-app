@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+if (! class_exists('Archilex\AdvancedTables\Support\Config')) {
+    return [];
+}
+
 return [
     /*
     --------------------------------------------------------------------------

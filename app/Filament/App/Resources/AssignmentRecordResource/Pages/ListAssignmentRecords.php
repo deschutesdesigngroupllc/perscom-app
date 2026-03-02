@@ -6,9 +6,8 @@ namespace App\Filament\App\Resources\AssignmentRecordResource\Pages;
 
 use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\AssignmentRecordResource\Widgets\AssignmentRecordStatsOverview;
+use App\Filament\Concerns\AdvancedTables;
 use App\Models\Enums\AssignmentRecordType;
-use Archilex\AdvancedTables\AdvancedTables;
-use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,8 +23,12 @@ class ListAssignmentRecords extends ListRecords
 
     public function getPresetViews(): array
     {
+        if (! class_exists('Archilex\AdvancedTables\Components\PresetView')) {
+            return [];
+        }
+
         return Collection::make(AssignmentRecordType::cases())->mapWithKeys(fn (AssignmentRecordType $recordType): array => [
-            $recordType->value => PresetView::make()
+            $recordType->value => \Archilex\AdvancedTables\Components\PresetView::make()
                 ->favorite()
                 ->label($recordType->getLabel())
                 ->color($recordType->getColor())

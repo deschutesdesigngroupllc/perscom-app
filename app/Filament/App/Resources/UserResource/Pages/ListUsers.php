@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Pages;
 
 use App\Filament\App\Resources\UserResource;
+use App\Filament\Concerns\AdvancedTables;
 use App\Models\Status;
-use Archilex\AdvancedTables\AdvancedTables;
-use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,8 +21,12 @@ class ListUsers extends ListRecords
 
     public function getPresetViews(): array
     {
+        if (! class_exists('Archilex\AdvancedTables\Components\PresetView')) {
+            return [];
+        }
+
         return Status::all()->mapWithKeys(fn (Status $status): array => [
-            $status->id => PresetView::make()
+            $status->id => \Archilex\AdvancedTables\Components\PresetView::make()
                 ->favorite()
                 ->label($status->name)
                 ->icon($status->icon)

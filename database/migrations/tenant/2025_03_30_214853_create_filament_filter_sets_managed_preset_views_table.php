@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Archilex\AdvancedTables\Support\Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,8 +10,12 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! class_exists('Archilex\AdvancedTables\Support\Config')) {
+            return;
+        }
+
         Schema::create('filament_filter_sets_managed_preset_views', function (Blueprint $table) {
-            $userClass = Config::getUser();
+            $userClass = Archilex\AdvancedTables\Support\Config::getUser();
             $user = new $userClass;
 
             $table->id();

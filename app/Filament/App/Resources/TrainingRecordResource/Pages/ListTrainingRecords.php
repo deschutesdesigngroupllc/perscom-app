@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\TrainingRecordResource\Pages;
 
 use App\Filament\App\Resources\TrainingRecordResource;
 use App\Filament\App\Resources\TrainingRecordResource\Widgets\TrainingRecordStatsOverview;
-use Archilex\AdvancedTables\AdvancedTables;
+use App\Filament\Concerns\AdvancedTables;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

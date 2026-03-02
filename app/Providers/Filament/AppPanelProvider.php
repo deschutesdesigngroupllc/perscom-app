@@ -26,7 +26,6 @@ use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
-use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
@@ -150,11 +149,13 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn (): Factory|View => view('components.logo'))
             ->plugins([
-                AdvancedTablesPlugin::make()
-                    ->persistActiveViewInSession()
-                    ->resourceEnabled(false)
-                    ->favoritesBarSize(Size::Small)
-                    ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
+                ...class_exists('Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin')
+                    ? [\Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin::make()
+                        ->persistActiveViewInSession()
+                        ->resourceEnabled(false)
+                        ->favoritesBarSize(Size::Small)
+                        ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme'))]
+                    : [],
                 DataLensPlugin::make()
                     ->navigationGroup('Reporting')
                     ->navigationLabel('Custom Reports')

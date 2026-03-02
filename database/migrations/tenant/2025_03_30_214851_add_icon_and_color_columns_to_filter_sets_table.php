@@ -10,6 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('filament_filter_sets')) {
+            return;
+        }
+
         Schema::table('filament_filter_sets', function (Blueprint $table) {
             $table->string('color')->nullable()->after('indicators');
             $table->string('icon')->nullable()->after('indicators');

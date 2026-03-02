@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Filament\Concerns\HasViews;
 use App\Observers\UserObserver;
 use App\Settings\DashboardSettings;
 use App\Traits\CanReceiveNotifications;
@@ -30,9 +31,6 @@ use App\Traits\HasTrainingRecords;
 use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
-use Archilex\AdvancedTables\Concerns\HasViews;
-use Archilex\AdvancedTables\Models\ManagedPresetView;
-use Archilex\AdvancedTables\Models\UserView;
 use Carbon\CarbonInterval;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
@@ -122,9 +120,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Carbon|null $last_rank_change_date
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedDefaultView> $managedDefaultViews
  * @property-read int|null $managed_default_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ManagedPresetView> $managedPresetViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
  * @property-read int|null $managed_preset_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, UserView> $managedUserViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
  * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications

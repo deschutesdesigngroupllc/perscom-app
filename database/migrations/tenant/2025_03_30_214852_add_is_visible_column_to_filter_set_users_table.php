@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use Archilex\AdvancedTables\Models\Scopes\TenantScope;
-use Archilex\AdvancedTables\Support\Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,9 +10,17 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! Schema::hasTable('filament_filter_set_user')) {
+            return;
+        }
+
         Schema::table('filament_filter_set_user', function (Blueprint $table) {
             $table->boolean('is_visible')->default(true);
         });
+
+        if (! class_exists('Archilex\AdvancedTables\Support\Config')) {
+            return;
+        }
 
         // Prior to v3, global favorites appeared for all users, including the
         // view's creator, regardless of whether or not the creator had toggled
@@ -27,8 +33,8 @@ return new class extends Migration
         // Therefore, we need to attach (make favorite) any view created by the
         // user that are global favorite, but aren't attached (favorited).
 
-        Config::getUserView()::query()
-            ->withoutGlobalScope(TenantScope::class)
+        Archilex\AdvancedTables\Support\Config::getUserView()::query()
+            ->withoutGlobalScope(Archilex\AdvancedTables\Models\Scopes\TenantScope::class)
             ->global()
             ->each(function ($view) {
                 $view->userManagedUserViews()

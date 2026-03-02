@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\ServiceRecordResource\Pages;
 
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Filament\App\Resources\ServiceRecordResource\Widgets\ServiceRecordStatsOverview;
-use Archilex\AdvancedTables\AdvancedTables;
+use App\Filament\Concerns\AdvancedTables;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

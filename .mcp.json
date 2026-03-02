@@ -4,7 +4,7 @@
       "type": "stdio",
       "command": "npx",
       "args": ["@playwright/mcp@latest"],
-      "env": []
+      "env": {}
     },
     "laravel-boost": {
       "command": "php",

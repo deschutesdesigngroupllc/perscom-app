@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68e55f4252ed52afe556560d47bdc0b8",
+    "content-hash": "02e932048a6bb53c72ca2abe6fa53378",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -71,89 +71,6 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.3.5"
             },
             "time": "2025-12-04T13:38:21+00:00"
-        },
-        {
-            "name": "archilex/filament-filter-sets",
-            "version": "4.0.18",
-            "dist": {
-                "type": "zip",
-                "url": "https://filament-filter-sets.composer.sh/download/a0c6c2d3-563f-40e1-adcd-f1210472af62/advanced-tables-for-filament-4.0.18.zip",
-                "reference": "d700fc070af0d37a91dc69003e26b13d462456a9",
-                "shasum": "0f9ac505bc60ce8ab416abba10ff697902b8b48a"
-            },
-            "require": {
-                "filament/tables": "^4.3.0",
-                "illuminate/contracts": "^11.15|^12.0",
-                "php": "^8.2",
-                "spatie/eloquent-sortable": "^4.2",
-                "spatie/laravel-package-tools": "^1.9"
-            },
-            "require-dev": {
-                "larastan/larastan": "^3.2",
-                "laravel/pint": "^1.0",
-                "nunomaduro/collision": "^8.1",
-                "orchestra/testbench": "^9.0|^10.0",
-                "pestphp/pest": "^3.7",
-                "pestphp/pest-plugin-laravel": "^3.0",
-                "pestphp/pest-plugin-livewire": "^2.0|^3.0",
-                "spatie/laravel-ray": "^1.29"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "AdvancedTables": "Archilex\\AdvancedTables\\Facades\\AdvancedTables"
-                    },
-                    "providers": [
-                        "Archilex\\AdvancedTables\\AdvancedTablesServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Archilex\\AdvancedTables\\": "src",
-                    "Archilex\\AdvancedTables\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Archilex\\AdvancedTables\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "pint": [
-                    "vendor/bin/pint"
-                ],
-                "test": [
-                    "@test:pest",
-                    "@test:phpstan"
-                ],
-                "test:pest": [
-                    "vendor/bin/pest --parallel"
-                ]
-            },
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "Kenneth Sese",
-                    "role": "Developer",
-                    "email": "kmsese@gmail.com"
-                }
-            ],
-            "description": "Advanced Tables, previously Filter Sets, supercharges your Filament Tables with advanced tabs, customizable views, reorderable columns, and more",
-            "homepage": "https://github.com/archilex/filament-filter-sets",
-            "keywords": [
-                "advanced-tables",
-                "archilex",
-                "filament",
-                "filters",
-                "laravel",
-                "tables",
-                "views"
-            ],
-            "time": "2026-01-07T03:08:46+00:00"
         },
         {
             "name": "astrotomic/laravel-translatable",

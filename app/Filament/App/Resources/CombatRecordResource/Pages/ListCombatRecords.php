@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\CombatRecordResource\Pages;
 
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Filament\App\Resources\CombatRecordResource\Widgets\CombatRecordStatsOverview;
-use Archilex\AdvancedTables\AdvancedTables;
+use App\Filament\Concerns\AdvancedTables;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 

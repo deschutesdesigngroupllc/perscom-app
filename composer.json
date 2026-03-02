@@ -10,8 +10,7 @@
   "require": {
     "php": "^8.4",
     "ext-zip": "*",
-    "archilex/filament-filter-sets": "^4.0.18",
-    "aws/aws-sdk-php": "^3.369.8",
+"aws/aws-sdk-php": "^3.369.8",
     "bezhansalleh/filament-shield": "4.0.3",
     "calebporzio/sushi": "^2.5.3",
     "dutchcodingcompany/filament-socialite": "^3.0.1",
@@ -87,6 +86,9 @@
     "rector/rector": "^2.3.0",
     "spatie/ignition": "^1.15.1",
     "spatie/laravel-ray": "^1.43.2"
+  },
+  "suggest": {
+    "archilex/filament-filter-sets": "Advanced table filtering, preset views, and favorites bar (^4.0.18)"
   },
   "repositories": [
     {
