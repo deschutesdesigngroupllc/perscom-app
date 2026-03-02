@@ -133,9 +133,7 @@
     "post-update-cmd": [
       "@php artisan filament:upgrade",
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-      "@php artisan vendor:publish --tag=livewire:assets --ansi --force",
-      "@php artisan boost:update --ansi",
-      "npx prettier --log-level silent --write boost.json"
+      "@php artisan vendor:publish --tag=livewire:assets --ansi --force"
     ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
