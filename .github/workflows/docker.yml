@@ -71,8 +71,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
-          secrets: |
-            COMPOSER_AUTH=${{ secrets.COMPOSER_AUTH }}
 
       - name: Build and Push Docker Image (CLI)
         uses: docker/build-push-action@v6
@@ -85,5 +83,3 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
-          secrets: |
-            COMPOSER_AUTH=${{ secrets.COMPOSER_AUTH }}

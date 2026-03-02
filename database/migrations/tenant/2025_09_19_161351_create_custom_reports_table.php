@@ -6,19 +6,22 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Padmission\DataLens\Support\Utils;
 
 return new class extends Migration
 {
     public function up(): void
     {
+        if (! class_exists('Padmission\DataLens\Support\Utils')) {
+            return;
+        }
+
         Schema::create(config('data-lens.table_names.custom_reports'), function (Blueprint $table) {
             $table->id();
 
             $table->uuid('api_uuid')->nullable()->unique();
 
-            if (Utils::isTenantEnabled()) {
-                $table->foreignId(Utils::getTenantKeyName());
+            if (Padmission\DataLens\Support\Utils::isTenantEnabled()) {
+                $table->foreignId(Padmission\DataLens\Support\Utils::getTenantKeyName());
             }
 
             $table->string('name');
@@ -72,8 +75,8 @@ return new class extends Migration
             $table->timestamp('next_run_at')->nullable();
             $table->foreignId('creator_id')->nullable();
 
-            if (Utils::isTenantEnabled()) {
-                $table->foreignId(Utils::getTenantKeyName())->nullable();
+            if (Padmission\DataLens\Support\Utils::isTenantEnabled()) {
+                $table->foreignId(Padmission\DataLens\Support\Utils::getTenantKeyName())->nullable();
             }
 
             // Use JSONB for settings since it's frequently queried with JSON path operators

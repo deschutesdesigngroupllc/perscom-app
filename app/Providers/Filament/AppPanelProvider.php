@@ -50,7 +50,6 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Padmission\DataLens\DataLensPlugin;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -156,10 +155,12 @@ class AppPanelProvider extends PanelProvider
                         ->favoritesBarSize(Size::Small)
                         ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme'))]
                     : [],
-                DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
-                    ->navigationLabel('Custom Reports')
-                    ->navigationSort(10),
+                ...class_exists('Padmission\DataLens\DataLensPlugin')
+                    ? [\Padmission\DataLens\DataLensPlugin::make()
+                        ->navigationGroup('Reporting')
+                        ->navigationLabel('Custom Reports')
+                        ->navigationSort(10)]
+                    : [],
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
                     ->navigationSort(3)

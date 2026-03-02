@@ -12,3 +12,4 @@ parameters:
         - '#Property .* does not exist#'
         - '#(unknown class|not subtype of template type).*Archilex\\AdvancedTables\\#'
         - '#Archilex\\AdvancedTables\\.*not subtype of template type#'
+        - '#(unknown class|invalid type).*Padmission\\DataLens\\#'

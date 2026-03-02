@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Padmission\DataLens\Mail\ReportEmail;
+
+if (! class_exists('Padmission\DataLens\DataLensServiceProvider')) {
+    return [];
+}
 
 return [
     /*
@@ -262,6 +265,6 @@ return [
     ],
 
     'mailable_classes' => [
-        'report_email' => ReportEmail::class,
+        'report_email' => Padmission\DataLens\Mail\ReportEmail::class,
     ],
 ];

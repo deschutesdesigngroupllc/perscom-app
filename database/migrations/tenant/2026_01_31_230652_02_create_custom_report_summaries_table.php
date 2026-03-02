@@ -10,6 +10,10 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (! class_exists('Padmission\DataLens\DataLensServiceProvider')) {
+            return;
+        }
+
         $tableName = config('data-lens.table_names.custom_report_summaries', 'custom_report_summaries');
 
         Schema::create($tableName, function (Blueprint $table) {

@@ -37,7 +37,6 @@
     "league/html-to-markdown": "^5.1.1",
     "lwwcas/laravel-countries": "^4.12.0.1",
     "owenvoke/blade-fontawesome": "^2.9.1",
-    "padmission/data-lens": "^2.2.5",
     "phiki/phiki": "^2.0.5",
     "php-open-source-saver/jwt-auth": "^2.8.3",
     "pusher/pusher-php-server": "^7.2.7",
@@ -88,7 +87,8 @@
     "spatie/laravel-ray": "^1.43.2"
   },
   "suggest": {
-    "archilex/filament-filter-sets": "Advanced table filtering, preset views, and favorites bar (^4.0.18)"
+    "archilex/filament-filter-sets": "Advanced table filtering, preset views, and favorites bar (^4.0.18)",
+    "padmission/data-lens": "Custom report builder for Filament (^2.2.5)"
   },
   "repositories": [
     {

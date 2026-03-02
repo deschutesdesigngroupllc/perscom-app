@@ -99,6 +99,27 @@ Adds advanced table filtering, preset views, and a favorites bar.
    npm run build
    ```
 
+### Data Lens (padmission/data-lens)
+
+Adds custom report building capabilities with scheduling and exports.
+
+1. **Purchase a license** at [filamentphp.com](https://filamentphp.com/plugins/padmission-data-lens)
+
+2. **Authenticate** with the private Composer repository:
+   ```bash
+   composer config http-basic.data-lens.composer.sh your-email@example.com your-license-key
+   ```
+
+3. **Install the package:**
+   ```bash
+   composer require padmission/data-lens "^2.2.5"
+   ```
+
+4. **Rebuild frontend assets:**
+   ```bash
+   npm run build
+   ```
+
 ## Contributing
 
 Please see [here](../.github/CONTRIBUTING.md) for more details about contributing.
