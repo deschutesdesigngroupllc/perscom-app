@@ -1,10 +1,26 @@
 {
-  "agents": ["claude_code", "opencode", "cursor"],
-  "guidelines": true,
-  "herd_mcp": true,
-  "mcp": true,
-  "nightwatch_mcp": false,
-  "packages": ["filament/filament"],
-  "sail": false,
-  "skills": ["pennant-development", "pest-testing", "inertia-react-development", "tailwindcss-development"]
+    "agents": [
+        "claude_code",
+        "opencode",
+        "cursor"
+    ],
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "packages": [
+        "filament/filament",
+        "spatie/laravel-ray"
+    ],
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "configuring-horizon",
+        "pennant-development",
+        "pulse-development",
+        "socialite-development",
+        "pest-testing",
+        "inertia-react-development",
+        "tailwindcss-development",
+        "debugging-output-and-previewing-html-using-ray"
+    ]
 }
