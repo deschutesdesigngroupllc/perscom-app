@@ -55,7 +55,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AutomationLog whereTrigger($value)
  * @method static Builder<static>|AutomationLog whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class AutomationLog extends Model
 {

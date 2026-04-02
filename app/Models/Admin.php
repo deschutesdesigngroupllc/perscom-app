@@ -42,7 +42,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Admin whereRememberToken($value)
  * @method static Builder<static>|Admin whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail
 {

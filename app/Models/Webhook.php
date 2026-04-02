@@ -39,7 +39,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Webhook whereUpdatedAt($value)
  * @method static Builder<static>|Webhook whereUrl($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Webhook extends Model
 {

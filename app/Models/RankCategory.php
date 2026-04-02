@@ -31,7 +31,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankCategory whereRankId($value)
  * @method static Builder<static>|RankCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class RankCategory extends Pivot
 {

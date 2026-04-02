@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|FormTag whereFormId($value)
  * @method static Builder<static>|FormTag whereTagId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class FormTag extends Pivot
 {

@@ -40,7 +40,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @method static Builder<static>|PassportToken whereUpdatedAt($value)
  * @method static Builder<static>|PassportToken whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class PassportToken extends BaseTokenModel
 {

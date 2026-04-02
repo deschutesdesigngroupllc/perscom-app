@@ -32,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|UnitGroup whereUnitId($value)
  * @method static Builder<static>|UnitGroup whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class UnitGroup extends Pivot
 {

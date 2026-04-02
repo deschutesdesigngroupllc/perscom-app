@@ -45,7 +45,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Page whereSlug($value)
  * @method static Builder<static>|Page whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Page extends Model implements Hideable, Sortable
 {

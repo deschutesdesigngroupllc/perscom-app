@@ -63,7 +63,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @method static Builder<static>|PassportClient whereUpdatedAt($value)
  * @method static Builder<static>|PassportClient whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class PassportClient extends BaseClientModel
 {

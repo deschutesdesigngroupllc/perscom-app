@@ -60,7 +60,7 @@ use Illuminate\Support\Facades\DB;
  * @method static Builder<static>|TaskAssignment whereUpdatedAt($value)
  * @method static Builder<static>|TaskAssignment whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TaskAssignmentObserver::class)]
 class TaskAssignment extends Pivot

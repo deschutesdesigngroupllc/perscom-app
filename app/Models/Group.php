@@ -67,7 +67,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @method static Builder<static>|Group whereOrder($value)
  * @method static Builder<static>|Group whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(GroupScope::class)]
 class Group extends Model implements HasLabel, Hideable, Sortable

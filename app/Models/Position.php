@@ -56,7 +56,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Position whereOrder($value)
  * @method static Builder<static>|Position whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(PositionScope::class)]
 class Position extends Model implements HasLabel, Sortable

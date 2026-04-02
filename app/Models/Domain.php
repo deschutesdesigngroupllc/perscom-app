@@ -38,7 +38,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @method static Builder<static>|Domain whereTenantId($value)
  * @method static Builder<static>|Domain whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(DomainObserver::class)]
 class Domain extends BaseDomain

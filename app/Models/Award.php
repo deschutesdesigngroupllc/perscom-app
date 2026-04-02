@@ -60,7 +60,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Award whereOrder($value)
  * @method static Builder<static>|Award whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(AwardScope::class)]
 class Award extends Model implements HasLabel, Sortable

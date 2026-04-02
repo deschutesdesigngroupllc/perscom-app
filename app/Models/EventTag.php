@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|EventTag whereEventId($value)
  * @method static Builder<static>|EventTag whereTagId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class EventTag extends Pivot
 {

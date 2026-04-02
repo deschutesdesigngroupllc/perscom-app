@@ -36,7 +36,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Registration whereUpdatedAt($value)
  * @method static Builder<static>|Registration whereVerifiedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Registration extends Model
 {

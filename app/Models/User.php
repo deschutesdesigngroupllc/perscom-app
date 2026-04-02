@@ -109,7 +109,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read bool $discord_connected
  * @property-read SocialiteUser|null $discordUser
  * @property-read EventRegistration|null $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
  * @property-read int|null $events_count
  * @property-read bool $facebook_connected
  * @property-read SocialiteUser|null $facebookUser
@@ -215,7 +215,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable

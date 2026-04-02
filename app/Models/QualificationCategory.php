@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|QualificationCategory whereQualificationId($value)
  * @method static Builder<static>|QualificationCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class QualificationCategory extends Pivot
 {

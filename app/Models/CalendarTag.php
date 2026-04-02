@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|CalendarTag whereCalendarId($value)
  * @method static Builder<static>|CalendarTag whereTagId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class CalendarTag extends Pivot
 {

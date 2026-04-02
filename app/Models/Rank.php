@@ -60,7 +60,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Rank wherePaygrade($value)
  * @method static Builder<static>|Rank whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(RankScope::class)]
 class Rank extends Model implements HasLabel, Sortable

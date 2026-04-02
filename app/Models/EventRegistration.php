@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Date;
  * @property EventRegistrationStatus|null $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Event $event
+ * @property-read \Illuminate\Support\Facades\Event $event
  * @property-read User $user
  *
  * @method static Builder<static>|EventRegistration future()
@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\Date;
  * @method static Builder<static>|EventRegistration whereUpdatedAt($value)
  * @method static Builder<static>|EventRegistration whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class EventRegistration extends Pivot
 {

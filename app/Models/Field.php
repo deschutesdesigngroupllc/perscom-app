@@ -85,7 +85,7 @@ use function in_array;
  * @method static Builder<static>|Field whereType($value)
  * @method static Builder<static>|Field whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Field extends Model implements HasLabel, Hideable
 {

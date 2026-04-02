@@ -61,7 +61,7 @@ use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
  * @method static Builder<static>|ApiPurgeLog whereSubjectType($value)
  * @method static Builder<static>|ApiPurgeLog whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(ApiPurgeLogScope::class)]
 class ApiPurgeLog extends Activity

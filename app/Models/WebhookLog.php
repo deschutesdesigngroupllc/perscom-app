@@ -60,7 +60,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|WebhookLog whereSubjectType($value)
  * @method static Builder<static>|WebhookLog whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(WebhookLogScope::class)]
 class WebhookLog extends Activity

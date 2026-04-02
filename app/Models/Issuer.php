@@ -32,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Issuer whereName($value)
  * @method static Builder<static>|Issuer whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Issuer extends Model implements HasLabel
 {

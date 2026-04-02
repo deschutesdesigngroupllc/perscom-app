@@ -32,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|DocumentCategory whereOrder($value)
  * @method static Builder<static>|DocumentCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class DocumentCategory extends Pivot
 {

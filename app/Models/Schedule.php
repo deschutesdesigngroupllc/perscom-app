@@ -10,7 +10,6 @@ use App\Services\ScheduleService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,7 +42,7 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $updated_at
  * @property-read bool $has_passed
  * @property-read CarbonInterval $length
- * @property-read Model|Eloquent|null $repeatable
+ * @property-read Model|Model|null $repeatable
  *
  * @method static \Database\Factories\ScheduleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Schedule newModelQuery()
@@ -70,7 +69,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Schedule whereUntil($value)
  * @method static Builder<static>|Schedule whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Schedule extends MorphPivot
 {

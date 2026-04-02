@@ -108,7 +108,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @method static Builder<static>|Tenant whereVatId($value)
  * @method static Builder<static>|Tenant whereWebsite($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TenantObserver::class)]
 class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase

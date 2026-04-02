@@ -55,7 +55,7 @@ use Illuminate\Support\Str;
  * @method static Builder<static>|Announcement whereTitle($value)
  * @method static Builder<static>|Announcement whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {

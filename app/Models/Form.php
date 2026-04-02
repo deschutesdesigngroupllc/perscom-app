@@ -63,7 +63,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Form whereSuccessMessage($value)
  * @method static Builder<static>|Form whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Form extends Model implements HasLabel
 {

@@ -75,7 +75,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AwardRecord whereUpdatedAt($value)
  * @method static Builder<static>|AwardRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(AwardRecordObserver::class)]
 #[ScopedBy(AwardRecordScope::class)]

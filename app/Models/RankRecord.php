@@ -79,7 +79,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankRecord whereUpdatedAt($value)
  * @method static Builder<static>|RankRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(RankRecordObserver::class)]
 #[ScopedBy(RankRecordScope::class)]

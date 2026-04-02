@@ -67,7 +67,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Newsfeed whereSubjectType($value)
  * @method static Builder<static>|Newsfeed whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(NewsfeedScope::class)]
 class Newsfeed extends Activity implements HasColor

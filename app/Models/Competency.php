@@ -43,7 +43,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Competency whereName($value)
  * @method static Builder<static>|Competency whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Competency extends Model implements HasLabel
 {

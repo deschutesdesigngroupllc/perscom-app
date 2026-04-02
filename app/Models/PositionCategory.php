@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|PositionCategory wherePositionId($value)
  * @method static Builder<static>|PositionCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class PositionCategory extends Pivot
 {

@@ -71,7 +71,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Slot whereSpecialtyId($value)
  * @method static Builder<static>|Slot whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(SlotScope::class)]
 class Slot extends Model implements Hideable, Sortable

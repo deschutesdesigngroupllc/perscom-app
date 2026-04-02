@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|CompetencyCategory whereOrder($value)
  * @method static Builder<static>|CompetencyCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class CompetencyCategory extends Pivot
 {

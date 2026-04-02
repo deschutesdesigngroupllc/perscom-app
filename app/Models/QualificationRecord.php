@@ -75,7 +75,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|QualificationRecord whereUpdatedAt($value)
  * @method static Builder<static>|QualificationRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(QualificationRecordObserver::class)]
 #[ScopedBy(QualificationRecordScope::class)]

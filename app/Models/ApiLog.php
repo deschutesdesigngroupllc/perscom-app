@@ -87,7 +87,7 @@ use Zoha\Metable;
  * @method static Builder<static>|ApiLog whereUpdatedAt($value)
  * @method static Builder<static>|ApiLog withMeta()
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity

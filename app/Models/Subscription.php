@@ -64,7 +64,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Subscription whereType($value)
  * @method static Builder<static>|Subscription whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(SubscriptionObserver::class)]
 class Subscription extends BaseSubscription

@@ -71,7 +71,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|ServiceRecord whereUpdatedAt($value)
  * @method static Builder<static>|ServiceRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(ServiceRecordObserver::class)]
 #[ScopedBy(ServiceRecordScope::class)]

@@ -53,7 +53,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Message whereSentAt($value)
  * @method static Builder<static>|Message whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model implements HasLabel

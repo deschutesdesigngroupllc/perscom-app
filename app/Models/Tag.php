@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Tag whereName($value)
  * @method static Builder<static>|Tag whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Tag extends Model implements HasLabel
 {

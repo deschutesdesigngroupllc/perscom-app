@@ -40,7 +40,7 @@ use Spatie\Permission\Models\Role as BaseRole;
  * @method static Builder<static>|Role whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role withoutPermission($permissions)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Role extends BaseRole
 {

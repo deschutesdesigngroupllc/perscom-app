@@ -51,7 +51,7 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
  * @method static Builder<static>|Activity whereSubjectType($value)
  * @method static Builder<static>|Activity whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Activity extends BaseActivity
 {

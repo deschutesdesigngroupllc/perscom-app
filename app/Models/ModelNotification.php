@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -30,10 +29,10 @@ use Illuminate\Support\Collection;
  * @property string|null $subject
  * @property string|null $message
  * @property Collection<int, NotificationChannel>|null $channels
- * @property-read Model|Eloquent|null $group
- * @property-read Model|Eloquent $model
- * @property-read Model|Eloquent|null $unit
- * @property-read Model|Eloquent|null $user
+ * @property-read Model|Model|null $group
+ * @property-read Model|Model $model
+ * @property-read Model|Model|null $unit
+ * @property-read Model|Model|null $user
  *
  * @method static Builder<static>|ModelNotification newModelQuery()
  * @method static Builder<static>|ModelNotification newQuery()
@@ -54,7 +53,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|ModelNotification whereUserId($value)
  * @method static Builder<static>|ModelNotification whereUserType($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class ModelNotification extends MorphPivot
 {

@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|SpecialtyCategory whereSpecialtyId($value)
  * @method static Builder<static>|SpecialtyCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class SpecialtyCategory extends Pivot
 {

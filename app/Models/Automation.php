@@ -72,7 +72,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Automation whereWebhookId($value)
  * @method static Builder<static>|Automation whereWebhookPayloadTemplate($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Automation extends Model
 {
