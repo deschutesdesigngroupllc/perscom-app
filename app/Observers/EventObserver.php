@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Actions\Events\SendUpcomingEventNotification;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Event;

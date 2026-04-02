@@ -51,7 +51,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Credential whereType($value)
  * @method static Builder<static>|Credential whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Credential extends Model implements HasLabel, Sortable
 {

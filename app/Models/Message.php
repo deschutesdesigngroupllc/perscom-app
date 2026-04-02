@@ -53,7 +53,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Message whereSentAt($value)
  * @method static Builder<static>|Message whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model implements HasLabel
@@ -80,7 +80,7 @@ class Message extends Model implements HasLabel
         'updated_at',
     ];
 
-    public function status(): Attribute
+    protected function status(): Attribute
     {
         return Attribute::get(fn (): MessageStatus => match (true) {
             isset($this->sent_at) => MessageStatus::Sent,
@@ -88,6 +88,9 @@ class Message extends Model implements HasLabel
         });
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

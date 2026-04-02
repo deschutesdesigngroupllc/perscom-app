@@ -38,7 +38,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @method static Builder<static>|Domain whereTenantId($value)
  * @method static Builder<static>|Domain whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(DomainObserver::class)]
 class Domain extends BaseDomain
@@ -68,7 +68,7 @@ class Domain extends BaseDomain
     /**
      * @return Attribute<string, never>
      */
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn (): string => optional($this->host, static fn (string $host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
@@ -78,7 +78,7 @@ class Domain extends BaseDomain
     /**
      * @return Attribute<string, never>
      */
-    public function host(): Attribute
+    protected function host(): Attribute
     {
         return Attribute::make(
             get: fn (): string => optional($this->domain, static fn (string $domain): string => Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))

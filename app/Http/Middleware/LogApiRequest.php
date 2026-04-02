@@ -36,14 +36,14 @@ class LogApiRequest
         $client = $passport->client();
 
         $name = match (true) {
-            optional($client)->firstParty() => 'api',
-            ! optional($client)->firstParty() => 'oauth',
+            $client?->firstParty() => 'api',
+            ! $client?->firstParty() => 'oauth',
             default => 'api'
         };
 
         $causer = match (true) {
-            optional($client)->firstParty() => Auth::guard('api')->user(),
-            ! optional($client)->firstParty() => $client,
+            $client?->firstParty() => Auth::guard('api')->user(),
+            ! $client?->firstParty() => $client,
             default => null
         };
 

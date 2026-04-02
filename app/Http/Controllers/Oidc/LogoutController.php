@@ -15,7 +15,7 @@ class LogoutController extends Controller
     public function index(Request $request): Response
     {
         if (Auth::getDefaultDriver() === 'api' && $user = Auth::guard('api')->user()) {
-            $user->tokens->each(fn (Token $token) => $token->revoke());
+            $user->tokens->each(fn (Token $token): bool => $token->revoke());
         } else {
             Auth::logout();
         }

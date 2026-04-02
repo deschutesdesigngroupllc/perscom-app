@@ -15,7 +15,7 @@ class RemoveInactiveAccountsCommand extends Command
 
     public function handle(): int
     {
-        RemoveInactiveAccounts::dispatch();
+        dispatch(new RemoveInactiveAccounts);
 
         $this->components->info('The remove inactive accounts job has been dispatched to the queue.');
 

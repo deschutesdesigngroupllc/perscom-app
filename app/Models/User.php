@@ -55,7 +55,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
@@ -105,7 +107,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read bool $discord_connected
  * @property-read SocialiteUser|null $discordUser
  * @property-read EventRegistration|null $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
  * @property-read int|null $events_count
  * @property-read bool $facebook_connected
  * @property-read SocialiteUser|null $facebookUser
@@ -118,17 +120,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedDefaultView> $managedDefaultViews
- * @property-read int|null $managed_default_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
- * @property-read int|null $managed_preset_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
- * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportClient> $oauthApps
+ * @property-read int|null $oauth_apps_count
  * @property-read mixed $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
@@ -215,10 +213,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
 {
     use CanReceiveNotifications;
     use ClearsApiCache;
@@ -342,104 +340,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return $this->phone_number;
     }
 
-    public function scopeOrderForRoster(Builder $query): void
-    {
-        /** @var DashboardSettings $settings */
-        $settings = app(DashboardSettings::class);
-
-        $query
-            ->select('users.*')
-            ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
-            ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
-            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id');
-
-        collect($settings->roster_sort_order)->each(fn ($column) => $query->orderBy($column));
-    }
-
-    /**
-     * @return Attribute<string, never>
-     */
-    public function online(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => Cache::tags('users_online')->has('user_online_'.$this->id)
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?string, never>
-     */
-    public function coverPhotoUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->cover_photo ? (
-                Storage::providesTemporaryUrls()
-                    ? Storage::temporaryUrl($this->cover_photo, now()->addHour())
-                    : Storage::url($this->cover_photo)
-            ) : null
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?CarbonInterval, never>
-     */
-    public function timeInAssignment(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?CarbonInterval => optional($this->primary_assignment_records()->first()->created_at ?? null, fn ($date): CarbonInterval => Carbon::now()->diff($date, true))
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?CarbonInterval, never>
-     */
-    public function timeInGrade(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, fn ($date): CarbonInterval => Carbon::now()->diff($date, true))
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<CarbonInterval, never>
-     */
-    public function timeInService(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): CarbonInterval => Carbon::now()->diff($this->created_at, true)
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?Carbon, never>
-     */
-    public function lastAssignmentChangeDate(): Attribute
-    {
-        return Attribute::make(
-            get: function (): ?Carbon {
-                /** @var ?AssignmentRecord $record */
-                $record = $this->primary_assignment_records()->latest()->first();
-
-                return $record->created_at ?? null;
-            }
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<?Carbon, never>
-     */
-    public function lastRankChangeDate(): Attribute
-    {
-        return Attribute::make(
-            get: function (): ?Carbon {
-                /** @var ?RankRecord $record */
-                $record = $this->rank_records()->latest()->first();
-
-                return $record->created_at ?? null;
-            }
-        )->shouldCache();
-    }
-
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
@@ -466,6 +366,105 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);
+    }
+
+    protected function scopeOrderForRoster(Builder $query): void
+    {
+        /** @var DashboardSettings $settings */
+        $settings = resolve(DashboardSettings::class);
+
+        $query
+            ->select('users.*')
+            ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
+            ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
+            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id');
+
+        collect($settings->roster_sort_order)->each(fn ($column) => $query->orderBy($column));
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function online(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Cache::tags('users_online')->has('user_online_'.$this->id)
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    protected function coverPhotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->cover_photo ? (
+                Storage::providesTemporaryUrls()
+                    ? Storage::temporaryUrl($this->cover_photo, now()->addHour())
+                    : Storage::url($this->cover_photo)
+            ) : null
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?CarbonInterval, never>
+     */
+    protected function timeInAssignment(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?CarbonInterval => optional($this->primary_assignment_records()->first()->created_at ?? null, fn ($date): CarbonInterval => Date::now()->diff($date, true))
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?CarbonInterval, never>
+     */
+    protected function timeInGrade(): Attribute
+    {
+        return Attribute::make(
+            /** @phpstan-ignore property.notFound */
+            get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, fn ($date): CarbonInterval => Date::now()->diff($date, true))
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<CarbonInterval, never>
+     */
+    protected function timeInService(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): CarbonInterval => Date::now()->diff($this->created_at, true)
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?Carbon, never>
+     */
+    protected function lastAssignmentChangeDate(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?Carbon {
+                /** @var ?AssignmentRecord $record */
+                $record = $this->primary_assignment_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?Carbon, never>
+     */
+    protected function lastRankChangeDate(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?Carbon {
+                /** @var ?RankRecord $record */
+                $record = $this->rank_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
+        )->shouldCache();
     }
 
     protected function getDefaultGuardName(): string

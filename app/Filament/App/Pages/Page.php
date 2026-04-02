@@ -35,7 +35,7 @@ class Page extends BasePage
 
     public function mount(Request $request): void
     {
-        $this->twig = app('twig');
+        $this->twig = resolve('twig');
         $this->page = PageModel::query()->where('slug', $request->query('page'))->firstOrFail();
     }
 

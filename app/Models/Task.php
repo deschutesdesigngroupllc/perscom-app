@@ -48,7 +48,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Task whereTitle($value)
  * @method static Builder<static>|Task whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Task extends Model implements HasLabel
 {

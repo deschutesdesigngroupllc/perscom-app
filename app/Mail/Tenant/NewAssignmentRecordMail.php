@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class NewAssignmentRecordMail extends Mailable implements ShouldQueue
 {
@@ -32,7 +32,7 @@ class NewAssignmentRecordMail extends Mailable implements ShouldQueue
                 'specialty' => $this->assignmentRecord->specialty?->name,
                 'text' => $this->assignmentRecord->text,
                 'url' => $this->url,
-                'date' => Carbon::parse($this->assignmentRecord->created_at)->toFormattedDateString(),
+                'date' => Date::parse($this->assignmentRecord->created_at)->toFormattedDateString(),
             ]);
     }
 }

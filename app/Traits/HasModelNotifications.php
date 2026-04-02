@@ -26,7 +26,7 @@ trait HasModelNotifications
                     ->append('.created')
                     ->toString();
 
-                SendModelNotifications::dispatch($model, $event);
+                dispatch(new SendModelNotifications($model, $event));
             }
         });
 
@@ -39,7 +39,7 @@ trait HasModelNotifications
                     ->append('.updated')
                     ->toString();
 
-                SendModelNotifications::dispatch($model, $event);
+                dispatch(new SendModelNotifications($model, $event));
             }
         });
 
@@ -52,7 +52,7 @@ trait HasModelNotifications
                     ->append('.deleted')
                     ->toString();
 
-                SendModelNotifications::dispatch($model, $event);
+                dispatch(new SendModelNotifications($model, $event));
             }
         });
 

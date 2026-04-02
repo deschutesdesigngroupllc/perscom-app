@@ -15,8 +15,8 @@ use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 use stdClass;
@@ -374,7 +374,7 @@ class AutomationService
             'channels' => $channels,
             'recipients' => $recipients === [] ? null : collect($recipients),
             'repeats' => false,
-            'send_at' => Carbon::now(),
+            'send_at' => Date::now(),
         ]);
 
         return [
@@ -382,7 +382,7 @@ class AutomationService
             'created_message_id' => $message->id,
             'message_content' => $messageContent,
             'recipients' => $recipients,
-            'channels' => $channels?->toArray(),
+            'channels' => $channels?->all(),
         ];
     }
 

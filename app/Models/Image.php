@@ -8,7 +8,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
@@ -32,7 +31,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $updated_at
  * @property-read string|null $image_url
  * @property-read string $label
- * @property-read Model|Eloquent|null $model
+ * @property-read Model|Model|null $model
  * @property-read string|null $model_url
  * @property-read string|null $relative_url
  * @property-read string|null $url
@@ -51,7 +50,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder<static>|Image wherePath($value)
  * @method static Builder<static>|Image whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Image extends Model implements HasLabel
 {
@@ -72,7 +71,17 @@ class Image extends Model implements HasLabel
 
     protected $appends = ['image_url'];
 
-    public function imageUrl(): Attribute
+    public function model(): MorphTo
+    {
+        return $this->morphTo('model');
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(fn (Image $model) => Storage::delete($model->path));
+    }
+
+    protected function imageUrl(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->path ? (
@@ -83,7 +92,7 @@ class Image extends Model implements HasLabel
         )->shouldCache();
     }
 
-    public function modelUrl(): Attribute
+    protected function modelUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
             if (blank($this->model)) {
@@ -111,15 +120,5 @@ class Image extends Model implements HasLabel
 
             return null;
         })->shouldCache();
-    }
-
-    public function model(): MorphTo
-    {
-        return $this->morphTo('model');
-    }
-
-    protected static function booted(): void
-    {
-        static::deleting(fn (Image $model) => Storage::delete($model->path));
     }
 }

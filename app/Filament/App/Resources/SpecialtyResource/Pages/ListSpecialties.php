@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\SpecialtyResource\Pages;
 use App\Filament\App\Resources\SpecialtyResource;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Category;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +27,7 @@ class ListSpecialties extends ListRecords
         }
 
         return Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
-            $category->id => \Archilex\AdvancedTables\Components\PresetView::make()
+            $category->id => PresetView::make()
                 ->favorite()
                 ->icon('heroicon-o-tag')
                 ->label($category->name)

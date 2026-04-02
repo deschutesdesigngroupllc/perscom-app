@@ -12,7 +12,6 @@ use App\Filament\App\Resources\FormResource\Pages\ListForms;
 use App\Filament\App\Resources\FormResource\RelationManagers\FieldsRelationManager;
 use App\Filament\Exports\FormExporter;
 use App\Forms\Components\ModelNotification;
-use App\Models\Form;
 use App\Models\Form as FormModel;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -168,7 +167,7 @@ class FormResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (FormModel $record) => $record->categoryPivot?->category?->name),
             ])
             ->filters([
                 TernaryFilter::make('is_public')

@@ -77,7 +77,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Document whereName($value)
  * @method static Builder<static>|Document whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Document extends Model implements HasLabel, Htmlable
 {

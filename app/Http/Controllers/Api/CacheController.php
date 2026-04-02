@@ -27,10 +27,7 @@ class CacheController extends Controller
 
         $apiService = new ApiCacheService;
 
-        PurgeApiCache::dispatch(
-            tags: $apiService->getTenantCacheTag(),
-            event: 'manual'
-        );
+        dispatch(new PurgeApiCache(tags: $apiService->getTenantCacheTag(), event: 'manual'));
 
         return response()->json([
             'status' => 'okay',

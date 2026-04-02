@@ -85,9 +85,7 @@ class Backups extends Page implements HasTable
             Action::make('backup_now')
                 ->successNotificationTitle('The backup has been requested. Please check back later for the latest copy.')
                 ->action(function (Action $action): void {
-                    BackupDatabase::dispatch(
-                        tenantKey: tenant()->getKey(),
-                    );
+                    dispatch(new BackupDatabase(tenantKey: tenant()->getKey()));
 
                     $action->success();
                 }),

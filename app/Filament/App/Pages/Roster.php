@@ -37,7 +37,7 @@ class Roster extends Page
     public function getView(): string
     {
         /** @var DashboardSettings $settings */
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
 
         if ($settings->roster_mode === RosterMode::MANUAL) {
             return 'filament.app.pages.roster.manual';
@@ -51,7 +51,7 @@ class Roster extends Page
      */
     protected function getViewData(): array
     {
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
         if ($settings->roster_mode === RosterMode::MANUAL) {
             $groups = RosterService::mergeSecondaryAssignmentRecordsForManualRoster(
                 groups: Group::query()->forManualRoster()->get()

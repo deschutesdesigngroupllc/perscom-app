@@ -18,7 +18,7 @@ abstract class Metric
     {
         return with(new $class, fn (Metric $metric) => BaseMetric::query()
             ->incrementOrCreate([
-                'created_at' => now()->startOfDay(),
+                'created_at' => today(),
                 'key' => $metric->key(),
             ], step: $amount));
     }

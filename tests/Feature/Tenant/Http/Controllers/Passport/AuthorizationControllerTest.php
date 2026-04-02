@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
 use App\Http\Middleware\CheckSubscription;
+use App\Models\PassportClient;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\AssertableInertia;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
@@ -20,6 +22,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -27,10 +30,10 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]))
-            ->assertInertia(fn (AssertableInertia $page): \Illuminate\Testing\Fluent\AssertableJson => $page
+            ->assertInertia(fn (AssertableInertia $page): AssertableJson => $page
                 ->where('client', $client->getKey())
                 ->where('description', $client->description)
                 ->where('name', $client->name)
@@ -47,6 +50,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -54,7 +58,7 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
                 'prompt' => 'login',
             ]))
@@ -67,6 +71,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -74,13 +79,18 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]));
 
+        $authToken = session()->get('authToken');
+
         $response = $this->withSession([
+            'authToken' => $authToken,
             'authRequest' => session()->get('authRequest'),
-        ])->postJson($this->tenant->route('passport.authorizations.approve'));
+        ])->postJson($this->tenant->route('passport.authorizations.approve'), [
+            'auth_token' => $authToken,
+        ]);
 
         $response->assertRedirect();
 
@@ -97,7 +107,9 @@ class AuthorizationControllerTest extends TenantTestCase
         $user = User::factory()
             ->createQuietly();
 
+        /** @var PassportClient $client */
         $client = ClientFactory::new()
+            ->asImplicitClient()
             ->create();
 
         $this->actingAs($user)
@@ -106,14 +118,19 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_mode' => 'fragment',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]));
 
+        $authToken = session()->get('authToken');
+
         $response = $this->withSession([
+            'authToken' => $authToken,
             'authRequest' => session()->get('authRequest'),
         ])
-            ->postJson($this->tenant->route('passport.authorizations.approve'));
+            ->postJson($this->tenant->route('passport.authorizations.approve'), [
+                'auth_token' => $authToken,
+            ]);
 
         $response->assertRedirect();
 

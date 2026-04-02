@@ -97,7 +97,7 @@ class Dashboard extends BaseDashboard
         }
 
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
 
         return $settings->isAccessible();
     }
@@ -377,7 +377,7 @@ class Dashboard extends BaseDashboard
         $this->createPersonnelIfNeeded($data, $unit, $position, $rank, $status);
 
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
 
         if (data_get($data, 'finish.dont_show_again', false)) {
             $settings->markCompleted();
@@ -429,7 +429,7 @@ class Dashboard extends BaseDashboard
         $existingUnit = Unit::query()->where('name', $name)->first();
 
         if ($existingUnit) {
-            if ($group && ! $existingUnit->groups->contains($group->id)) {
+            if ($group && $existingUnit->groups->doesntContain($group->id)) {
                 $existingUnit->groups()->attach($group->id);
             }
 
@@ -536,10 +536,10 @@ class Dashboard extends BaseDashboard
             return $existingUser;
         }
 
-        $assignUnitId = data_get($data, 'personnel.assign_unit') ?? $unit?->id;
-        $assignPositionId = data_get($data, 'personnel.assign_position') ?? $position?->id;
-        $assignRankId = data_get($data, 'personnel.assign_rank') ?? $rank?->id;
-        $assignStatusId = data_get($data, 'personnel.assign_status') ?? $status?->id;
+        $assignUnitId = data_get($data, 'personnel.assign_unit', $unit?->id);
+        $assignPositionId = data_get($data, 'personnel.assign_position', $position?->id);
+        $assignRankId = data_get($data, 'personnel.assign_rank', $rank?->id);
+        $assignStatusId = data_get($data, 'personnel.assign_status', $status?->id);
 
         return User::create([
             'name' => $name,

@@ -48,7 +48,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $credentials_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
- * @property-read Event|null $event
+ * @property-read \Illuminate\Support\Facades\Event|null $event
  * @property-read User|null $instructor
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
@@ -75,7 +75,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|TrainingRecord whereUpdatedAt($value)
  * @method static Builder<static>|TrainingRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class TrainingRecord extends Model
 {

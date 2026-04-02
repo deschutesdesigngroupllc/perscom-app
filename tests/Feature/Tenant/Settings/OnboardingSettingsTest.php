@@ -17,7 +17,7 @@ class OnboardingSettingsTest extends TenantTestCase
     public function test_onboarding_settings_defaults_are_correct(): void
     {
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
 
         // Reset to defaults for testing
         $settings->completed = false;
@@ -34,7 +34,7 @@ class OnboardingSettingsTest extends TenantTestCase
     public function test_onboarding_is_not_accessible_after_completion(): void
     {
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
 
         $settings->markCompleted();
 
@@ -46,7 +46,7 @@ class OnboardingSettingsTest extends TenantTestCase
     public function test_onboarding_is_not_accessible_after_dismissal(): void
     {
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
 
         $settings->markDismissed();
 
@@ -130,7 +130,7 @@ class OnboardingSettingsTest extends TenantTestCase
     public function test_completed_at_is_set_when_marking_completed(): void
     {
         /** @var OnboardingSettings $settings */
-        $settings = app(OnboardingSettings::class);
+        $settings = resolve(OnboardingSettings::class);
         $settings->completed = false;
         $settings->completed_at = null;
         $settings->save();

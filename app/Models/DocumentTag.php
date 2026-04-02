@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|DocumentTag whereDocumentId($value)
  * @method static Builder<static>|DocumentTag whereTagId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class DocumentTag extends Pivot
 {

@@ -2,6 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Models\User;
+use Archilex\AdvancedTables\Enums\FavoritesBarTheme;
+use Archilex\AdvancedTables\Enums\Status;
+use Archilex\AdvancedTables\Models\ManagedPresetView;
+use Archilex\AdvancedTables\Models\ManagedUserView;
+use Archilex\AdvancedTables\Models\UserView;
+
 if (! class_exists('Archilex\AdvancedTables\Support\Config')) {
     return [];
 }
@@ -24,7 +31,7 @@ return [
 
     'favorites_bar' => [
         'enabled' => true,
-        'theme' => Archilex\AdvancedTables\Enums\FavoritesBarTheme::Filament,
+        'theme' => FavoritesBarTheme::Filament,
         'default_icon' => 'heroicon-o-bars-4',
         'icon_position' => 'before',
         'size' => 'md',
@@ -61,7 +68,7 @@ return [
     */
 
     'managed_user_views' => [
-        'managed_user_view' => Archilex\AdvancedTables\Models\ManagedUserView::class,
+        'managed_user_view' => ManagedUserView::class,
     ],
 
     /*
@@ -83,7 +90,7 @@ return [
         'new_preset_view_sort_position' => 'before',
         'preset_views_manageable' => true,
         'lock_icon' => null,
-        'managed_preset_view' => Archilex\AdvancedTables\Models\ManagedPresetView::class,
+        'managed_preset_view' => ManagedPresetView::class,
         'legacy_dropdown' => false,
     ],
 
@@ -148,8 +155,8 @@ return [
     */
 
     'status' => [
-        'minimum_status' => Archilex\AdvancedTables\Enums\Status::Pending,
-        'initial_status' => Archilex\AdvancedTables\Enums\Status::Pending,
+        'minimum_status' => Status::Pending,
+        'initial_status' => Status::Pending,
     ],
 
     /*
@@ -181,7 +188,7 @@ return [
     */
 
     'users' => [
-        'user' => App\Models\User::class,
+        'user' => User::class,
         'user_table' => 'users',
         'user_table_key_column' => 'id',
         'user_table_name_column' => 'name',
@@ -198,7 +205,7 @@ return [
         'enabled' => true,
         'global_user_views_manageable' => true,
         'new_global_user_view_sort_position' => 'before',
-        'user_view' => Archilex\AdvancedTables\Models\UserView::class,
+        'user_view' => UserView::class,
     ],
 
     /*

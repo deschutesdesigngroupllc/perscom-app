@@ -21,12 +21,6 @@ trait SocialRelationships
             ->where('provider', 'discord');
     }
 
-    public function discordConnected(): Attribute
-    {
-        return Attribute::get(fn (): bool => filled($this->discord_user_id))
-            ->shouldCache();
-    }
-
     public function disconnectDiscordAccount(): User|HigherOrderTapProxy
     {
         return tap($this, function (User $user): void {
@@ -42,12 +36,6 @@ trait SocialRelationships
     {
         return $this->hasOne(SocialiteUser::class)
             ->where('provider', 'facebook');
-    }
-
-    public function facebookConnected(): Attribute
-    {
-        return Attribute::get(fn (): bool => filled($this->facebook_user_id))
-            ->shouldCache();
     }
 
     public function disconnectFacebookAccount(): User|HigherOrderTapProxy
@@ -66,12 +54,6 @@ trait SocialRelationships
             ->where('provider', 'github');
     }
 
-    public function githubConnected(): Attribute
-    {
-        return Attribute::get(fn (): bool => filled($this->github_user_id))
-            ->shouldCache();
-    }
-
     public function disconnectGithubAccount(): User|HigherOrderTapProxy
     {
         return tap($this, function (User $user): void {
@@ -88,12 +70,6 @@ trait SocialRelationships
             ->where('provider', 'google');
     }
 
-    public function googleConnected(): Attribute
-    {
-        return Attribute::get(fn (): bool => filled($this->google_user_id))
-            ->shouldCache();
-    }
-
     public function disconnectGoogleAccount(): User|HigherOrderTapProxy
     {
         return tap($this, function (User $user): void {
@@ -102,5 +78,29 @@ trait SocialRelationships
                 'google_user_id' => null,
             ]);
         });
+    }
+
+    protected function discordConnected(): Attribute
+    {
+        return Attribute::get(fn (): bool => filled($this->discord_user_id))
+            ->shouldCache();
+    }
+
+    protected function facebookConnected(): Attribute
+    {
+        return Attribute::get(fn (): bool => filled($this->facebook_user_id))
+            ->shouldCache();
+    }
+
+    protected function githubConnected(): Attribute
+    {
+        return Attribute::get(fn (): bool => filled($this->github_user_id))
+            ->shouldCache();
+    }
+
+    protected function googleConnected(): Attribute
+    {
+        return Attribute::get(fn (): bool => filled($this->google_user_id))
+            ->shouldCache();
     }
 }

@@ -43,7 +43,7 @@ use Stringable;
  * @property-read Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read string|null $url
- * @property-read User $user
+ * @property-read User|null $user
  *
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
  * @method static Builder<static>|Submission newModelQuery()
@@ -60,7 +60,7 @@ use Stringable;
  * @method static Builder<static>|Submission whereUpdatedAt($value)
  * @method static Builder<static>|Submission whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(SubmissionObserver::class)]
 class Submission extends Model implements HasLabel, Htmlable, Stringable

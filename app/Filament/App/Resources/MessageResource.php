@@ -93,7 +93,7 @@ class MessageResource extends BaseResource
                     ->label('Send')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))
@@ -104,7 +104,7 @@ class MessageResource extends BaseResource
                     ->label('Sent')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))
@@ -119,7 +119,7 @@ class MessageResource extends BaseResource
             ->filters([
                 SelectFilter::make('channels')
                     ->options(NotificationChannel::class)
-                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->unless(is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
@@ -172,11 +172,11 @@ class MessageResource extends BaseResource
                 ->bulkToggleable()
                 ->descriptions(fn () => collect(NotificationChannel::cases())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
-                    ->toArray())
+                    ->all())
                 ->options(fn () => collect(NotificationChannel::cases())
                     ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
-                    ->toArray()),
+                    ->all()),
         ];
     }
 
@@ -203,7 +203,7 @@ class MessageResource extends BaseResource
                 ->label('Send At')
                 ->timezone(UserSettingsService::get('timezone', function () {
                     /** @var OrganizationSettings $settings */
-                    $settings = app(OrganizationSettings::class);
+                    $settings = resolve(OrganizationSettings::class);
 
                     return $settings->timezone ?? config('app.timezone');
                 }))

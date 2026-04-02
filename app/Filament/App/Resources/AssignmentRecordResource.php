@@ -65,7 +65,7 @@ class AssignmentRecordResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         /** @var DashboardSettings $settings */
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
         $rosterMode = $settings->roster_mode;
 
         return $schema
@@ -154,7 +154,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
-                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->toArray()),
+                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->all()),
                                 Select::make('status_id')
                                     ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
                                     ->preload()
@@ -165,7 +165,7 @@ class AssignmentRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->assignment_records);
 
@@ -176,7 +176,7 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
-                                $settings = app(NotificationSettings::class);
+                                $settings = resolve(NotificationSettings::class);
 
                                 return [
                                     ModelNotification::make(
@@ -232,7 +232,7 @@ class AssignmentRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->assignment_records);
 
@@ -377,22 +377,23 @@ class AssignmentRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        $user = optional($record->user)->name;
+        $user = $record->user?->name;
 
         return sprintf('%d: %s', $record->id, $user);
     }
 
     /**
      * @param  AssignmentRecord  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         $details = [
-            'Type' => optional($record->type)->getLabel(),
-            'Position' => optional($record->position)->name,
-            'Specialty' => optional($record->specialty)->name,
-            'Unit' => optional($record->unit)->name,
-            'Status' => optional($record->status)->name,
+            'Type' => $record->type?->getLabel(),
+            'Position' => $record->position?->name,
+            'Specialty' => $record->specialty?->name,
+            'Unit' => $record->unit?->name,
+            'Status' => $record->status?->name,
         ];
 
         if (filled($record->text)) {

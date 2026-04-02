@@ -162,9 +162,9 @@ class InstallCommand extends Command implements Isolatable
         $this->components->info('Application URLs:');
 
         table(['URL', 'Purpose'], [
-            [route('web.landing.home'), 'Main Landing Page'],
+            [url('/'), 'Main Landing Page'],
             [config('api.url').DIRECTORY_SEPARATOR.config('api.version'), 'API Base URL'],
-            [route('filament.admin.pages.dashboard'), 'Administrative Dashboard'],
+            [url('/admin'), 'Administrative Dashboard'],
             [Tenant::first()->url, 'Tenant Dashboard'],
         ]);
 

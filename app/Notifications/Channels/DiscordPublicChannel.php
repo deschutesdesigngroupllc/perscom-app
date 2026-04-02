@@ -18,9 +18,9 @@ class DiscordPublicChannel
     public function send(object $notifiable, Notification $notification): ?array
     {
         /** @var IntegrationSettings $settings */
-        $settings = app(IntegrationSettings::class);
+        $settings = resolve(IntegrationSettings::class);
 
-        $channel = data_get($settings->discord_settings, 'discord_channel') ?? null;
+        $channel = data_get($settings->discord_settings, 'discord_channel');
 
         if (! $channel || ! method_exists($notification, 'toDiscord')) {
             return null;

@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class NewRankRecordMail extends Mailable implements ShouldQueue
 {
@@ -29,7 +29,7 @@ class NewRankRecordMail extends Mailable implements ShouldQueue
                 'rank' => $this->rankRecord->rank?->name,
                 'text' => $this->rankRecord->text,
                 'url' => $this->url,
-                'date' => Carbon::parse($this->rankRecord->created_at)->toFormattedDateString(),
+                'date' => Date::parse($this->rankRecord->created_at)->toFormattedDateString(),
             ]);
     }
 }

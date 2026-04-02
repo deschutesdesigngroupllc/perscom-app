@@ -59,12 +59,12 @@ class CreateAutomation extends CreateRecord
                             ->mapWithKeys(fn (array $template, string $key): array => [
                                 $key => $template['name'],
                             ])
-                            ->toArray())
+                            ->all())
                         ->descriptions(fn (): array => collect(AutomationService::getTemplates())
                             ->mapWithKeys(fn (array $template, string $key): array => [
                                 $key => new HtmlString($this->buildTemplateDescription($template)),
                             ])
-                            ->toArray())
+                            ->all())
                         ->required(),
                 ])
                 ->action(function (array $data): void {

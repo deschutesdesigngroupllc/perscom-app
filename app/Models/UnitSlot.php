@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|UnitSlot whereUnitId($value)
  * @method static Builder<static>|UnitSlot whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class UnitSlot extends Pivot
 {

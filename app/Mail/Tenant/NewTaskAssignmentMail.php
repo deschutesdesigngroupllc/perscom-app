@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class NewTaskAssignmentMail extends Mailable implements ShouldQueue
 {
@@ -27,11 +27,11 @@ class NewTaskAssignmentMail extends Mailable implements ShouldQueue
             ->subject('You have been assigned a new task')
             ->with([
                 'task' => $this->taskAssignment->task?->title,
-                'due' => $this->taskAssignment->due_at ? Carbon::parse($this->taskAssignment->due_at)->toDayDateTimeString() : 'No Due Date',
-                'expires' => $this->taskAssignment->expires_at ? Carbon::parse($this->taskAssignment->expires_at)->toDayDateTimeString() : 'No Expiration Date',
+                'due' => $this->taskAssignment->due_at ? Date::parse($this->taskAssignment->due_at)->toDayDateTimeString() : 'No Due Date',
+                'expires' => $this->taskAssignment->expires_at ? Date::parse($this->taskAssignment->expires_at)->toDayDateTimeString() : 'No Expiration Date',
                 'assigned' => $this->taskAssignment->assigned_by?->name,
                 'url' => $this->url,
-                'date' => Carbon::parse($this->taskAssignment->created_at)->toFormattedDateString(),
+                'date' => Date::parse($this->taskAssignment->created_at)->toFormattedDateString(),
             ]);
     }
 }

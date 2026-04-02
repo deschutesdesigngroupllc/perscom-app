@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -23,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Eloquent $model
+ * @property-read Model|Model $model
  * @property-read User $user
  *
  * @method static Builder<static>|ModelLike newModelQuery()
@@ -37,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|ModelLike whereUpdatedAt($value)
  * @method static Builder<static>|ModelLike whereUserId($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class ModelLike extends MorphPivot
 {

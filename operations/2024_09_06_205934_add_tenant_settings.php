@@ -28,7 +28,7 @@ return new class extends OneTimeOperation
                 ]);
 
                 /** @var DashboardSettings $dashboardSettings */
-                $dashboardSettings = app(DashboardSettings::class);
+                $dashboardSettings = resolve(DashboardSettings::class);
                 $dashboardSettings->title = Settings::query()->where('name', 'dashboard_title')->pluck('value')->first() ?? $tenant->name;
                 $dashboardSettings->subtitle = Settings::query()->where('name', 'dashboard_subtitle')->pluck('value')->first() ?? null;
                 $dashboardSettings->subdomain = Settings::query()->where('name', 'subdomain')->pluck('value')->first() ?? null;
@@ -37,25 +37,25 @@ return new class extends OneTimeOperation
                 $dashboardSettings->save();
 
                 /** @var IntegrationSettings $integrationSettings */
-                $integrationSettings = app(IntegrationSettings::class);
+                $integrationSettings = resolve(IntegrationSettings::class);
                 $integrationSettings->single_sign_on_key = Settings::query()->where('name', 'single_sign_on_key')->pluck('value')->first() ?? Str::random(40);
                 $integrationSettings->save();
 
                 /** @var OrganizationSettings $organizationSettings */
-                $organizationSettings = app(OrganizationSettings::class);
+                $organizationSettings = resolve(OrganizationSettings::class);
                 $organizationSettings->name = Settings::query()->where('name', 'organization')->pluck('value')->first() ?? $tenant->name;
                 $organizationSettings->email = Settings::query()->where('name', 'email')->pluck('value')->first() ?? $tenant->email;
                 $organizationSettings->timezone = Settings::query()->where('name', 'timezone')->pluck('value')->first() ?? config('app.timezone');
                 $organizationSettings->save();
 
                 /** @var PermissionSettings $permissionSettings */
-                $permissionSettings = app(PermissionSettings::class);
+                $permissionSettings = resolve(PermissionSettings::class);
                 $permissionSettings->default_permissions = json_decode(Settings::query()->where('name', 'default_permissions')->pluck('value')->first() ?? '[]', true) ?? [];
                 $permissionSettings->default_roles = json_decode(Settings::query()->where('name', 'default_roles')->pluck('value')->first() ?? '["User"]', true) ?? ['User'];
                 $permissionSettings->save();
 
                 /** @var RegistrationSettings $registrationSettings */
-                $registrationSettings = app(RegistrationSettings::class);
+                $registrationSettings = resolve(RegistrationSettings::class);
                 $registrationSettings->enabled = (bool) Settings::query()->where('name', 'registration_enabled')->pluck('value')->first() ?? true;
                 $registrationSettings->admin_approval_required = (bool) Settings::query()->where('name', 'registration_admin_approval_required')->pluck('value')->first() ?? false;
                 $registrationSettings->save();

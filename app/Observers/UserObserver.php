@@ -31,7 +31,7 @@ class UserObserver
     public function created(User $user): void
     {
         /** @var PermissionSettings $permissionSettings */
-        $permissionSettings = app(PermissionSettings::class);
+        $permissionSettings = resolve(PermissionSettings::class);
 
         $user->assignRole($permissionSettings->default_roles);
         $user->givePermissionTo($permissionSettings->default_permissions);
@@ -45,7 +45,7 @@ class UserObserver
         $this->dispatchAutomationCreated($user, AutomationTrigger::USER_CREATED);
 
         /** @var RegistrationSettings $registrationSettings */
-        $registrationSettings = app(RegistrationSettings::class);
+        $registrationSettings = resolve(RegistrationSettings::class);
         if ($registrationSettings->admin_approval_required) {
             $user->updateQuietly([
                 'approved' => false,
@@ -67,7 +67,7 @@ class UserObserver
         }
 
         if ($user->isDirty('discord_user_id') && filled($user->discord_user_id) && blank($user->discord_private_channel_id)) {
-            $privateChannelId = rescue(fn () => app(Discord::class)->getPrivateChannel($user->discord_user_id));
+            $privateChannelId = rescue(fn () => resolve(Discord::class)->getPrivateChannel($user->discord_user_id));
 
             if ($privateChannelId) {
                 $user->forceFill([
@@ -110,7 +110,7 @@ class UserObserver
     protected function initializeCustomFields(User $user): void
     {
         /** @var FieldSettings $fieldSettings */
-        $fieldSettings = app(FieldSettings::class);
+        $fieldSettings = resolve(FieldSettings::class);
 
         $fieldIds = $fieldSettings->users ?? [];
         if ($fieldIds === []) {

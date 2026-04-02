@@ -85,7 +85,7 @@ use function in_array;
  * @method static Builder<static>|Field whereType($value)
  * @method static Builder<static>|Field whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Field extends Model implements HasLabel, Hideable
 {
@@ -115,7 +115,23 @@ class Field extends Model implements HasLabel, Hideable
         'updated_at',
     ];
 
-    public function options(): Attribute
+    public function forms(): MorphToMany
+    {
+        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
+            ->as('forms')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
+
+    public function users(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'model', 'model_has_fields')
+            ->as('users')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
+
+    protected function options(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ArrayObject {
             if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::Array->value) {
@@ -129,14 +145,14 @@ class Field extends Model implements HasLabel, Hideable
             if (data_get($attributes, 'type') === FieldType::FIELD_TIMEZONE->value) {
                 return new ArrayObject(Collection::wrap(timezone_identifiers_list())
                     ->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])
-                    ->toArray(), ArrayObjectAlias::ARRAY_AS_PROPS);
+                    ->all(), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 
             return new ArrayObject([], ArrayObjectAlias::ARRAY_AS_PROPS);
         })->shouldCache();
     }
 
-    public function validationRules(): Attribute
+    protected function validationRules(): Attribute
     {
         return Attribute::make(
             get: function ($value, array $attributes): ?string {
@@ -157,22 +173,9 @@ class Field extends Model implements HasLabel, Hideable
         )->shouldCache();
     }
 
-    public function forms(): MorphToMany
-    {
-        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
-            ->as('forms')
-            ->withPivot(['order'])
-            ->withTimestamps();
-    }
-
-    public function users(): MorphToMany
-    {
-        return $this->morphedByMany(User::class, 'model', 'model_has_fields')
-            ->as('users')
-            ->withPivot(['order'])
-            ->withTimestamps();
-    }
-
+    /**
+     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
+     */
     protected function casts(): array
     {
         return [

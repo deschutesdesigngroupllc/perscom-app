@@ -6,7 +6,7 @@ namespace Tests\Feature\Tenant\Mail\Tenant;
 
 use App\Mail\Tenant\ApiExpirationReminder;
 use Exception;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use ReflectionException;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -17,7 +17,7 @@ class ApiExpirationReminderTest extends TenantTestCase
      */
     public function test_email_subject_contains_expiration_time(): void
     {
-        $expiresAt = Carbon::now()->addDays(7);
+        $expiresAt = Date::now()->addDays(7);
         $mail = new ApiExpirationReminder('Test API Key', $expiresAt);
 
         $envelope = $mail->envelope();
@@ -31,7 +31,7 @@ class ApiExpirationReminderTest extends TenantTestCase
      */
     public function test_email_subject_with_one_day_expiration(): void
     {
-        $expiresAt = Carbon::now()->addDay();
+        $expiresAt = Date::now()->addDay();
         $mail = new ApiExpirationReminder('Test API Key', $expiresAt);
 
         $envelope = $mail->envelope();
@@ -45,7 +45,7 @@ class ApiExpirationReminderTest extends TenantTestCase
      */
     public function test_email_subject_with_thirty_days_expiration(): void
     {
-        $expiresAt = Carbon::now()->addDays(30);
+        $expiresAt = Date::now()->addDays(30);
         $mail = new ApiExpirationReminder('Test API Key', $expiresAt);
 
         $envelope = $mail->envelope();
@@ -57,7 +57,7 @@ class ApiExpirationReminderTest extends TenantTestCase
     public function test_email_content_receives_correct_data(): void
     {
         $name = 'Production API Key';
-        $expiresAt = Carbon::now()->addDays(7);
+        $expiresAt = Date::now()->addDays(7);
         $mail = new ApiExpirationReminder($name, $expiresAt);
 
         $content = $mail->content();
@@ -73,7 +73,7 @@ class ApiExpirationReminderTest extends TenantTestCase
     public function test_email_can_be_rendered(): void
     {
         $name = 'Production API Key';
-        $expiresAt = Carbon::now()->addDays(7);
+        $expiresAt = Date::now()->addDays(7);
         $mail = new ApiExpirationReminder($name, $expiresAt);
 
         $rendered = $mail->render();
@@ -89,7 +89,7 @@ class ApiExpirationReminderTest extends TenantTestCase
     public function test_email_contains_api_key_name(): void
     {
         $name = 'My Custom API Key';
-        $expiresAt = Carbon::now()->addDays(14);
+        $expiresAt = Date::now()->addDays(14);
         $mail = new ApiExpirationReminder($name, $expiresAt);
 
         $rendered = $mail->render();
@@ -103,7 +103,7 @@ class ApiExpirationReminderTest extends TenantTestCase
     public function test_email_contains_formatted_expiration_date(): void
     {
         $name = 'Test API Key';
-        $expiresAt = Carbon::parse('2025-12-25 10:00:00');
+        $expiresAt = Date::parse('2025-12-25 10:00:00');
         $mail = new ApiExpirationReminder($name, $expiresAt);
 
         $rendered = $mail->render();
@@ -114,7 +114,7 @@ class ApiExpirationReminderTest extends TenantTestCase
     public function test_email_is_queued(): void
     {
         $name = 'Test API Key';
-        $expiresAt = Carbon::now()->addDays(7);
+        $expiresAt = Date::now()->addDays(7);
         $mail = new ApiExpirationReminder($name, $expiresAt);
 
         // ApiExpirationReminder should use the Queueable trait

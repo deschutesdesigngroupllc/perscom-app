@@ -108,7 +108,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @method static Builder<static>|Tenant whereVatId($value)
  * @method static Builder<static>|Tenant whereWebsite($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TenantObserver::class)]
 class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
@@ -162,123 +162,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         ];
     }
 
-    public function databaseStatus(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): string => $this->getAttribute('tenancy_db_name') ? 'created' : 'creating'
-        )->shouldCache();
-    }
-
-    public function customDomain(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?Domain => $this->domains->where('is_custom_subdomain', '=', true)
-                ->sortBy('created_at', SORT_REGULAR, true)
-                ->first()
-        )->shouldCache();
-    }
-
-    public function fallbackDomain(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?Domain => $this->domains->where('is_custom_subdomain', '=', false)
-                ->sortBy('created_at', SORT_REGULAR, true)
-                ->first()
-        )->shouldCache();
-    }
-
-    public function domain(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?Domain => $this->custom_domain ?? $this->fallback_domain
-        )->shouldCache();
-    }
-
-    public function customUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): Optional|string|null => optional($this->custom_domain)->url
-        )->shouldCache();
-    }
-
-    public function fallbackUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): Optional|string|null => optional($this->fallback_domain)->url
-        )->shouldCache();
-    }
-
-    public function setupCompleted(): Attribute
-    {
-        return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
-            ->shouldCache();
-    }
-
-    public function slug(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): Optional|string|null => optional($this->domain)->domain
-        )->shouldCache();
-    }
-
-    public function stripeUrl(): Attribute
-    {
-        return Attribute::get(function (): ?string {
-            if (blank($this->stripe_id)) {
-                return null;
-            }
-
-            return match (true) {
-                App::isProduction() => 'https://dashboard.stripe.com/customers/'.$this->stripe_id,
-                default => 'https://dashboard.stripe.com/test/customers/'.$this->stripe_id
-            };
-        });
-    }
-
-    /**
-     * @return Attribute<string|null, never>
-     */
-    public function url(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->custom_url ?? $this->fallback_url
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<SubscriptionPlanType, never>
-     */
-    public function subscriptionPlan(): Attribute
-    {
-        return Attribute::get(function (): SubscriptionPlanType {
-            $plan = $this->sparkPlan();
-
-            if (blank($plan)) {
-                return SubscriptionPlanType::NONE;
-            }
-
-            return SubscriptionPlanType::from(Str::lower($plan->name));
-
-        })->shouldCache();
-    }
-
-    /**
-     * @return Attribute<SubscriptionStatus, never>
-     */
-    public function subscriptionStatus(): Attribute
-    {
-        return Attribute::get(function (): SubscriptionStatus {
-            $subscription = $this->subscription();
-
-            if (blank($subscription)) {
-                return SubscriptionStatus::None;
-            }
-
-            return SubscriptionStatus::from($subscription->stripe_status);
-
-        })->shouldCache();
-    }
-
     public function stripeName(): ?string
     {
         return $this->name;
@@ -311,6 +194,123 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         }
 
         return parent::resolveRouteBinding($value, $field);
+    }
+
+    protected function databaseStatus(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->getAttribute('tenancy_db_name') ? 'created' : 'creating'
+        )->shouldCache();
+    }
+
+    protected function customDomain(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?Domain => $this->domains->where('is_custom_subdomain', '=', true)
+                ->sortBy('created_at', SORT_REGULAR, true)
+                ->first()
+        )->shouldCache();
+    }
+
+    protected function fallbackDomain(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?Domain => $this->domains->where('is_custom_subdomain', '=', false)
+                ->sortBy('created_at', SORT_REGULAR, true)
+                ->first()
+        )->shouldCache();
+    }
+
+    protected function domain(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?Domain => $this->custom_domain ?? $this->fallback_domain
+        )->shouldCache();
+    }
+
+    protected function customUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): Optional|string|null => $this->custom_domain?->url
+        )->shouldCache();
+    }
+
+    protected function fallbackUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): Optional|string|null => $this->fallback_domain?->url
+        )->shouldCache();
+    }
+
+    protected function setupCompleted(): Attribute
+    {
+        return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
+            ->shouldCache();
+    }
+
+    protected function slug(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): Optional|string|null => $this->domain?->domain
+        )->shouldCache();
+    }
+
+    protected function stripeUrl(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (blank($this->stripe_id)) {
+                return null;
+            }
+
+            return match (true) {
+                App::isProduction() => 'https://dashboard.stripe.com/customers/'.$this->stripe_id,
+                default => 'https://dashboard.stripe.com/test/customers/'.$this->stripe_id
+            };
+        });
+    }
+
+    /**
+     * @return Attribute<string|null, never>
+     */
+    protected function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->custom_url ?? $this->fallback_url
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<SubscriptionPlanType, never>
+     */
+    protected function subscriptionPlan(): Attribute
+    {
+        return Attribute::get(function (): SubscriptionPlanType {
+            $plan = $this->sparkPlan();
+
+            if (blank($plan)) {
+                return SubscriptionPlanType::NONE;
+            }
+
+            return SubscriptionPlanType::from(Str::lower($plan->name));
+
+        })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<SubscriptionStatus, never>
+     */
+    protected function subscriptionStatus(): Attribute
+    {
+        return Attribute::get(function (): SubscriptionStatus {
+            $subscription = $this->subscription();
+
+            if (blank($subscription)) {
+                return SubscriptionStatus::None;
+            }
+
+            return SubscriptionStatus::from($subscription->stripe_status);
+
+        })->shouldCache();
     }
 
     /**

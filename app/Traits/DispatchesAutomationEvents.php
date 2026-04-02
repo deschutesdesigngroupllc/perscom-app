@@ -20,9 +20,9 @@ trait DispatchesAutomationEvents
     protected function dispatchAutomationCreated(Model $model, AutomationTrigger $trigger): void
     {
         if ($model instanceof User) {
-            UserCreated::dispatch($model);
+            event(new UserCreated($model));
         } else {
-            RecordCreated::dispatch($model, $trigger);
+            event(new RecordCreated($model, $trigger));
         }
     }
 
@@ -31,18 +31,18 @@ trait DispatchesAutomationEvents
         $changes = AbstractAutomationEvent::buildChangedAttributes($model);
 
         if ($model instanceof User) {
-            UserUpdated::dispatch($model, $changes);
+            event(new UserUpdated($model, $changes));
         } else {
-            RecordUpdated::dispatch($model, $trigger, $changes);
+            event(new RecordUpdated($model, $trigger, $changes));
         }
     }
 
     protected function dispatchAutomationDeleted(Model $model, AutomationTrigger $trigger): void
     {
         if ($model instanceof User) {
-            UserDeleted::dispatch($model);
+            event(new UserDeleted($model));
         } else {
-            RecordDeleted::dispatch($model, $trigger);
+            event(new RecordDeleted($model, $trigger));
         }
     }
 }

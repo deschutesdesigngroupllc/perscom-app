@@ -19,13 +19,6 @@ use Illuminate\Support\Collection;
  */
 trait HasStatusRecords
 {
-    public function status(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): Model|Status|null => $this->statuses()->first()
-        );
-    }
-
     public function statuses(): MorphToMany
     {
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
@@ -36,7 +29,14 @@ trait HasStatusRecords
             ->using(StatusRecord::class);
     }
 
-    public function scopeStatus(Builder $query, mixed $statuses): void
+    protected function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): Model|Status|null => $this->statuses()->first()
+        );
+    }
+
+    protected function scopeStatus(Builder $query, mixed $statuses): void
     {
         if ($statuses instanceof Collection) {
             $statuses = $statuses->all();

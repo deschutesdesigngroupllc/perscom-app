@@ -22,7 +22,7 @@ trait SavesAndHydratesCustomFieldData
             return [];
         }
 
-        $data = array_merge($data, data_get($data, 'data') ?? []);
+        $data = array_merge($data, data_get($data, 'data', []));
 
         unset($data['data']);
 
@@ -38,7 +38,7 @@ trait SavesAndHydratesCustomFieldData
             return [];
         }
 
-        $data = array_merge($data, data_get($data, 'data') ?? []);
+        $data = array_merge($data, data_get($data, 'data', []));
 
         unset($data['data']);
 

@@ -12,18 +12,18 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 trait HasResourceLabel
 {
-    public function label(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): string => $this->getLabel()
-        )->shouldCache();
-    }
-
     public function getLabel(): string
     {
         $resource = implode(' ', preg_split('/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/', class_basename($this), -1, PREG_SPLIT_NO_EMPTY));
 
         return sprintf('%s: %s', $resource, $this->getKey());
+    }
+
+    protected function label(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->getLabel()
+        )->shouldCache();
     }
 
     protected function initializeHasResourceLabel(): void

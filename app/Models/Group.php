@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -68,7 +67,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @method static Builder<static>|Group whereOrder($value)
  * @method static Builder<static>|Group whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(GroupScope::class)]
 class Group extends Model implements HasLabel, Hideable, Sortable
@@ -98,14 +97,18 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'updated_at',
     ];
 
-    public function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
+    public function units(): BelongsToMany
+    {
+        return $this->belongsToMany(Unit::class, 'units_groups')
+            ->as(UnitGroup::class);
+    }
+
+    protected function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
-                    /** @var User|HasMany $query */
-                    /** @phpstan-ignore larastan.relationExistence */
                     $query
                         ->orderForRoster()
                         ->with([
@@ -135,10 +138,10 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ]);
     }
 
-    public function scopeForManualRoster(Builder $query, ?string $groupId = null): void
+    protected function scopeForManualRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.slots.users' => function ($query): void {
                     /** @var User $query */
@@ -151,11 +154,5 @@ class Group extends Model implements HasLabel, Hideable, Sortable
                     $query->orderForRoster();
                 },
             ]);
-    }
-
-    public function units(): BelongsToMany
-    {
-        return $this->belongsToMany(Unit::class, 'units_groups')
-            ->as(UnitGroup::class);
     }
 }

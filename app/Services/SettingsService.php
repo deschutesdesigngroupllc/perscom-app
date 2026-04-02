@@ -22,7 +22,7 @@ class SettingsService
 
         $settings = SettingsService::withCache($class);
 
-        return data_get($settings, $key) ?? value($default);
+        return data_get($settings, $key, value($default));
     }
 
     public static function flush(string $class): ?bool
@@ -39,7 +39,7 @@ class SettingsService
     {
         return Cache::remember(SettingsService::cacheKey($class), now()->addHour(), function () use ($class) {
             /** @var Settings $settings */
-            $settings = app($class);
+            $settings = resolve($class);
 
             return $settings->toArray();
         });

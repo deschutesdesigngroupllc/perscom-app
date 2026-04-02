@@ -25,7 +25,7 @@ class SlotsRelationManager extends RelationManager
     public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
     {
         /** @var DashboardSettings $settings */
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
 
         return parent::canViewForRecord($ownerRecord, $pageClass)
             && $settings->roster_mode === RosterMode::MANUAL;

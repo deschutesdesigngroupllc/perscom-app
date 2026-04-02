@@ -18,7 +18,7 @@ class AnnouncementBanner extends Component
             'title' => $announcement->title,
             'content' => $announcement->content,
             'color' => $announcement->color,
-        ])->toArray();
+        ])->all();
     }
 
     public function render(): View

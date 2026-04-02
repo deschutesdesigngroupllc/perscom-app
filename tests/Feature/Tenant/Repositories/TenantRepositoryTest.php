@@ -12,7 +12,7 @@ class TenantRepositoryTest extends TenantTest
 {
     public function test_get_all_returns_correct_tenants(): void
     {
-        $tenantRepository = app(TenantRepository::class);
+        $tenantRepository = resolve(TenantRepository::class);
 
         $tenants = $tenantRepository->getAll();
 
@@ -22,7 +22,7 @@ class TenantRepositoryTest extends TenantTest
 
     public function test_find_by_key_returns_correct_tenant(): void
     {
-        $tenantRepository = app(TenantRepository::class);
+        $tenantRepository = resolve(TenantRepository::class);
 
         $tenant = $tenantRepository->findByKey('id', $this->tenant->getKey());
 
@@ -32,7 +32,7 @@ class TenantRepositoryTest extends TenantTest
 
     public function test_find_by_id_returns_correct_tenant(): void
     {
-        $tenantRepository = app(TenantRepository::class);
+        $tenantRepository = resolve(TenantRepository::class);
 
         $tenant = $tenantRepository->findById($this->tenant->getKey());
 

@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasPosition
 {
-    public function scopePosition(Builder $query, Position $position): void
-    {
-        $query->whereBelongsTo($position);
-    }
-
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
+    }
+
+    protected function scopePosition(Builder $query, Position $position): void
+    {
+        $query->whereBelongsTo($position);
     }
 
     protected function initializeHasPosition(): void

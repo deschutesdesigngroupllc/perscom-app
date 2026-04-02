@@ -21,7 +21,10 @@ class SubmissionObserverTest extends TenantTestCase
         $form = Form::factory()->for($status, 'submission_status')->create();
         $submission = Submission::factory()->for($form)->create();
 
-        $this->assertEquals($status->name, $submission->statuses()->first()->name);
+        /** @var Status $submissionStatus */
+        $submissionStatus = $submission->statuses()->first();
+
+        $this->assertEquals($status->name, $submissionStatus->name);
     }
 
     public function test_create_submission_webhook_sent(): void

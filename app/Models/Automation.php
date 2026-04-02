@@ -72,7 +72,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Automation whereWebhookId($value)
  * @method static Builder<static>|Automation whereWebhookPayloadTemplate($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Automation extends Model
 {
@@ -108,28 +108,6 @@ class Automation extends Model
         return $this->hasMany(AutomationLog::class);
     }
 
-    public function scopeEnabled(Builder $query): Builder
-    {
-        return $query->where('enabled', true);
-    }
-
-    public function scopeForTrigger(Builder $query, AutomationTrigger|string $trigger): Builder
-    {
-        $value = $trigger instanceof AutomationTrigger ? $trigger->value : $trigger;
-
-        return $query->where('trigger', $value);
-    }
-
-    public function scopeWebhookActions(Builder $query): Builder
-    {
-        return $query->where('action_type', AutomationActionType::WEBHOOK);
-    }
-
-    public function scopeMessageActions(Builder $query): Builder
-    {
-        return $query->where('action_type', AutomationActionType::MESSAGE);
-    }
-
     public function isWebhookAction(): bool
     {
         return $this->action_type === AutomationActionType::WEBHOOK;
@@ -140,16 +118,41 @@ class Automation extends Model
         return $this->action_type === AutomationActionType::MESSAGE;
     }
 
-    public function scopeModelUpdateActions(Builder $query): Builder
-    {
-        return $query->where('action_type', AutomationActionType::MODEL_UPDATE);
-    }
-
     public function isModelUpdateAction(): bool
     {
         return $this->action_type === AutomationActionType::MODEL_UPDATE;
     }
 
+    protected function scopeEnabled(Builder $query): Builder
+    {
+        return $query->where('enabled', true);
+    }
+
+    protected function scopeForTrigger(Builder $query, AutomationTrigger|string $trigger): Builder
+    {
+        $value = $trigger instanceof AutomationTrigger ? $trigger->value : $trigger;
+
+        return $query->where('trigger', $value);
+    }
+
+    protected function scopeWebhookActions(Builder $query): Builder
+    {
+        return $query->where('action_type', AutomationActionType::WEBHOOK);
+    }
+
+    protected function scopeMessageActions(Builder $query): Builder
+    {
+        return $query->where('action_type', AutomationActionType::MESSAGE);
+    }
+
+    protected function scopeModelUpdateActions(Builder $query): Builder
+    {
+        return $query->where('action_type', AutomationActionType::MODEL_UPDATE);
+    }
+
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

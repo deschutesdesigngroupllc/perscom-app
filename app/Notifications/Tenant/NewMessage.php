@@ -53,7 +53,7 @@ class NewMessage extends Notification implements ShouldQueue
             ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
-            ->toArray();
+            ->all();
     }
 
     public function toMail(User $notifiable): NewMessageMail
@@ -87,7 +87,7 @@ class NewMessage extends Notification implements ShouldQueue
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
     {
         /** @var TwilioService $service */
-        $service = app(TwilioService::class);
+        $service = resolve(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
             message: TwilioService::formatText($this->message->message)

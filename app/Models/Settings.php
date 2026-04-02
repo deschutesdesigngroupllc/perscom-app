@@ -32,7 +32,7 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  * @method static Builder<static>|Settings whereUpdatedAt($value)
  * @method static Builder<static>|Settings whereValue($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Settings extends SettingsProperty
 {

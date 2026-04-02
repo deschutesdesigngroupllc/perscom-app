@@ -81,7 +81,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder<static>|Unit whereOrder($value)
  * @method static Builder<static>|Unit whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(UnitScope::class)]
 class Unit extends Model implements HasLabel, Hideable, Sortable

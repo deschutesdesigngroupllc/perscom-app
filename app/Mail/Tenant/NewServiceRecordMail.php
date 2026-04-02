@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 class NewServiceRecordMail extends Mailable implements ShouldQueue
 {
@@ -28,7 +28,7 @@ class NewServiceRecordMail extends Mailable implements ShouldQueue
             ->with([
                 'text' => $this->serviceRecord->text,
                 'url' => $this->url,
-                'date' => Carbon::parse($this->serviceRecord->created_at)->toFormattedDateString(),
+                'date' => Date::parse($this->serviceRecord->created_at)->toFormattedDateString(),
             ]);
     }
 }

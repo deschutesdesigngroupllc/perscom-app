@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Models\Enums\WebhookEvent;
 use App\Models\Scopes\WebhookLogScope;
-use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -61,7 +60,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|WebhookLog whereSubjectType($value)
  * @method static Builder<static>|WebhookLog whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(WebhookLogScope::class)]
 class WebhookLog extends Activity
@@ -69,7 +68,7 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function payload(): Attribute
+    protected function payload(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('payload')
@@ -79,7 +78,7 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<?WebhookEvent, never>
      */
-    public function event(): Attribute
+    protected function event(): Attribute
     {
         return Attribute::make(
             get: fn (): ?WebhookEvent => optional(data_get($this->payload, 'event'), fn ($event): WebhookEvent => WebhookEvent::from($event))
@@ -89,7 +88,7 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function requestId(): Attribute
+    protected function requestId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => data_get($this->payload, 'request_id')
@@ -99,14 +98,14 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function traceId(): Attribute
+    protected function traceId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => data_get($this->payload, 'trace_id')
         )->shouldCache();
     }
 
-    public function resourceUrl(): Attribute
+    protected function resourceUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
             if (blank($this->causer)) {
@@ -139,7 +138,7 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function statusCode(): Attribute
+    protected function statusCode(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('status_code')
@@ -149,7 +148,7 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function reasonPhrase(): Attribute
+    protected function reasonPhrase(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('reason_phrase')

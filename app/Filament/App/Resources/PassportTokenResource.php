@@ -24,6 +24,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -55,7 +56,7 @@ class PassportTokenResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('API Key')
+                        Tab::make('API Key')
                             ->icon(Heroicon::OutlinedKey)
                             ->schema([
                                 TextInput::make('name')
@@ -91,14 +92,14 @@ class PassportTokenResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('API Key')
+                        Tab::make('API Key')
                             ->icon(Heroicon::OutlinedKey)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('expires_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -140,7 +141,7 @@ class PassportTokenResource extends BaseResource
                     ->label('Expires')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))

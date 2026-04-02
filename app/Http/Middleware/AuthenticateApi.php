@@ -9,7 +9,8 @@ use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
-use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+use Laravel\Passport\Contracts\ScopeAuthorizable;
+use Laravel\Passport\Http\Middleware\ValidateToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateApi
@@ -24,8 +25,8 @@ class AuthenticateApi
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $authenticate = app(Authenticate::class);
-        $client = app(ClientCredentials::class);
+        $authenticate = resolve(Authenticate::class);
+        $client = resolve(ClientCredentials::class);
 
         try {
             return $authenticate->handle($request, fn ($request) => $next($request), 'api');
@@ -39,12 +40,10 @@ class AuthenticateApi
     }
 }
 
-class ClientCredentials extends CheckClientCredentials
+class ClientCredentials extends ValidateToken
 {
-    protected function validateCredentials($token): void
+    protected function validate(ScopeAuthorizable $token, string ...$params): void
     {
-        parent::validateCredentials($token);
-
         request()->attributes->add([
             'client_credentials_token' => $token,
         ]);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Scopes\ApiPurgeLogScope;
-use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -62,7 +61,7 @@ use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
  * @method static Builder<static>|ApiPurgeLog whereSubjectType($value)
  * @method static Builder<static>|ApiPurgeLog whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(ApiPurgeLogScope::class)]
 class ApiPurgeLog extends Activity
@@ -80,7 +79,7 @@ class ApiPurgeLog extends Activity
     /**
      * @return Attribute<string, never>
      */
-    public function status(): Attribute
+    protected function status(): Attribute
     {
         return Attribute::make(
             get: fn (): string => Str::headline($this->getExtraProperty('status'))
@@ -90,7 +89,7 @@ class ApiPurgeLog extends Activity
     /**
      * @return Attribute<array, never>
      */
-    public function tags(): Attribute
+    protected function tags(): Attribute
     {
         return Attribute::make(
             get: fn (): array => Arr::wrap($this->getExtraProperty('tags'))
@@ -100,7 +99,7 @@ class ApiPurgeLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function requestId(): Attribute
+    protected function requestId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getExtraProperty('request_id')
@@ -110,7 +109,7 @@ class ApiPurgeLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function traceId(): Attribute
+    protected function traceId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getExtraProperty('trace_id')

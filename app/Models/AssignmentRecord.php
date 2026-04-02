@@ -98,7 +98,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AssignmentRecord whereUpdatedAt($value)
  * @method static Builder<static>|AssignmentRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(AssignmentRecordObserver::class)]
 #[ScopedBy(AssignmentRecordScope::class)]

@@ -6,10 +6,14 @@ namespace App\Http\Requests\Api;
 
 use App\Models\Enums\CredentialType;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class CredentialRequest extends Request
 {
+    /**
+     * @return array<string, Enum[]|string[]|string>
+     */
     public function commonRules(): array
     {
         return [
@@ -23,6 +27,9 @@ class CredentialRequest extends Request
         ];
     }
 
+    /**
+     * @return array<string, Enum[]|string[]|string>
+     */
     public function storeRules(): array
     {
         return [

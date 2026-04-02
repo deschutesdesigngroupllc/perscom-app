@@ -23,7 +23,7 @@ class BackupDatabasesCommand extends Command implements Isolatable
     {
         CreateBackupTenantDatabasesBatch::handle();
 
-        BackupDatabase::dispatch();
+        dispatch(new BackupDatabase);
 
         $this->components->info('The database backup jobs have been dispatched.');
 

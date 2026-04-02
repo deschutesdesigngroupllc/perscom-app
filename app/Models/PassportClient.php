@@ -8,57 +8,60 @@ use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
 
 /**
  * @property string $id
- * @property int|null $user_id
+ * @property string|null $owner_type
+ * @property int|null $owner_id
  * @property string $name
  * @property string|null $description
  * @property PassportClientType|null $type
  * @property string|null $secret
  * @property string|null $provider
- * @property string $redirect
+ * @property array $redirect_uris
+ * @property array $grant_types
  * @property string|null $logout
  * @property array<array-key, mixed>|null $scopes
- * @property bool $personal_access_client
- * @property bool $password_client
  * @property bool $revoked
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, AuthCode> $authCodes
  * @property-read int|null $auth_codes_count
- * @property-read string|null $plain_secret
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
+ * @property-read User|null $owner
+ * @property-read string|null $plain_secret
  * @property-read Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read User|null $user
+ * @property-read \App\Models\User|null $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient existsIn(array $haystack)
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()
  * @method static Builder<static>|PassportClient query()
  * @method static Builder<static>|PassportClient whereCreatedAt($value)
  * @method static Builder<static>|PassportClient whereDescription($value)
+ * @method static Builder<static>|PassportClient whereGrantTypes($value)
  * @method static Builder<static>|PassportClient whereId($value)
  * @method static Builder<static>|PassportClient whereLogout($value)
  * @method static Builder<static>|PassportClient whereName($value)
- * @method static Builder<static>|PassportClient wherePasswordClient($value)
- * @method static Builder<static>|PassportClient wherePersonalAccessClient($value)
+ * @method static Builder<static>|PassportClient whereOwnerId($value)
+ * @method static Builder<static>|PassportClient whereOwnerType($value)
  * @method static Builder<static>|PassportClient whereProvider($value)
- * @method static Builder<static>|PassportClient whereRedirect($value)
+ * @method static Builder<static>|PassportClient whereRedirectUris($value)
  * @method static Builder<static>|PassportClient whereRevoked($value)
  * @method static Builder<static>|PassportClient whereScopes($value)
  * @method static Builder<static>|PassportClient whereSecret($value)
  * @method static Builder<static>|PassportClient whereType($value)
  * @method static Builder<static>|PassportClient whereUpdatedAt($value)
- * @method static Builder<static>|PassportClient whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class PassportClient extends BaseClientModel
 {
@@ -77,13 +80,10 @@ class PassportClient extends BaseClientModel
     public const string SYSTEM_PASSWORD_GRANT_CLIENT = 'Default Password Grant Client';
 
     protected $attributes = [
-        'personal_access_client' => false,
-        'password_client' => false,
-        'redirect' => 'http://your.redirect.path',
         'revoked' => false,
     ];
 
-    public function hasScope($scope): bool
+    public function hasScope(string $scope): bool
     {
         /**
          * Passport clients do not yet support a wildcard "*" all scopes. Passport

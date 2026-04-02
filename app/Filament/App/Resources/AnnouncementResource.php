@@ -86,7 +86,7 @@ class AnnouncementResource extends BaseResource
                                 DateTimePicker::make('expires_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -129,7 +129,7 @@ class AnnouncementResource extends BaseResource
                     ->label('Expires')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))

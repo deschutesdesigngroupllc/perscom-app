@@ -109,7 +109,7 @@ class Integration extends SettingsPage
                                         ->modalHeading('Regenerate SSO Key')
                                         ->modalDescription('Are you sure you want to regenerate the SSO key? Any previous JWT access tokens signed with the existing SSO key will be invalid.')
                                         ->action(function (Action $action): void {
-                                            $settings = app(IntegrationSettings::class);
+                                            $settings = resolve(IntegrationSettings::class);
                                             $settings->single_sign_on_key = Str::random(40);
                                             $settings->save();
 
@@ -132,7 +132,7 @@ class Integration extends SettingsPage
                                     ->helperText('Each account is limited to a daily limit of SMS text messages. To increase your rate, please reach out to support.')
                                     ->getStateUsing(function (): string {
                                         /** @var TwilioService $service */
-                                        $service = app(TwilioService::class);
+                                        $service = resolve(TwilioService::class);
 
                                         $attempts = $service->limiter->attempts('sms') ?? 0;
 

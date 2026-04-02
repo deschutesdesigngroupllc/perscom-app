@@ -26,6 +26,7 @@ use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
+use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
@@ -50,6 +51,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Padmission\DataLens\DataLensPlugin;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -149,14 +151,14 @@ class AppPanelProvider extends PanelProvider
             ->brandLogo(fn (): Factory|View => view('components.logo'))
             ->plugins([
                 ...class_exists('Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin')
-                    ? [\Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin::make()
+                    ? [AdvancedTablesPlugin::make()
                         ->persistActiveViewInSession()
                         ->resourceEnabled(false)
                         ->favoritesBarSize(Size::Small)
                         ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme'))]
                     : [],
                 ...class_exists('Padmission\DataLens\DataLensPlugin')
-                    ? [\Padmission\DataLens\DataLensPlugin::make()
+                    ? [DataLensPlugin::make()
                         ->navigationGroup('Reporting')
                         ->navigationLabel('Custom Reports')
                         ->navigationSort(10)]

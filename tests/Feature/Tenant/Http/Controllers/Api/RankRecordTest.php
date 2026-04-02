@@ -52,7 +52,7 @@ class RankRecordTest extends ApiResourceTestCase
     }
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function storeData(): array
     {

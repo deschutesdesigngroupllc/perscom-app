@@ -13,7 +13,7 @@ return new class extends OneTimeOperation
     {
         tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
             /** @var IntegrationSettings $settings */
-            $settings = app(IntegrationSettings::class);
+            $settings = resolve(IntegrationSettings::class);
             $settings->single_sign_on_key = Str::random(40);
             $settings->save();
         });

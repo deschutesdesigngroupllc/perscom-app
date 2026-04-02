@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Category $category
- * @property-read Event $event
+ * @property-read \Illuminate\Support\Facades\Event $event
  *
  * @method static Builder<static>|EventCategory newModelQuery()
  * @method static Builder<static>|EventCategory newQuery()
@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|EventCategory whereOrder($value)
  * @method static Builder<static>|EventCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class EventCategory extends Pivot
 {

@@ -40,7 +40,7 @@ use Spatie\Permission\Models\Role as BaseRole;
  * @method static Builder<static>|Role whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Role withoutPermission($permissions)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Role extends BaseRole
 {
@@ -56,12 +56,12 @@ class Role extends BaseRole
         'is_application_role',
     ];
 
-    public function isCustomRole(): Attribute
+    protected function isCustomRole(): Attribute
     {
         return Attribute::get(fn (): bool => ! $this->is_application_role)->shouldCache();
     }
 
-    public function isApplicationRole(): Attribute
+    protected function isApplicationRole(): Attribute
     {
         return Attribute::get(fn ($value, $attributes = null): bool => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
     }

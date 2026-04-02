@@ -11,6 +11,7 @@ use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
 use DateTime;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use IntlDateFormatter;
 use RRule\RRule;
@@ -92,7 +93,7 @@ class ScheduleService
             return null;
         }
 
-        return Carbon::parse($lastOccurrence);
+        return Date::parse($lastOccurrence);
     }
 
     public static function nextOccurrence(Schedule $repeatable): ?Carbon
@@ -111,7 +112,7 @@ class ScheduleService
             return null;
         }
 
-        return Carbon::parse($nextOccurrence);
+        return Date::parse($nextOccurrence);
     }
 
     /**
@@ -125,7 +126,7 @@ class ScheduleService
             return null;
         }
 
-        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => Carbon::parse($dateTime))->toArray();
+        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => Date::parse($dateTime))->toArray();
     }
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
@@ -146,7 +147,7 @@ class ScheduleService
                         : IntlDateFormatter::MEDIUM,
                     timezone: UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     })

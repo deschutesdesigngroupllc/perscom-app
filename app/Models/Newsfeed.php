@@ -9,7 +9,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasLikes;
-use Eloquent;
 use Filament\Support\Contracts\HasColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,7 +67,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Newsfeed whereSubjectType($value)
  * @method static Builder<static>|Newsfeed whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(NewsfeedScope::class)]
 class Newsfeed extends Activity implements HasColor
@@ -92,7 +91,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function headline(): Attribute
+    protected function headline(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('headline'))
@@ -102,7 +101,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function text(): Attribute
+    protected function text(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('text'))
@@ -112,7 +111,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function color(): Attribute
+    protected function color(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('color'))
@@ -122,7 +121,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function item(): Attribute
+    protected function item(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('item'))

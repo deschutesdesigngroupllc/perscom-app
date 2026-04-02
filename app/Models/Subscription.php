@@ -64,7 +64,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Subscription whereType($value)
  * @method static Builder<static>|Subscription whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(SubscriptionObserver::class)]
 class Subscription extends BaseSubscription
@@ -76,7 +76,7 @@ class Subscription extends BaseSubscription
         return true;
     }
 
-    public function stripePrice(): Attribute
+    protected function stripePrice(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ?string {
             if (filled($value)) {
@@ -94,7 +94,7 @@ class Subscription extends BaseSubscription
         })->shouldCache();
     }
 
-    public function stripeUrl(): Attribute
+    protected function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
             if (blank($this->stripe_id)) {
@@ -108,7 +108,7 @@ class Subscription extends BaseSubscription
         });
     }
 
-    public function renewalTerm(): Attribute
+    protected function renewalTerm(): Attribute
     {
         return Attribute::get(function (): ?string {
             $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan): array => [$plan->id => $plan->interval]);

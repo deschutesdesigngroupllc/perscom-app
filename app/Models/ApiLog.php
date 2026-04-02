@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Scopes\ApiLogScope;
-use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -88,7 +87,7 @@ use Zoha\Metable;
  * @method static Builder<static>|ApiLog whereUpdatedAt($value)
  * @method static Builder<static>|ApiLog withMeta()
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity
@@ -97,9 +96,17 @@ class ApiLog extends Activity
     use Metable;
 
     /**
+     * @return HasManyJson<ApiPurgeLog, $this>
+     */
+    public function purges(): HasManyJson
+    {
+        return $this->hasManyJson(ApiPurgeLog::class, 'properties->request_id', 'properties->request_id');
+    }
+
+    /**
      * @return Attribute<?string, never>
      */
-    public function ipAddress(): Attribute
+    protected function ipAddress(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('ip')
@@ -109,7 +116,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function method(): Attribute
+    protected function method(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('method')
@@ -119,7 +126,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function endpoint(): Attribute
+    protected function endpoint(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('endpoint')
@@ -129,7 +136,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function body(): Attribute
+    protected function body(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('body')
@@ -139,7 +146,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function content(): Attribute
+    protected function content(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('content')
@@ -149,7 +156,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<string|int|null, never>
      */
-    public function duration(): Attribute
+    protected function duration(): Attribute
     {
         return Attribute::make(
             get: fn (): string|int|null => $this->getMeta('duration')
@@ -159,7 +166,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<string|int|null, never>
      */
-    public function status(): Attribute
+    protected function status(): Attribute
     {
         return Attribute::make(
             get: fn (): string|int|null => $this->getMeta('status')
@@ -169,7 +176,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function requestHeaders(): Attribute
+    protected function requestHeaders(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('request_headers')
@@ -179,7 +186,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function responseHeaders(): Attribute
+    protected function responseHeaders(): Attribute
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('response_headers')
@@ -189,7 +196,7 @@ class ApiLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function requestId(): Attribute
+    protected function requestId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('request_id')
@@ -199,19 +206,11 @@ class ApiLog extends Activity
     /**
      * @return Attribute<?string, never>
      */
-    public function traceId(): Attribute
+    protected function traceId(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('trace_id')
         )->shouldCache();
-    }
-
-    /**
-     * @return HasManyJson<ApiPurgeLog, $this>
-     */
-    public function purges(): HasManyJson
-    {
-        return $this->hasManyJson(ApiPurgeLog::class, 'properties->request_id', 'properties->request_id');
     }
 
     protected function casts(): array

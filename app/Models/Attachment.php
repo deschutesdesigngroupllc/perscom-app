@@ -8,7 +8,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
@@ -31,7 +30,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $updated_at
  * @property-read string|null $attachment_url
  * @property-read string $label
- * @property-read Model|Eloquent|null $model
+ * @property-read Model|Model|null $model
  * @property-read string|null $model_url
  * @property-read string|null $relative_url
  * @property-read string|null $url
@@ -49,7 +48,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder<static>|Attachment wherePath($value)
  * @method static Builder<static>|Attachment whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Attachment extends Model implements HasLabel
 {
@@ -73,7 +72,17 @@ class Attachment extends Model implements HasLabel
         'attachment_url',
     ];
 
-    public function attachmentUrl(): Attribute
+    public function model(): MorphTo
+    {
+        return $this->morphTo('model');
+    }
+
+    protected static function booted(): void
+    {
+        static::deleting(fn (Attachment $model) => Storage::delete($model->path));
+    }
+
+    protected function attachmentUrl(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->path ? (
@@ -84,7 +93,7 @@ class Attachment extends Model implements HasLabel
         )->shouldCache();
     }
 
-    public function modelUrl(): Attribute
+    protected function modelUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
             if (blank($this->model)) {
@@ -112,15 +121,5 @@ class Attachment extends Model implements HasLabel
 
             return null;
         })->shouldCache();
-    }
-
-    public function model(): MorphTo
-    {
-        return $this->morphTo('model');
-    }
-
-    protected static function booted(): void
-    {
-        static::deleting(fn (Attachment $model) => Storage::delete($model->path));
     }
 }

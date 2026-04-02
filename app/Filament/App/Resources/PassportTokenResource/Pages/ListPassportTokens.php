@@ -37,10 +37,7 @@ class ListPassportTokens extends ListRecords
                 ->action(function (Action $action): void {
                     $apiService = new ApiCacheService;
 
-                    PurgeApiCache::dispatch(
-                        tags: $apiService->getTenantCacheTag(),
-                        event: 'manual'
-                    );
+                    dispatch(new PurgeApiCache(tags: $apiService->getTenantCacheTag(), event: 'manual'));
 
                     $action->success();
                 }),

@@ -3,7 +3,12 @@
 declare(strict_types=1);
 
 use App\Filament\App\Clusters\Settings;
+use App\Filament\App\Clusters\Settings\Resources\Roles\RoleResource;
+use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\UserResource;
+use App\Models\User;
+use Filament\Widgets\AccountWidget;
+use Filament\Widgets\FilamentInfoWidget;
 
 return [
     /*
@@ -53,7 +58,7 @@ return [
     |
     */
 
-    'auth_provider_model' => App\Models\User::class,
+    'auth_provider_model' => User::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -167,7 +172,7 @@ return [
     'resources' => [
         'subject' => 'model',
         'manage' => [
-            Settings\Resources\Roles\RoleResource::class => [
+            RoleResource::class => [
                 'viewAny',
                 'view',
                 'create',
@@ -209,7 +214,7 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            App\Filament\App\Pages\Dashboard::class,
+            Dashboard::class,
         ],
     ],
 
@@ -228,8 +233,8 @@ return [
         'subject' => 'class',
         'prefix' => 'view',
         'exclude' => [
-            Filament\Widgets\AccountWidget::class,
-            Filament\Widgets\FilamentInfoWidget::class,
+            AccountWidget::class,
+            FilamentInfoWidget::class,
         ],
     ],
 

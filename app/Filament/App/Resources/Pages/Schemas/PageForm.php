@@ -7,9 +7,11 @@ namespace App\Filament\App\Resources\Pages\Schemas;
 use App\Filament\App\Resources\Pages\Actions\CodeEditorAction;
 use App\Models\Page;
 use Filament\Forms\Components\CodeEditor;
+use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -27,7 +29,7 @@ class PageForm
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Page')
+                        Tab::make('Page')
                             ->icon(Heroicon::OutlinedBookOpen)
                             ->schema([
                                 TextInput::make('name')
@@ -58,7 +60,7 @@ class PageForm
                                 CodeEditor::make('content')
                                     ->hintAction(fn (?Page $record): CodeEditorAction => CodeEditorAction::make()->visible(filled($record))->page($record))
                                     ->helperText(new HtmlString("The HTML content of the page. You may use the <a class='underline' href='https://twig.symfony.com/' target='_blank'>Twig Template Engine</a> to add dynamic rendering. For security, certain functions, filters, tags, etc have been disabled. Tailwind CSS may also be used to style the page."))
-                                    ->language(CodeEditor\Enums\Language::Html)
+                                    ->language(Language::Html)
                                     ->required()
                                     ->columnSpanFull(),
                             ]),

@@ -13,8 +13,8 @@ class EnabledInEnvironment
 {
     public function handle(Request $request, Closure $next, ...$environments): Response
     {
-        if (! in_array(App::environment(), $environments)) {
-            return redirect()->back();
+        if (! App::environment($environments)) {
+            return back();
         }
 
         return $next($request);

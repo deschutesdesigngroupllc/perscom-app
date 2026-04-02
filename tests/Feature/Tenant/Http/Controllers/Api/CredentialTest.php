@@ -7,7 +7,6 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 use App\Http\Controllers\Api\Credentials\CredentialsController;
 use App\Models\Credential;
 use App\Models\Enums\CredentialType;
-use App\Models\Group;
 use App\Models\Issuer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -29,7 +28,7 @@ class CredentialTest extends ApiResourceTestCase
     }
 
     /**
-     * @return Factory<Group>
+     * @return Factory<Credential>
      */
     public function factory(): Factory
     {

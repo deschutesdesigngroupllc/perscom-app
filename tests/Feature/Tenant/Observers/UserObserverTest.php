@@ -35,7 +35,7 @@ class UserObserverTest extends TenantTestCase
         ]);
 
         /** @var PermissionSettings $settings */
-        $settings = app(PermissionSettings::class);
+        $settings = resolve(PermissionSettings::class);
 
         $user = User::factory()->withoutRoles()->create();
 

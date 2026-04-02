@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Support\JwtAuth\Providers\CustomJwtProvider;
+use PHPOpenSourceSaver\JWTAuth\Providers\Auth\Illuminate;
 
 return [
     /*
@@ -288,7 +289,7 @@ return [
         |
         */
 
-        'auth' => PHPOpenSourceSaver\JWTAuth\Providers\Auth\Illuminate::class,
+        'auth' => Illuminate::class,
 
         /*
         |--------------------------------------------------------------------------

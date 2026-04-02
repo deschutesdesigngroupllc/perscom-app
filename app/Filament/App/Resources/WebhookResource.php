@@ -83,7 +83,7 @@ class WebhookResource extends BaseResource
                                 Select::make('events')
                                     ->helperText('The events that will trigger the webhook. Leave empty if using only with automations.')
                                     ->multiple()
-                                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->toArray()),
+                                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->all()),
                                 TextInput::make('secret')
                                     ->revealable()
                                     ->default(Str::random(32))

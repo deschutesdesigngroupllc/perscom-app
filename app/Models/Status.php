@@ -60,7 +60,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Status whereOrder($value)
  * @method static Builder<static>|Status whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(StatusScope::class)]
 class Status extends Model implements HasColor, HasLabel, Sortable

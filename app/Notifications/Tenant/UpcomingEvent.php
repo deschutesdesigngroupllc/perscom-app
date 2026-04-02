@@ -64,7 +64,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
             ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
-            ->toArray();
+            ->all();
     }
 
     public function toMail(User $notifiable): UpcomingEventMail
@@ -106,7 +106,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
     public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage|null
     {
         /** @var TwilioService $service */
-        $service = app(TwilioService::class);
+        $service = resolve(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
             message: TwilioService::formatText($this->getMessage($notifiable))

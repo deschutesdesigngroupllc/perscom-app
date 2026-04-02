@@ -23,6 +23,7 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
 class Schedule
@@ -33,7 +34,7 @@ class Schedule
             $start = DateTimePicker::make('start')
                 ->timezone(UserSettingsService::get('timezone', function () {
                     /** @var OrganizationSettings $settings */
-                    $settings = app(OrganizationSettings::class);
+                    $settings = resolve(OrganizationSettings::class);
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
@@ -99,7 +100,7 @@ class Schedule
                             ->label('On')
                             ->default('never')
                             ->options(function (Get $get) {
-                                $month = Carbon::parse($get('start'))->startOfMonth();
+                                $month = Date::parse($get('start'))->startOfMonth();
                                 $period = collect($month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings([
                                     'monthOverflow' => false,
                                 ]));
@@ -154,8 +155,8 @@ class Schedule
                     ->hidden(fn (Get $get): bool => $get('end_type') !== ScheduleEndType::ON)
                     ->required(fn (Get $get): bool => $get('end_type') === ScheduleEndType::ON)
                     ->dehydrateStateUsing(function (DateTimeInterface|WeekDay|Month|string|int|float|null $state, Get $get): Carbon {
-                        $start = Carbon::parse($get('start'));
-                        $until = Carbon::parse($state);
+                        $start = Date::parse($get('start'));
+                        $until = Date::parse($state);
 
                         return $until->setTimeFrom($start);
                     }),
@@ -163,12 +164,12 @@ class Schedule
                     ->helperText('The configured schedule will repeat using the pattern above.')
                     ->columnSpanFull()
                     ->getStateUsing(function (Get $get) use ($allDay, $shiftScheduleTimezone): string {
-                        $start = Carbon::parse($get('start'));
+                        $start = Date::parse($get('start'));
 
                         if ($shiftScheduleTimezone) {
                             $start->shiftTimezone(UserSettingsService::get('timezone', function () {
                                 /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                                $settings = resolve(OrganizationSettings::class);
 
                                 return $settings->timezone ?? config('app.timezone');
                             }))

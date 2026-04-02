@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasStatus
 {
-    public function scopeStatus(Builder $query, Status $status): void
-    {
-        $query->whereBelongsTo($status);
-    }
-
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
+    }
+
+    protected function scopeStatus(Builder $query, Status $status): void
+    {
+        $query->whereBelongsTo($status);
     }
 
     protected function initializeHasStatus(): void

@@ -43,8 +43,8 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->default('UTC')
                                     ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key): array => [$value => $value]))
                                     ->required(),
-                                /** @phpstan-ignore method.notFound */
                                 $this->getEmailFormComponent()
+                                    /** @phpstan-ignore method.notFound */
                                     ->label('Email'),
                                 TextInput::make('phone_number')
                                     ->label('Phone Number')
@@ -159,13 +159,11 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                         Tab::make('Password')
                             ->icon('heroicon-o-lock-closed')
                             ->schema([
-                                /** @phpstan-ignore method.notFound */
                                 $this->getPasswordFormComponent()
-                                    ->helperText('Set a new password for your account.')
+                                    ->helperText('Set a new password for your account.') // @phpstan-ignore method.notFound
                                     ->label('New Password'),
-                                /** @phpstan-ignore method.notFound */
                                 $this->getPasswordConfirmationFormComponent()
-                                    ->label('Confirm New Password'),
+                                    ->label('Confirm New Password'), // @phpstan-ignore method.notFound
                             ]),
                     ]),
             ]);

@@ -28,7 +28,7 @@ use Illuminate\Support\Carbon;
  * @property string $color
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection<int, Event> $events
+ * @property-read Collection<int, \Illuminate\Support\Facades\Event> $events
  * @property-read int|null $events_count
  * @property-read string $label
  * @property-read string|null $relative_url
@@ -47,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Calendar whereName($value)
  * @method static Builder<static>|Calendar whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(CalendarObserver::class)]
 class Calendar extends Model implements HasColor, HasLabel

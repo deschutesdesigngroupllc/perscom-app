@@ -8,9 +8,13 @@ use App\Models\Registration;
 use App\Models\Tenant;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Unique;
 
 class RegisterRequest extends FormRequest
 {
+    /**
+     * @return array<string, Unique[]|string[]>
+     */
     public function rules(): array
     {
         return [

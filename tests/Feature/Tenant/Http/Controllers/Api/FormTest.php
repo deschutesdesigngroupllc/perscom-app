@@ -49,7 +49,7 @@ class FormTest extends ApiResourceTestCase
     }
 
     /**
-     * @return string[]
+     * @return array<string, mixed>
      */
     public function storeData(): array
     {

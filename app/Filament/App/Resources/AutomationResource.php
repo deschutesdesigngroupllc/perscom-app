@@ -120,7 +120,7 @@ class AutomationResource extends BaseResource
                                             ->action(function (Get $get, Action $action): void {
                                                 $trigger = AutomationTrigger::from($get('trigger'));
                                                 $context = $trigger->getExampleContext();
-                                                $result = app(AutomationService::class)->testCondition(
+                                                $result = resolve(AutomationService::class)->testCondition(
                                                     $get('condition'),
                                                     $context
                                                 );
@@ -218,7 +218,7 @@ class AutomationResource extends BaseResource
                                                             ->state(function () use ($get): string {
                                                                 $trigger = AutomationTrigger::from($get('trigger'));
                                                                 $context = $trigger->getExampleContext();
-                                                                $result = app(AutomationService::class)->previewWebhookPayload(
+                                                                $result = resolve(AutomationService::class)->previewWebhookPayload(
                                                                     $get('webhook_payload_template'),
                                                                     $context
                                                                 );
@@ -289,7 +289,7 @@ class AutomationResource extends BaseResource
                                                             ->state(function () use ($get): string {
                                                                 $trigger = AutomationTrigger::from($get('trigger'));
                                                                 $context = $trigger->getExampleContext();
-                                                                $result = app(AutomationService::class)->previewMessageTemplate(
+                                                                $result = resolve(AutomationService::class)->previewMessageTemplate(
                                                                     $get('message_content'),
                                                                     $context
                                                                 );
@@ -347,7 +347,7 @@ class AutomationResource extends BaseResource
                                             ->helperText('Select the resource type to update.')
                                             ->options(fn (): array => collect(AutomationService::getUpdatableModels())
                                                 ->mapWithKeys(fn (array $config, string $key): array => [$key => $config['label']])
-                                                ->toArray())
+                                                ->all())
                                             ->live()
                                             ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE)
                                             ->columnSpanFull(),

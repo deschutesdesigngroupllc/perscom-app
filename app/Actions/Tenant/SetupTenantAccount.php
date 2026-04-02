@@ -109,13 +109,13 @@ class SetupTenantAccount
     protected function setInitialSettings(): void
     {
         /** @var OrganizationSettings $organization */
-        $organization = app(OrganizationSettings::class);
+        $organization = resolve(OrganizationSettings::class);
         $organization->name = $this->tenant->name;
         $organization->email = $this->tenant->email;
         $organization->save();
 
         /** @var DashboardSettings $dashboard */
-        $dashboard = app(DashboardSettings::class);
+        $dashboard = resolve(DashboardSettings::class);
         $dashboard->title = $this->tenant->name;
         $dashboard->save();
     }

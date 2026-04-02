@@ -9,6 +9,7 @@ use App\Models\Attachment;
 use App\Models\ServiceRecord;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 
 class AttachmentTest extends ApiResourceTestCase
@@ -64,7 +65,7 @@ class AttachmentTest extends ApiResourceTestCase
     }
 
     /**
-     * @return string[]
+     * @return array<string, string|File>
      */
     public function storeData(): array
     {

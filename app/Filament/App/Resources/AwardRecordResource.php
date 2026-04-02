@@ -115,7 +115,7 @@ class AwardRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->award_records);
 
@@ -126,7 +126,7 @@ class AwardRecordResource extends BaseResource
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
-                                $settings = app(NotificationSettings::class);
+                                $settings = resolve(NotificationSettings::class);
 
                                 return [
                                     ModelNotification::make(
@@ -174,7 +174,7 @@ class AwardRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->award_records);
 
@@ -288,18 +288,19 @@ class AwardRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        $user = optional($record->user)->name;
+        $user = $record->user?->name;
 
         return sprintf('%d: %s', $record->id, $user);
     }
 
     /**
      * @param  AwardRecord  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         $details = [
-            'Award' => optional($record->award)->name,
+            'Award' => $record->award?->name,
         ];
 
         if (filled($record->text)) {

@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasGroup
 {
-    public function scopeGroup(Builder $query, Group $group): void
-    {
-        $query->whereBelongsTo($group);
-    }
-
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);
+    }
+
+    protected function scopeGroup(Builder $query, Group $group): void
+    {
+        $query->whereBelongsTo($group);
     }
 
     protected function initializeHasGroup(): void

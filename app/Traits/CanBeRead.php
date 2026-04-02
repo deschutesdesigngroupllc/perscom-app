@@ -12,16 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  */
 trait CanBeRead
 {
-    public function scopeRead(Builder $query): void
-    {
-        $query->whereNotNull('read_at');
-    }
-
-    public function scopeUnread(Builder $query): void
-    {
-        $query->whereNull('read_at');
-    }
-
     public function markAsRead(): static
     {
         return tap($this, fn (Model $model) => $model->update(['read_at' => now()]));
@@ -30,6 +20,16 @@ trait CanBeRead
     public function markAsUnread(): static
     {
         return tap($this, fn (Model $model) => $model->update(['read_at' => null]));
+    }
+
+    protected function scopeRead(Builder $query): void
+    {
+        $query->whereNotNull('read_at');
+    }
+
+    protected function scopeUnread(Builder $query): void
+    {
+        $query->whereNull('read_at');
     }
 
     protected function initializeCanBeHidden(): void

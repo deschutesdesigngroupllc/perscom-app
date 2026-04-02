@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Issuers\IssuersController;
-use App\Models\Group;
 use App\Models\Issuer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,7 +26,7 @@ class IssuerTest extends ApiResourceTestCase
     }
 
     /**
-     * @return Factory<Group>
+     * @return Factory<Issuer>
      */
     public function factory(): Factory
     {

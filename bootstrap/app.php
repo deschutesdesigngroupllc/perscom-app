@@ -22,6 +22,7 @@ use App\Jobs\System\DeleteUnverifiedRegistrations;
 use App\Jobs\System\RemoveInactiveAccounts;
 use App\Jobs\System\ResetDemoAccount;
 use Filament\Facades\Filament;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
@@ -43,7 +44,7 @@ use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Passport\Http\Middleware\CheckForAnyScope;
+use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
@@ -86,7 +87,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn (): string => Filament::getLoginUrl());
         $middleware->redirectUsersTo(fn (): string => Dashboard::getUrl());
 
-        $middleware->validateCsrfTokens(except: [
+        $middleware->preventRequestForgery(except: [
             'spark/*',
         ]);
 
@@ -112,7 +113,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cache.headers' => SetCacheHeaders::class,
             'env' => EnabledInEnvironment::class,
             'feature' => EnsureFeaturesAreActive::class,
-            'scope' => CheckForAnyScope::class,
+            'scope' => CheckTokenForAnyScope::class,
             'subscribed' => CheckSubscription::class,
         ]);
 
@@ -167,7 +168,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Exception $e, Request $request) {
             $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
             $statusProperty = property_exists($e, 'status') ? $e->status : null;
-            $statusUnauthenticated = $e instanceof Illuminate\Auth\AuthenticationException ? 401 : null;
+            $statusUnauthenticated = $e instanceof AuthenticationException ? 401 : null;
             $status = $statusCode ?? $statusProperty ?? $statusUnauthenticated ?? Response::HTTP_INTERNAL_SERVER_ERROR;
 
             if ($request->routeIs('api.*') || $request->expectsJson()) {
@@ -205,7 +206,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 if ($request->routeIs('api.widgets.*')) {
                     return response()->view('widgets.error', [
                         'status' => $statusCode,
-                        'message' => data_get($response, 'error.message') ?? 'Unknown error.',
+                        'message' => data_get($response, 'error.message', 'Unknown error.'),
                     ]);
                 }
 

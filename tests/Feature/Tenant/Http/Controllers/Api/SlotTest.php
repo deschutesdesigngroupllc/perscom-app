@@ -6,7 +6,6 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Slots\SlotsController;
 use App\Models\Slot;
-use App\Models\Specialty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SlotTest extends ApiResourceTestCase
@@ -27,7 +26,7 @@ class SlotTest extends ApiResourceTestCase
     }
 
     /**
-     * @return Factory<Specialty>
+     * @return Factory<Slot>
      */
     public function factory(): Factory
     {

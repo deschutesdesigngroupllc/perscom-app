@@ -8,10 +8,14 @@ use App\Models\Enums\FieldOptionsModel;
 use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class FieldRequest extends Request
 {
+    /**
+     * @return array<string, Enum[]|string>
+     */
     public function commonRules(): array
     {
         return [
@@ -35,6 +39,9 @@ class FieldRequest extends Request
         ];
     }
 
+    /**
+     * @return array<string, Enum[]|string[]|string>
+     */
     public function storeRules(): array
     {
         return [

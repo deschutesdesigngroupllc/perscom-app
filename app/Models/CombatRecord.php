@@ -71,7 +71,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|CombatRecord whereUpdatedAt($value)
  * @method static Builder<static>|CombatRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(CombatRecordObserver::class)]
 #[ScopedBy(CombatRecordScope::class)]

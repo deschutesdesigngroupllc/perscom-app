@@ -8,7 +8,6 @@ use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasStatus;
-use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +26,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Eloquent $model
+ * @property-read Model|Model $model
  * @property-read Status $status
  *
  * @method static \Database\Factories\StatusRecordFactory factory($count = null, $state = [])
@@ -43,7 +42,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|StatusRecord whereText($value)
  * @method static Builder<static>|StatusRecord whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(StatusRecordObserver::class)]
 class StatusRecord extends MorphPivot

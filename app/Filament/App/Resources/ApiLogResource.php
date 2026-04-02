@@ -300,7 +300,7 @@ class ApiLogResource extends BaseResource
                                         'x-csrf-token',
                                         'x-xsrf-token',
                                     ]))
-                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
+                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->all()
                                 ),
                             CodeEntry::make('body')
                                 ->copyable()
@@ -359,6 +359,7 @@ class ApiLogResource extends BaseResource
         /** @var Builder|ApiLog $query */
         $query = parent::getEloquentQuery();
 
+        /** @phpstan-ignore return.type */
         return $query->withMeta();
     }
 

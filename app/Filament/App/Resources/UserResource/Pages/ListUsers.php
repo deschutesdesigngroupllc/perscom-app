@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\UserResource\Pages;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Status;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +27,7 @@ class ListUsers extends ListRecords
         }
 
         return Status::all()->mapWithKeys(fn (Status $status): array => [
-            $status->id => \Archilex\AdvancedTables\Components\PresetView::make()
+            $status->id => PresetView::make()
                 ->favorite()
                 ->label($status->name)
                 ->icon($status->icon)

@@ -23,12 +23,13 @@ class CreatePassportClient extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $client = match (data_get($data, 'type')) {
-            PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT => $clients->create(Auth::user()->getAuthIdentifier(), data_get($data, 'name'), data_get($data, 'redirect'), confidential: false),
-            PassportClientType::CLIENT_CREDENTIALS => $clients->create(null, data_get($data, 'name'), ''),
-            PassportClientType::PASSWORD => $clients->createPasswordGrantClient(null, data_get($data, 'name'), 'http://localhost', 'users'),
+            PassportClientType::AUTHORIZATION_CODE => $clients->createAuthorizationCodeGrantClient(data_get($data, 'name'), data_get($data, 'redirect_uris'), confidential: false, user: Auth::user()),
+            PassportClientType::IMPLICIT => $clients->createImplicitGrantClient(data_get($data, 'name'), data_get($data, 'redirect_uris')),
+            PassportClientType::CLIENT_CREDENTIALS => $clients->createClientCredentialsGrantClient(data_get($data, 'name')),
+            PassportClientType::PASSWORD => $clients->createPasswordGrantClient(data_get($data, 'name')),
             default => throw new Exception('The client type selected is not supported.')
         };
 

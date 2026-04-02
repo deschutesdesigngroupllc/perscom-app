@@ -1,90 +1,92 @@
 {
-  "name": "laravel/laravel",
+  "name": "deschutesdesigngroupllc/perscom-app",
+  "description": "Personnel management made easy for high-performing, results-driven organizations.",
+  "license": "MIT",
   "type": "project",
-  "description": "The skeleton application for the Laravel framework.",
   "keywords": [
     "laravel",
     "framework"
   ],
-  "license": "MIT",
   "require": {
     "php": "^8.4",
     "ext-zip": "*",
-    "aws/aws-sdk-php": "^3.369.8",
-    "bezhansalleh/filament-shield": "4.0.3",
-    "calebporzio/sushi": "^2.5.3",
-    "dutchcodingcompany/filament-socialite": "^3.0.1",
+    "aws/aws-sdk-php": "^3.376.1",
+    "bezhansalleh/filament-shield": "^4.2",
+    "calebporzio/sushi": "^2.5.4",
+    "dutchcodingcompany/filament-socialite": "^3.2",
     "fakerphp/faker": "^1.24.1",
-    "filament/filament": "^4.4.0",
-    "filament/spark-billing-provider": ">=4.4.0",
-    "filament/spatie-laravel-google-fonts-plugin": ">=4.4.0",
-    "filament/spatie-laravel-settings-plugin": ">=4.4.0",
-    "flowframe/laravel-trend": "^v0.4.0",
-    "guava/calendar": "^2.1.1",
-    "guava/filament-icon-picker": "^3.1",
-    "inertiajs/inertia-laravel": "^2.0.18",
-    "laravel-notification-channels/discord": "^1.7",
-    "laravel-notification-channels/twilio": "^4.1.2",
-    "laravel/boost": "^2.2",
-    "laravel/framework": "^12.53.0",
-    "laravel/horizon": "^5.42.0",
-    "laravel/passport": "^12.4.2",
-    "laravel/pennant": "^1.18.5",
-    "laravel/pulse": "^1.4.7",
-    "laravel/slack-notification-channel": "^3.7.0",
-    "laravel/spark-stripe": "^5.8",
-    "laravel/telescope": "^5.16.1",
-    "league/flysystem-aws-s3-v3": "^3.30.1",
+    "filament/filament": "^5.4.3",
+    "filament/spark-billing-provider": "^5.4.3",
+    "filament/spatie-laravel-google-fonts-plugin": "^5.4.3",
+    "filament/spatie-laravel-settings-plugin": "^5.4.3",
+    "flowframe/laravel-trend": "^0.5.0",
+    "guava/calendar": "^3.1",
+    "guava/filament-icon-picker": "^4.0",
+    "inertiajs/inertia-laravel": "^3.0.1",
+    "laravel-notification-channels/discord": "^1.8",
+    "laravel-notification-channels/twilio": "^4.2",
+    "laravel/boost": "^2.4.1",
+    "laravel/framework": "^13.3",
+    "laravel/horizon": "^5.45.5",
+    "laravel/passport": "^13.7.1",
+    "laravel/pennant": "^1.23.0",
+    "laravel/pulse": "^1.7.2",
+    "laravel/slack-notification-channel": "^3.8.0",
+    "laravel/spark-stripe": "^6.2",
+    "laravel/telescope": "^5.18",
+    "laravel/tinker": "^3",
+    "league/flysystem-aws-s3-v3": "^3.32.0",
     "league/html-to-markdown": "^5.1.1",
-    "lwwcas/laravel-countries": "^4.12.0.1",
-    "owenvoke/blade-fontawesome": "^2.9.1",
-    "phiki/phiki": "^2.0.5",
-    "php-open-source-saver/jwt-auth": "^2.8.3",
+    "lwwcas/laravel-countries": "dev-master",
+    "owenvoke/blade-fontawesome": "^3.2.2",
+    "phiki/phiki": "^2.2.0",
+    "php-open-source-saver/jwt-auth": "^2.9.0",
     "pusher/pusher-php-server": "^7.2.7",
     "rlanvin/php-rrule": "^2.6.0",
-    "sentry/sentry-laravel": "^4.20.0",
+    "sentry/sentry-laravel": "^4.24.0",
     "spatie/cpu-load-health-check": "^1.0.5",
-    "spatie/eloquent-sortable": "^4.5.2",
-    "spatie/fork": "^1.2.5",
-    "spatie/laravel-activitylog": "^4.10.2",
-    "spatie/laravel-backup": "^9.3.7",
-    "spatie/laravel-data": "^4.18.0",
-    "spatie/laravel-google-fonts": "^1.4.4",
-    "spatie/laravel-health": "^1.34.10",
-    "spatie/laravel-permission": "^6.24.0",
-    "spatie/laravel-responsecache": "^7.7.2",
-    "spatie/laravel-settings": "^3.6.0",
-    "spatie/laravel-webhook-server": "^3.8.3",
+    "spatie/eloquent-sortable": "^5.0.1",
+    "spatie/fork": "^1.2.7",
+    "spatie/laravel-activitylog": "^4.12.3",
+    "spatie/laravel-backup": "^10.2.1",
+    "spatie/laravel-data": "^4.20.1",
+    "spatie/laravel-google-fonts": "^1.5.0",
+    "spatie/laravel-health": "^1.39.1",
+    "spatie/laravel-permission": "^6.25.0",
+    "spatie/laravel-responsecache": "^8.3",
+    "spatie/laravel-settings": "^3.7.2",
+    "spatie/laravel-webhook-server": "^3.10.0",
     "spatie/url": "^2.4",
-    "stancl/jobpipeline": "v2.0.0-rc6 as v1.8.1",
-    "stancl/tenancy": "^v3.9.1",
+    "stancl/jobpipeline": "2.0.0-rc7 as 1.9.0",
+    "stancl/tenancy": "^3.10.0",
     "stancl/virtualcolumn": "^1.5.0",
-    "staudenmeir/belongs-to-through": "^2.17",
-    "staudenmeir/eloquent-has-many-deep": "^1.21.2",
-    "staudenmeir/eloquent-json-relations": "^1.14.1",
-    "symfony/expression-language": "^8.0",
+    "staudenmeir/belongs-to-through": "^2.18",
+    "staudenmeir/eloquent-has-many-deep": "^1.22.1",
+    "staudenmeir/eloquent-json-relations": "^1.15",
+    "symfony/expression-language": "^8.0.8",
     "tailflow/laravel-orion": "^2.23.0",
-    "tightenco/ziggy": "^2.6.0",
-    "timokoerber/laravel-one-time-operations": "^1.4.5",
-    "twig/twig": "^3.22.2",
-    "twilio/sdk": "^7.16.2",
-    "zoha/laravel-meta": "dev-feature/publish-migrations"
+    "tightenco/ziggy": "^2.6.2",
+    "timokoerber/laravel-one-time-operations": "^1.4.6",
+    "twig/twig": "^3.24.0",
+    "twilio/sdk": "^8.11.3",
+    "zoha/laravel-meta": "dev-master"
   },
   "require-dev": {
-    "barryvdh/laravel-debugbar": "^3.16.3",
-    "barryvdh/laravel-ide-helper": "^3.6.1",
-    "larastan/larastan": "^3.8.1",
-    "laravel/pail": "^1.2.4",
-    "laravel/pint": "^1.27.0",
-    "laravel/tinker": "^2.11.0",
+    "barryvdh/laravel-debugbar": "^4.2.2",
+    "barryvdh/laravel-ide-helper": "^3.7.0",
+    "driftingly/rector-laravel": "^2.2",
+    "filament/upgrade": "^5.4.3",
+    "larastan/larastan": "^3.9.3",
+    "laravel/pail": "^1.2.6",
+    "laravel/pint": "^1.29.0",
     "mockery/mockery": "^1.6.12",
-    "nunomaduro/collision": "^8.8.3",
-    "pestphp/pest": "^4.3.1",
-    "pestphp/pest-plugin-laravel": "^4.0",
-    "pestphp/pest-plugin-livewire": "^4.0.1",
-    "rector/rector": "^2.3.0",
-    "spatie/ignition": "^1.15.1",
-    "spatie/laravel-ray": "^1.43.2"
+    "nunomaduro/collision": "^8.9.2",
+    "pestphp/pest": "^4.4.3",
+    "pestphp/pest-plugin-laravel": "^4.1",
+    "pestphp/pest-plugin-livewire": "^4.1.0",
+    "rector/rector": "^2.3.9",
+    "spatie/ignition": "^1.16.0",
+    "spatie/laravel-ray": "^1.43.7"
   },
   "suggest": {
     "archilex/filament-filter-sets": "Advanced table filtering, preset views, and favorites bar (^4.0.18)",
@@ -100,6 +102,10 @@
       "url": "https://github.com/jonerickson/laravel-meta"
     },
     {
+      "type": "vcs",
+      "url": "https://github.com/jonerickson/laravel-countries"
+    },
+    {
       "type": "composer",
       "url": "https://filament-filter-sets.composer.sh"
     },
@@ -108,6 +114,8 @@
       "url": "https://data-lens.composer.sh"
     }
   ],
+  "minimum-stability": "beta",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "App\\": "app/",
@@ -120,11 +128,21 @@
       "Tests\\": "tests/"
     }
   },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    },
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
+  },
   "scripts": {
-    "post-autoload-dump": [
-      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
-    ],
     "post-install-cmd": [
       "@php artisan filament:upgrade",
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
@@ -135,6 +153,10 @@
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
       "@php artisan vendor:publish --tag=livewire:assets --ansi --force"
     ],
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover --ansi"
+    ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
@@ -143,17 +165,6 @@
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
       "@php artisan migrate --graceful --ansi"
     ],
-    "setup": [
-      "composer install",
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "@php artisan key:generate -n",
-      "@php artisan jwt:secret -n --force",
-      "@php artisan passport:keys --force",
-      "npm install",
-      "npm run build",
-      "@php artisan perscom:install"
-    ],
-    "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "analyze": "vendor/bin/phpstan analyse --memory-limit=2G -v",
     "cs-fix": "vendor/bin/pint --parallel",
     "dev": [
@@ -180,6 +191,17 @@
       "@php artisan optimize:clear",
       "@ide"
     ],
+    "setup": [
+      "composer install",
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate -n",
+      "@php artisan jwt:secret -n --force",
+      "@php artisan passport:keys --force",
+      "npm install",
+      "npm run build",
+      "@php artisan perscom:install"
+    ],
+    "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "tc": "@test-coverage",
     "test": "@php artisan test --no-coverage --parallel",
     "test-coverage": "@php artisan test --coverage --parallel",
@@ -198,21 +220,5 @@
     "tl": "@test-lint",
     "ts": "@test-suite",
     "tt": "@test-types"
-  },
-  "extra": {
-    "laravel": {
-      "dont-discover": []
-    }
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true
-    }
-  },
-  "minimum-stability": "beta",
-  "prefer-stable": true
+  }
 }

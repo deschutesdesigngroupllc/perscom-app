@@ -40,7 +40,7 @@ class RsvpAction extends Action
         ]);
 
         $this->action(function (Event $record, Action $action, array $data): void {
-            $status = data_get($data, 'status') ?? EventRegistrationStatus::Going;
+            $status = data_get($data, 'status', EventRegistrationStatus::Going);
 
             if ($record->registrations->contains(Auth::user())) {
                 $record->registrations()->updateExistingPivot(Auth::user(), ['status' => $status]);
