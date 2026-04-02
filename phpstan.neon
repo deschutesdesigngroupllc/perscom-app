@@ -4,12 +4,20 @@ includes:
 parameters:
     paths:
         - app
+        - bootstrap/app.php
+        - config
+        - database
+        - routes
+        - tests
     level: 3
     excludePaths:
         - app/Filament/Concerns/AdvancedTables.php
         - app/Filament/Concerns/HasViews.php
     ignoreErrors:
-        - '#Property .* does not exist#'
         - '#(unknown class|not subtype of template type).*Archilex\\AdvancedTables\\#'
         - '#Archilex\\AdvancedTables\\.*not subtype of template type#'
         - '#(unknown class|invalid type).*Padmission\\DataLens\\#'
+        - identifier: larastan.noEnvCallsOutsideOfConfig
+          path: config/*
+          reportUnmatched: false
+    tmpDir: .phpstan.cache

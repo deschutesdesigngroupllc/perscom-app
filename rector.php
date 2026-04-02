@@ -50,6 +50,7 @@ return RectorConfig::configure()
         carbon: true,
     )
     ->withImportNames(
+        importShortClasses: false,
         removeUnusedImports: true,
     )
     ->withPhpSets()

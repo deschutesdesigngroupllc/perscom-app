@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\TaskAssignmentFactory;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Observers\TaskAssignmentObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\CarbonInterface;
-use Database\Factories\TaskAssignmentFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -36,8 +36,8 @@ use Illuminate\Support\Facades\DB;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $assigned_by
- * @property-read bool $complete
  * @property-read bool $expired
+ * @property-read bool $complete
  * @property-read bool $past_due
  * @property-read TaskAssignmentStatus $status
  * @property-read Task|null $task

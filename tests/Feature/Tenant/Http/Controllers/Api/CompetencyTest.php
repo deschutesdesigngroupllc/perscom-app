@@ -6,7 +6,6 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Competencies\CompetenciesController;
 use App\Models\Competency;
-use App\Models\Group;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CompetencyTest extends ApiResourceTestCase
@@ -27,7 +26,7 @@ class CompetencyTest extends ApiResourceTestCase
     }
 
     /**
-     * @return Factory<Group>
+     * @return Factory<Competency>
      */
     public function factory(): Factory
     {

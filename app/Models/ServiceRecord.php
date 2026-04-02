@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\ServiceRecordFactory;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\ServiceRecordScope;
 use App\Observers\ServiceRecordObserver;
@@ -19,7 +20,6 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\ServiceRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;

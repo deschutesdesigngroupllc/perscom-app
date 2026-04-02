@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\GroupFactory;
 use App\Contracts\Hideable;
 use App\Models\Scopes\GroupScope;
 use App\Traits\CanBeHidden;
@@ -15,7 +16,6 @@ use App\Traits\HasIcon;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\GroupFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,7 +110,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
-                    /** @var User|HasMany $query */
                     /** @phpstan-ignore larastan.relationExistence */
                     $query
                         ->orderForRoster()

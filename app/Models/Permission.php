@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Traits\ClearsResponseCache;
 use Database\Factories\PermissionFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Permission as BasePermission;
 

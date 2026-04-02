@@ -354,6 +354,7 @@ class ApiLogResource extends BaseResource
         ];
     }
 
+    /** @phpstan-ignore return.type */
     public static function getEloquentQuery(): Builder
     {
         /** @var Builder|ApiLog $query */

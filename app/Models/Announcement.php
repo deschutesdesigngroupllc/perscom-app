@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AnnouncementFactory;
 use App\Contracts\Enableable;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
@@ -12,7 +13,6 @@ use App\Traits\HasColorField;
 use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\AnnouncementFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;

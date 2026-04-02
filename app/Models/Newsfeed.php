@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\NewsfeedFactory;
 use App\Models\Scopes\NewsfeedScope;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasLikes;
-use Database\Factories\NewsfeedFactory;
 use Filament\Support\Contracts\HasColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

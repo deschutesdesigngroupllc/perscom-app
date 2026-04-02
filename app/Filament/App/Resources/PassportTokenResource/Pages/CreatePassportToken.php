@@ -24,6 +24,6 @@ class CreatePassportToken extends CreateRecord
 
         $result = $action->handle(Auth::user(), data_get($data, 'name'), $scopes);
 
-        return $result->token;
+        return $result->getToken();
     }
 }

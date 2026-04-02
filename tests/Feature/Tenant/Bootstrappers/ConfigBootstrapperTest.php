@@ -25,6 +25,7 @@ class ConfigBootstrapperTest extends TenantTestCase
         $tenant = tenant();
         tenancy()->end();
 
+        /** @phpstan-ignore larastan.noEnvCallsOutsideOfConfig */
         $this->assertEquals(config('mail.from.name'), env('MAIL_FROM_NAME'));
         $this->assertEquals(config('responsecache.cache_tag'), '');
 

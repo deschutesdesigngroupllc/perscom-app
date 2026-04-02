@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\StatusRecordFactory;
 use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasStatus;
-use Database\Factories\StatusRecordFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,7 +27,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $text
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Model $model
+ * @property-read Model $model
  * @property-read Status $status
  *
  * @method static StatusRecordFactory factory($count = null, $state = [])

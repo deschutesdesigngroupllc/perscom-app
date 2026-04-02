@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AutomationLogFactory;
 use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\AutomationTrigger;
-use Database\Factories\AutomationLogFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

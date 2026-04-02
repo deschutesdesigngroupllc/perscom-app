@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\ImageFactory;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\ImageFactory;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $updated_at
  * @property-read string|null $image_url
  * @property-read string $label
- * @property-read Model|Model|null $model
+ * @property-read Model|null $model
  * @property-read string|null $model_url
  * @property-read string|null $relative_url
  * @property-read string|null $url

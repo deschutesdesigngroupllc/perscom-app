@@ -22,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Model $model
+ * @property-read Model $model
  * @property-read User $user
  *
  * @method static Builder<static>|ModelLike newModelQuery()

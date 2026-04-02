@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AwardFactory;
 use App\Models\Scopes\AwardScope;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
@@ -14,7 +15,6 @@ use App\Traits\HasImages;
 use App\Traits\HasLogs;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\AwardFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

@@ -15,11 +15,11 @@ class PassportSeeder extends Seeder
     {
         $client = new ClientRepository;
 
-        $passwordClient = $client->createPasswordGrantClient(null, PassportClient::SYSTEM_PASSWORD_GRANT_CLIENT, 'http://your.redirect.path');
+        $passwordClient = $client->createPasswordGrantClient(PassportClient::SYSTEM_PASSWORD_GRANT_CLIENT);
         $passwordClient->forceFill([
             'type' => PassportClientType::PASSWORD,
         ])->save();
 
-        $client->createPersonalAccessClient(null, PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT, 'http://your.redirect.path');
+        $client->createPersonalAccessGrantClient(PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT);
     }
 }

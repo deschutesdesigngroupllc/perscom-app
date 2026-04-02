@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Laravel\Passport\Database\Factories\ClientFactory;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
-use Laravel\Passport\Database\Factories\ClientFactory;
 
 /**
  * @property string $id
@@ -32,14 +33,18 @@ use Laravel\Passport\Database\Factories\ClientFactory;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, AuthCode> $authCodes
  * @property-read int|null $auth_codes_count
- * @property-read string|null $plain_secret
+ * @property-read array $grant_types
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
+ * @property-read User $owner
+ * @property-read string|null $plain_secret
+ * @property-read array $redirect_uris
  * @property-read Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read User|null $user
+ * @property-read \App\Models\User|null $user
  *
+ * @method static Builder<static>|PassportClient existsIn(array $haystack)
  * @method static ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()

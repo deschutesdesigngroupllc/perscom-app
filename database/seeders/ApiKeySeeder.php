@@ -14,7 +14,7 @@ class ApiKeySeeder extends Seeder
         $user = User::first() ?? User::factory()->create();
 
         $token = $user->createToken('Test Key', ['*']);
-        $token->token->forceFill([
+        $token->getToken()->forceFill([
             'token' => $token->accessToken,
         ])->save();
     }

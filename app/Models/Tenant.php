@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\TenantFactory;
 use App\Models\Enums\SubscriptionPlanType;
 use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
-use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;

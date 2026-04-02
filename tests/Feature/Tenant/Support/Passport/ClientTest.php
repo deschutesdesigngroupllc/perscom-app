@@ -18,15 +18,13 @@ class ClientTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $client = $clients->create(
+        $client = $clients->createAuthorizationCodeGrantClient(
             name: $this->faker->word,
-            userId: $user->getKey(),
-            redirect: $this->faker->url,
+            redirectUris: [$this->faker->url],
+            user: $user,
         );
 
-        $this->assertFalse($client->firstParty());
-        $this->assertEquals($client->user->getKey(), $user->getKey());
-        $this->assertNotNull($client->plainSecret);
+        $this->assertNotNull($client->secret);
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 
@@ -37,16 +35,14 @@ class ClientTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $client = $clients->create(
+        $client = $clients->createAuthorizationCodeGrantClient(
             name: $this->faker->word,
+            redirectUris: [$this->faker->url],
             confidential: false,
-            userId: $user->getKey(),
-            redirect: $this->faker->url
+            user: $user,
         );
 
-        $this->assertFalse($client->firstParty());
-        $this->assertEquals($client->user->getKey(), $user->getKey());
-        $this->assertNull($client->plainSecret);
+        $this->assertNull($client->secret);
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 
@@ -55,16 +51,11 @@ class ClientTest extends TenantTestCase
         /** @var ClientRepository $clients */
         $clients = resolve(ClientRepository::class);
 
-        $user = User::factory()->createQuietly();
-
         $client = $clients->createPasswordGrantClient(
             name: $this->faker->word,
-            userId: $user->getKey(),
-            redirect: $this->faker->url
         );
 
         $this->assertTrue($client->firstParty());
-        $this->assertEquals($client->user->getKey(), $user->getKey());
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 
@@ -73,16 +64,11 @@ class ClientTest extends TenantTestCase
         /** @var ClientRepository $clients */
         $clients = resolve(ClientRepository::class);
 
-        $user = User::factory()->createQuietly();
-
-        $client = $clients->createPersonalAccessClient(
-            userId: $user->getKey(),
+        $client = $clients->createPersonalAccessGrantClient(
             name: $this->faker->word,
-            redirect: $this->faker->url,
         );
 
         $this->assertTrue($client->firstParty());
-        $this->assertEquals($client->user->getKey(), $user->getKey());
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 }

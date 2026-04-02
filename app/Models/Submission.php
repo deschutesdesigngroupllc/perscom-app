@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\SubmissionFactory;
 use App\Observers\SubmissionObserver;
 use App\Traits\CanBeRead;
 use App\Traits\ClearsApiCache;
@@ -13,7 +14,6 @@ use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasStatusRecords;
-use Database\Factories\SubmissionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -44,7 +44,7 @@ use Stringable;
  * @property-read Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read string|null $url
- * @property-read User $user
+ * @property-read User|null $user
  *
  * @method static SubmissionFactory factory($count = null, $state = [])
  * @method static Builder<static>|Submission newModelQuery()

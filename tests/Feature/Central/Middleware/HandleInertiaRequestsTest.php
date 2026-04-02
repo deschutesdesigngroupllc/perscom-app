@@ -53,7 +53,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
 
         $response->assertStatus(409);
 
-        /** @var Request $baseRequest */
+        /** @var Request $baseRequest @phpstan-ignore property.notFound */
         $baseRequest = $response->baseResponse->baseRequest;
 
         $this->assertSame($baseRequest->getMethod(), 'GET');

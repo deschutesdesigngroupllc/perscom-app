@@ -12,10 +12,10 @@ class CreatePersonalAccessToken
     public function handle(User $user, string $name, array $scopes = []): PersonalAccessTokenResult
     {
         $token = $user->createToken($name, $scopes);
-        $token->token->forceFill([
+        $token->getToken()->forceFill([
             'token' => $token->accessToken,
         ]);
-        $token->token->save();
+        $token->getToken()->save();
 
         return $token;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\FieldFactory;
 use App\Contracts\Hideable;
 use App\Models\Enums\FieldOptionsModel;
 use App\Models\Enums\FieldOptionsType;
@@ -14,7 +15,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject as ArrayObjectAlias;
-use Database\Factories\FieldFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;

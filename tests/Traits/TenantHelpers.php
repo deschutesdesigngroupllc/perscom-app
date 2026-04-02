@@ -14,11 +14,12 @@ trait TenantHelpers
 
     public function withSubscription(string|int|null $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
     {
-        $priceId ??= env('STRIPE_PRODUCT_MONTH');
+        $priceId ??= config('spark.billables.tenant.plans.0.monthly_id');
 
         $this->withoutSubscription();
 
-        $this->subscription = $this->tenant->subscriptions()->create([
+        /** @var Subscription $subscription */
+        $subscription = $this->tenant->subscriptions()->create([
             'type' => 'default',
             'stripe_id' => Str::random(10),
             'stripe_status' => $subscriptionStatus,
@@ -27,6 +28,8 @@ trait TenantHelpers
             'trial_ends_at' => $trialExpiresAt,
             'ends_at' => null,
         ]);
+
+        $this->subscription = $subscription;
 
         $this->subscription->items()->create([
             'stripe_id' => Str::random(10),

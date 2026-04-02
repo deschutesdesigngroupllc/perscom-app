@@ -5,6 +5,7 @@
 .env.backup
 .mcp.json
 .phpactor.json
+.phpstan.cache
 .phpstorm.meta.php
 .phpunit.cache
 .phpunit.result.cache

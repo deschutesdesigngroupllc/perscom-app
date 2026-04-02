@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\PageFactory;
 use App\Contracts\Hideable;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
-use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

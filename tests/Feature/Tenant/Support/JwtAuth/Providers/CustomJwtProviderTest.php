@@ -30,7 +30,7 @@ class CustomJwtProviderTest extends TenantTestCase
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class);
 
-        /** @var string $token */
+        /** @var string $token @phpstan-ignore method.void */
         $token = Auth::guard('jwt')->login($user);
 
         $parser = new Parser(new JoseEncoder);
@@ -80,7 +80,7 @@ class CustomJwtProviderTest extends TenantTestCase
             'secret' => Str::password(symbols: false),
         ]);
 
-        /** @var string $token */
+        /** @var string $token @phpstan-ignore method.void */
         $token = Auth::guard('jwt')->login($user);
 
         $parser = new Parser(new JoseEncoder);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\RankRecordFactory;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\RankRecordType;
 use App\Models\Scopes\RankRecordScope;
@@ -21,7 +22,6 @@ use App\Traits\HasRank;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\RankRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;

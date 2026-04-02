@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\ScheduleFactory;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Services\ScheduleService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
-use Database\Factories\ScheduleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,7 +43,7 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $updated_at
  * @property-read bool $has_passed
  * @property-read CarbonInterval $length
- * @property-read Model|Model|null $repeatable
+ * @property-read Model|null $repeatable
  *
  * @method static ScheduleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Schedule newModelQuery()

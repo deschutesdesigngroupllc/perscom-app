@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\CommentFactory;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
-use Database\Factories\CommentFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,7 +25,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $author
- * @property-read Model|Model|null $commentable
+ * @property-read Model|null $commentable
  * @property-read string $label
  *
  * @method static Builder<static>|Comment author(User $user)

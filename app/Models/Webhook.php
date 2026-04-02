@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\WebhookFactory;
 use App\Models\Enums\WebhookMethod;
 use App\Traits\HasLogs;
-use Database\Factories\WebhookFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

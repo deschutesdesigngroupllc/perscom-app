@@ -24,7 +24,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|Model $model
+ * @property-read Model $model
  *
  * @method static Builder<static>|Element newModelQuery()
  * @method static Builder<static>|Element newQuery()

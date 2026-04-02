@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\AssertableInertia;
+use Laravel\Passport\Client;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -21,6 +22,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var Client $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -48,6 +50,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var Client $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -68,6 +71,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        /** @var Client $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)

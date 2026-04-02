@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\TrainingRecords\TrainingRecordsController;
-use App\Models\CombatRecord;
 use App\Models\TrainingRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,7 +26,7 @@ class TrainingRecordTest extends ApiResourceTestCase
     }
 
     /**
-     * @return Factory<CombatRecord>
+     * @return Factory<TrainingRecord>
      */
     public function factory(): Factory
     {

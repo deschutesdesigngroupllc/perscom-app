@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\AutomationFactory;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
-use Database\Factories\AutomationFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Collection;

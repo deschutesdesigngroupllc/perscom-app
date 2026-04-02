@@ -17,6 +17,7 @@ class SubmissionTest extends TestCase
             'foo' => 'bar',
         ])->make();
 
+        /** @phpstan-ignore property.notFound */
         $this->assertEquals('bar', $submission->foo);
     }
 }

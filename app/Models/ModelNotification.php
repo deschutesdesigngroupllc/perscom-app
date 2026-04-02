@@ -29,10 +29,10 @@ use Illuminate\Support\Collection;
  * @property string|null $subject
  * @property string|null $message
  * @property Collection<int, NotificationChannel>|null $channels
- * @property-read Model|Model|null $group
- * @property-read Model|Model $model
- * @property-read Model|Model|null $unit
- * @property-read Model|Model|null $user
+ * @property-read Model|null $group
+ * @property-read Model $model
+ * @property-read Model|null $unit
+ * @property-read Model|null $user
  *
  * @method static Builder<static>|ModelNotification newModelQuery()
  * @method static Builder<static>|ModelNotification newQuery()

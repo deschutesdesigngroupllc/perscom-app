@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use App\Filament\Concerns\HasViews;
 use App\Observers\UserObserver;
 use App\Settings\DashboardSettings;
@@ -32,7 +33,6 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Carbon\CarbonInterval;
-use Database\Factories\UserFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -58,6 +58,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
@@ -120,17 +121,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedDefaultView> $managedDefaultViews
- * @property-read int|null $managed_default_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
- * @property-read int|null $managed_preset_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
- * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportClient> $oauthApps
+ * @property-read int|null $oauth_apps_count
  * @property-read mixed $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
@@ -220,7 +217,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin Model
  */
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
 {
     use CanReceiveNotifications;
     use ClearsApiCache;
@@ -426,6 +423,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     protected function timeInGrade(): Attribute
     {
         return Attribute::make(
+            /** @phpstan-ignore property.notFound */
             get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, fn ($date): CarbonInterval => Date::now()->diff($date, true))
         )->shouldCache();
     }

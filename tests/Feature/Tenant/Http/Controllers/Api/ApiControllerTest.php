@@ -50,7 +50,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_with_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'));
+        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'));
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -61,7 +61,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete');
+        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'), 'incomplete');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -72,7 +72,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_expired_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete_expired');
+        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'), 'incomplete_expired');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -94,6 +94,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_when_using_perscom_signed_jwt(): void
     {
+        /** @phpstan-ignore method.notFound */
         $token = Auth::guard('jwt')->claims([
             'scopes' => [
                 'view:user',
@@ -140,6 +141,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_without_proper_scopes(): void
     {
+        /** @phpstan-ignore method.notFound */
         $token = Auth::guard('jwt')->claims([
             'scopes' => null,
         ])->login(User::factory()->createQuietly());

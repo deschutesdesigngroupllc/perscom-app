@@ -9,6 +9,7 @@ use App\Models\Award;
 use App\Models\Image;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\Testing\File;
 use Illuminate\Http\UploadedFile;
 
 class ImageTest extends ApiResourceTestCase
@@ -64,7 +65,7 @@ class ImageTest extends ApiResourceTestCase
     }
 
     /**
-     * @return string[]
+     * @return array<string, string|File>
      */
     public function storeData(): array
     {
