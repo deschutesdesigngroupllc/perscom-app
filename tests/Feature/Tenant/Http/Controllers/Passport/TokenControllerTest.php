@@ -8,6 +8,7 @@ use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use DateInterval;
+use Illuminate\Support\Str;
 use Laravel\Passport\Bridge\AuthCodeRepository;
 use Laravel\Passport\Bridge\ClientRepository;
 use Laravel\Passport\Bridge\ScopeRepository;
@@ -27,9 +28,12 @@ class TokenControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        $redirect = $this->faker->url;
+
         $client = ClientFactory::new()->create([
-            'user_id' => $user->getKey(),
-            'redirect' => $redirect = $this->faker->url,
+            'owner_id' => $user->getKey(),
+            'owner_type' => $user->getMorphClass(),
+            'redirect_uris' => [$redirect],
         ]);
 
         $authCodeRepository = $this->app->make(AuthCodeRepository::class);
@@ -37,10 +41,14 @@ class TokenControllerTest extends TenantTestCase
         $scopeRepository = $this->app->make(ScopeRepository::class);
 
         $authCode = $authCodeRepository->getNewAuthCode();
+        $authCode->setIdentifier(Str::random(40));
         $authCode->setClient($clientRepository->getClientEntity($client->getKey()));
-        $authCode->setUserIdentifier($user->getKey());
+        $authCode->setUserIdentifier((string) $user->getKey());
         $authCode->setRedirectUri($redirect);
+        $authCode->setExpiryDateTime(CarbonImmutable::now()->add(new DateInterval('PT10M')));
         $authCode->addScope($scopeRepository->getScopeEntityByIdentifier('view:user'));
+
+        $authCodeRepository->persistNewAuthCode($authCode);
 
         $payload = [
             'client_id' => $authCode->getClient()->getIdentifier(),
@@ -75,9 +83,12 @@ class TokenControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
+        $redirect = $this->faker->url;
+
         $client = ClientFactory::new()->create([
-            'user_id' => $user->getKey(),
-            'redirect' => $redirect = $this->faker->url,
+            'owner_id' => $user->getKey(),
+            'owner_type' => $user->getMorphClass(),
+            'redirect_uris' => [$redirect],
         ]);
 
         $authCodeRepository = $this->app->make(AuthCodeRepository::class);
@@ -85,10 +96,14 @@ class TokenControllerTest extends TenantTestCase
         $scopeRepository = $this->app->make(ScopeRepository::class);
 
         $authCode = $authCodeRepository->getNewAuthCode();
+        $authCode->setIdentifier(Str::random(40));
         $authCode->setClient($clientRepository->getClientEntity($client->getKey()));
-        $authCode->setUserIdentifier($user->getKey());
+        $authCode->setUserIdentifier((string) $user->getKey());
         $authCode->setRedirectUri($redirect);
+        $authCode->setExpiryDateTime(CarbonImmutable::now()->add(new DateInterval('PT10M')));
         $authCode->addScope($scopeRepository->getScopeEntityByIdentifier('view:user'));
+
+        $authCodeRepository->persistNewAuthCode($authCode);
 
         $payload = [
             'client_id' => $authCode->getClient()->getIdentifier(),

@@ -30,7 +30,7 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]))
             ->assertInertia(fn (AssertableInertia $page): AssertableJson => $page
@@ -58,7 +58,7 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
                 'prompt' => 'login',
             ]))
@@ -79,13 +79,18 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_type' => 'code',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]));
 
+        $authToken = session()->get('authToken');
+
         $response = $this->withSession([
+            'authToken' => $authToken,
             'authRequest' => session()->get('authRequest'),
-        ])->postJson($this->tenant->route('passport.authorizations.approve'));
+        ])->postJson($this->tenant->route('passport.authorizations.approve'), [
+            'auth_token' => $authToken,
+        ]);
 
         $response->assertRedirect();
 
@@ -104,6 +109,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         /** @var PassportClient $client */
         $client = ClientFactory::new()
+            ->asImplicitClient()
             ->create();
 
         $this->actingAs($user)
@@ -112,14 +118,19 @@ class AuthorizationControllerTest extends TenantTestCase
                 'response_mode' => 'fragment',
                 'client_id' => $client->getKey(),
                 'state' => Str::random(),
-                'redirect_url' => $client->redirect,
+                'redirect_url' => $client->redirect_uris[0],
                 'scope' => 'view:user',
             ]));
 
+        $authToken = session()->get('authToken');
+
         $response = $this->withSession([
+            'authToken' => $authToken,
             'authRequest' => session()->get('authRequest'),
         ])
-            ->postJson($this->tenant->route('passport.authorizations.approve'));
+            ->postJson($this->tenant->route('passport.authorizations.approve'), [
+                'auth_token' => $authToken,
+            ]);
 
         $response->assertRedirect();
 

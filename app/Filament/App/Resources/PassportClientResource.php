@@ -18,6 +18,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -28,6 +29,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Alignment;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -71,13 +73,18 @@ class PassportClientResource extends BaseResource
                                     ->live()
                                     ->options(PassportClientType::class)
                                     ->required(),
-                                TextInput::make('redirect')
-                                    ->maxLength(255)
-                                    ->label('Redirect URL')
-                                    ->url()
+                                Repeater::make('redirect_uris')
+                                    ->reorderable(false)
+                                    ->addActionAlignment(Alignment::Left)
+                                    ->addActionLabel('Add Redirect URL')
+                                    ->label("Redirect URL's")
                                     ->helperText('The URL to redirect to after authorization.')
                                     ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
-                                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT])),
+                                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                                    ->simple(TextInput::make('redirect')
+                                        ->maxLength(255)
+                                        ->url()
+                                    ),
                                 Textarea::make('description')
                                     ->maxLength(65535)
                                     ->helperText('An optional description of the client'),
@@ -122,11 +129,10 @@ class PassportClientResource extends BaseResource
                                     ->copyable(),
                                 TextEntry::make('type')
                                     ->badge(),
-                                TextEntry::make('redirect')
+                                TextEntry::make('redirect_uris')
                                     ->visible(fn (PassportClient $record): bool => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
-                                    ->label('Redirect URL')
-                                    ->url(fn ($state) => $state)
-                                    ->copyable(),
+                                    ->label("Redirect URL's")
+                                    ->listWithLineBreaks(),
                                 TextEntry::make('revoked')
                                     ->label('Status')
                                     ->badge()

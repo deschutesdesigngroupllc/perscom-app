@@ -15,29 +15,27 @@ use Laravel\Passport\Client as BaseClientModel;
 
 /**
  * @property string $id
- * @property int|null $user_id
+ * @property string|null $owner_type
+ * @property int|null $owner_id
  * @property string $name
  * @property string|null $description
  * @property PassportClientType|null $type
  * @property string|null $secret
  * @property string|null $provider
- * @property string $redirect
+ * @property array $redirect_uris
+ * @property array $grant_types
  * @property string|null $logout
  * @property array<array-key, mixed>|null $scopes
- * @property bool $personal_access_client
- * @property bool $password_client
  * @property bool $revoked
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection<int, AuthCode> $authCodes
  * @property-read int|null $auth_codes_count
- * @property-read array $grant_types
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
- * @property-read User $owner
+ * @property-read User|null $owner
  * @property-read string|null $plain_secret
- * @property-read array $redirect_uris
  * @property-read Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read \App\Models\User|null $user
@@ -49,19 +47,19 @@ use Laravel\Passport\Client as BaseClientModel;
  * @method static Builder<static>|PassportClient query()
  * @method static Builder<static>|PassportClient whereCreatedAt($value)
  * @method static Builder<static>|PassportClient whereDescription($value)
+ * @method static Builder<static>|PassportClient whereGrantTypes($value)
  * @method static Builder<static>|PassportClient whereId($value)
  * @method static Builder<static>|PassportClient whereLogout($value)
  * @method static Builder<static>|PassportClient whereName($value)
- * @method static Builder<static>|PassportClient wherePasswordClient($value)
- * @method static Builder<static>|PassportClient wherePersonalAccessClient($value)
+ * @method static Builder<static>|PassportClient whereOwnerId($value)
+ * @method static Builder<static>|PassportClient whereOwnerType($value)
  * @method static Builder<static>|PassportClient whereProvider($value)
- * @method static Builder<static>|PassportClient whereRedirect($value)
+ * @method static Builder<static>|PassportClient whereRedirectUris($value)
  * @method static Builder<static>|PassportClient whereRevoked($value)
  * @method static Builder<static>|PassportClient whereScopes($value)
  * @method static Builder<static>|PassportClient whereSecret($value)
  * @method static Builder<static>|PassportClient whereType($value)
  * @method static Builder<static>|PassportClient whereUpdatedAt($value)
- * @method static Builder<static>|PassportClient whereUserId($value)
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
@@ -82,9 +80,6 @@ class PassportClient extends BaseClientModel
     public const string SYSTEM_PASSWORD_GRANT_CLIENT = 'Default Password Grant Client';
 
     protected $attributes = [
-        'personal_access_client' => false,
-        'password_client' => false,
-        'redirect' => 'http://your.redirect.path',
         'revoked' => false,
     ];
 
