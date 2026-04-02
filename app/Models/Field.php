@@ -173,6 +173,9 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
+    /**
+     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
+     */
     protected function casts(): array
     {
         return [

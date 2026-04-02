@@ -103,6 +103,9 @@ class AutomationLog extends Model
         return $this->morphTo();
     }
 
+    /**
+     * @return array<string, class-string<AutomationTrigger>|class-string<AutomationLogStatus>|string>
+     */
     protected function casts(): array
     {
         return [

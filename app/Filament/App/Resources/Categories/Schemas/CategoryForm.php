@@ -49,7 +49,7 @@ class CategoryForm
                                     ->helperText('The resource this category can be used with.')
                                     ->required()
                                     ->dehydrated()
-                                    ->disabled(fn (Page $livewire): bool => ! in_array($livewire::class, [EditCategory::class, CreateCategory::class]))
+                                    ->disabled(fn (Page $livewire): bool => ! in_array($livewire::class, [EditCategory::class, CreateCategory::class], true))
                                     ->default(fn (Page $livewire): string => $livewire->getModel())
                                     ->options([
                                         Award::class => 'Awards',

@@ -10,6 +10,9 @@ use Orion\Http\Requests\Request;
 
 class AssignmentRecordRequest extends Request
 {
+    /**
+     * @return array<string, \Illuminate\Validation\Rules\Enum[]|string[]|string>
+     */
     public function commonRules(): array
     {
         return [

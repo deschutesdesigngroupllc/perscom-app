@@ -384,6 +384,7 @@ class AssignmentRecordResource extends BaseResource
 
     /**
      * @param  AssignmentRecord  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {

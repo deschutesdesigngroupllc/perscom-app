@@ -295,6 +295,7 @@ class AwardRecordResource extends BaseResource
 
     /**
      * @param  AwardRecord  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {

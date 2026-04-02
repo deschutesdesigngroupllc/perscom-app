@@ -19,8 +19,8 @@ class ClientTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         $client = $clients->create(
-            userId: $user->getKey(),
             name: $this->faker->word,
+            userId: $user->getKey(),
             redirect: $this->faker->url,
         );
 
@@ -38,10 +38,10 @@ class ClientTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         $client = $clients->create(
-            userId: $user->getKey(),
             name: $this->faker->word,
-            redirect: $this->faker->url,
-            confidential: false
+            confidential: false,
+            userId: $user->getKey(),
+            redirect: $this->faker->url
         );
 
         $this->assertFalse($client->firstParty());
@@ -58,10 +58,9 @@ class ClientTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         $client = $clients->createPasswordGrantClient(
-            userId: $user->getKey(),
             name: $this->faker->word,
-            redirect: $this->faker->url,
-            provider: 'users'
+            userId: $user->getKey(),
+            redirect: $this->faker->url
         );
 
         $this->assertTrue($client->firstParty());

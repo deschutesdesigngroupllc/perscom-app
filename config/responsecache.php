@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * Determine if the response cache middleware should be enabled.
@@ -102,12 +104,12 @@ return [
      * This class is responsible for generating a hash for
      * a request. Used for looking up cached responses.
      */
-    'hasher' => \Spatie\ResponseCache\Hasher\DefaultHasher::class,
+    'hasher' => Spatie\ResponseCache\Hasher\DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer' => \Spatie\ResponseCache\Serializers\JsonSerializer::class,
+    'serializer' => Spatie\ResponseCache\Serializers\JsonSerializer::class,
 
     /*
      * Here you may define the replacers that will replace
@@ -115,6 +117,6 @@ return [
      * must always implement the Replacer interface.
      */
     'replacers' => [
-        \Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
     ],
 ];

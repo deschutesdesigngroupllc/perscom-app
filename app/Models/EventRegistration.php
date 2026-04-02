@@ -83,6 +83,9 @@ class EventRegistration extends Pivot
         });
     }
 
+    /**
+     * @return array<string, class-string<EventRegistrationStatus>|string>
+     */
     protected function casts(): array
     {
         return [

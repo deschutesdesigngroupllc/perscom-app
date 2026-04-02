@@ -1,8 +1,8 @@
-import fs from 'fs'
-import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import fs from 'fs'
 import laravel from 'laravel-vite-plugin'
+import path from 'path'
 import { defineConfig } from 'vite'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
@@ -15,19 +15,16 @@ function optionalImports() {
 
       const dir = path.dirname(id)
 
-      return code.replace(
-        /^@import\s+['"]([^'"]+)['"]\s*;?\s*$/gm,
-        (match, importPath) => {
-          if (!importPath.includes('/vendor/')) return match
+      return code.replace(/^@import\s+['"]([^'"]+)['"]\s*;?\s*$/gm, (match, importPath) => {
+        if (!importPath.includes('/vendor/')) return match
 
-          const resolved = path.resolve(dir, importPath)
-          if (!fs.existsSync(resolved)) {
-            return '/* optional: ' + importPath + ' */'
-          }
-
-          return match
+        const resolved = path.resolve(dir, importPath)
+        if (!fs.existsSync(resolved)) {
+          return '/* optional: ' + importPath + ' */'
         }
-      )
+
+        return match
+      })
     }
   }
 }

@@ -312,6 +312,7 @@ class RankRecordResource extends BaseResource
 
     /**
      * @param  RankRecord  $record
+     * @return array<string, mixed>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {

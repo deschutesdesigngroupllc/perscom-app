@@ -83,7 +83,7 @@ class PassportClient extends BaseClientModel
         'revoked' => false,
     ];
 
-    public function hasScope($scope): bool
+    public function hasScope(string $scope): bool
     {
         /**
          * Passport clients do not yet support a wildcard "*" all scopes. Passport

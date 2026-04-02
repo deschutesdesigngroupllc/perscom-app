@@ -10,6 +10,9 @@ use Orion\Http\Requests\Request;
 
 class MessageRequest extends Request
 {
+    /**
+     * @return array<string, \Illuminate\Validation\Rules\Enum|string>
+     */
     public function commonRules(): array
     {
         return [
@@ -23,6 +26,9 @@ class MessageRequest extends Request
         ];
     }
 
+    /**
+     * @return array<string, \Illuminate\Validation\Rules\Enum[]|string[]|string>
+     */
     public function storeRules(): array
     {
         return [

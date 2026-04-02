@@ -56,6 +56,9 @@ class Webhook extends Model
         'updated_at',
     ];
 
+    /**
+     * @return array<string, class-string<WebhookMethod>|string>
+     */
     protected function casts(): array
     {
         return [

@@ -209,7 +209,7 @@ class TenantResource extends Resource
                     ->url(fn ($state) => $state),
                 IconColumn::make('customer')
                     ->boolean()
-                    ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
+                    ->getStateUsing(fn (Tenant $record): bool => $record->hasStripeId()),
                 TextColumn::make('subscription_status')
                     ->label('Subscription Status')
                     ->badge(),
@@ -226,7 +226,7 @@ class TenantResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('trial')
                     ->boolean()
-                    ->getStateUsing(fn (Tenant $record) => $record->onTrial()),
+                    ->getStateUsing(fn (Tenant $record): bool => $record->onTrial()),
                 TextColumn::make('subscriptions.trial_ends_at')
                     ->placeholder('No End Date')
                     ->label('Trial Ends')
@@ -339,6 +339,7 @@ class TenantResource extends Resource
 
     /**
      * @param  Tenant  $record
+     * @return array<string, string>
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {

@@ -32,6 +32,9 @@ class JobsHandled extends ChartWidget
         ],
     ];
 
+    /**
+     * @return array<string, \Illuminate\Support\Collection<(int | string), string>|array<mixed, array<string, bool|\Illuminate\Support\Collection<(int | string), mixed>|string>>>
+     */
     protected function getData(): array
     {
         $jobsProcessed = new JobProcessedMetric;

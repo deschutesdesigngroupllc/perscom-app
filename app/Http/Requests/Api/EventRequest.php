@@ -11,6 +11,9 @@ use Orion\Http\Requests\Request;
 
 class EventRequest extends Request
 {
+    /**
+     * @return array<string, \Illuminate\Validation\Rules\Enum|string>
+     */
     public function commonRules(): array
     {
         return [

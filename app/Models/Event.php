@@ -192,6 +192,9 @@ class Event extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         $casts = [

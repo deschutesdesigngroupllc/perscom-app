@@ -150,6 +150,9 @@ class Automation extends Model
         return $this->action_type === AutomationActionType::MODEL_UPDATE;
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

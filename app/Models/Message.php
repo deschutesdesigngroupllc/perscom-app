@@ -88,6 +88,9 @@ class Message extends Model implements HasLabel
         });
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [

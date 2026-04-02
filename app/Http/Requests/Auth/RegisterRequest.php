@@ -11,6 +11,9 @@ use Illuminate\Validation\Rule;
 
 class RegisterRequest extends FormRequest
 {
+    /**
+     * @return array<string, \Illuminate\Validation\Rules\Unique[]|string[]|string[]>
+     */
     public function rules(): array
     {
         return [
