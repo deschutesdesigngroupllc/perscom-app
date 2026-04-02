@@ -8,6 +8,7 @@ use App\Filament\App\Resources\FormResource;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Category;
 use App\Models\Form;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,12 +28,12 @@ class ListForms extends ListRecords
         }
 
         $views = [
-            \Archilex\AdvancedTables\Components\PresetView::make('public')
+            PresetView::make('public')
                 ->label('Public')
                 ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', true))
                 ->favorite()
                 ->icon('heroicon-o-eye'),
-            \Archilex\AdvancedTables\Components\PresetView::make('private')
+            PresetView::make('private')
                 ->label('Private')
                 ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', false))
                 ->favorite()
@@ -40,7 +41,7 @@ class ListForms extends ListRecords
         ];
 
         return array_merge($views, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
-            $category->id => \Archilex\AdvancedTables\Components\PresetView::make()
+            $category->id => PresetView::make()
                 ->label($category->name)
                 ->icon('heroicon-o-tag')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))

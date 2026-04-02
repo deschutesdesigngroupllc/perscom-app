@@ -14,7 +14,7 @@ class ClientTest extends TenantTestCase
     public function test_confidential_client_can_be_created(): void
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $user = User::factory()->createQuietly();
 
@@ -33,7 +33,7 @@ class ClientTest extends TenantTestCase
     public function test_non_confidential_client_can_be_created(): void
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $user = User::factory()->createQuietly();
 
@@ -53,7 +53,7 @@ class ClientTest extends TenantTestCase
     public function test_password_client_can_be_created(): void
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $user = User::factory()->createQuietly();
 
@@ -71,7 +71,7 @@ class ClientTest extends TenantTestCase
     public function test_personal_access_client_can_be_created(): void
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $user = User::factory()->createQuietly();
 

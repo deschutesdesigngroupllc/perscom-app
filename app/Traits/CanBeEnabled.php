@@ -13,19 +13,19 @@ use Illuminate\Database\Eloquent\Builder;
  */
 trait CanBeEnabled
 {
-    public function scopeEnabled(Builder $query): void
+    protected static function bootCanBeEnabled(): void
+    {
+        static::addGlobalScope(new EnabledScope);
+    }
+
+    protected function scopeEnabled(Builder $query): void
     {
         $query->withoutGlobalScope(EnabledScope::class)->where('enabled', true);
     }
 
-    public function scopeDisabled(Builder $query): void
+    protected function scopeDisabled(Builder $query): void
     {
         $query->withoutGlobalScope(EnabledScope::class)->where('enabled', false);
-    }
-
-    protected static function bootCanBeEnabled(): void
-    {
-        static::addGlobalScope(new EnabledScope);
     }
 
     protected function initializeCanBeEnabled(): void

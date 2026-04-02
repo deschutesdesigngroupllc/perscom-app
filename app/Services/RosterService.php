@@ -64,12 +64,12 @@ class RosterService
      */
     public static function sortUsers(Collection $users): Collection
     {
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
 
         $order = Collection::wrap($settings->roster_sort_order)
             ->map(fn ($property) => Str::replaceMatches('/^[^.]+/', fn (array $matches) => Str::singular($matches[0]), $property))
             ->map(fn ($property): array => [$property, 'asc'])
-            ->toArray();
+            ->all();
 
         return $users->sortBy($order)->values();
     }

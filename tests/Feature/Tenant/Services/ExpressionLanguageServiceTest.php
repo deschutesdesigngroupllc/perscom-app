@@ -15,7 +15,7 @@ class ExpressionLanguageServiceTest extends TenantTestCase
     {
         parent::setUp();
 
-        $this->service = app(ExpressionLanguageService::class);
+        $this->service = resolve(ExpressionLanguageService::class);
     }
 
     public function test_it_evaluates_simple_comparison(): void

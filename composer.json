@@ -74,6 +74,7 @@
   "require-dev": {
     "barryvdh/laravel-debugbar": "^4.2.2",
     "barryvdh/laravel-ide-helper": "^3.7.0",
+    "driftingly/rector-laravel": "^2.2",
     "filament/upgrade": "^5.4.3",
     "larastan/larastan": "^3.9.3",
     "laravel/pail": "^1.2.6",

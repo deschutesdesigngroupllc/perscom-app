@@ -21,6 +21,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ColorColumn;
@@ -48,7 +49,7 @@ class CalendarResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Calendar')
+                        Tab::make('Calendar')
                             ->icon(Heroicon::OutlinedCalendar)
                             ->schema([
                                 TextInput::make('name')

@@ -13,6 +13,7 @@ use App\Traits\HasCategories;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\SpecialtyFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,7 +46,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static \Database\Factories\SpecialtyFactory factory($count = null, $state = [])
+ * @method static SpecialtyFactory factory($count = null, $state = [])
  * @method static Builder<static>|Specialty newModelQuery()
  * @method static Builder<static>|Specialty newQuery()
  * @method static Builder<static>|Specialty ordered(string $direction = 'asc')
@@ -58,7 +59,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Specialty whereOrder($value)
  * @method static Builder<static>|Specialty whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ScopedBy(SpecialtyScope::class)]
 class Specialty extends Model implements HasLabel, Sortable

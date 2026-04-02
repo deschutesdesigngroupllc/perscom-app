@@ -31,7 +31,7 @@ class EventsRelationManager extends RelationManager
                 TextColumn::make('start')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))
@@ -40,7 +40,7 @@ class EventsRelationManager extends RelationManager
                 TextColumn::make('end')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
+                        $settings = resolve(OrganizationSettings::class);
 
                         return $settings->timezone ?? config('app.timezone');
                     }))

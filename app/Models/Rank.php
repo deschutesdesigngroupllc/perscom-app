@@ -14,6 +14,7 @@ use App\Traits\HasRankRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\RankFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -46,7 +47,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static \Database\Factories\RankFactory factory($count = null, $state = [])
+ * @method static RankFactory factory($count = null, $state = [])
  * @method static Builder<static>|Rank newModelQuery()
  * @method static Builder<static>|Rank newQuery()
  * @method static Builder<static>|Rank ordered(string $direction = 'asc')
@@ -60,7 +61,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Rank wherePaygrade($value)
  * @method static Builder<static>|Rank whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ScopedBy(RankScope::class)]
 class Rank extends Model implements HasLabel, Sortable

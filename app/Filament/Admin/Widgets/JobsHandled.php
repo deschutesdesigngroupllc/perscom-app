@@ -9,6 +9,7 @@ use App\Metrics\JobProcessedMetric;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
+use Illuminate\Support\Collection;
 
 class JobsHandled extends ChartWidget
 {
@@ -33,7 +34,7 @@ class JobsHandled extends ChartWidget
     ];
 
     /**
-     * @return array<string, \Illuminate\Support\Collection<(int | string), string>|array<mixed, array<string, bool|\Illuminate\Support\Collection<(int | string), mixed>|string>>>
+     * @return array<string, Collection<(int|string), string>|array<mixed, array<string, bool|Collection<(int|string), mixed>|string>>>
      */
     protected function getData(): array
     {

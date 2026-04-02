@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -14,7 +16,7 @@ declare(strict_types=1);
 */
 
 uses(
-    Tests\TestCase::class,
+    TestCase::class,
     // Illuminate\Foundation\Testing\RefreshDatabase::class,
 )->in('Feature');
 

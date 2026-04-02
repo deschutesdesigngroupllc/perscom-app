@@ -123,7 +123,7 @@ class TrainingRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->training_records);
 
@@ -134,7 +134,7 @@ class TrainingRecordResource extends BaseResource
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
-                                $settings = app(NotificationSettings::class);
+                                $settings = resolve(NotificationSettings::class);
 
                                 return [
                                     ModelNotification::make(
@@ -181,7 +181,7 @@ class TrainingRecordResource extends BaseResource
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')
                             ->schema(function (): array {
-                                $settings = app(FieldSettings::class);
+                                $settings = resolve(FieldSettings::class);
 
                                 $fields = collect($settings->training_records);
 
@@ -293,7 +293,7 @@ class TrainingRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        $user = optional($record->user)->name;
+        $user = $record->user?->name;
 
         return sprintf('%d: %s', $record->id, $user);
     }

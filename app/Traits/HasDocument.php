@@ -15,17 +15,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasDocument
 {
-    public function scopeDocument(Builder $query, Document $document): void
-    {
-        $query->whereBelongsTo($document);
-    }
-
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }
 
-    public function documentParsed(): Attribute
+    protected function scopeDocument(Builder $query, Document $document): void
+    {
+        $query->whereBelongsTo($document);
+    }
+
+    protected function documentParsed(): Attribute
     {
         return Attribute::make(
             get: function () {

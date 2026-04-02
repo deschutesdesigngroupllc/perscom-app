@@ -58,7 +58,7 @@ enum NotificationChannel: string implements HasDescription, HasLabel
     public function getEnabled(?User $notifiable = null): bool
     {
         /** @var IntegrationSettings $settings */
-        $settings = app(IntegrationSettings::class);
+        $settings = resolve(IntegrationSettings::class);
 
         if ($this === NotificationChannel::SMS && $notifiable && blank($notifiable->phone_number)) {
             return false;

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 trait HasResourceUrl
 {
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
@@ -40,7 +40,7 @@ trait HasResourceUrl
         )->shouldCache();
     }
 
-    public function relativeUrl(): Attribute
+    protected function relativeUrl(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {

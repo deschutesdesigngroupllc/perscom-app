@@ -21,7 +21,7 @@ class TwigEnvironmentTest extends TenantTestCase
     {
         parent::setUp();
 
-        $this->twig = app(Environment::class);
+        $this->twig = resolve(Environment::class);
     }
 
     // -------------------------------------------------------------------------
@@ -30,15 +30,15 @@ class TwigEnvironmentTest extends TenantTestCase
 
     public function test_twig_environment_is_singleton(): void
     {
-        $twig1 = app(Environment::class);
-        $twig2 = app(Environment::class);
+        $twig1 = resolve(Environment::class);
+        $twig2 = resolve(Environment::class);
 
         $this->assertSame($twig1, $twig2);
     }
 
     public function test_twig_is_aliased_correctly(): void
     {
-        $this->assertInstanceOf(Environment::class, app('twig'));
+        $this->assertInstanceOf(Environment::class, resolve('twig'));
     }
 
     public function test_twig_has_sandbox_extension(): void

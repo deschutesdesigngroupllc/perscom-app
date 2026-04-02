@@ -6,20 +6,14 @@ namespace App\Jobs\Tenant;
 
 use App\Actions\Tenant\SetupTenantAccount as SetupTenantAccountAction;
 use App\Models\Tenant;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class SetupTenantAccount implements ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
     public function __construct(protected Tenant $tenant)
     {
@@ -29,7 +23,7 @@ class SetupTenantAccount implements ShouldQueue
     public function handle(): void
     {
         /** @var SetupTenantAccountAction $action */
-        $action = app(SetupTenantAccountAction::class);
+        $action = resolve(SetupTenantAccountAction::class);
         $action->handle($this->tenant);
     }
 

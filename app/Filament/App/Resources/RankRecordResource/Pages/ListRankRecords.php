@@ -8,6 +8,7 @@ use App\Filament\App\Resources\RankRecordResource;
 use App\Filament\App\Resources\RankRecordResource\Widgets\RankRecordStatsOverview;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Enums\RankRecordType;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +29,7 @@ class ListRankRecords extends ListRecords
         }
 
         return Collection::wrap(RankRecordType::cases())->mapWithKeys(fn (RankRecordType $type): array => [
-            $type->value => \Archilex\AdvancedTables\Components\PresetView::make()
+            $type->value => PresetView::make()
                 ->favorite()
                 ->icon($type->getIcon())
                 ->label($type->getLabel())

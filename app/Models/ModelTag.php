@@ -23,7 +23,7 @@ use Sushi\Sushi;
  * @method static Builder<static>|ModelTag whereTag($value)
  * @method static Builder<static>|ModelTag whereType($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class ModelTag extends Model
 {

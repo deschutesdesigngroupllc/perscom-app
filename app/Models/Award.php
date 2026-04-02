@@ -14,6 +14,7 @@ use App\Traits\HasImages;
 use App\Traits\HasLogs;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\AwardFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,7 +49,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
+ * @method static AwardFactory factory($count = null, $state = [])
  * @method static Builder<static>|Award newModelQuery()
  * @method static Builder<static>|Award newQuery()
  * @method static Builder<static>|Award ordered(string $direction = 'asc')
@@ -60,7 +61,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Award whereOrder($value)
  * @method static Builder<static>|Award whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ScopedBy(AwardScope::class)]
 class Award extends Model implements HasLabel, Sortable

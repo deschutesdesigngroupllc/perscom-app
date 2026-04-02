@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\AutomationTrigger;
+use Database\Factories\AutomationLogFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,7 @@ use Illuminate\Support\Carbon;
  * @property-read Model|null $causer
  * @property-read Model|null $subject
  *
- * @method static \Database\Factories\AutomationLogFactory factory($count = null, $state = [])
+ * @method static AutomationLogFactory factory($count = null, $state = [])
  * @method static Builder<static>|AutomationLog newModelQuery()
  * @method static Builder<static>|AutomationLog newQuery()
  * @method static Builder<static>|AutomationLog query()
@@ -55,7 +56,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AutomationLog whereTrigger($value)
  * @method static Builder<static>|AutomationLog whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class AutomationLog extends Model
 {

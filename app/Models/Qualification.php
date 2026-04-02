@@ -13,6 +13,7 @@ use App\Traits\HasImages;
 use App\Traits\HasQualificationRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\QualificationFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,7 +44,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static \Database\Factories\QualificationFactory factory($count = null, $state = [])
+ * @method static QualificationFactory factory($count = null, $state = [])
  * @method static Builder<static>|Qualification newModelQuery()
  * @method static Builder<static>|Qualification newQuery()
  * @method static Builder<static>|Qualification ordered(string $direction = 'asc')
@@ -55,7 +56,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Qualification whereOrder($value)
  * @method static Builder<static>|Qualification whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ScopedBy(QualificationScope::class)]
 class Qualification extends Model implements HasLabel, Sortable

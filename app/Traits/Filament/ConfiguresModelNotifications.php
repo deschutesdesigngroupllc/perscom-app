@@ -23,7 +23,7 @@ trait ConfiguresModelNotifications
 {
     protected function afterCreate(): void
     {
-        $data = data_get($this->form->getRawState(), 'model_notifications') ?? [];
+        $data = data_get($this->form->getRawState(), 'model_notifications', []);
 
         if (! empty($data) && ($record = $this->getRecord())) {
             $this->performModelNotificationInserts($record, $data);
@@ -32,7 +32,7 @@ trait ConfiguresModelNotifications
 
     protected function afterSave(): void
     {
-        $data = data_get($this->form->getRawState(), 'model_notifications') ?? [];
+        $data = data_get($this->form->getRawState(), 'model_notifications', []);
 
         if (! empty($data) && ($record = $this->getRecord())) {
             $this->performModelNotificationInserts($record, $data);

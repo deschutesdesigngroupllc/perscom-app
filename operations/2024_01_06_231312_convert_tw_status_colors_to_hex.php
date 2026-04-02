@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Status;
-use App\Models\Tenant;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperation;
 
 return new class extends OneTimeOperation

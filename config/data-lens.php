@@ -2,7 +2,36 @@
 
 declare(strict_types=1);
 
+use App\Models\Activity;
+use App\Models\Admin;
+use App\Models\Alert;
+use App\Models\ApiLog;
+use App\Models\ApiPurgeLog;
+use App\Models\Backup;
+use App\Models\Banner;
+use App\Models\CalendarTag;
+use App\Models\Comment;
+use App\Models\Country;
+use App\Models\DocumentTag;
+use App\Models\Domain;
+use App\Models\Element;
+use App\Models\EventTag;
+use App\Models\FormTag;
+use App\Models\JobHistory;
+use App\Models\Mail;
+use App\Models\Metric;
+use App\Models\ModelLike;
+use App\Models\ModelNotification;
+use App\Models\ModelTag;
+use App\Models\PassportClient;
+use App\Models\PassportToken;
+use App\Models\Schedule;
+use App\Models\Settings;
+use App\Models\SocialiteUser;
+use App\Models\Tag;
+use App\Models\Tenant;
 use App\Models\User;
+use App\Models\WebhookLog;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Padmission\DataLens\Mail\ReportEmail;
 
 if (! class_exists('Padmission\DataLens\DataLensServiceProvider')) {
     return [];
@@ -60,35 +90,35 @@ return [
     ],
 
     'excluded_models' => [
-        App\Models\Activity::class,
-        App\Models\Admin::class,
-        App\Models\Alert::class,
-        App\Models\ApiLog::class,
-        App\Models\ApiPurgeLog::class,
-        App\Models\Backup::class,
-        App\Models\Banner::class,
-        App\Models\CalendarTag::class,
-        App\Models\Comment::class,
-        App\Models\Country::class,
-        App\Models\DocumentTag::class,
-        App\Models\Domain::class,
-        App\Models\Element::class,
-        App\Models\EventTag::class,
-        App\Models\FormTag::class,
-        App\Models\JobHistory::class,
-        App\Models\Mail::class,
-        App\Models\Metric::class,
-        App\Models\ModelLike::class,
-        App\Models\ModelNotification::class,
-        App\Models\ModelTag::class,
-        App\Models\PassportClient::class,
-        App\Models\PassportToken::class,
-        App\Models\Schedule::class,
-        App\Models\Settings::class,
-        App\Models\SocialiteUser::class,
-        App\Models\Tag::class,
-        App\Models\Tenant::class,
-        App\Models\WebhookLog::class,
+        Activity::class,
+        Admin::class,
+        Alert::class,
+        ApiLog::class,
+        ApiPurgeLog::class,
+        Backup::class,
+        Banner::class,
+        CalendarTag::class,
+        Comment::class,
+        Country::class,
+        DocumentTag::class,
+        Domain::class,
+        Element::class,
+        EventTag::class,
+        FormTag::class,
+        JobHistory::class,
+        Mail::class,
+        Metric::class,
+        ModelLike::class,
+        ModelNotification::class,
+        ModelTag::class,
+        PassportClient::class,
+        PassportToken::class,
+        Schedule::class,
+        Settings::class,
+        SocialiteUser::class,
+        Tag::class,
+        Tenant::class,
+        WebhookLog::class,
     ],
 
     'included_relationships' => [
@@ -265,6 +295,6 @@ return [
     ],
 
     'mailable_classes' => [
-        'report_email' => Padmission\DataLens\Mail\ReportEmail::class,
+        'report_email' => ReportEmail::class,
     ],
 ];

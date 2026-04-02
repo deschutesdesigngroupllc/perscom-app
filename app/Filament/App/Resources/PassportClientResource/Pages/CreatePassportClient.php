@@ -23,7 +23,7 @@ class CreatePassportClient extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         /** @var ClientRepository $clients */
-        $clients = app(ClientRepository::class);
+        $clients = resolve(ClientRepository::class);
 
         $client = match (data_get($data, 'type')) {
             PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT => $clients->create(Auth::user()->getAuthIdentifier(), data_get($data, 'name'), data_get($data, 'redirect'), confidential: false),

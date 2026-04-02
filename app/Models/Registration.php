@@ -4,35 +4,39 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
  * @property int $id
  * @property string $organization
  * @property string $email
- * @property \Illuminate\Support\Carbon|null $verified_at
+ * @property Carbon|null $verified_at
  * @property int|null $tenant_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Tenant|null $tenant
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereOrganization($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Registration whereVerifiedAt($value)
+ * @method static Builder<static>|Registration newModelQuery()
+ * @method static Builder<static>|Registration newQuery()
+ * @method static Builder<static>|Registration query()
+ * @method static Builder<static>|Registration whereCreatedAt($value)
+ * @method static Builder<static>|Registration whereEmail($value)
+ * @method static Builder<static>|Registration whereId($value)
+ * @method static Builder<static>|Registration whereOrganization($value)
+ * @method static Builder<static>|Registration whereTenantId($value)
+ * @method static Builder<static>|Registration whereUpdatedAt($value)
+ * @method static Builder<static>|Registration whereVerifiedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Registration extends Model
 {

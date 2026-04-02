@@ -37,13 +37,13 @@ class ViewUser extends ViewRecord
 
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
-        $this->when(! in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(AssignmentRecordsRelationManager::class));
-        $this->when(! in_array('award_records', $hiddenFields), fn () => $relationManagers->push(AwardRecordsRelationManager::class));
-        $this->when(! in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(CombatRecordsRelationManager::class));
-        $this->when(! in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(QualificationRecordsRelationManager::class));
-        $this->when(! in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RankRecordsRelationManager::class));
-        $this->when(! in_array('service_records', $hiddenFields), fn () => $relationManagers->push(ServiceRecordsRelationManager::class));
-        $this->when(! in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
+        $this->unless(in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(AssignmentRecordsRelationManager::class));
+        $this->unless(in_array('award_records', $hiddenFields), fn () => $relationManagers->push(AwardRecordsRelationManager::class));
+        $this->unless(in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(CombatRecordsRelationManager::class));
+        $this->unless(in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(QualificationRecordsRelationManager::class));
+        $this->unless(in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RankRecordsRelationManager::class));
+        $this->unless(in_array('service_records', $hiddenFields), fn () => $relationManagers->push(ServiceRecordsRelationManager::class));
+        $this->unless(in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
 
         return $relationManagers->toArray();
     }

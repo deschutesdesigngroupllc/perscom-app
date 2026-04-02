@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasGroup;
 use App\Traits\HasUnit;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 
@@ -21,18 +22,18 @@ use Illuminate\Support\Carbon;
  * @property-read Group $group
  * @property-read Unit $unit
  *
- * @method static Builder<static>|UnitGroup group(\App\Models\Group $group)
+ * @method static Builder<static>|UnitGroup group(Group $group)
  * @method static Builder<static>|UnitGroup newModelQuery()
  * @method static Builder<static>|UnitGroup newQuery()
  * @method static Builder<static>|UnitGroup query()
- * @method static Builder<static>|UnitGroup unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|UnitGroup unit(Unit $unit)
  * @method static Builder<static>|UnitGroup whereCreatedAt($value)
  * @method static Builder<static>|UnitGroup whereGroupId($value)
  * @method static Builder<static>|UnitGroup whereId($value)
  * @method static Builder<static>|UnitGroup whereUnitId($value)
  * @method static Builder<static>|UnitGroup whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class UnitGroup extends Pivot
 {

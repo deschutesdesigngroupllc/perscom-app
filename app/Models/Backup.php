@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Number;
 use Sushi\Sushi;
@@ -24,7 +25,7 @@ use Sushi\Sushi;
  * @method static Builder|Backup query()
  * @method static Builder|Backup whereId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Backup extends Model
 {
@@ -52,8 +53,8 @@ class Backup extends Model
                 'path' => $path,
                 'size' => Number::fileSize(Storage::disk('backups')->size($path)),
                 'url' => Storage::disk('backups')->temporaryUrl($path, now()->addDay()),
-                'created_at' => Carbon::createFromFormat('Y-m-d-H-i-s', $date),
+                'created_at' => Date::createFromFormat('Y-m-d-H-i-s', $date),
             ];
-        })->toArray();
+        })->all();
     }
 }

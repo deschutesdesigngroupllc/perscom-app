@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Auth\Social\CallbackController;
 use App\Http\Controllers\Auth\Social\RedirectController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/{panel}/oauth/{provider}/{tenant}/redirect', RedirectController::class)
     ->name('social.redirect');

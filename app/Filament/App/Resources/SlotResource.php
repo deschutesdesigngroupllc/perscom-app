@@ -156,7 +156,7 @@ class SlotResource extends BaseResource
     public static function canAccess(): bool
     {
         /** @var DashboardSettings $settings */
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
 
         return $settings->roster_mode === RosterMode::MANUAL && parent::canAccess();
     }

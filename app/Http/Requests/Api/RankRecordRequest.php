@@ -6,12 +6,13 @@ namespace App\Http\Requests\Api;
 
 use App\Models\Enums\RankRecordType;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class RankRecordRequest extends Request
 {
     /**
-     * @return array<string, \Illuminate\Validation\Rules\Enum|string>
+     * @return array<string, Enum|string>
      */
     public function commonRules(): array
     {

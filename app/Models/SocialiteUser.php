@@ -31,7 +31,7 @@ use Laravel\Socialite\Contracts\User as SocialiteUserContract;
  * @method static Builder<static>|SocialiteUser whereUpdatedAt($value)
  * @method static Builder<static>|SocialiteUser whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class SocialiteUser extends BaseSocialiteUser
 {

@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\AssertableInertia;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
@@ -30,7 +31,7 @@ class AuthorizationControllerTest extends TenantTestCase
                 'redirect_url' => $client->redirect,
                 'scope' => 'view:user',
             ]))
-            ->assertInertia(fn (AssertableInertia $page): \Illuminate\Testing\Fluent\AssertableJson => $page
+            ->assertInertia(fn (AssertableInertia $page): AssertableJson => $page
                 ->where('client', $client->getKey())
                 ->where('description', $client->description)
                 ->where('name', $client->name)

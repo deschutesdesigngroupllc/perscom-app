@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\PassportTokenFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token as BaseTokenModel;
@@ -25,7 +27,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property-read RefreshToken|null $refreshToken
  * @property-read User|null $user
  *
- * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
+ * @method static PassportTokenFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportToken newModelQuery()
  * @method static Builder<static>|PassportToken newQuery()
  * @method static Builder<static>|PassportToken query()
@@ -40,7 +42,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @method static Builder<static>|PassportToken whereUpdatedAt($value)
  * @method static Builder<static>|PassportToken whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class PassportToken extends BaseTokenModel
 {
@@ -50,12 +52,18 @@ class PassportToken extends BaseTokenModel
         'revoked' => false,
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'expires_at' => 'datetime',
-        'scopes' => 'array',
-        'token' => 'encrypted',
-        'revoked' => 'bool',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'scopes' => 'array',
+            'token' => 'encrypted',
+            'revoked' => 'bool',
+        ];
+    }
 }

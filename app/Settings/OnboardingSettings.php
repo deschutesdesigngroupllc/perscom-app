@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Settings;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Spatie\LaravelSettings\Settings;
 
 class OnboardingSettings extends Settings
@@ -28,7 +28,7 @@ class OnboardingSettings extends Settings
     public function markCompleted(): void
     {
         $this->completed = true;
-        $this->completed_at = Carbon::now()->toIso8601String();
+        $this->completed_at = Date::now()->toIso8601String();
         $this->save();
     }
 

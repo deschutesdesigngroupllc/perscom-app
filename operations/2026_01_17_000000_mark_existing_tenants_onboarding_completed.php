@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Tenant;
 use App\Settings\OnboardingSettings;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperation;
 
 return new class extends OneTimeOperation
@@ -13,10 +13,10 @@ return new class extends OneTimeOperation
     {
         tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             /** @var OnboardingSettings $settings */
-            $settings = app(OnboardingSettings::class);
+            $settings = resolve(OnboardingSettings::class);
 
             $settings->completed = true;
-            $settings->completed_at = Carbon::now()->toIso8601String();
+            $settings->completed_at = Date::now()->toIso8601String();
             $settings->save();
         });
     }

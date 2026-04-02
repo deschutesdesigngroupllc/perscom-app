@@ -9,7 +9,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasLikes;
-use Eloquent;
+use Database\Factories\NewsfeedFactory;
 use Filament\Support\Contracts\HasColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,11 +45,11 @@ use Illuminate\Support\Collection;
  * @property-read Model|null $subject
  * @property-read string|null $text
  *
- * @method static Builder<static>|Newsfeed causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static \Database\Factories\NewsfeedFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Newsfeed causedBy(Model $causer)
+ * @method static NewsfeedFactory factory($count = null, $state = [])
  * @method static Builder<static>|Newsfeed forBatch(string $batchUuid)
  * @method static Builder<static>|Newsfeed forEvent(string $event)
- * @method static Builder<static>|Newsfeed forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder<static>|Newsfeed forSubject(Model $subject)
  * @method static Builder<static>|Newsfeed hasBatch()
  * @method static Builder<static>|Newsfeed inLog(...$logNames)
  * @method static Builder<static>|Newsfeed newModelQuery()
@@ -68,7 +68,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Newsfeed whereSubjectType($value)
  * @method static Builder<static>|Newsfeed whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin Model
  */
 #[ScopedBy(NewsfeedScope::class)]
 class Newsfeed extends Activity implements HasColor
@@ -92,7 +92,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function headline(): Attribute
+    protected function headline(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('headline'))
@@ -102,7 +102,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function text(): Attribute
+    protected function text(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('text'))
@@ -112,7 +112,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function color(): Attribute
+    protected function color(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('color'))
@@ -122,7 +122,7 @@ class Newsfeed extends Activity implements HasColor
     /**
      * @return Attribute<?string, never>
      */
-    public function item(): Attribute
+    protected function item(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('item'))

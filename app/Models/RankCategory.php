@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasRank;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -23,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankCategory newModelQuery()
  * @method static Builder<static>|RankCategory newQuery()
  * @method static Builder<static>|RankCategory query()
- * @method static Builder<static>|RankCategory rank(\App\Models\Rank $rank)
+ * @method static Builder<static>|RankCategory rank(Rank $rank)
  * @method static Builder<static>|RankCategory whereCategoryId($value)
  * @method static Builder<static>|RankCategory whereCreatedAt($value)
  * @method static Builder<static>|RankCategory whereId($value)
@@ -31,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankCategory whereRankId($value)
  * @method static Builder<static>|RankCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class RankCategory extends Pivot
 {

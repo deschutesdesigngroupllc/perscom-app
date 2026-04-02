@@ -28,6 +28,6 @@ class EnsureTenantSetupComplete
             return;
         }
 
-        throw_unless($tenant->setup_completed, new TenantAccountSetupNotComplete(403, 'We are still working on setting up your account. We will email you when we are finished.'));
+        throw_unless($tenant->setup_completed, TenantAccountSetupNotComplete::class, 403, 'We are still working on setting up your account. We will email you when we are finished.');
     }
 }

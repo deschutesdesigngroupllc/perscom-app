@@ -147,7 +147,7 @@ class Dashboard extends SettingsPage
                                         'training_records' => 'Training Records',
                                         'unit_id' => 'Unit',
                                         'updated_at' => 'Last Updated At',
-                                    ])->sort()->toArray()),
+                                    ])->sort()->all()),
                             ]),
                         Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')

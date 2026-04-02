@@ -8,6 +8,7 @@ use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\AssignmentRecordResource\Widgets\AssignmentRecordStatsOverview;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Enums\AssignmentRecordType;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +29,7 @@ class ListAssignmentRecords extends ListRecords
         }
 
         return Collection::make(AssignmentRecordType::cases())->mapWithKeys(fn (AssignmentRecordType $recordType): array => [
-            $recordType->value => \Archilex\AdvancedTables\Components\PresetView::make()
+            $recordType->value => PresetView::make()
                 ->favorite()
                 ->label($recordType->getLabel())
                 ->color($recordType->getColor())

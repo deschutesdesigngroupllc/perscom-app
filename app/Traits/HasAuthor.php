@@ -15,11 +15,6 @@ use Illuminate\Support\Facades\Auth;
  */
 trait HasAuthor
 {
-    public function scopeAuthor(Builder $query, User $user): void
-    {
-        $query->whereBelongsTo($user);
-    }
-
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
@@ -33,6 +28,11 @@ trait HasAuthor
                 $model->author()->associate($user);
             }
         });
+    }
+
+    protected function scopeAuthor(Builder $query, User $user): void
+    {
+        $query->whereBelongsTo($user);
     }
 
     protected function initializeHasAuthor(): void

@@ -10,7 +10,7 @@ use App\Services\ScheduleService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
-use Eloquent;
+use Database\Factories\ScheduleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,9 +43,9 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $updated_at
  * @property-read bool $has_passed
  * @property-read CarbonInterval $length
- * @property-read Model|Eloquent|null $repeatable
+ * @property-read Model|Model|null $repeatable
  *
- * @method static \Database\Factories\ScheduleFactory factory($count = null, $state = [])
+ * @method static ScheduleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Schedule newModelQuery()
  * @method static Builder<static>|Schedule newQuery()
  * @method static Builder<static>|Schedule query()
@@ -70,7 +70,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Schedule whereUntil($value)
  * @method static Builder<static>|Schedule whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin Model
  */
 class Schedule extends MorphPivot
 {
@@ -107,10 +107,27 @@ class Schedule extends MorphPivot
         return $this->morphTo();
     }
 
+    protected static function booted(): void
+    {
+        static::creating(function (Schedule $schedule): void {
+            $schedule->forceFill([
+                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
+                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
+            ]);
+        });
+
+        static::updating(function (Schedule $schedule): void {
+            $schedule->forceFill([
+                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
+                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
+            ]);
+        });
+    }
+
     /**
      * @return Attribute<bool, never>
      */
-    public function hasPassed(): Attribute
+    protected function hasPassed(): Attribute
     {
         return Attribute::make(
             get: function (): bool {
@@ -128,27 +145,10 @@ class Schedule extends MorphPivot
     /**
      * @return Attribute<CarbonInterval, never>
      */
-    public function length(): Attribute
+    protected function length(): Attribute
     {
         return Attribute::get(fn (): CarbonInterval => $this->start->diff($this->start->copy()->addHours($this->duration)))
             ->shouldCache();
-    }
-
-    protected static function booted(): void
-    {
-        static::creating(function (Schedule $schedule): void {
-            $schedule->forceFill([
-                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
-                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
-            ]);
-        });
-
-        static::updating(function (Schedule $schedule): void {
-            $schedule->forceFill([
-                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
-                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
-            ]);
-        });
     }
 
     /**

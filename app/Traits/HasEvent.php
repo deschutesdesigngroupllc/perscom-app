@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasEvent
 {
-    public function scopeEvent(Builder $query, Event $event): void
-    {
-        $query->whereBelongsTo($event);
-    }
-
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    protected function scopeEvent(Builder $query, Event $event): void
+    {
+        $query->whereBelongsTo($event);
     }
 
     protected function initializeHasEvent(): void

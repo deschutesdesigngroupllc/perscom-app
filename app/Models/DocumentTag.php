@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -14,14 +15,14 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static Builder<static>|DocumentTag document(\App\Models\Document $document)
+ * @method static Builder<static>|DocumentTag document(Document $document)
  * @method static Builder<static>|DocumentTag newModelQuery()
  * @method static Builder<static>|DocumentTag newQuery()
  * @method static Builder<static>|DocumentTag query()
  * @method static Builder<static>|DocumentTag whereDocumentId($value)
  * @method static Builder<static>|DocumentTag whereTagId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class DocumentTag extends Pivot
 {

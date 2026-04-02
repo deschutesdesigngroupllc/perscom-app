@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasSlot
 {
-    public function scopeSlot(Builder $query, Slot $slot): void
-    {
-        $query->whereBelongsTo($slot);
-    }
-
     public function slot(): BelongsTo
     {
         return $this->belongsTo(Slot::class);
+    }
+
+    protected function scopeSlot(Builder $query, Slot $slot): void
+    {
+        $query->whereBelongsTo($slot);
     }
 
     protected function initializeHasSlot(): void

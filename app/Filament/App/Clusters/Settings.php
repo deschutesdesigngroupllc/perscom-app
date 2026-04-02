@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters;
 
-use App;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Clusters\Cluster;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 

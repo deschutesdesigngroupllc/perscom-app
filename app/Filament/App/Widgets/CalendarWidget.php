@@ -19,6 +19,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 
 class CalendarWidget extends BaseCalendarWidget
@@ -91,8 +92,8 @@ class CalendarWidget extends BaseCalendarWidget
      */
     protected function getEvents(array|FetchInfo $info = []): Collection|array
     {
-        $calendarStart = Carbon::parse(data_get($info, 'start'));
-        $calendarEnd = Carbon::parse(data_get($info, 'end'));
+        $calendarStart = Date::parse(data_get($info, 'start'));
+        $calendarEnd = Date::parse(data_get($info, 'end'));
 
         $this->events = CalendarWidget::query($calendarStart, $calendarEnd)->get();
 

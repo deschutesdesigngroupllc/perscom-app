@@ -76,7 +76,7 @@ HTML;
             ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
-            ->toArray();
+            ->all();
     }
 
     public function toMail(mixed $notifiable): NewRankRecordMail
@@ -127,7 +127,7 @@ HTML;
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
     {
         /** @var TwilioService $service */
-        $service = app(TwilioService::class);
+        $service = resolve(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
             message: TwilioService::formatText($this->message)

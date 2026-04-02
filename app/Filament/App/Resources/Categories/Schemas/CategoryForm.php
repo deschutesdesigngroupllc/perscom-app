@@ -19,6 +19,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\Page;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
@@ -32,7 +33,7 @@ class CategoryForm
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Category')
+                        Tab::make('Category')
                             ->icon(Heroicon::OutlinedTag)
                             ->schema([
                                 TextInput::make('name')

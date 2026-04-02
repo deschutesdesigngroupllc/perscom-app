@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
 return [
 
     /*
@@ -14,10 +20,10 @@ return [
     */
 
     'middleware' => [
-        Illuminate\Cookie\Middleware\EncryptCookies::class,
-        Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-        Illuminate\Session\Middleware\StartSession::class,
-        Illuminate\Session\Middleware\AuthenticateSession::class,
-        Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        StartSession::class,
+        AuthenticateSession::class,
+        ShareErrorsFromSession::class,
     ],
 ];

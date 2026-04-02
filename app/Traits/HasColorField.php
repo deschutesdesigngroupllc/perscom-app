@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
 /**
- * @mixin Eloquent
+ * @mixin Model
  *
  * @property-read string $color
  */
 trait HasColorField
 {
-    /**
-     * @return Attribute<string, never>
-     */
-    public function color(): Attribute
-    {
-        return Attribute::get(fn ($value): string => $value ?? '#2563eb');
-    }
-
     public function getColor(): string|array|null
     {
         return $this->color;
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function color(): Attribute
+    {
+        return Attribute::get(fn ($value): string => $value ?? '#2563eb');
     }
 
     protected function initializeHasColorField(): void

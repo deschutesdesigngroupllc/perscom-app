@@ -43,7 +43,7 @@ trait HasProfilePhoto
         ])->save();
     }
 
-    public function profilePhotoUrl(): Attribute
+    protected function profilePhotoUrl(): Attribute
     {
         return Attribute::get(fn (): string => $this->profile_photo
             ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo)

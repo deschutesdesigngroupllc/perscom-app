@@ -36,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Mail whereSubject($value)
  * @method static Builder<static>|Mail whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ObservedBy(MailObserver::class)]
 class Mail extends Model

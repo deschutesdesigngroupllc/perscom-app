@@ -37,7 +37,7 @@ class NewAlert extends Notification implements ShouldQueue
             ->reject(fn (AlertChannel $channel): bool => $channel === AlertChannel::SLACK)
             ->map(fn (AlertChannel $channel) => $channel->value)
             ->values()
-            ->toArray();
+            ->all();
     }
 
     public function toMail(Tenant $notifiable): NewAlertMailable

@@ -22,7 +22,7 @@ class UserSettingsService
         }
 
         /** @var UserSettings $settings */
-        $settings = app(UserSettings::class);
+        $settings = resolve(UserSettings::class);
         $previous = $settings->$key;
         $settings->$key = data_set($previous, $user->getKey(), $value);
         $settings->save();
@@ -49,12 +49,12 @@ class UserSettingsService
         /** @var array<string, mixed> $settings * */
         $settings = Cache::remember($cacheKey, now()->addHour(), function () use ($user) {
             /** @var UserSettings $settings */
-            $settings = app(UserSettings::class);
+            $settings = resolve(UserSettings::class);
 
             return collect($settings->toArray())->map(fn ($values): mixed => $values[$user->getKey()] ?? null)->filter()->toArray();
         });
 
-        return data_get($settings, $key) ?? value($default);
+        return data_get($settings, $key, value($default));
     }
 
     public static function flush(?User $user = null): ?bool

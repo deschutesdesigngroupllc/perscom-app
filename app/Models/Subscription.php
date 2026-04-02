@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Laravel\Cashier\Database\Factories\SubscriptionFactory;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
 use Spark\Plan;
@@ -36,22 +38,22 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read string|null $stripe_url
  * @property-read Tenant|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription active()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription canceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription ended()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription expiredTrial()
- * @method static \Laravel\Cashier\Database\Factories\SubscriptionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription incomplete()
+ * @method static Builder<static>|Subscription active()
+ * @method static Builder<static>|Subscription canceled()
+ * @method static Builder<static>|Subscription ended()
+ * @method static Builder<static>|Subscription expiredTrial()
+ * @method static SubscriptionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Subscription incomplete()
  * @method static Builder<static>|Subscription newModelQuery()
  * @method static Builder<static>|Subscription newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription pastDue()
+ * @method static Builder<static>|Subscription notCanceled()
+ * @method static Builder<static>|Subscription notOnGracePeriod()
+ * @method static Builder<static>|Subscription notOnTrial()
+ * @method static Builder<static>|Subscription onGracePeriod()
+ * @method static Builder<static>|Subscription onTrial()
+ * @method static Builder<static>|Subscription pastDue()
  * @method static Builder<static>|Subscription query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription recurring()
+ * @method static Builder<static>|Subscription recurring()
  * @method static Builder<static>|Subscription whereCreatedAt($value)
  * @method static Builder<static>|Subscription whereEndsAt($value)
  * @method static Builder<static>|Subscription whereId($value)
@@ -64,7 +66,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Subscription whereType($value)
  * @method static Builder<static>|Subscription whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ObservedBy(SubscriptionObserver::class)]
 class Subscription extends BaseSubscription
@@ -76,7 +78,7 @@ class Subscription extends BaseSubscription
         return true;
     }
 
-    public function stripePrice(): Attribute
+    protected function stripePrice(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ?string {
             if (filled($value)) {
@@ -94,7 +96,7 @@ class Subscription extends BaseSubscription
         })->shouldCache();
     }
 
-    public function stripeUrl(): Attribute
+    protected function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
             if (blank($this->stripe_id)) {
@@ -108,7 +110,7 @@ class Subscription extends BaseSubscription
         });
     }
 
-    public function renewalTerm(): Attribute
+    protected function renewalTerm(): Attribute
     {
         return Attribute::get(function (): ?string {
             $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan): array => [$plan->id => $plan->interval]);

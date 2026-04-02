@@ -6,10 +6,12 @@ namespace App\Models;
 
 use App\Observers\DomainObserver;
 use App\Traits\ClearsResponseCache;
+use Database\Factories\DomainFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
@@ -27,7 +29,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property-read Tenant $tenant
  * @property-read string $url
  *
- * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
+ * @method static DomainFactory factory($count = null, $state = [])
  * @method static Builder<static>|Domain newModelQuery()
  * @method static Builder<static>|Domain newQuery()
  * @method static Builder<static>|Domain query()
@@ -38,7 +40,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @method static Builder<static>|Domain whereTenantId($value)
  * @method static Builder<static>|Domain whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ObservedBy(DomainObserver::class)]
 class Domain extends BaseDomain
@@ -68,7 +70,7 @@ class Domain extends BaseDomain
     /**
      * @return Attribute<string, never>
      */
-    public function url(): Attribute
+    protected function url(): Attribute
     {
         return Attribute::make(
             get: fn (): string => optional($this->host, static fn (string $host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
@@ -78,7 +80,7 @@ class Domain extends BaseDomain
     /**
      * @return Attribute<string, never>
      */
-    public function host(): Attribute
+    protected function host(): Attribute
     {
         return Attribute::make(
             get: fn (): string => optional($this->domain, static fn (string $domain): string => Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))

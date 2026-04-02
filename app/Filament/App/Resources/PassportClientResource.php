@@ -154,19 +154,19 @@ class PassportClientResource extends BaseResource
                                     ->valueLabel('URL')
                                     ->getStateUsing(fn (): array => [
                                         'Discovery Endpoint' => route('oidc.discovery', [
-                                            'tenant' => optional(tenant()->domain)->domain,
+                                            'tenant' => tenant()->domain?->domain,
                                         ]),
                                         'Authorization Endpoint' => route('passport.authorizations.authorize', [
-                                            'tenant' => optional(tenant()->domain)->domain,
+                                            'tenant' => tenant()->domain?->domain,
                                         ]),
                                         'Token Endpoint' => route('passport.token', [
-                                            'tenant' => optional(tenant()->domain)->domain,
+                                            'tenant' => tenant()->domain?->domain,
                                         ]),
                                         'Logout Endpoint' => route('oidc.logout', [
-                                            'tenant' => optional(tenant()->domain)->domain,
+                                            'tenant' => tenant()->domain?->domain,
                                         ]),
                                         'User Info Endpoint' => route('oidc.userinfo', [
-                                            'tenant' => optional(tenant()->domain)->domain,
+                                            'tenant' => tenant()->domain?->domain,
                                         ]),
                                     ]),
                             ]),

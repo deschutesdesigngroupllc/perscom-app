@@ -8,6 +8,7 @@ use App\Filament\App\Resources\SubmissionResource;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Form;
 use App\Models\Submission;
+use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,12 +32,12 @@ class ListSubmissions extends ListRecords
             ->count();
 
         $views = [
-            \Archilex\AdvancedTables\Components\PresetView::make('read')
+            PresetView::make('read')
                 ->label('Read')
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->read())
                 ->favorite()
                 ->icon('heroicon-o-envelope'),
-            \Archilex\AdvancedTables\Components\PresetView::make('unread')
+            PresetView::make('unread')
                 ->default()
                 ->label('Unread')
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->unread())
@@ -46,7 +47,7 @@ class ListSubmissions extends ListRecords
         ];
 
         return array_merge($views, Form::all()->mapWithKeys(fn (Form $form): array => [
-            $form->id => \Archilex\AdvancedTables\Components\PresetView::make()
+            $form->id => PresetView::make()
                 ->label($form->name)
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->whereBelongsTo($form))
                 ->favorite()

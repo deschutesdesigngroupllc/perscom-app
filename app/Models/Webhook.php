@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\WebhookMethod;
 use App\Traits\HasLogs;
+use Database\Factories\WebhookFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +27,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  *
- * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])
+ * @method static WebhookFactory factory($count = null, $state = [])
  * @method static Builder<static>|Webhook newModelQuery()
  * @method static Builder<static>|Webhook newQuery()
  * @method static Builder<static>|Webhook query()
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Webhook whereUpdatedAt($value)
  * @method static Builder<static>|Webhook whereUrl($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Webhook extends Model
 {

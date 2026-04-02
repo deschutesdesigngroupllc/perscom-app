@@ -18,6 +18,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Facades\Filament;
+use Filament\Facades\Filament\Resources\Pages\PageRegistration;
 use Filament\Forms\Components\TextInput;
 use Filament\Panel;
 use Filament\Resources\Resource;
@@ -124,7 +125,7 @@ class RoleResource extends Resource
     }
 
     /**
-     * @return array<string, \Filament\Resources\Pages\PageRegistration>
+     * @return array<string, PageRegistration>
      */
     public static function getPages(): array
     {

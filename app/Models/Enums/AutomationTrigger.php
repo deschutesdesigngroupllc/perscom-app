@@ -17,6 +17,7 @@ use App\Models\Submission;
 use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use ReflectionClass;
 
 enum AutomationTrigger: string implements HasLabel
@@ -223,7 +224,7 @@ enum AutomationTrigger: string implements HasLabel
         ];
 
         return [
-            'now' => Carbon::now(),
+            'now' => Date::now(),
             'model' => $modelFields,
             'model_type' => $modelClass,
             'model_id' => $modelFields['id'] ?? null,

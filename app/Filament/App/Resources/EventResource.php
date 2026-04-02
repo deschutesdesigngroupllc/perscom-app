@@ -21,6 +21,8 @@ use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
+use Carbon\Month;
+use Carbon\WeekDay;
 use DateTimeInterface;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -53,8 +55,8 @@ use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -116,22 +118,22 @@ class EventResource extends BaseResource
                                     ->helperText('The date and time the event starts.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
                                     ->default(now()->addHour()->startOfHour())
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, $component): void {
-                                        $date = Carbon::parse($state)
+                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|WeekDay|Month|string|int|float|null $state, $component): void {
+                                        $date = Date::parse($state)
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
 
                                         $set('schedule.start', $date);
 
-                                        $start = Carbon::parse($state);
-                                        $end = Carbon::parse($get('ends') ?? $state);
+                                        $start = Date::parse($state);
+                                        $end = Date::parse($get('ends') ?? $state);
 
                                         if ($get('all_day')) {
                                             $set('ends', $state);
@@ -144,7 +146,7 @@ class EventResource extends BaseResource
                                     ->helperText('The date and time the event ends.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -152,12 +154,12 @@ class EventResource extends BaseResource
                                     ->afterOrEqual('starts')
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|\Carbon\WeekDay|\Carbon\Month|string|int|float|null $state, $component): void {
-                                        $start = Carbon::parse($get('starts'))
+                                    ->afterStateUpdated(function (Set $set, Get $get, DateTimeInterface|WeekDay|Month|string|int|float|null $state, $component): void {
+                                        $start = Date::parse($get('starts'))
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
 
-                                        $end = Carbon::parse($state)
+                                        $end = Date::parse($state)
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
 
@@ -241,8 +243,8 @@ class EventResource extends BaseResource
                                     ->label('Channels')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->toArray())
-                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->toArray()),
+                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
+                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
                             ]),
                         Tab::make('Schedule')
                             ->icon('heroicon-o-arrow-path')
@@ -270,7 +272,7 @@ class EventResource extends BaseResource
                                     ->visible(fn (Get $get): mixed => $get('registration_enabled'))
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -308,7 +310,7 @@ class EventResource extends BaseResource
                                     ->suffix(fn (?Event $record): ?string => filled($record->length) && $record->length->total('seconds') > 0 ? sprintf(' (%s)', $record->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),
@@ -316,7 +318,7 @@ class EventResource extends BaseResource
                                     ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),
@@ -326,7 +328,7 @@ class EventResource extends BaseResource
                                     ->suffix(fn (?Event $record): ?string => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),
@@ -335,7 +337,7 @@ class EventResource extends BaseResource
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->last_occurrence))
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     })),

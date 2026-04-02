@@ -6,6 +6,7 @@ namespace App\Data\Automations;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Spatie\LaravelData\Data;
 
 class AutomationContextData extends Data
@@ -42,7 +43,7 @@ class AutomationContextData extends Data
             changes: $changedAttributes,
             causer: $causer?->toArray(),
             causerId: $causer?->getKey(),
-            now: Carbon::now(),
+            now: Date::now(),
         );
     }
 

@@ -26,7 +26,7 @@ class Index extends Component
 
     public function render(): View
     {
-        $settings = app(DashboardSettings::class);
+        $settings = resolve(DashboardSettings::class);
         if ($settings->roster_mode === RosterMode::MANUAL) {
             $groups = RosterService::mergeSecondaryAssignmentRecordsForManualRoster(
                 groups: Group::query()->forManualRoster()->get()

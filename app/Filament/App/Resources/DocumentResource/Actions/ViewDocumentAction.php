@@ -8,6 +8,8 @@ use App\Models\Document;
 use App\Models\User;
 use Closure;
 use Filament\Actions\Action;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 
 class ViewDocumentAction extends Action
@@ -26,7 +28,7 @@ class ViewDocumentAction extends Action
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
         $this->modalHeading(fn () => $this->getDocument()->name ?? 'Document');
-        $this->modalContent(fn (): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View => view('filament.app.view-document', [
+        $this->modalContent(fn (): Factory|View => view('filament.app.view-document', [
             'document' => $this->getDocument(),
             'user' => $this->getUser(),
             'model' => $this->getAttached(),

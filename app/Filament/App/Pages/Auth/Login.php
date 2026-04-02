@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages\Auth;
 
-use App;
 use App\Filament\Forms\Components\Turnstile;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\App;
 
 class Login extends \Filament\Auth\Pages\Login
 {

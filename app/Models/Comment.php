@@ -8,7 +8,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
-use Eloquent;
+use Database\Factories\CommentFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,11 +25,11 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $author
- * @property-read Model|Eloquent|null $commentable
+ * @property-read Model|Model|null $commentable
  * @property-read string $label
  *
- * @method static Builder<static>|Comment author(\App\Models\User $user)
- * @method static \Database\Factories\CommentFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Comment author(User $user)
+ * @method static CommentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Comment newModelQuery()
  * @method static Builder<static>|Comment newQuery()
  * @method static Builder<static>|Comment query()
@@ -41,7 +41,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Comment whereModelType($value)
  * @method static Builder<static>|Comment whereUpdatedAt($value)
  *
- * @mixin Eloquent
+ * @mixin Model
  */
 class Comment extends Model implements HasLabel
 {

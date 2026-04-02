@@ -23,7 +23,7 @@ class CheckUserApprovalStatus
         }
 
         /** @var RegistrationSettings $settings */
-        $settings = app(RegistrationSettings::class);
+        $settings = resolve(RegistrationSettings::class);
 
         if (! $settings->admin_approval_required) {
             return $next($request);
@@ -35,6 +35,6 @@ class CheckUserApprovalStatus
             'Your account is awaiting approval by an administrator. Please try again later.'
         );
 
-        return redirect()->route('app.approval-required');
+        return to_route('app.approval-required');
     }
 }

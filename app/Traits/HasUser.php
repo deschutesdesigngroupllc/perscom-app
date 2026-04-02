@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasUser
 {
-    public function scopeUser(Builder $query, User $user): void
-    {
-        $query->whereBelongsTo($user);
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function scopeUser(Builder $query, User $user): void
+    {
+        $query->whereBelongsTo($user);
     }
 
     protected function initializeHasUser(): void

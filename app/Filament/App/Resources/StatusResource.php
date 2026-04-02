@@ -19,6 +19,7 @@ use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
@@ -48,7 +49,7 @@ class StatusResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Status')
+                        Tab::make('Status')
                             ->icon(Heroicon::OutlinedScale)
                             ->schema([
                                 TextInput::make('name')

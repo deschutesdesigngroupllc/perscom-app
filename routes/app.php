@@ -8,6 +8,7 @@ use App\Http\Controllers\App\Pages\PreviewController;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Features\UserImpersonation;
 
 Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], function (): void {

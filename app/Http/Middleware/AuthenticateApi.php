@@ -24,8 +24,8 @@ class AuthenticateApi
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $authenticate = app(Authenticate::class);
-        $client = app(ClientCredentials::class);
+        $authenticate = resolve(Authenticate::class);
+        $client = resolve(ClientCredentials::class);
 
         try {
             return $authenticate->handle($request, fn ($request) => $next($request), 'api');

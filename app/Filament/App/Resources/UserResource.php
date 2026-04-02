@@ -32,6 +32,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\RepeatableEntry\TableColumn;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Grid;
@@ -164,7 +165,7 @@ class UserResource extends BaseResource
                                 DateTimePicker::make('last_seen_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -173,7 +174,7 @@ class UserResource extends BaseResource
                                 DateTimePicker::make('email_verified_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
+                                        $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
@@ -248,7 +249,7 @@ class UserResource extends BaseResource
                                             ->hidden(fn (User $record): bool => in_array('cover_photo', $hiddenFields) || is_null($record->cover_photo_url))
                                             ->imageHeight(function () {
                                                 /** @var DashboardSettings $settings */
-                                                $settings = app(DashboardSettings::class);
+                                                $settings = resolve(DashboardSettings::class);
 
                                                 return $settings->cover_photo_height ?? 100;
                                             })
@@ -315,10 +316,10 @@ class UserResource extends BaseResource
                                             ->placeholder('No Secondary Assignment Records')
                                             ->label('Secondary Assignment Records')
                                             ->table([
-                                                RepeatableEntry\TableColumn::make('Position'),
-                                                RepeatableEntry\TableColumn::make('Specialty'),
-                                                RepeatableEntry\TableColumn::make('Unit'),
-                                                RepeatableEntry\TableColumn::make('Status'),
+                                                TableColumn::make('Position'),
+                                                TableColumn::make('Specialty'),
+                                                TableColumn::make('Unit'),
+                                                TableColumn::make('Status'),
                                             ])
                                             ->schema([
                                                 TextEntry::make('position.name')
@@ -562,11 +563,11 @@ class UserResource extends BaseResource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Position' => optional($record->position)->name,
-            'Specialty' => optional($record->specialty)->name,
-            'Unit' => optional($record->unit)->name,
-            'Rank' => optional($record->rank)->name,
-            'Status' => optional($record->status)->name,
+            'Position' => $record->position?->name,
+            'Specialty' => $record->specialty?->name,
+            'Unit' => $record->unit?->name,
+            'Rank' => $record->rank?->name,
+            'Status' => $record->status?->name,
         ];
     }
 

@@ -15,6 +15,7 @@ use App\Traits\HasEvent;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
 use App\Traits\HasUser;
+use Database\Factories\TrainingRecordFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Event;
 
 /**
  * @property int $id
@@ -56,14 +58,14 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $model_notifications_count
  * @property-read User|null $user
  *
- * @method static Builder<static>|TrainingRecord author(\App\Models\User $user)
- * @method static Builder<static>|TrainingRecord document(\App\Models\Document $document)
+ * @method static Builder<static>|TrainingRecord author(User $user)
+ * @method static Builder<static>|TrainingRecord document(Document $document)
  * @method static Builder<static>|TrainingRecord event(\App\Models\Event $event)
- * @method static \Database\Factories\TrainingRecordFactory factory($count = null, $state = [])
+ * @method static TrainingRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|TrainingRecord newModelQuery()
  * @method static Builder<static>|TrainingRecord newQuery()
  * @method static Builder<static>|TrainingRecord query()
- * @method static Builder<static>|TrainingRecord user(\App\Models\User $user)
+ * @method static Builder<static>|TrainingRecord user(User $user)
  * @method static Builder<static>|TrainingRecord whereAuthorId($value)
  * @method static Builder<static>|TrainingRecord whereCreatedAt($value)
  * @method static Builder<static>|TrainingRecord whereData($value)
@@ -75,7 +77,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|TrainingRecord whereUpdatedAt($value)
  * @method static Builder<static>|TrainingRecord whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class TrainingRecord extends Model
 {

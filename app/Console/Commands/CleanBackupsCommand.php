@@ -23,7 +23,7 @@ class CleanBackupsCommand extends Command implements Isolatable
     {
         CreateCleanTenantBackupsBatch::handle();
 
-        CleanBackups::dispatch();
+        dispatch(new CleanBackups);
 
         $this->components->info('The database cleanup jobs have been dispatched.');
 

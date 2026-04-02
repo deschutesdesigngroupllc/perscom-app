@@ -21,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -48,7 +49,7 @@ class CompetencyResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Competency')
+                        Tab::make('Competency')
                             ->icon(Heroicon::OutlinedNumberedList)
                             ->schema([
                                 TextInput::make('name')

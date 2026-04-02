@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use Spatie\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests;
+use Spatie\ResponseCache\Hasher\DefaultHasher;
+use Spatie\ResponseCache\Replacers\CsrfTokenReplacer;
+use Spatie\ResponseCache\Serializers\JsonSerializer;
+
 return [
     /*
      * Determine if the response cache middleware should be enabled.
@@ -98,18 +103,18 @@ return [
      * By default all successful GET-requests will be cached.
      * You can provide your own by using the CacheProfile.
      */
-    'cache_profile' => Spatie\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests::class,
+    'cache_profile' => CacheAllSuccessfulGetRequests::class,
 
     /*
      * This class is responsible for generating a hash for
      * a request. Used for looking up cached responses.
      */
-    'hasher' => Spatie\ResponseCache\Hasher\DefaultHasher::class,
+    'hasher' => DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer' => Spatie\ResponseCache\Serializers\JsonSerializer::class,
+    'serializer' => JsonSerializer::class,
 
     /*
      * Here you may define the replacers that will replace
@@ -117,6 +122,6 @@ return [
      * must always implement the Replacer interface.
      */
     'replacers' => [
-        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+        CsrfTokenReplacer::class,
     ],
 ];

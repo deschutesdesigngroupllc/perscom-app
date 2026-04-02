@@ -12,6 +12,7 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
+use Database\Factories\FormFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -48,7 +49,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
+ * @method static FormFactory factory($count = null, $state = [])
  * @method static Builder<static>|Form newModelQuery()
  * @method static Builder<static>|Form newQuery()
  * @method static Builder<static>|Form query()
@@ -63,7 +64,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Form whereSuccessMessage($value)
  * @method static Builder<static>|Form whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Form extends Model implements HasLabel
 {

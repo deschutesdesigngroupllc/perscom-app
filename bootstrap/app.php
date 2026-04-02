@@ -22,6 +22,7 @@ use App\Jobs\System\DeleteUnverifiedRegistrations;
 use App\Jobs\System\RemoveInactiveAccounts;
 use App\Jobs\System\ResetDemoAccount;
 use Filament\Facades\Filament;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
@@ -167,7 +168,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Exception $e, Request $request) {
             $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
             $statusProperty = property_exists($e, 'status') ? $e->status : null;
-            $statusUnauthenticated = $e instanceof Illuminate\Auth\AuthenticationException ? 401 : null;
+            $statusUnauthenticated = $e instanceof AuthenticationException ? 401 : null;
             $status = $statusCode ?? $statusProperty ?? $statusUnauthenticated ?? Response::HTTP_INTERNAL_SERVER_ERROR;
 
             if ($request->routeIs('api.*') || $request->expectsJson()) {
@@ -205,7 +206,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 if ($request->routeIs('api.widgets.*')) {
                     return response()->view('widgets.error', [
                         'status' => $statusCode,
-                        'message' => data_get($response, 'error.message') ?? 'Unknown error.',
+                        'message' => data_get($response, 'error.message', 'Unknown error.'),
                     ]);
                 }
 

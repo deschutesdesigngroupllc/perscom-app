@@ -21,6 +21,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
@@ -46,7 +47,7 @@ class CredentialResource extends BaseResource
                     ->columnSpanFull()
                     ->persistTabInQueryString()
                     ->tabs([
-                        Tabs\Tab::make('Credential')
+                        Tab::make('Credential')
                             ->icon(Heroicon::OutlinedIdentification)
                             ->schema([
                                 TextInput::make('name')

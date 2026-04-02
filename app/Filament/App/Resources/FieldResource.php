@@ -24,6 +24,7 @@ use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\CodeEditor;
+use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
@@ -143,7 +144,7 @@ class FieldResource extends BaseResource
                                     ->helperText('The value of the component.')
                                     ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() === 'component')
                                     ->columnSpanFull()
-                                    ->language(CodeEditor\Enums\Language::Html),
+                                    ->language(Language::Html),
                             ]),
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')

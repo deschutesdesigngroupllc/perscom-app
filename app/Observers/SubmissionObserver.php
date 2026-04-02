@@ -24,12 +24,12 @@ class SubmissionObserver
 
         $this->dispatchAutomationCreated($submission, AutomationTrigger::SUBMISSION_CREATED);
 
-        if ($status = optional($submission->form)->submission_status) {
+        if ($status = $submission->form?->submission_status) {
             $submission->statuses()->attach($status->getKey());
         }
 
         if (filled($submission->form)) {
-            SendModelNotifications::dispatch($submission->form, 'submission.created');
+            dispatch(new SendModelNotifications($submission->form, 'submission.created'));
         }
     }
 

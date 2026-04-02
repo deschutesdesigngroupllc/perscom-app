@@ -7,7 +7,7 @@ namespace App\Traits;
 use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 /**
  * @mixin User
@@ -26,7 +26,7 @@ trait JwtClaims
     {
         $timezone = UserSettingsService::get('timezone', function () {
             /** @var OrganizationSettings $settings */
-            $settings = app(OrganizationSettings::class);
+            $settings = resolve(OrganizationSettings::class);
 
             return $settings->timezone ?? config('app.timezone');
         });
@@ -42,7 +42,7 @@ trait JwtClaims
             'roles' => $this->roles->pluck('name')->toArray(),
             'locale' => config('app.locale'),
             'zoneinfo' => $timezone,
-            'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
+            'updated_at' => Date::parse($this->updated_at)->getTimestamp(),
         ];
 
         if (tenancy()->initialized) {

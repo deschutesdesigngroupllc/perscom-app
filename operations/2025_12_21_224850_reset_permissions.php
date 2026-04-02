@@ -6,6 +6,8 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Tenant;
 use Database\Seeders\ShieldSeeder;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperation;
 
 return new class extends OneTimeOperation

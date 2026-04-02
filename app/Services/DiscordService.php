@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Exceptions\DiscordRateLimitException;
-use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Sleep;
@@ -103,7 +103,7 @@ class DiscordService
 
                 $retryAfter = data_get($exception->getData(), 'retry_after', 10);
 
-                Sleep::until(Carbon::now()->addMilliseconds($retryAfter));
+                Sleep::until(Date::now()->addMilliseconds($retryAfter));
             }
         }
 

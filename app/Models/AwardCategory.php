@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -29,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|AwardCategory whereOrder($value)
  * @method static Builder<static>|AwardCategory whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class AwardCategory extends Pivot
 {

@@ -13,6 +13,7 @@ use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasStatusRecords;
+use Database\Factories\SubmissionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -45,7 +46,7 @@ use Stringable;
  * @property-read string|null $url
  * @property-read User $user
  *
- * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
+ * @method static SubmissionFactory factory($count = null, $state = [])
  * @method static Builder<static>|Submission newModelQuery()
  * @method static Builder<static>|Submission newQuery()
  * @method static Builder<static>|Submission query()
@@ -60,7 +61,7 @@ use Stringable;
  * @method static Builder<static>|Submission whereUpdatedAt($value)
  * @method static Builder<static>|Submission whereUserId($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ObservedBy(SubmissionObserver::class)]
 class Submission extends Model implements HasLabel, Htmlable, Stringable

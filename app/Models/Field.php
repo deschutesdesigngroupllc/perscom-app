@@ -14,6 +14,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject as ArrayObjectAlias;
+use Database\Factories\FieldFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;
@@ -57,7 +58,7 @@ use function in_array;
  * @property-read int|null $users_count
  * @property-read string|null $validation_rules
  *
- * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
+ * @method static FieldFactory factory($count = null, $state = [])
  * @method static Builder<static>|Field hidden()
  * @method static Builder<static>|Field newModelQuery()
  * @method static Builder<static>|Field newQuery()
@@ -85,7 +86,7 @@ use function in_array;
  * @method static Builder<static>|Field whereType($value)
  * @method static Builder<static>|Field whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Field extends Model implements HasLabel, Hideable
 {
@@ -115,7 +116,23 @@ class Field extends Model implements HasLabel, Hideable
         'updated_at',
     ];
 
-    public function options(): Attribute
+    public function forms(): MorphToMany
+    {
+        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
+            ->as('forms')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
+
+    public function users(): MorphToMany
+    {
+        return $this->morphedByMany(User::class, 'model', 'model_has_fields')
+            ->as('users')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
+
+    protected function options(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ArrayObject {
             if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::Array->value) {
@@ -129,14 +146,14 @@ class Field extends Model implements HasLabel, Hideable
             if (data_get($attributes, 'type') === FieldType::FIELD_TIMEZONE->value) {
                 return new ArrayObject(Collection::wrap(timezone_identifiers_list())
                     ->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])
-                    ->toArray(), ArrayObjectAlias::ARRAY_AS_PROPS);
+                    ->all(), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 
             return new ArrayObject([], ArrayObjectAlias::ARRAY_AS_PROPS);
         })->shouldCache();
     }
 
-    public function validationRules(): Attribute
+    protected function validationRules(): Attribute
     {
         return Attribute::make(
             get: function ($value, array $attributes): ?string {
@@ -155,22 +172,6 @@ class Field extends Model implements HasLabel, Hideable
                     : null;
             }
         )->shouldCache();
-    }
-
-    public function forms(): MorphToMany
-    {
-        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
-            ->as('forms')
-            ->withPivot(['order'])
-            ->withTimestamps();
-    }
-
-    public function users(): MorphToMany
-    {
-        return $this->morphedByMany(User::class, 'model', 'model_has_fields')
-            ->as('users')
-            ->withPivot(['order'])
-            ->withTimestamps();
     }
 
     /**

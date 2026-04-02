@@ -21,7 +21,7 @@ class CustomJwtProvider extends Lcobucci
         }
 
         /** @var IntegrationSettings $settings */
-        $settings = app(IntegrationSettings::class);
+        $settings = resolve(IntegrationSettings::class);
 
         $this->config->setValidationConstraints(new SignedByPerscomOrTenantConstraint(
             appSigner: $this->signer,

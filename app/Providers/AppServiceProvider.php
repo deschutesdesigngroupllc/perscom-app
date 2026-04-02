@@ -42,7 +42,6 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Number;
@@ -54,6 +53,7 @@ use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
+use Padmission\DataLens\Models\CustomReport;
 use Spatie\Backup\Commands\BackupCommand as BaseBackupCommand;
 use Spatie\Backup\Config\Config;
 
@@ -163,7 +163,7 @@ class AppServiceProvider extends ServiceProvider
 
                             return UserSettingsService::get('timezone', function () {
                                 /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                                $settings = resolve(OrganizationSettings::class);
 
                                 return $settings->timezone ?? config('app.timezone');
                             });
@@ -183,7 +183,7 @@ class AppServiceProvider extends ServiceProvider
 
                             return UserSettingsService::get('timezone', function () {
                                 /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                                $settings = resolve(OrganizationSettings::class);
 
                                 return $settings->timezone ?? config('app.timezone');
                             });
@@ -212,7 +212,7 @@ class AppServiceProvider extends ServiceProvider
 
                             return UserSettingsService::get('timezone', function () {
                                 /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                                $settings = resolve(OrganizationSettings::class);
 
                                 return $settings->timezone ?? config('app.timezone');
                             });
@@ -231,7 +231,7 @@ class AppServiceProvider extends ServiceProvider
 
                             return UserSettingsService::get('timezone', function () {
                                 /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                                $settings = resolve(OrganizationSettings::class);
 
                                 return $settings->timezone ?? config('app.timezone');
                             });
@@ -259,7 +259,7 @@ class AppServiceProvider extends ServiceProvider
 
                                 return UserSettingsService::get('timezone', function () {
                                     /** @var OrganizationSettings $settings */
-                                    $settings = app(OrganizationSettings::class);
+                                    $settings = resolve(OrganizationSettings::class);
 
                                     return $settings->timezone ?? config('app.timezone');
                                 });
@@ -278,7 +278,7 @@ class AppServiceProvider extends ServiceProvider
 
                                 return UserSettingsService::get('timezone', function () {
                                     /** @var OrganizationSettings $settings */
-                                    $settings = app(OrganizationSettings::class);
+                                    $settings = resolve(OrganizationSettings::class);
 
                                     return $settings->timezone ?? config('app.timezone');
                                 });
@@ -317,7 +317,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('viewPulse', fn (Admin|User|null $user = null): bool => $user instanceof Admin);
 
         if (class_exists('Padmission\DataLens\Models\CustomReport')) {
-            Gate::policy(\Padmission\DataLens\Models\CustomReport::class, CustomReportPolicy::class);
+            Gate::policy(CustomReport::class, CustomReportPolicy::class);
         }
 
         Gate::before(function (Admin|User|null $user, string $ability, $model) {

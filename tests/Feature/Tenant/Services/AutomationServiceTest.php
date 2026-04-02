@@ -11,6 +11,7 @@ use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
+use App\Models\Rank;
 use App\Models\User;
 use App\Models\Webhook;
 use App\Services\AutomationService;
@@ -26,7 +27,7 @@ class AutomationServiceTest extends TenantTestCase
     {
         parent::setUp();
 
-        $this->service = app(AutomationService::class);
+        $this->service = resolve(AutomationService::class);
     }
 
     public function test_it_processes_automation_with_webhook_action(): void
@@ -841,7 +842,7 @@ class AutomationServiceTest extends TenantTestCase
     public function test_it_converts_numeric_values_correctly(): void
     {
         $user = User::factory()->createQuietly(['notes' => null]);
-        $rank = \App\Models\Rank::factory()->createQuietly();
+        $rank = Rank::factory()->createQuietly();
 
         Automation::factory()
             ->modelUpdateAction()

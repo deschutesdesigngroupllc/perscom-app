@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Traits;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 
@@ -44,7 +44,7 @@ trait TenantHelpers
     public function onTrial($trialExpiresAt = null): void
     {
         $this->tenant->forceFill([
-            'trial_ends_at' => $trialExpiresAt ?? Carbon::now()->addDays(7),
+            'trial_ends_at' => $trialExpiresAt ?? Date::now()->addDays(7),
         ])->save();
     }
 }

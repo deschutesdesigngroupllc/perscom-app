@@ -12,6 +12,7 @@ use App\Traits\HasColorField;
 use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\AnnouncementFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ use Illuminate\Support\Str;
  *
  * @method static Builder<static>|Announcement disabled()
  * @method static Builder<static>|Announcement enabled()
- * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
+ * @method static AnnouncementFactory factory($count = null, $state = [])
  * @method static Builder<static>|Announcement global()
  * @method static Builder<static>|Announcement newModelQuery()
  * @method static Builder<static>|Announcement newQuery()
@@ -55,7 +56,7 @@ use Illuminate\Support\Str;
  * @method static Builder<static>|Announcement whereTitle($value)
  * @method static Builder<static>|Announcement whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
@@ -82,7 +83,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         'updated_at',
     ];
 
-    public function scopeGlobal(Builder $query): void
+    protected function scopeGlobal(Builder $query): void
     {
         $query->where('global', true);
     }
@@ -90,7 +91,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
     /**
      * @return Attribute<string, never>
      */
-    public function color(): Attribute
+    protected function color(): Attribute
     {
         return Attribute::make(
             get: fn ($value): string => match (Str::startsWith($value, '#')) {

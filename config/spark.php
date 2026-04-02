@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\InitializeTenancyBySubdomain;
+use App\Models\Tenant;
 use Spark\Features;
 
 return [
@@ -131,7 +132,7 @@ return [
 
     'billables' => [
         'tenant' => [
-            'model' => App\Models\Tenant::class,
+            'model' => Tenant::class,
             'trial_days' => 7,
             'default_interval' => 'yearly',
             'plans' => [

@@ -18,6 +18,7 @@ use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\UnitFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,7 +65,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read Collection<int, User> $usersViaSecondaryAssignmentRecords
  * @property-read int|null $users_via_secondary_assignment_records_count
  *
- * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])
+ * @method static UnitFactory factory($count = null, $state = [])
  * @method static Builder<static>|Unit hidden()
  * @method static Builder<static>|Unit newModelQuery()
  * @method static Builder<static>|Unit newQuery()
@@ -81,7 +82,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder<static>|Unit whereOrder($value)
  * @method static Builder<static>|Unit whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Model
  */
 #[ScopedBy(UnitScope::class)]
 class Unit extends Model implements HasLabel, Hideable, Sortable

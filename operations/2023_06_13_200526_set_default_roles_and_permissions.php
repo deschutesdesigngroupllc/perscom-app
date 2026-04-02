@@ -12,7 +12,7 @@ return new class extends OneTimeOperation
     {
         tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
             /** @var PermissionSettings $settings */
-            $settings = app(PermissionSettings::class);
+            $settings = resolve(PermissionSettings::class);
             $settings->default_permissions = [];
             $settings->default_roles = ['User'];
             $settings->save();

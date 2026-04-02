@@ -23,7 +23,7 @@ class AlertBanner extends Component
             'message' => $alert->message,
             'url' => $alert->url,
             'link' => $alert->link_text,
-        ])->toArray();
+        ])->all();
     }
 
     public function render(): View
