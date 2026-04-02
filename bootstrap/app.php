@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Passport\Http\Middleware\CheckForAnyScope;
+use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
@@ -87,7 +87,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn (): string => Filament::getLoginUrl());
         $middleware->redirectUsersTo(fn (): string => Dashboard::getUrl());
 
-        $middleware->validateCsrfTokens(except: [
+        $middleware->preventRequestForgery(except: [
             'spark/*',
         ]);
 
@@ -113,7 +113,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'cache.headers' => SetCacheHeaders::class,
             'env' => EnabledInEnvironment::class,
             'feature' => EnsureFeaturesAreActive::class,
-            'scope' => CheckForAnyScope::class,
+            'scope' => CheckTokenForAnyScope::class,
             'subscribed' => CheckSubscription::class,
         ]);
 

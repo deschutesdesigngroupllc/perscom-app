@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
     public function register(): void
     {
         if (config('tenancy.enabled')) {
-            Route::domain(config('app.url'))
+            Route::domain(parse_url(config('app.url'), PHP_URL_HOST))
                 ->as('web.')
                 ->middleware('web')
                 ->group(base_path('routes/web.php'));

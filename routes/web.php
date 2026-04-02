@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['domain' => config('app.url'), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
+Route::group(['domain' => parse_url(config('app.url'), PHP_URL_HOST), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
     Route::get('/', [HomeController::class, 'index'])
         ->name('landing.home');
 
@@ -39,7 +39,7 @@ Route::group(['domain' => config('app.url'), 'middleware' => ['landing', CacheRe
             ->name('terms-of-service');
     });
 
-    Route::group(['prefix' => 'register', 'middleware' => ['env:production']], static function (): void {
+    Route::group(['prefix' => 'register', 'middleware' => ['env:production,local']], static function (): void {
         Route::get('/', [RegisterController::class, 'index'])
             ->name('register.index');
         Route::post('/', [RegisterController::class, 'store'])
