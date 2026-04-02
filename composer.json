@@ -1,7 +1,7 @@
 {
-  "name": "laravel/laravel",
+  "name": "deschutesdesigngroupllc/perscom-app",
   "type": "project",
-  "description": "The skeleton application for the Laravel framework.",
+  "description": "Personnel management made easy for high-performing, results-driven organizations.",
   "keywords": [
     "laravel",
     "framework"
