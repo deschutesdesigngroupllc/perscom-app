@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['domain' => parse_url(config('app.url'), PHP_URL_HOST), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
+Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
     Route::get('/', [HomeController::class, 'index'])
         ->name('landing.home');
 
