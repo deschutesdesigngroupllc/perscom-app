@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\DocumentFactory;
 use App\Facades\ContentTagParser;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -19,6 +18,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
 use App\Traits\HasTags;
+use Database\Factories\DocumentFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;

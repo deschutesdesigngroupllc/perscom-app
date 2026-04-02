@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\SlotFactory;
 use App\Contracts\Hideable;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\SlotScope;
@@ -16,6 +15,7 @@ use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
+use Database\Factories\SlotFactory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

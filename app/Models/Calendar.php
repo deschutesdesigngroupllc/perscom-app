@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\CalendarFactory;
 use App\Observers\CalendarObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -12,6 +11,7 @@ use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
+use Database\Factories\CalendarFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;

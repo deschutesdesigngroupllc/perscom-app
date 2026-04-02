@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\PositionFactory;
 use App\Models\Scopes\PositionScope;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
@@ -14,6 +13,7 @@ use App\Traits\HasCategories;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\PositionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

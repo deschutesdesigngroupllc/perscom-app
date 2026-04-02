@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\UnitFactory;
 use App\Contracts\Hideable;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\UnitScope;
@@ -19,6 +18,7 @@ use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\UnitFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

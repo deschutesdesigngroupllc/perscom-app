@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\StatusFactory;
 use App\Models\Scopes\StatusScope;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
@@ -15,6 +14,7 @@ use App\Traits\HasIcon;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\StatusFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;

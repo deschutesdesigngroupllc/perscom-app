@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\AttachmentFactory;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\AttachmentFactory;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;

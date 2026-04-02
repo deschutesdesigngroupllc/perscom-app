@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\GroupFactory;
 use App\Contracts\Hideable;
 use App\Models\Scopes\GroupScope;
 use App\Traits\CanBeHidden;
@@ -16,6 +15,7 @@ use App\Traits\HasIcon;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\GroupFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use App\Filament\Concerns\HasViews;
 use App\Observers\UserObserver;
 use App\Settings\DashboardSettings;
@@ -33,6 +32,7 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Carbon\CarbonInterval;
+use Database\Factories\UserFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;

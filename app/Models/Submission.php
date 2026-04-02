@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\SubmissionFactory;
 use App\Observers\SubmissionObserver;
 use App\Traits\CanBeRead;
 use App\Traits\ClearsApiCache;
@@ -14,6 +13,7 @@ use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasStatusRecords;
+use Database\Factories\SubmissionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;

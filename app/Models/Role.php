@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\RoleFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\ClearsResponseCache;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Database\Factories\RoleFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Spatie\Permission\Models\Role as BaseRole;
 

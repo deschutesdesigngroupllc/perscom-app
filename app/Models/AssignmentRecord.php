@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\AssignmentRecordFactory;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
@@ -25,6 +24,7 @@ use App\Traits\HasSpecialty;
 use App\Traits\HasStatus;
 use App\Traits\HasUnit;
 use App\Traits\HasUser;
+use Database\Factories\AssignmentRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\MessageFactory;
 use App\Models\Enums\MessageStatus;
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
@@ -13,6 +12,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
+use Database\Factories\MessageFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;

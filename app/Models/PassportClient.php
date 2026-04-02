@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Laravel\Passport\Database\Factories\ClientFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
+use Laravel\Passport\Database\Factories\ClientFactory;
 
 /**
  * @property string $id

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\RankFactory;
 use App\Models\Scopes\RankScope;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
@@ -15,6 +14,7 @@ use App\Traits\HasRankRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\RankFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;

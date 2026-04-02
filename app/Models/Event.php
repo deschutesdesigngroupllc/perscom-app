@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\EventFactory;
 use App\Models\Enums\NotificationChannel;
 use App\Observers\EventObserver;
 use App\Traits\ClearsApiCache;
@@ -18,6 +17,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
 use App\Traits\HasTags;
+use Database\Factories\EventFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
