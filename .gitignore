@@ -1,5 +1,4 @@
 !.env.example
-.ai
 .editorconfig
 .env
 .env.*
@@ -11,6 +10,7 @@
 .phpunit.result.cache
 .rnd
 .styleci.yml
+/.ai/mcp/mcp.json
 /.claude/settings.local.json
 /.cursor/mcp.json
 /.idea
