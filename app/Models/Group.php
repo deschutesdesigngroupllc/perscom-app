@@ -15,7 +15,6 @@ use App\Traits\HasIcon;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\GroupFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,7 +48,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @property-read int|null $units_count
  * @property-read string|null $url
  *
- * @method static GroupFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
  * @method static Builder<static>|Group forAutomaticRoster(?string $groupId = null)
  * @method static Builder<static>|Group forManualRoster(?string $groupId = null)
  * @method static Builder<static>|Group hidden()
@@ -68,7 +67,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @method static Builder<static>|Group whereOrder($value)
  * @method static Builder<static>|Group whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ScopedBy(GroupScope::class)]
 class Group extends Model implements HasLabel, Hideable, Sortable
@@ -110,7 +109,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
-                    /** @phpstan-ignore larastan.relationExistence */
                     $query
                         ->orderForRoster()
                         ->with([

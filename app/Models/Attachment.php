@@ -8,7 +8,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\AttachmentFactory;
+use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
@@ -31,12 +31,12 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $updated_at
  * @property-read string|null $attachment_url
  * @property-read string $label
- * @property-read Model|null $model
+ * @property-read Model|Eloquent|null $model
  * @property-read string|null $model_url
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static AttachmentFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Attachment newModelQuery()
  * @method static Builder<static>|Attachment newQuery()
  * @method static Builder<static>|Attachment query()
@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder<static>|Attachment wherePath($value)
  * @method static Builder<static>|Attachment whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Attachment extends Model implements HasLabel
 {

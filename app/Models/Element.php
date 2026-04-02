@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -24,7 +25,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model $model
+ * @property-read Model|Eloquent $model
  *
  * @method static Builder<static>|Element newModelQuery()
  * @method static Builder<static>|Element newQuery()
@@ -38,7 +39,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Element whereOrder($value)
  * @method static Builder<static>|Element whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Element extends MorphPivot implements Sortable
 {

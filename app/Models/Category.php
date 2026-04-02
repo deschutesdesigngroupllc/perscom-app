@@ -48,7 +48,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Category whereResource($value)
  * @method static Builder<static>|Category whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Category extends Model implements HasLabel
 {

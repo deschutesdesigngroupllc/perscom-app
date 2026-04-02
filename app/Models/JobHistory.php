@@ -24,7 +24,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|JobHistory whereJob($value)
  * @method static Builder<static>|JobHistory whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class JobHistory extends Model
 {

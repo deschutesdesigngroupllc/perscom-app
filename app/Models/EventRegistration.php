@@ -10,7 +10,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -25,14 +24,14 @@ use Illuminate\Support\Facades\Date;
  * @property EventRegistrationStatus|null $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  * @property-read User $user
  *
  * @method static Builder<static>|EventRegistration future()
  * @method static Builder<static>|EventRegistration newModelQuery()
  * @method static Builder<static>|EventRegistration newQuery()
  * @method static Builder<static>|EventRegistration query()
- * @method static Builder<static>|EventRegistration user(User $user)
+ * @method static Builder<static>|EventRegistration user(\App\Models\User $user)
  * @method static Builder<static>|EventRegistration whereCreatedAt($value)
  * @method static Builder<static>|EventRegistration whereEventId($value)
  * @method static Builder<static>|EventRegistration whereId($value)
@@ -40,7 +39,7 @@ use Illuminate\Support\Facades\Date;
  * @method static Builder<static>|EventRegistration whereUpdatedAt($value)
  * @method static Builder<static>|EventRegistration whereUserId($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class EventRegistration extends Pivot
 {
@@ -65,15 +64,18 @@ class EventRegistration extends Pivot
         parent::boot();
 
         static::creating(function (EventRegistration $eventRegistration): void {
-            throw_if(! $eventRegistration->event->registration_enabled,
+            /** @var \Illuminate\Support\Facades\Event $event */
+            $event = $eventRegistration->event;
+
+            throw_if(! $event->registration_enabled,
                 Exception::class,
-                sprintf('Registrations for %s are disabled.', $eventRegistration->event->name));
+                sprintf('Registrations for %s are disabled.', $event->name));
 
             throw_if(
-                $eventRegistration->event->registration_deadline &&
-                Date::parse($eventRegistration->event->registration_deadline)->isPast(),
+                $event->registration_deadline &&
+                Date::parse($event->registration_deadline)->isPast(),
                 Exception::class,
-                sprintf('The registration deadline for %s has passed.', $eventRegistration->event->name));
+                sprintf('The registration deadline for %s has passed.', $event->name));
         });
     }
 

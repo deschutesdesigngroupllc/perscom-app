@@ -14,7 +14,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject as ArrayObjectAlias;
-use Database\Factories\FieldFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;
@@ -58,7 +57,7 @@ use function in_array;
  * @property-read int|null $users_count
  * @property-read string|null $validation_rules
  *
- * @method static FieldFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
  * @method static Builder<static>|Field hidden()
  * @method static Builder<static>|Field newModelQuery()
  * @method static Builder<static>|Field newQuery()
@@ -86,7 +85,7 @@ use function in_array;
  * @method static Builder<static>|Field whereType($value)
  * @method static Builder<static>|Field whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Field extends Model implements HasLabel, Hideable
 {

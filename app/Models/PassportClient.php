@@ -8,12 +8,10 @@ use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
-use Laravel\Passport\Database\Factories\ClientFactory;
 
 /**
  * @property string $id
@@ -44,8 +42,8 @@ use Laravel\Passport\Database\Factories\ClientFactory;
  * @property-read int|null $tokens_count
  * @property-read \App\Models\User|null $user
  *
- * @method static Builder<static>|PassportClient existsIn(array $haystack)
- * @method static ClientFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient existsIn(array $haystack)
+ * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()
  * @method static Builder<static>|PassportClient query()
@@ -65,7 +63,7 @@ use Laravel\Passport\Database\Factories\ClientFactory;
  * @method static Builder<static>|PassportClient whereUpdatedAt($value)
  * @method static Builder<static>|PassportClient whereUserId($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class PassportClient extends BaseClientModel
 {

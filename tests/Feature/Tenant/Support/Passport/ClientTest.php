@@ -24,7 +24,7 @@ class ClientTest extends TenantTestCase
             user: $user,
         );
 
-        $this->assertNotNull($client->secret);
+        $this->assertNotNull($client->plainSecret);
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 
@@ -42,7 +42,7 @@ class ClientTest extends TenantTestCase
             user: $user,
         );
 
-        $this->assertNull($client->secret);
+        $this->assertNull($client->plainSecret);
         $this->assertInstanceOf(PassportClient::class, $client);
     }
 

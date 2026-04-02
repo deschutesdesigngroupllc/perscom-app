@@ -45,10 +45,10 @@ use Zoha\Metable;
  * @property-read \Illuminate\Database\Eloquent\Collection|ApiPurgeLog[] $purges
  * @property-read int|null $purges_count
  *
- * @method static Builder<static>|ApiLog causedBy(Model $causer)
+ * @method static Builder<static>|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|ApiLog forBatch(string $batchUuid)
  * @method static Builder<static>|ApiLog forEvent(string $event)
- * @method static Builder<static>|ApiLog forSubject(Model $subject)
+ * @method static Builder<static>|ApiLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder<static>|ApiLog hasBatch()
  * @method static Builder<static>|ApiLog inLog(...$logNames)
  * @method static Builder<static>|ApiLog newModelQuery()
@@ -87,7 +87,7 @@ use Zoha\Metable;
  * @method static Builder<static>|ApiLog whereUpdatedAt($value)
  * @method static Builder<static>|ApiLog withMeta()
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity

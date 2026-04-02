@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Spatie\LaravelSettings\Models\SettingsProperty;
 
@@ -33,7 +32,7 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  * @method static Builder<static>|Settings whereUpdatedAt($value)
  * @method static Builder<static>|Settings whereValue($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Settings extends SettingsProperty
 {

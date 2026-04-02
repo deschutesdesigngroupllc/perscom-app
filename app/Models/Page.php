@@ -9,7 +9,6 @@ use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
-use Database\Factories\PageFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +27,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @method static PageFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\PageFactory factory($count = null, $state = [])
  * @method static Builder<static>|Page hidden()
  * @method static Builder<static>|Page newModelQuery()
  * @method static Builder<static>|Page newQuery()
@@ -46,7 +45,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Page whereSlug($value)
  * @method static Builder<static>|Page whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Page extends Model implements Hideable, Sortable
 {

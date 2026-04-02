@@ -52,7 +52,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Alert whereUpdatedAt($value)
  * @method static Builder<static>|Alert whereUrl($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(AlertObserver::class)]
 #[ScopedBy(EnabledScope::class)]

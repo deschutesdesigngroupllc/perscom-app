@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -18,7 +17,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Category $category
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  *
  * @method static Builder<static>|EventCategory newModelQuery()
  * @method static Builder<static>|EventCategory newQuery()
@@ -30,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|EventCategory whereOrder($value)
  * @method static Builder<static>|EventCategory whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class EventCategory extends Pivot
 {

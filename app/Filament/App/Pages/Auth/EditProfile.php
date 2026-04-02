@@ -160,7 +160,6 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                             ->icon('heroicon-o-lock-closed')
                             ->schema([
                                 $this->getPasswordFormComponent()
-                                    /** @phpstan-ignore method.notFound */
                                     ->helperText('Set a new password for your account.')
                                     /** @phpstan-ignore method.notFound */
                                     ->label('New Password'),

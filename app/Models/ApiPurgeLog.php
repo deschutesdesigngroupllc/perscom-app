@@ -39,10 +39,10 @@ use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
  * @property-read \Illuminate\Database\Eloquent\Collection|ApiLog[] $apiLog
  * @property-read int|null $api_log_count
  *
- * @method static Builder<static>|ApiPurgeLog causedBy(Model $causer)
+ * @method static Builder<static>|ApiPurgeLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|ApiPurgeLog forBatch(string $batchUuid)
  * @method static Builder<static>|ApiPurgeLog forEvent(string $event)
- * @method static Builder<static>|ApiPurgeLog forSubject(Model $subject)
+ * @method static Builder<static>|ApiPurgeLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder<static>|ApiPurgeLog hasBatch()
  * @method static Builder<static>|ApiPurgeLog inLog(...$logNames)
  * @method static Builder<static>|ApiPurgeLog newModelQuery()
@@ -61,7 +61,7 @@ use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
  * @method static Builder<static>|ApiPurgeLog whereSubjectType($value)
  * @method static Builder<static>|ApiPurgeLog whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ScopedBy(ApiPurgeLogScope::class)]
 class ApiPurgeLog extends Activity

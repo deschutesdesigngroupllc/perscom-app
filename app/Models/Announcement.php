@@ -12,7 +12,6 @@ use App\Traits\HasColorField;
 use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\AnnouncementFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,7 +40,7 @@ use Illuminate\Support\Str;
  *
  * @method static Builder<static>|Announcement disabled()
  * @method static Builder<static>|Announcement enabled()
- * @method static AnnouncementFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
  * @method static Builder<static>|Announcement global()
  * @method static Builder<static>|Announcement newModelQuery()
  * @method static Builder<static>|Announcement newQuery()
@@ -56,7 +55,7 @@ use Illuminate\Support\Str;
  * @method static Builder<static>|Announcement whereTitle($value)
  * @method static Builder<static>|Announcement whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {

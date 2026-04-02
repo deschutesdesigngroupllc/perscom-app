@@ -10,7 +10,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\CredentialFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,7 +37,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $training_records_count
  * @property-read string|null $url
  *
- * @method static CredentialFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\CredentialFactory factory($count = null, $state = [])
  * @method static Builder<static>|Credential newModelQuery()
  * @method static Builder<static>|Credential newQuery()
  * @method static Builder<static>|Credential ordered(string $direction = 'asc')
@@ -52,7 +51,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Credential whereType($value)
  * @method static Builder<static>|Credential whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Credential extends Model implements HasLabel, Sortable
 {

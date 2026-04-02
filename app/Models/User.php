@@ -32,7 +32,6 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Carbon\CarbonInterval;
-use Database\Factories\UserFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -65,6 +64,8 @@ use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
+ * @phpstan-ignore generics.notSubtype
+ *
  * @property int $id
  * @property string $name
  * @property string $email
@@ -108,7 +109,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read bool $discord_connected
  * @property-read SocialiteUser|null $discordUser
  * @property-read EventRegistration|null $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
  * @property-read int|null $events_count
  * @property-read bool $facebook_connected
  * @property-read SocialiteUser|null $facebookUser
@@ -172,18 +173,18 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Credential> $credentials
  * @property-read int|null $credentials_count
  *
- * @method static UserFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder<static>|User newModelQuery()
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User orderForRoster()
  * @method static Builder<static>|User permission($permissions, $without = false)
- * @method static Builder<static>|User position(Position $position)
+ * @method static Builder<static>|User position(\App\Models\Position $position)
  * @method static Builder<static>|User query()
- * @method static Builder<static>|User rank(Rank $rank)
+ * @method static Builder<static>|User rank(\App\Models\Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
- * @method static Builder<static>|User specialty(Specialty $specialty)
- * @method static Builder<static>|User status(Status $status)
- * @method static Builder<static>|User unit(Unit $unit)
+ * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
+ * @method static Builder<static>|User status(\App\Models\Status $status)
+ * @method static Builder<static>|User unit(\App\Models\Unit $unit)
  * @method static Builder<static>|User whereApproved($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)
@@ -214,7 +215,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
 use App\Http\Middleware\CheckSubscription;
+use App\Models\PassportClient;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Inertia\Testing\AssertableInertia;
-use Laravel\Passport\Client;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -22,7 +22,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        /** @var Client $client */
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -50,7 +50,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        /** @var Client $client */
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -71,7 +71,7 @@ class AuthorizationControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        /** @var Client $client */
+        /** @var PassportClient $client */
         $client = ClientFactory::new()->create();
 
         $this->actingAs($user)
@@ -102,6 +102,7 @@ class AuthorizationControllerTest extends TenantTestCase
         $user = User::factory()
             ->createQuietly();
 
+        /** @var PassportClient $client */
         $client = ClientFactory::new()
             ->create();
 

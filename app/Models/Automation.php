@@ -8,7 +8,6 @@ use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
-use Database\Factories\AutomationFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Collection;
@@ -44,8 +43,8 @@ use Illuminate\Support\Carbon;
  * @property-read Webhook|null $webhook
  *
  * @method static Builder<static>|Automation enabled()
- * @method static AutomationFactory factory($count = null, $state = [])
- * @method static Builder<static>|Automation forTrigger((AutomationTrigger|string) $trigger)
+ * @method static \Database\Factories\AutomationFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Automation forTrigger(\App\Models\Enums\AutomationTrigger|string $trigger)
  * @method static Builder<static>|Automation messageActions()
  * @method static Builder<static>|Automation modelUpdateActions()
  * @method static Builder<static>|Automation newModelQuery()
@@ -73,7 +72,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Automation whereWebhookId($value)
  * @method static Builder<static>|Automation whereWebhookPayloadTemplate($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Automation extends Model
 {

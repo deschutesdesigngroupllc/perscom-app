@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -22,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static Builder<static>|DocumentCategory document(Document $document)
+ * @method static Builder<static>|DocumentCategory document(\App\Models\Document $document)
  * @method static Builder<static>|DocumentCategory newModelQuery()
  * @method static Builder<static>|DocumentCategory newQuery()
  * @method static Builder<static>|DocumentCategory query()
@@ -33,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|DocumentCategory whereOrder($value)
  * @method static Builder<static>|DocumentCategory whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class DocumentCategory extends Pivot
 {

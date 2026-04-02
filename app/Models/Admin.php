@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\AdminFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -31,7 +29,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  *
- * @method static AdminFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
  * @method static Builder<static>|Admin newModelQuery()
  * @method static Builder<static>|Admin newQuery()
  * @method static Builder<static>|Admin query()
@@ -44,7 +42,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Admin whereRememberToken($value)
  * @method static Builder<static>|Admin whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail
 {

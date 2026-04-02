@@ -34,7 +34,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Banner whereTitle($value)
  * @method static Builder<static>|Banner whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class Banner extends Model
 {

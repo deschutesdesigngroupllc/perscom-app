@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->id();
 
+            /** @phpstan-ignore method.notFound */
             $table->foreignId('user_id')->references($user->getKeyName())->on($user->getTable())->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('name');
             $table->string('label')->nullable();

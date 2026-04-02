@@ -10,12 +10,10 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\CarbonInterface;
-use Database\Factories\TaskAssignmentFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -45,12 +43,12 @@ use Illuminate\Support\Facades\DB;
  *
  * @method static Builder<static>|TaskAssignment assigned()
  * @method static Builder<static>|TaskAssignment expired()
- * @method static TaskAssignmentFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\TaskAssignmentFactory factory($count = null, $state = [])
  * @method static Builder<static>|TaskAssignment newModelQuery()
  * @method static Builder<static>|TaskAssignment newQuery()
  * @method static Builder<static>|TaskAssignment pastDue()
  * @method static Builder<static>|TaskAssignment query()
- * @method static Builder<static>|TaskAssignment user(User $user)
+ * @method static Builder<static>|TaskAssignment user(\App\Models\User $user)
  * @method static Builder<static>|TaskAssignment whereAssignedAt($value)
  * @method static Builder<static>|TaskAssignment whereAssignedById($value)
  * @method static Builder<static>|TaskAssignment whereCompletedAt($value)
@@ -62,7 +60,7 @@ use Illuminate\Support\Facades\DB;
  * @method static Builder<static>|TaskAssignment whereUpdatedAt($value)
  * @method static Builder<static>|TaskAssignment whereUserId($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(TaskAssignmentObserver::class)]
 class TaskAssignment extends Pivot

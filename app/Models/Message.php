@@ -12,7 +12,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
-use Database\Factories\MessageFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +39,7 @@ use Illuminate\Support\Collection;
  * @property-read MessageStatus $status
  * @property-read string|null $url
  *
- * @method static MessageFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
  * @method static Builder<static>|Message newModelQuery()
  * @method static Builder<static>|Message newQuery()
  * @method static Builder<static>|Message query()
@@ -54,7 +53,7 @@ use Illuminate\Support\Collection;
  * @method static Builder<static>|Message whereSentAt($value)
  * @method static Builder<static>|Message whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model implements HasLabel

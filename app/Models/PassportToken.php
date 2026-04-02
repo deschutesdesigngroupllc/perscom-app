@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\PassportTokenFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token as BaseTokenModel;
@@ -26,8 +24,8 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property-read PassportClient|null $client
  * @property-read RefreshToken|null $refreshToken
  *
- * @method static Builder<static>|PassportToken existsIn(array $haystack)
- * @method static PassportTokenFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken existsIn(array $haystack)
+ * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportToken newModelQuery()
  * @method static Builder<static>|PassportToken newQuery()
  * @method static Builder<static>|PassportToken query()
@@ -42,7 +40,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @method static Builder<static>|PassportToken whereUpdatedAt($value)
  * @method static Builder<static>|PassportToken whereUserId($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 class PassportToken extends BaseTokenModel
 {

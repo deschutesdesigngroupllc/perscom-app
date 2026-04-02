@@ -43,7 +43,7 @@ class ShieldSeeder extends Seeder
     protected static function makeRolesWithPermissions(string $rolesWithPermissions): void
     {
         if (! blank($rolePlusPermissions = json_decode($rolesWithPermissions, true))) {
-            /** @var class-string<\Illuminate\Database\Eloquent\Model> $roleModel */
+            /** @var class-string<\Spatie\Permission\Models\Role> $roleModel */
             $roleModel = Utils::getRoleModel();
             /** @var class-string<\Illuminate\Database\Eloquent\Model> $permissionModel */
             $permissionModel = Utils::getPermissionModel();

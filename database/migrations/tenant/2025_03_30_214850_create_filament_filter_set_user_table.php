@@ -20,7 +20,9 @@ return new class extends Migration
 
             $table->id();
 
+            /** @phpstan-ignore method.notFound */
             $table->foreignId('user_id')->references($user->getKeyName())->on($user->getTable())->constrained()->cascadeOnDelete();
+            /** @phpstan-ignore method.notFound */
             $table->foreignId('filter_set_id')->references('id')->on('filament_filter_sets')->constrained()->cascadeOnDelete();
             $table->smallInteger('sort_order')->default(1);
         });

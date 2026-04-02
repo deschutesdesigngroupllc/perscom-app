@@ -11,7 +11,6 @@ use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
-use Database\Factories\CalendarFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -23,13 +22,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
+ * @phpstan-ignore generics.notSubtype
+ *
  * @property int $id
  * @property string $name
  * @property string|null $description
  * @property string $color
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection<int, \Illuminate\Support\Facades\Event> $events
+ * @property-read Collection<int, Event> $events
  * @property-read int|null $events_count
  * @property-read string $label
  * @property-read string|null $relative_url
@@ -37,7 +38,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static CalendarFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\CalendarFactory factory($count = null, $state = [])
  * @method static Builder<static>|Calendar newModelQuery()
  * @method static Builder<static>|Calendar newQuery()
  * @method static Builder<static>|Calendar query()
@@ -48,7 +49,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Calendar whereName($value)
  * @method static Builder<static>|Calendar whereUpdatedAt($value)
  *
- * @mixin Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(CalendarObserver::class)]
 class Calendar extends Model implements HasColor, HasLabel
