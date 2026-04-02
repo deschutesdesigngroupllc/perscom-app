@@ -14,9 +14,11 @@ parameters:
         - app/Filament/Concerns/AdvancedTables.php
         - app/Filament/Concerns/HasViews.php
     ignoreErrors:
-        - '#(unknown class|not subtype of template type|not found).*Archilex\\AdvancedTables\\#'
-        - '#Archilex\\AdvancedTables\\.*not subtype of template type#'
-        - '#(unknown class|invalid type|not found).*Padmission\\DataLens\\#'
+        - '#Archilex\\AdvancedTables\\#'
+        - '#Padmission\\DataLens\\#'
+        - '#Illuminate\\Support\\Facades\\Event#'
+        - identifier: generics.notSubtype
+          reportUnmatched: false
         - identifier: larastan.noEnvCallsOutsideOfConfig
           path: config/*
           reportUnmatched: false

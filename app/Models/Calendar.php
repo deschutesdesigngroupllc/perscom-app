@@ -22,8 +22,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
- * @phpstan-ignore generics.notSubtype
- *
  * @property int $id
  * @property string $name
  * @property string|null $description

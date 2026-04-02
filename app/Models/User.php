@@ -64,8 +64,6 @@ use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
- * @phpstan-ignore generics.notSubtype
- *
  * @property int $id
  * @property string $name
  * @property string $email
