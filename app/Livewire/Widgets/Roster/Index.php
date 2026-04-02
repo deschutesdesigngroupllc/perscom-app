@@ -21,7 +21,7 @@ class Index extends Component
 
     public function mount(): void
     {
-        $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []);
+        $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []) ?? [];
     }
 
     public function render(): View
