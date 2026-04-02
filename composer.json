@@ -37,6 +37,7 @@
     "laravel/tinker": "^3",
     "league/flysystem-aws-s3-v3": "^3.32.0",
     "league/html-to-markdown": "^5.1.1",
+    "lwwcas/laravel-countries": "dev-master",
     "owenvoke/blade-fontawesome": "^3.2.2",
     "phiki/phiki": "^2.2.0",
     "php-open-source-saver/jwt-auth": "^2.9.0",
@@ -98,6 +99,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/jonerickson/laravel-meta"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/jonerickson/laravel-countries"
     },
     {
       "type": "composer",
