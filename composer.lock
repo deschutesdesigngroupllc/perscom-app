@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a7cbd57c3a834839714c445f153c3b3",
+    "content-hash": "70e485d0548c458161117de208cceb05",
     "packages": [
         {
             "name": "astrotomic/laravel-translatable",
@@ -21356,7 +21356,7 @@
         {
             "package": "stancl/jobpipeline",
             "version": "2.0.0.0-RC7",
-            "alias": "v1.9.0",
+            "alias": "1.9.0",
             "alias_normalized": "1.9.0.0"
         }
     ],

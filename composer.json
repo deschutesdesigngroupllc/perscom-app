@@ -1,12 +1,12 @@
 {
   "name": "deschutesdesigngroupllc/perscom-app",
-  "type": "project",
   "description": "Personnel management made easy for high-performing, results-driven organizations.",
+  "license": "MIT",
+  "type": "project",
   "keywords": [
     "laravel",
     "framework"
   ],
-  "license": "MIT",
   "require": {
     "php": "^8.4",
     "ext-zip": "*",
@@ -57,7 +57,7 @@
     "spatie/laravel-settings": "^3.7.2",
     "spatie/laravel-webhook-server": "^3.10.0",
     "spatie/url": "^2.4",
-    "stancl/jobpipeline": "v2.0.0-rc7 as v1.9.0",
+    "stancl/jobpipeline": "2.0.0-rc7 as 1.9.0",
     "stancl/tenancy": "^3.10.0",
     "stancl/virtualcolumn": "^1.5.0",
     "staudenmeir/belongs-to-through": "^2.18",
@@ -114,6 +114,8 @@
       "url": "https://data-lens.composer.sh"
     }
   ],
+  "minimum-stability": "beta",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "App\\": "app/",
@@ -126,11 +128,21 @@
       "Tests\\": "tests/"
     }
   },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    },
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "dont-discover": []
+    }
+  },
   "scripts": {
-    "post-autoload-dump": [
-      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
-    ],
     "post-install-cmd": [
       "@php artisan filament:upgrade",
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
@@ -141,6 +153,10 @@
       "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
       "@php artisan vendor:publish --tag=livewire:assets --ansi --force"
     ],
+    "post-autoload-dump": [
+      "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+      "@php artisan package:discover --ansi"
+    ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
     ],
@@ -149,17 +165,6 @@
       "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
       "@php artisan migrate --graceful --ansi"
     ],
-    "setup": [
-      "composer install",
-      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "@php artisan key:generate -n",
-      "@php artisan jwt:secret -n --force",
-      "@php artisan passport:keys --force",
-      "npm install",
-      "npm run build",
-      "@php artisan perscom:install"
-    ],
-    "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "analyze": "vendor/bin/phpstan analyse --memory-limit=2G -v",
     "cs-fix": "vendor/bin/pint --parallel",
     "dev": [
@@ -186,6 +191,17 @@
       "@php artisan optimize:clear",
       "@ide"
     ],
+    "setup": [
+      "composer install",
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "@php artisan key:generate -n",
+      "@php artisan jwt:secret -n --force",
+      "@php artisan passport:keys --force",
+      "npm install",
+      "npm run build",
+      "@php artisan perscom:install"
+    ],
+    "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "tc": "@test-coverage",
     "test": "@php artisan test --no-coverage --parallel",
     "test-coverage": "@php artisan test --coverage --parallel",
@@ -204,21 +220,5 @@
     "tl": "@test-lint",
     "ts": "@test-suite",
     "tt": "@test-types"
-  },
-  "extra": {
-    "laravel": {
-      "dont-discover": []
-    }
-  },
-  "config": {
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true,
-    "allow-plugins": {
-      "pestphp/pest-plugin": true,
-      "php-http/discovery": true
-    }
-  },
-  "minimum-stability": "beta",
-  "prefer-stable": true
+  }
 }
