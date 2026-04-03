@@ -25,7 +25,7 @@ class TenantTestCase extends TestCase
      */
     public array $connectionsToTransact = ['mysql'];
 
-    public bool $tenantDatabaseMigrated = false;
+    protected static bool $tenantDatabaseMigrated = false;
 
     protected ?Domain $domain = null;
 
@@ -69,7 +69,7 @@ class TenantTestCase extends TestCase
             $this->tenant->database()->manager()->createDatabase($this->tenant);
         }
 
-        if (! $this->tenantDatabaseMigrated) {
+        if (! static::$tenantDatabaseMigrated) {
             $this->artisan('tenants:migrate', [
                 '--tenants' => $this->tenant->getKey(),
             ]);
@@ -81,7 +81,7 @@ class TenantTestCase extends TestCase
                 '--tenants' => $this->tenant->getKey(),
             ]);
 
-            $this->tenantDatabaseMigrated = true;
+            static::$tenantDatabaseMigrated = true;
         }
     }
 
