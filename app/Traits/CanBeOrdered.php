@@ -17,8 +17,6 @@ trait CanBeOrdered
 
     public function determineOrderColumnName(): string
     {
-        $table = $this->getTable();
-
-        return $table.'.order';
+        return 'order';
     }
 }

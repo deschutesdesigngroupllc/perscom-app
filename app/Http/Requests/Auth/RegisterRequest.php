@@ -17,12 +17,17 @@ class RegisterRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email'), Rule::unique(Registration::class, 'email')],
             'privacy' => ['required', 'boolean'],
-            'token' => ['required', 'string'],
         ];
+
+        if (filled(config('services.cloudflare.turnstile.site_key'))) {
+            $rules['token'] = ['required', 'string'];
+        }
+
+        return $rules;
     }
 
     /**
