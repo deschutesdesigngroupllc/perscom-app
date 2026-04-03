@@ -171,7 +171,6 @@ class SetupTenantAccount
                 'slug' => 'awards',
                 'hidden' => false,
                 'icon' => 'heroicon-o-trophy',
-                'order' => 1,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -200,7 +199,6 @@ class SetupTenantAccount
                 'slug' => 'positions',
                 'hidden' => false,
                 'icon' => 'heroicon-o-identification',
-                'order' => 2,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -229,7 +227,6 @@ class SetupTenantAccount
                 'slug' => 'qualifications',
                 'hidden' => false,
                 'icon' => 'heroicon-o-star',
-                'order' => 3,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -258,7 +255,6 @@ class SetupTenantAccount
                 'slug' => 'ranks',
                 'hidden' => false,
                 'icon' => 'heroicon-o-chevron-double-up',
-                'order' => 4,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -287,7 +283,6 @@ class SetupTenantAccount
                 'slug' => 'specialties',
                 'hidden' => false,
                 'icon' => 'heroicon-o-briefcase',
-                'order' => 5,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
