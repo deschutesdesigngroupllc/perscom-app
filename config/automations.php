@@ -57,7 +57,7 @@ return [
                 'action_type' => AutomationActionType::MODEL_UPDATE,
                 'model_update_target' => 'user',
                 'model_update_lookup_type' => ModelUpdateLookupType::EXPRESSION,
-                'model_update_lookup_expression' => 'model.user_id',
+                'model_update_lookup_expression' => 'model["user_id"]',
                 'model_update_fields' => [
                     'promotion_points' => '{{ target.promotion_points | increment(model.promotion_points) }}',
                 ],

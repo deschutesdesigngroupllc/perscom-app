@@ -35,11 +35,11 @@ class AutomationService
     /**
      * Get all updatable models configuration.
      *
-     * @return array<string, array{model: class-string<Model>, label: string, fields: array<string, array{type: string, label: string}>}>
+     * @return array<string, array{model: class-string<Model>, label: string, allowed_fields: list<string>, denied_fields: list<string>}>
      */
     public static function getUpdatableModels(): array
     {
-        /** @var array<string, array{model: class-string<Model>, label: string, fields: array<string, array{type: string, label: string}>}> $models */
+        /** @var array<string, array{model: class-string<Model>, label: string, allowed_fields: list<string>, denied_fields: list<string>}> $models */
         $models = config('automations.updatable_models', []);
 
         return $models;
