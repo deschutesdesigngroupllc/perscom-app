@@ -361,7 +361,7 @@ class AutomationResource extends BaseResource
                                         Textarea::make('model_update_lookup_expression')
                                             ->label('Lookup Expression')
                                             ->helperText('An expression that returns the record ID. E.g., model["user_id"] or causer["id"]')
-                                            ->placeholder('model.user_id')
+                                            ->placeholder('model["user_id"]')
                                             ->rows(2)
                                             ->visible(fn (Get $get): bool => $get('model_update_lookup_type') === ModelUpdateLookupType::EXPRESSION)
                                             ->required(fn (Get $get): bool => $get('action_type') === AutomationActionType::MODEL_UPDATE && $get('model_update_lookup_type') === ModelUpdateLookupType::EXPRESSION)
