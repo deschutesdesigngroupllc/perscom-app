@@ -199,7 +199,7 @@ class TrainingRecordResource extends BaseResource
             ->columns([
                 TextColumn::make('user.display_name')
                     ->label('User')
-                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', 'training_records.user_id'), $direction))
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('credentials.name')
                     ->placeholder(new HtmlString('&ndash;'))
