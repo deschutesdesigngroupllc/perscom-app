@@ -16,7 +16,10 @@ trait HasUser
 {
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+            ->withDefault([
+                'name' => 'Guest',
+            ]);
     }
 
     protected function scopeUser(Builder $query, User $user): void
