@@ -422,8 +422,22 @@ class AutomationResource extends BaseResource
                                                                     return 'Select a target resource first.';
                                                                 }
 
-                                                                return collect($models[$target]['fields'])
-                                                                    ->map(fn (array $config, string $field): string => sprintf('%s (%s) → %s', $field, $config['type'], $config['label']))
+                                                                $modelConfig = $models[$target];
+                                                                $modelClass = $modelConfig['model'];
+                                                                $allowedFields = $modelConfig['allowed_fields'] ?? [];
+                                                                $deniedFields = $modelConfig['denied_fields'] ?? [];
+
+                                                                $fillable = (new $modelClass)->getFillable();
+
+                                                                $fields = in_array('*', $allowedFields, true)
+                                                                    ? $fillable
+                                                                    : array_intersect($fillable, $allowedFields);
+
+                                                                $fields = array_diff($fields, $deniedFields);
+
+                                                                return collect($fields)
+                                                                    ->sort()
+                                                                    ->values()
                                                                     ->implode("\n");
                                                             }),
                                                     ]),
