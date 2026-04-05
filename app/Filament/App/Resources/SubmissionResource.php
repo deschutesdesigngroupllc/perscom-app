@@ -37,6 +37,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class SubmissionResource extends BaseResource
@@ -113,7 +114,7 @@ class SubmissionResource extends BaseResource
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
-                                TextEntry::make('user.name')
+                                TextEntry::make('user.display_name')
                                     ->label('User'),
                                 TextEntry::make('form.name')
                                     ->label('Form'),
@@ -151,8 +152,9 @@ class SubmissionResource extends BaseResource
                     ->icon(fn (Submission $record): ?Heroicon => $record->read_at ? null : Heroicon::OutlinedPlus)
                     ->iconPosition(IconPosition::Before)
                     ->searchable(),
-                TextColumn::make('user.name')
-                    ->searchable(),
+                TextColumn::make('user.display_name')
+                    ->label('User')
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('status.name')
                     ->placeholder('No Status')
                     ->badge()

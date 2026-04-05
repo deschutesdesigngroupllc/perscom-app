@@ -28,6 +28,8 @@ class DashboardSettings extends Settings
      */
     public ?array $user_hidden_fields = null;
 
+    public string $display_name_format = '{name}';
+
     public static function group(): string
     {
         return 'dashboard';

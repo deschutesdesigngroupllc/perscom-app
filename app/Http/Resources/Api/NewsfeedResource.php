@@ -24,9 +24,9 @@ class NewsfeedResource extends Resource
 
         return [
             'id' => $this->resource->id,
-            'author' => optional($author, fn (User $user) => Str::title($user->name)),
+            'author' => optional($author, fn (User $user) => $user->display_name),
             'author_profile_photo' => optional($author, fn (User $user) => $user->profile_photo_url),
-            'recipient' => optional($recipient, fn (User $user) => Str::title($user->name)),
+            'recipient' => optional($recipient, fn (User $user) => $user->display_name),
             'recipient_profile_photo' => optional($recipient, fn (User $user) => $user->profile_photo_url),
             'description' => $this->resource->description,
             'event' => $this->resource->event,
