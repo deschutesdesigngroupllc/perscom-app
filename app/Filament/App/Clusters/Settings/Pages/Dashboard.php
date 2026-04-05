@@ -105,6 +105,12 @@ class Dashboard extends SettingsPage
                         Tab::make('User Profile')
                             ->icon('heroicon-o-user')
                             ->schema([
+                                TextInput::make('display_name_format')
+                                    ->label('Display Name Format')
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->helperText('Define how user names are displayed. Available tokens: {name}, {rank.name}, {rank.abbreviation}, {position.name}, {specialty.name}, {specialty.abbreviation}, {unit.name}, {status.name}')
+                                    ->placeholder('{rank.abbreviation} {name} - {position.name}'),
                                 TextInput::make('cover_photo_height')
                                     ->label('Cover Photo Height')
                                     ->required()

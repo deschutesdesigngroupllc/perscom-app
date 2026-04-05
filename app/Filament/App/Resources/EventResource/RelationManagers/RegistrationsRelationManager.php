@@ -37,7 +37,8 @@ class RegistrationsRelationManager extends RelationManager
             ->emptyStateDescription('There are no users registered.')
             ->description('The users registered for the event.')
             ->columns([
-                TextColumn::make('registration.user.name'),
+                TextColumn::make('registration.user.display_name')
+                    ->label('User'),
                 TextColumn::make('registration.status')
                     ->label('Status')
                     ->badge(),

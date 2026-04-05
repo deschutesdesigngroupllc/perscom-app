@@ -17,6 +17,7 @@ use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
+use App\Models\User;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
@@ -382,9 +383,9 @@ class EventResource extends BaseResource
                     ->sortable()
                     ->color('gray')
                     ->badge(),
-                TextColumn::make('author.name')
+                TextColumn::make('author.display_name')
                     ->label('Organizer')
-                    ->sortable(),
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', 'events.author_id'), $direction)),
                 IconColumn::make('all_day')
                     ->label('All Day')
                     ->sortable(),

@@ -15,7 +15,7 @@
   @endif
   <div class="flex-1">
     @if (!in_array('name', $hiddenFields))
-      <div class="dark:text-white font-bold">{{ $user->name }}</div>
+      <div class="dark:text-white font-bold">{{ $user->display_name }}</div>
     @endif
     <div class="flex flex-col md:flex-row md:items-center md:space-x-2">
       @if (!in_array('specialty_id', $hiddenFields))

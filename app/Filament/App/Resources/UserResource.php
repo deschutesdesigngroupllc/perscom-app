@@ -49,6 +49,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +68,7 @@ class UserResource extends BaseResource
 
     protected static ?int $navigationSort = 6;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'display_name';
 
     public static function form(Schema $schema): Schema
     {
@@ -258,7 +259,8 @@ class UserResource extends BaseResource
                                             ])
                                             ->columnSpanFull()
                                             ->hiddenLabel(),
-                                        TextEntry::make('name')
+                                        TextEntry::make('display_name')
+                                            ->label('Name')
                                             ->hidden(fn (): bool => in_array('name', $hiddenFields)),
                                         TextEntry::make('time_in_service')
                                             ->label('Time In Service')
@@ -424,10 +426,11 @@ class UserResource extends BaseResource
                     ->hidden(fn (): bool => in_array('profile_photo', $hiddenFields))
                     ->label('')
                     ->defaultImageUrl(fn (User $record) => $record->profile_photo_url),
-                TextColumn::make('name')
+                TextColumn::make('display_name')
+                    ->label('Name')
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
-                    ->sortable()
-                    ->searchable()
+                    ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('name', $direction))
+                    ->searchable(query: fn (Builder $query, string $search) => $query->where('name', 'like', sprintf('%%%s%%', $search)))
                     ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? 'heroicon-o-exclamation-circle' : null)
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
@@ -553,7 +556,7 @@ class UserResource extends BaseResource
      */
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        return $record->name;
+        return $record->display_name;
     }
 
     /**

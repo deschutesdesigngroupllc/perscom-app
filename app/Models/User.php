@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Filament\Concerns\HasViews;
 use App\Observers\UserObserver;
+use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
@@ -57,6 +58,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
@@ -106,6 +108,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string|null $cover_photo_url
  * @property-read bool $discord_connected
  * @property-read SocialiteUser|null $discordUser
+ * @property-read string $display_name
  * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
  * @property-read int|null $events_count
@@ -287,6 +290,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     ];
 
     protected $appends = [
+        'display_name',
         'last_assignment_change_date',
         'last_rank_change_date',
         'online',
@@ -327,7 +331,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
 
     public function getFilamentName(): string
     {
-        return $this->name;
+        return $this->display_name;
     }
 
     public function routeNotificationForDiscord(): ?string
@@ -463,6 +467,42 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
                 $record = $this->rank_records()->latest()->first();
 
                 return $record->created_at ?? null;
+            }
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<string, never>
+     */
+    protected function displayName(): Attribute
+    {
+        return Attribute::make(
+            get: function (): string {
+                $format = SettingsService::get(DashboardSettings::class, 'display_name_format', '{name}');
+
+                if (blank($format)) {
+                    return $this->name;
+                }
+
+                $tokens = [
+                    '{name}' => $this->name,
+                    '{rank.name}' => $this->rank?->name,
+                    '{rank.abbreviation}' => $this->rank?->abbreviation,
+                    '{position.name}' => $this->position?->name,
+                    '{specialty.name}' => $this->specialty?->name,
+                    '{specialty.abbreviation}' => $this->specialty?->abbreviation,
+                    '{unit.name}' => $this->unit?->name,
+                    '{status.name}' => $this->status?->name,
+                ];
+
+                return Str::of($format)
+                    ->swap(array_map(fn (?string $value): string => $value ?? '', $tokens))
+                    ->replaceMatches('/\s{2,}/', ' ')
+                    ->replaceMatches('/\s*[-–—|,]\s*$/', '')
+                    ->replaceMatches('/^\s*[-–—|,]\s*/', '')
+                    ->replaceMatches('/[-–—|,]\s*[-–—|,]/', '-')
+                    ->trim()
+                    ->toString();
             }
         )->shouldCache();
     }

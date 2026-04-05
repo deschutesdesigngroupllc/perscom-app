@@ -157,7 +157,7 @@ class RankRecordResource extends BaseResource
                         Tab::make('Rank Record')
                             ->icon('heroicon-o-chevron-double-up')
                             ->schema([
-                                TextEntry::make('user.name')
+                                TextEntry::make('user.display_name')
                                     ->label('User'),
                                 TextEntry::make('rank.name')
                                     ->label('Rank'),
@@ -175,7 +175,7 @@ class RankRecordResource extends BaseResource
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                TextEntry::make('author.name')
+                                TextEntry::make('author.display_name')
                                     ->label('Author'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
@@ -199,9 +199,10 @@ class RankRecordResource extends BaseResource
             ->emptyStateIcon(Heroicon::OutlinedChevronDoubleUp)
             ->emptyStateDescription('Create a new rank record to get started.')
             ->columns([
-                TextColumn::make('user.name')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('user.display_name')
+                    ->label('User')
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('type')
                     ->badge()
                     ->sortable(),
@@ -305,7 +306,7 @@ class RankRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        $user = $record->user?->name;
+        $user = $record->user?->display_name;
 
         return sprintf('%d: %s', $record->id, $user);
     }

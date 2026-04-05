@@ -82,9 +82,9 @@ class ApiLogResource extends BaseResource
                     ->searchable()
                     ->badge()
                     ->color('gray'),
-                TextColumn::make('causer.name')
+                TextColumn::make('causer.display_name')
                     ->label('Author')
-                    ->sortable(),
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', 'activity_log.causer_id'), $direction)),
                 TextColumn::make('method')
                     ->badge(),
                 TextColumn::make('endpoint')
@@ -269,7 +269,7 @@ class ApiLogResource extends BaseResource
                             TextEntry::make('trace_id')
                                 ->copyable()
                                 ->label('Trace ID'),
-                            TextEntry::make('causer.name')
+                            TextEntry::make('causer.display_name')
                                 ->label('Author'),
                             TextEntry::make('duration')
                                 ->default('0')

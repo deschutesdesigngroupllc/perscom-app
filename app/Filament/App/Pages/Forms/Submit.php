@@ -18,6 +18,7 @@ use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 
 /**
@@ -77,6 +78,7 @@ class Submit extends Page implements HasForms
 
         Submission::create(array_merge([
             'form_id' => $this->submissionForm->getKey(),
+            'user_id' => Auth::id(),
         ], data_get($data, 'data', [])));
 
         $this->getSavedNotification()->send();

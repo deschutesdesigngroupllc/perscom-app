@@ -51,7 +51,8 @@ class CommentResource extends BaseResource
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap(),
-                TextColumn::make('author.name'),
+                TextColumn::make('author.display_name')
+                    ->label('Author'),
                 TextColumn::make('created_at'),
             ])
             ->headerActions([
@@ -81,7 +82,8 @@ class CommentResource extends BaseResource
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap(),
-                TextColumn::make('author.name')
+                TextColumn::make('author.display_name')
+                    ->label('Author')
                     ->toggleable(false),
                 TextColumn::make('created_at')
                     ->toggleable(false)
