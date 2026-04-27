@@ -13,6 +13,7 @@
 .styleci.yml
 /.ai/mcp/mcp.json
 /.claude/settings.local.json
+/.codex/config.toml
 /.cursor/mcp.json
 /.idea
 /.vscode
