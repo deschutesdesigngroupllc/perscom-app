@@ -27,33 +27,33 @@
         s.onload = () => resolve();
         document.head.appendChild(s);
     });
-
+    
     ensureLeaflet().then(() => {
         const map = L.map($el, {
             zoomControl: true,
             scrollWheelZoom: false,
             attributionControl: true,
         }).setView([{{ $lat }}, {{ $lon }}], 15);
-
+    
         const lightTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;https://carto.com/attributions&quot;>CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 20,
         });
-
+    
         const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href=&quot;https://www.openstreetmap.org/copyright&quot;>OpenStreetMap</a> &copy; <a href=&quot;https://carto.com/attributions&quot;>CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 20,
         });
-
+    
         const isDark = () => document.documentElement.classList.contains('dark');
         let active = isDark() ? darkTiles : lightTiles;
         active.addTo(map);
-
+    
         const marker = L.marker([{{ $lat }}, {{ $lon }}]).addTo(map);
         marker.bindPopup(@js($coords['display_name']));
-
+    
         const observer = new MutationObserver(() => {
             const next = isDark() ? darkTiles : lightTiles;
             if (next === active) return;
@@ -62,7 +62,7 @@
             active = next;
         });
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
+    
         setTimeout(() => map.invalidateSize(), 50);
     });"></div>
     <div class="flex items-center justify-between bg-gray-50 px-3 py-2 text-xs text-gray-600 dark:bg-gray-800/60 dark:text-gray-400">
