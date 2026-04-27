@@ -12,6 +12,7 @@ use Database\Seeders\CentralDatabaseSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Database\Seeders\DemoSeeder;
 use Database\Seeders\FireServiceSeeder;
+use Database\Seeders\LawEnforcementSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
 use Illuminate\Console\Command;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
+use function Laravel\Prompts\select;
 use function Laravel\Prompts\table;
 
 class InstallCommand extends Command implements Isolatable
@@ -130,9 +132,10 @@ class InstallCommand extends Command implements Isolatable
             '--force' => true,
         ]);
 
-        $seeder = match (true) {
-            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
-            default => MilitarySeeder::class
+        $seeder = match ($this->resolveOrganizationType()) {
+            'fire' => FireServiceSeeder::class,
+            'law' => LawEnforcementSeeder::class,
+            default => MilitarySeeder::class,
         };
 
         if (! $this->option('no-seed')) {
@@ -194,9 +197,10 @@ class InstallCommand extends Command implements Isolatable
             '--force' => true,
         ]);
 
-        $seeder = match (true) {
-            $this->option('seeder') === 'fire' => FireServiceSeeder::class,
-            default => MilitarySeeder::class
+        $seeder = match ($this->resolveOrganizationType()) {
+            'fire' => FireServiceSeeder::class,
+            'law' => LawEnforcementSeeder::class,
+            default => MilitarySeeder::class,
         };
 
         if (! $this->option('no-seed')) {
@@ -227,6 +231,23 @@ class InstallCommand extends Command implements Isolatable
         $this->components->success('PERSCOM has been successfully installed. Use the information above to get started.');
 
         return static::SUCCESS;
+    }
+
+    protected function resolveOrganizationType(): string
+    {
+        if (! $this->input->isInteractive() || $this->option('no-seed')) {
+            return $this->option('seeder');
+        }
+
+        return select(
+            label: 'Which type of organization would you like to install?',
+            options: [
+                'military' => 'Military',
+                'fire' => 'Fire Service',
+                'law' => 'Law Enforcement',
+            ],
+            default: $this->option('seeder'),
+        );
     }
 
     protected function isInstalled(): bool

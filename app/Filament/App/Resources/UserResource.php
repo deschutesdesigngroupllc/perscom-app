@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
+use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
+use App\Filament\App\Resources\UserResource\Filters\QualificationsFilter;
 use App\Filament\App\Resources\UserResource\Pages\CreateUser;
 use App\Filament\App\Resources\UserResource\Pages\EditUser;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
@@ -486,18 +489,13 @@ class UserResource extends BaseResource
             ->groups(['approved', 'position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
             ->filters([
                 TernaryFilter::make('approved'),
+                AwardsFilter::make(),
+                CredentialsFilter::make(),
                 SelectFilter::make('position')
                     ->relationship('position', 'name')
                     ->preload()
                     ->multiple(),
-                SelectFilter::make('specialty')
-                    ->relationship('specialty', 'name')
-                    ->preload()
-                    ->multiple(),
-                SelectFilter::make('unit')
-                    ->relationship('unit', 'name')
-                    ->preload()
-                    ->multiple(),
+                QualificationsFilter::make(),
                 SelectFilter::make('rank')
                     ->relationship('rank', 'name')
                     ->preload()
@@ -506,8 +504,16 @@ class UserResource extends BaseResource
                     ->relationship('roles', 'name')
                     ->preload()
                     ->multiple(),
+                SelectFilter::make('specialty')
+                    ->relationship('specialty', 'name')
+                    ->preload()
+                    ->multiple(),
                 SelectFilter::make('status')
                     ->relationship('status', 'name')
+                    ->preload()
+                    ->multiple(),
+                SelectFilter::make('unit')
+                    ->relationship('unit', 'name')
                     ->preload()
                     ->multiple(),
             ])
