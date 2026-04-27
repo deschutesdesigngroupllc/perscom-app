@@ -233,14 +233,22 @@ class MilitarySeeder extends Seeder
                 $path = "awards/$award->name.png";
                 $image = storage_path("app/images/awards/$award->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $award->image()->create([
@@ -315,14 +323,22 @@ class MilitarySeeder extends Seeder
                 $path = "qualifications/$qualification->name.png";
                 $image = storage_path("app/images/qualifications/$qualification->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $qualification->image()->create([
@@ -374,17 +390,25 @@ class MilitarySeeder extends Seeder
             )
             ->create()
             ->each(function (Rank $rank) {
-                $path = "ranks/$rank->abbreviation.svg";
+                $path = "ranks/military/$rank->abbreviation.svg";
                 $image = storage_path("app/images/ranks/$rank->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $rank->image()->create([

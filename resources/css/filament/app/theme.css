@@ -1,6 +1,7 @@
 @import '../../../../vendor/filament/filament/resources/css/theme.css';
 @import '../../../../vendor/guava/calendar/resources/css/theme.css';
 @import './torchlight.css';
+@import '../../calendar.css';
 
 @source '../../../../app/Filament/App/**/*';
 @source '../../../../resources/js/components/**/*';
@@ -14,8 +15,6 @@
 @source '../../../../vendor/padmission/data-lens';
 
 @custom-variant dark (&:where(.dark, .dark *));
-
-@import '../../calendar.css';
 
 @theme {
   --font-sans:

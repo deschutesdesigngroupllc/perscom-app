@@ -18,15 +18,19 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
   <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
-    <div id="{{ $mapId }}" class="h-72 w-full bg-gray-100 dark:bg-gray-900" wire:ignore x-data x-init="const ensureLeaflet = () => new Promise((resolve) => {
-        if (window.L) return resolve();
-        const s = document.createElement('script');
-        s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        s.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
-        s.crossOrigin = '';
-        s.onload = () => resolve();
-        document.head.appendChild(s);
-    });
+    <div id="{{ $mapId }}" class="h-72 w-full bg-gray-100 dark:bg-gray-900" wire:ignore x-data x-init="const ensureLeaflet = () => {
+        if (window.L) return Promise.resolve();
+        if (window.__leafletLoading) return window.__leafletLoading;
+        return window.__leafletLoading = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+            s.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+            s.crossOrigin = '';
+            s.onload = () => resolve();
+            s.onerror = reject;
+            document.head.appendChild(s);
+        });
+    };
     
     ensureLeaflet().then(() => {
         const map = L.map($el, {

@@ -235,8 +235,14 @@ class InstallCommand extends Command implements Isolatable
 
     protected function resolveOrganizationType(): string
     {
+        $option = $this->option('seeder');
+
+        if (! in_array($option, ['military', 'fire', 'law'], true)) {
+            $option = 'military';
+        }
+
         if (! $this->input->isInteractive() || $this->option('no-seed')) {
-            return $this->option('seeder');
+            return $option;
         }
 
         return select(
@@ -246,7 +252,7 @@ class InstallCommand extends Command implements Isolatable
                 'fire' => 'Fire Service',
                 'law' => 'Law Enforcement',
             ],
-            default: $this->option('seeder'),
+            default: $option,
         );
     }
 

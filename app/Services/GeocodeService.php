@@ -21,7 +21,7 @@ class GeocodeService
 
         $key = 'geocode:'.md5(trim($address));
 
-        return Cache::remember($key, now()->addDays(30), function () use ($address): ?array {
+        $cached = Cache::remember($key, now()->addDays(30), function () use ($address): array {
             try {
                 $response = Http::timeout(5)
                     ->get('https://nominatim.openstreetmap.org/search', [
@@ -31,23 +31,27 @@ class GeocodeService
                     ]);
 
                 if (! $response->successful()) {
-                    return null;
+                    return ['result' => null];
                 }
 
                 $result = $response->json(0);
 
                 if (blank($result) || ! isset($result['lat'], $result['lon'])) {
-                    return null;
+                    return ['result' => null];
                 }
 
                 return [
-                    'lat' => (float) $result['lat'],
-                    'lon' => (float) $result['lon'],
-                    'display_name' => (string) ($result['display_name'] ?? $address),
+                    'result' => [
+                        'lat' => (float) $result['lat'],
+                        'lon' => (float) $result['lon'],
+                        'display_name' => (string) ($result['display_name'] ?? $address),
+                    ],
                 ];
             } catch (Throwable) {
-                return null;
+                return ['result' => null];
             }
         });
+
+        return $cached['result'];
     }
 }
