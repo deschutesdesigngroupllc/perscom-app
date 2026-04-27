@@ -182,29 +182,13 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v6
 
-      - name: Setup PHP with Coverage
-        uses: shivammathur/setup-php@v2
+      - name: Set Up Environment
+        uses: ./.github/actions/setup-env
         with:
-          php-version: 8.4
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, :psr
-          ini-values: error_reporting=E_ALL, xdebug.mode="develop,coverage"
-          tools: composer:v2
-          coverage: xdebug
+          node: 'true'
+          coverage: 'xdebug'
         env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set Up Node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install npm Dependencies
-        run: npm ci
-
-      - name: Install Composer Dependencies
-        run: composer install --prefer-dist --no-interaction --no-progress
-        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Build Project

@@ -5,6 +5,9 @@ inputs:
   node:
     description: Set up Node and install npm dependencies
     default: 'false'
+  coverage:
+    description: PHP coverage driver (none, xdebug, pcov)
+    default: 'none'
 
 runs:
   using: composite
@@ -14,9 +17,9 @@ runs:
       with:
         php-version: '8.4'
         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, :psr
-        ini-values: error_reporting=E_ALL
+        ini-values: ${{ inputs.coverage == 'xdebug' && 'error_reporting=E_ALL, xdebug.mode=develop,coverage' || 'error_reporting=E_ALL' }}
         tools: composer:v2
-        coverage: none
+        coverage: ${{ inputs.coverage }}
       env:
         COMPOSER_TOKEN: ${{ env.GITHUB_TOKEN }}
 
