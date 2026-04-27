@@ -1,0 +1,87 @@
+name: Detect Changes
+
+on:
+  workflow_call:
+    outputs:
+      code:
+        value: ${{ jobs.detect-changes.outputs.code }}
+      php:
+        value: ${{ jobs.detect-changes.outputs.php }}
+      js:
+        value: ${{ jobs.detect-changes.outputs.js }}
+      deps:
+        value: ${{ jobs.detect-changes.outputs.deps }}
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      php: ${{ steps.filter.outputs.php }}
+      js: ${{ steps.filter.outputs.js }}
+      deps: ${{ steps.filter.outputs.deps }}
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Detect Changed Paths
+        uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            code:
+              - 'app/**'
+              - 'bootstrap/**'
+              - 'config/**'
+              - 'database/**'
+              - 'lang/**'
+              - 'operations/**'
+              - 'resources/**'
+              - 'routes/**'
+              - 'tests/**'
+              - 'composer.json'
+              - 'composer.lock'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'phpunit.xml.dist'
+              - 'phpstan.neon.dist'
+              - 'pint.json'
+              - 'rector.php'
+              - 'tlint.json'
+              - 'vite.config.js'
+              - '.env.example'
+            php:
+              - 'app/**'
+              - 'bootstrap/**'
+              - 'config/**'
+              - 'database/**'
+              - 'lang/**'
+              - 'operations/**'
+              - 'routes/**'
+              - 'tests/**'
+              - 'composer.json'
+              - 'composer.lock'
+              - 'phpunit.xml.dist'
+              - 'phpstan.neon.dist'
+              - 'pint.json'
+              - 'rector.php'
+              - 'tlint.json'
+            js:
+              - 'resources/**/*.js'
+              - 'resources/**/*.jsx'
+              - 'resources/**/*.ts'
+              - 'resources/**/*.tsx'
+              - 'resources/**/*.vue'
+              - 'package.json'
+              - 'package-lock.json'
+              - 'vite.config.js'
+              - '*.json'
+            deps:
+              - 'composer.lock'
+              - 'package-lock.json'
