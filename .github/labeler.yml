@@ -1,0 +1,67 @@
+ai:
+  - changed-files:
+      - any-glob-to-any-file:
+          - CLAUDE.md
+          - '**/CLAUDE.md'
+
+ci:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .github/**/*
+
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - config/**/*
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - composer.lock
+          - package-lock.json
+
+docs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - docs/**/*
+
+env:
+  - changed-files:
+      - any-glob-to-any-file:
+          - .env.example
+
+frontend:
+  - changed-files:
+      - any-glob-to-any-file:
+          - resources/**/*
+          - vite.config.js
+
+migrations:
+  - changed-files:
+      - any-glob-to-any-file:
+          - database/migrations/**/*
+
+routes:
+  - changed-files:
+      - any-glob-to-any-file:
+          - routes/**/*
+
+schema:
+  - changed-files:
+      - any-glob-to-any-file:
+          - database/schema/**/*
+
+seeders:
+  - changed-files:
+      - any-glob-to-any-file:
+          - database/seeders/**/*
+
+stubs:
+  - changed-files:
+      - any-glob-to-any-file:
+          - stubs/**/*
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - tests/**/*

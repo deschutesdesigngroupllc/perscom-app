@@ -1,35 +1,75 @@
 @layer components {
   /* Root */
   [data-calendar] {
-    @apply rounded-lg bg-white
-    dark:bg-gray-900;
+    @apply rounded-lg bg-white text-gray-900;
+  }
+
+  :where(.dark) [data-calendar] {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  .ec {
+    @apply flex flex-col;
   }
 
   /* Toolbar */
   .ec-toolbar {
-    @apply flex items-center justify-between gap-4 mb-4;
+    @apply flex flex-wrap items-center justify-between gap-3 mb-4;
+  }
+
+  .ec-toolbar .ec-start,
+  .ec-toolbar .ec-center,
+  .ec-toolbar .ec-end {
+    @apply flex items-center gap-2;
   }
 
   .ec-title {
-    @apply text-xl font-semibold text-gray-900 dark:text-gray-100;
+    @apply text-xl font-semibold text-gray-900;
+  }
+
+  :where(.dark) .ec-title {
+    @apply text-gray-100;
   }
 
   /* Buttons */
   .ec-button {
     @apply inline-flex items-center justify-center rounded-md
-    border border-gray-300 bg-white px-3 py-2 text-sm font-medium
-    text-gray-700 shadow-sm hover:bg-gray-50
-    focus:outline-none focus:ring-2 focus:ring-blue-500
-    dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200
-    dark:hover:bg-gray-700;
+    border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium
+    text-gray-700 shadow-sm transition
+    hover:bg-gray-50
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1;
+  }
+
+  :where(.dark) .ec-button {
+    @apply bg-gray-800 border-gray-700 text-gray-200;
+  }
+
+  :where(.dark) .ec-button:hover {
+    @apply bg-gray-700;
+  }
+
+  :where(.dark) .ec-button:focus {
+    @apply ring-offset-gray-900;
   }
 
   .ec-button:disabled {
     @apply opacity-50 cursor-not-allowed;
   }
 
+  .ec-button:disabled:hover {
+    @apply bg-white;
+  }
+
+  :where(.dark) .ec-button:disabled:hover {
+    @apply bg-gray-800;
+  }
+
   .ec-button-group {
     @apply inline-flex rounded-md shadow-sm;
+  }
+
+  .ec-button-group .ec-button {
+    @apply shadow-none;
   }
 
   .ec-button-group .ec-button:not(:last-child) {
@@ -40,91 +80,199 @@
     @apply rounded-l-none -ml-px;
   }
 
+  .ec-icon {
+    @apply inline-block w-4 h-4 bg-current;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .ec-icon.ec-prev {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'><path fill-rule='evenodd' d='M12.79 5.23a.75.75 0 010 1.06L9.06 10l3.73 3.71a.75.75 0 11-1.06 1.06l-4.25-4.24a.75.75 0 010-1.06l4.25-4.24a.75.75 0 011.06 0z' clip-rule='evenodd'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'><path fill-rule='evenodd' d='M12.79 5.23a.75.75 0 010 1.06L9.06 10l3.73 3.71a.75.75 0 11-1.06 1.06l-4.25-4.24a.75.75 0 010-1.06l4.25-4.24a.75.75 0 011.06 0z' clip-rule='evenodd'/></svg>");
+  }
+
+  .ec-icon.ec-next {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'><path fill-rule='evenodd' d='M7.21 14.77a.75.75 0 010-1.06L10.94 10 7.21 6.29a.75.75 0 111.06-1.06l4.25 4.24a.75.75 0 010 1.06l-4.25 4.24a.75.75 0 01-1.06 0z' clip-rule='evenodd'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'><path fill-rule='evenodd' d='M7.21 14.77a.75.75 0 010-1.06L10.94 10 7.21 6.29a.75.75 0 111.06-1.06l4.25 4.24a.75.75 0 010 1.06l-4.25 4.24a.75.75 0 01-1.06 0z' clip-rule='evenodd'/></svg>");
+  }
+
+  /* Main calendar area */
+  .ec-main {
+    @apply rounded-lg overflow-hidden border border-gray-200;
+  }
+
+  :where(.dark) .ec-main {
+    @apply border-gray-700;
+  }
+
+  /* Grid layout */
+  .ec-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--ec-grid-cols, 7), minmax(0, 1fr));
+  }
+
   /* Header (days of week) */
   .ec-header {
-    @apply border-b border-gray-200 dark:border-gray-700;
+    @apply border-b border-gray-200 bg-gray-50;
   }
 
-  .ec-header .ec-day {
-    @apply py-2 text-center text-xs font-semibold uppercase
-    text-gray-600 dark:text-gray-400;
+  :where(.dark) .ec-header {
+    @apply border-gray-700 bg-gray-800/60;
   }
 
-  /* Grid */
-  .ec-days {
-    @apply grid grid-cols-7;
+  .ec-col-head {
+    @apply py-2 text-center text-xs font-semibold uppercase tracking-wide
+    text-gray-600;
+  }
+
+  :where(.dark) .ec-col-head {
+    @apply text-gray-400;
+  }
+
+  /* Body */
+  .ec-body {
+    @apply relative bg-white;
+  }
+
+  :where(.dark) .ec-body {
+    @apply bg-gray-900;
+  }
+
+  .ec-body .ec-grid {
+    grid-auto-rows: minmax(10rem, 1fr);
+  }
+
+  .ec-body .ec-grid .ec-day {
+    aspect-ratio: 1 / 1;
   }
 
   /* Day cells */
   .ec-day {
-    @apply min-h-[7rem] border border-gray-200 p-1
-    dark:border-gray-700;
+    @apply relative flex flex-col gap-1 px-1 pt-0.5 pb-1
+    border-r border-b border-gray-200
+    bg-white;
+  }
+
+  :where(.dark) .ec-day {
+    @apply border-gray-700 bg-gray-900;
+  }
+
+  .ec-day.ec-no-ieb {
+    @apply border-r-0;
+  }
+
+  .ec-day.ec-no-beb {
+    @apply border-b-0;
   }
 
   .ec-day.ec-other-month {
-    @apply bg-gray-50 text-gray-400
-    dark:bg-gray-800/50 dark:text-gray-500;
+    @apply bg-gray-50 text-gray-400;
+  }
+
+  :where(.dark) .ec-day.ec-other-month {
+    @apply bg-gray-800/40 text-gray-600;
   }
 
   .ec-day.ec-today {
-    @apply bg-blue-50 border-blue-500
-    dark:bg-blue-900/20 dark:border-blue-400;
+    background-color: rgb(59 130 246 / 0.06);
+  }
+
+  :where(.dark) .ec-day.ec-today {
+    background-color: rgb(59 130 246 / 0.1);
   }
 
   /* Day header (date number) */
   .ec-day-head {
-    @apply flex items-center justify-end text-xs font-medium
-    text-gray-700 dark:text-gray-300;
+    @apply flex items-center justify-end text-xs font-medium text-gray-700;
+  }
+
+  :where(.dark) .ec-day-head {
+    @apply text-gray-300;
   }
 
   .ec-day-head time {
-    @apply inline-flex h-6 w-6 items-center justify-center rounded-full;
+    @apply inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1.5;
   }
 
   .ec-day.ec-today .ec-day-head time {
-    @apply bg-blue-600 text-white;
+    @apply bg-blue-600 text-white font-semibold;
   }
 
-  /* Events container */
+  :where(.dark) .ec-day.ec-today .ec-day-head time {
+    @apply bg-blue-500;
+  }
+
+  .ec-day.ec-other-month .ec-day-head {
+    @apply text-gray-400;
+  }
+
+  :where(.dark) .ec-day.ec-other-month .ec-day-head {
+    @apply text-gray-600;
+  }
+
+  .ec-day-foot {
+    @apply mt-auto;
+  }
+
+  /* Events overlay — events become direct grid items of .ec-grid via
+     display: contents so their inline grid-area lands in the matching day cell. */
   .ec-events {
-    @apply mt-1 space-y-1;
+    display: contents;
   }
 
   /* Event card */
   .ec-event {
-    @apply cursor-pointer rounded-md px-2 py-1
-    text-xs font-medium text-white
+    @apply cursor-pointer rounded-md
+    px-3 py-0.5 text-xs font-medium text-white
     shadow-sm transition
-    hover:brightness-110 focus:outline-none
-    focus:ring-2 focus:ring-offset-1 focus:ring-blue-500;
+    hover:brightness-110 hover:shadow
+    focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500;
+    margin-inline: 4px;
+    align-self: start;
+    justify-self: stretch;
+    min-height: 1.25rem;
+    min-width: 0;
+    max-width: calc(100% - 8px);
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  :where(.dark) .ec-event:focus {
+    @apply ring-offset-gray-900;
   }
 
   /* Event body */
   .ec-event-body {
-    @apply flex gap-0.5 items-center px-1;
+    @apply flex items-center gap-1.5 min-w-0 px-1;
   }
 
   .ec-event-time {
-    @apply text-[10px] opacity-90;
+    @apply text-[10px] tabular-nums opacity-90 shrink-0;
   }
 
   .ec-event-title {
     @apply truncate font-semibold;
   }
 
-  /* All-day events */
-  .ec-event[style*="allDay"] {
-    @apply py-1.5;
-  }
-
   /* "More" / overflow popover */
   .ec-popover {
-    @apply rounded-lg border bg-white shadow-lg
-    dark:bg-gray-800 dark:border-gray-700;
+    @apply rounded-lg border border-gray-200 bg-white shadow-lg;
+  }
+
+  :where(.dark) .ec-popover {
+    @apply bg-gray-800 border-gray-700;
   }
 
   .ec-popover-header {
-    @apply px-3 py-2 font-semibold
-    bg-gray-100 dark:bg-gray-900;
+    @apply px-3 py-2 font-semibold text-gray-900
+    bg-gray-100 border-b border-gray-200;
+  }
+
+  :where(.dark) .ec-popover-header {
+    @apply text-gray-100 bg-gray-900 border-gray-700;
   }
 }

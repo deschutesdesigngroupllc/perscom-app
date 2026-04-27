@@ -3,7 +3,7 @@
 <a class="flex flex-row items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800/50"
   href="{{ \App\Filament\App\Resources\UserResource::getUrl('view', ['record' => $user]) }}" target="_blank">
   @if (!in_array('rank_id', $hiddenFields))
-    <div class="w-10 overflow-hidden">
+    <div class="w-10 overflow-hidden pr-2">
       @if ($user->rank->image ?? null)
         <img src="{{ $user->rank->image->image_url }}" alt="{{ $user->rank->name }}" class="h-8 w-auto grow-0">
       @else

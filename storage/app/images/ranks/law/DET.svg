@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 150">
+  <path d="M105 20 L120 60 L165 62 L130 90 L142 132 L105 108 L68 132 L80 90 L45 62 L90 60 Z" fill="#F3C463" stroke="#854d0e" stroke-width="2"/>
+  <text x="105" y="98" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="22" fill="#1A374F">DET</text>
+</svg>

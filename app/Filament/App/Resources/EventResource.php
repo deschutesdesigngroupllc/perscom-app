@@ -39,13 +39,17 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
@@ -70,6 +74,8 @@ class EventResource extends BaseResource
     protected static string|UnitEnum|null $navigationGroup = 'Calendar';
 
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
@@ -287,79 +293,151 @@ class EventResource extends BaseResource
 
     public static function infolist(Schema $schema): Schema
     {
+        $timezone = fn (): string => UserSettingsService::get('timezone', function (): string {
+            /** @var OrganizationSettings $settings */
+            $settings = resolve(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        });
+
         return $schema
             ->components([
                 Tabs::make()
                     ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Event')
-                            ->badge(fn (?Event $record): ?string => $record->all_day ? 'All Day' : null)
-                            ->badgeColor('success')
+                        Tab::make('Overview')
                             ->icon('heroicon-o-calendar-days')
                             ->schema([
-                                TextEntry::make('name')
-                                    ->badge()
-                                    ->color(fn (?Event $record): array => Color::generateV3Palette($record->calendar?->color)),
-                                TextEntry::make('description')
-                                    ->hidden(fn ($state): bool => is_null($state))
-                                    ->hiddenLabel()
-                                    ->html(),
-                                TextEntry::make('starts')
-                                    ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
-                                    ->icon(fn (?Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null)
-                                    ->suffix(fn (?Event $record): ?string => filled($record->length) && $record->length->total('seconds') > 0 ? sprintf(' (%s)', $record->length->forHumans(['parts' => 1])) : null)
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    })),
-                                TextEntry::make('ends')
-                                    ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    })),
-                                TextEntry::make('schedule.next_occurrence')
-                                    ->label('Next Occurrence')
-                                    ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
-                                    ->suffix(fn (?Event $record): ?string => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? sprintf(' (%s)', $record->schedule->length->forHumans(['parts' => 1])) : null)
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    })),
-                                TextEntry::make('schedule.last_occurrence')
-                                    ->label('Last Occurrence')
-                                    ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->last_occurrence))
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    })),
-                                TextEntry::make('rule_readable')
-                                    ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule))
-                                    ->label('Schedule')
-                                    ->getStateUsing(fn (?Event $record): ?string => ScheduleService::getSchedulePattern($record->schedule, $record->all_day)),
+                                Section::make()
+                                    ->contained(false)
+                                    ->schema([
+                                        ImageEntry::make('image.image_url')
+                                            ->hiddenLabel()
+                                            ->visible(fn (?Event $record): bool => filled($record?->image?->image_url))
+                                            ->extraImgAttributes(['class' => 'w-full rounded-lg object-cover max-h-72'])
+                                            ->columnSpanFull(),
+                                        Grid::make()
+                                            ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
+                                            ->schema([
+                                                TextEntry::make('calendar.name')
+                                                    ->label('Calendar')
+                                                    ->placeholder('—')
+                                                    ->badge()
+                                                    ->color(fn (?Event $record): array => Color::generateV3Palette($record?->calendar?->color ?? '#2563eb')),
+                                                TextEntry::make('categories.name')
+                                                    ->label('Category')
+                                                    ->placeholder('Uncategorized')
+                                                    ->badge()
+                                                    ->color('gray'),
+                                                TextEntry::make('all_day')
+                                                    ->label('All Day')
+                                                    ->badge()
+                                                    ->state(fn (?Event $record): string => $record?->all_day ? 'Yes' : 'No')
+                                                    ->color(fn (?Event $record): string => $record?->all_day ? 'success' : 'gray'),
+                                                TextEntry::make('has_passed')
+                                                    ->label('Status')
+                                                    ->badge()
+                                                    ->state(fn (?Event $record): string => $record?->has_passed ? 'Past' : 'Upcoming')
+                                                    ->color(fn (?Event $record): string => $record?->has_passed ? 'gray' : 'success'),
+                                            ]),
+                                        TextEntry::make('description')
+                                            ->hiddenLabel()
+                                            ->visible(fn ($state): bool => filled($state))
+                                            ->html()
+                                            ->columnSpanFull(),
+                                    ]),
+                                Fieldset::make('When')
+                                    ->columns(['default' => 1, 'md' => 2])
+                                    ->schema([
+                                        TextEntry::make('starts')
+                                            ->label('Begins')
+                                            ->visible(fn (?Event $record): bool => ! $record?->repeats)
+                                            ->dateTime(timezone: $timezone()),
+                                        TextEntry::make('ends')
+                                            ->label('Ends')
+                                            ->visible(fn (?Event $record): bool => ! $record?->repeats && filled($record?->ends))
+                                            ->dateTime(timezone: $timezone()),
+                                        TextEntry::make('length')
+                                            ->label('Duration')
+                                            ->visible(fn (?Event $record): bool => filled($record?->length) && $record->length->total('seconds') > 0)
+                                            ->formatStateUsing(fn ($state): string => $state->forHumans(['parts' => 2])),
+                                        TextEntry::make('schedule.next_occurrence')
+                                            ->label('Next Occurrence')
+                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule?->next_occurrence))
+                                            ->dateTime(timezone: $timezone()),
+                                        TextEntry::make('schedule.last_occurrence')
+                                            ->label('Last Occurrence')
+                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule?->last_occurrence))
+                                            ->dateTime(timezone: $timezone()),
+                                        TextEntry::make('rule_readable')
+                                            ->label('Repeats')
+                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule))
+                                            ->columnSpanFull()
+                                            ->getStateUsing(fn (?Event $record): ?string => ScheduleService::getSchedulePattern($record->schedule, $record->all_day)),
+                                    ]),
+                                Fieldset::make('Where')
+                                    ->visible(fn (?Event $record): bool => filled($record?->location) || filled($record?->url))
+                                    ->schema([
+                                        TextEntry::make('location')
+                                            ->visible(fn ($state): bool => filled($state))
+                                            ->columnSpanFull(),
+                                        View::make('filament.app.infolists.event-map')
+                                            ->visible(fn (?Event $record): bool => filled($record?->location))
+                                            ->viewData(fn (?Event $record): array => ['location' => $record?->location])
+                                            ->columnSpanFull(),
+                                        TextEntry::make('url')
+                                            ->label('Link')
+                                            ->visible(fn ($state): bool => filled($state))
+                                            ->url(fn (?Event $record): ?string => $record?->url, shouldOpenInNewTab: true)
+                                            ->columnSpanFull(),
+                                    ]),
+                                Fieldset::make('Organizer')
+                                    ->visible(fn (?Event $record): bool => filled($record?->author))
+                                    ->columns(['default' => 1, 'md' => 2])
+                                    ->schema([
+                                        TextEntry::make('author.display_name')
+                                            ->label('Hosted By'),
+                                    ]),
                             ]),
-                        Tab::make('Details')
+                        Tab::make('About')
                             ->icon('heroicon-o-information-circle')
+                            ->visible(fn (?Event $record): bool => filled($record?->content))
                             ->schema([
                                 TextEntry::make('content')
-                                    ->visible(fn ($state): bool => filled($state))
-                                    ->label('Details')
-                                    ->html(),
-                                TextEntry::make('location')
-                                    ->visible(fn ($state): bool => filled($state)),
-                                TextEntry::make('url')
-                                    ->visible(fn ($state): bool => filled($state))
-                                    ->label('URL')
-                                    ->url(fn (?Event $record) => $record->url),
+                                    ->hiddenLabel()
+                                    ->html()
+                                    ->columnSpanFull(),
+                            ]),
+                        Tab::make('Registration')
+                            ->icon('heroicon-o-user-plus')
+                            ->badge(fn (?Event $record): ?int => $record?->registrations_count ?: $record?->registrations?->count())
+                            ->badgeColor('primary')
+                            ->visible(fn (?Event $record): bool => (bool) $record?->registration_enabled)
+                            ->schema([
+                                Section::make()
+                                    ->contained(false)
+                                    ->columns(['default' => 1, 'md' => 3])
+                                    ->schema([
+                                        TextEntry::make('registrations_count')
+                                            ->label('Registered')
+                                            ->icon('heroicon-o-users')
+                                            ->state(fn (?Event $record): int => $record?->registrations?->count() ?? 0),
+                                        TextEntry::make('registration_deadline')
+                                            ->label('Deadline')
+                                            ->icon('heroicon-o-calendar')
+                                            ->placeholder('No deadline')
+                                            ->dateTime(timezone: $timezone()),
+                                        TextEntry::make('registration_status')
+                                            ->label('Status')
+                                            ->badge()
+                                            ->state(fn (?Event $record): string => match (true) {
+                                                ! $record?->registration_enabled => 'Closed',
+                                                filled($record?->registration_deadline) && $record->registration_deadline->isPast() => 'Closed',
+                                                default => 'Open',
+                                            })
+                                            ->color(fn (string $state): string => $state === 'Open' ? 'success' : 'danger'),
+                                    ]),
                             ]),
                     ]),
             ]);

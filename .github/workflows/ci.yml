@@ -1,0 +1,211 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - master
+      - staging
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  detect-changes:
+    uses: ./.github/workflows/detect-changes.yml
+
+  no-merge-commits:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Check for Merge Commits
+        run: |
+          MERGE_COMMITS=$(git rev-list --merges origin/${{ github.event.pull_request.base.ref }}..HEAD)
+          if [ -n "$MERGE_COMMITS" ]; then
+            echo "::error::This PR contains merge commits. Please rebase your branch instead."
+            echo ""
+            echo "Merge commits found:"
+            git log --merges --oneline origin/${{ github.event.pull_request.base.ref }}..HEAD
+            echo ""
+            echo "To fix: git rebase origin/${{ github.event.pull_request.base.ref }}"
+            exit 1
+          fi
+
+  lint:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Set Up Environment
+        uses: ./.github/actions/setup-env
+        with:
+          node: 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Check Prettier
+        if: needs.detect-changes.outputs.js == 'true'
+        run: npm run format -- --check
+
+      - name: Cache Rector
+        if: needs.detect-changes.outputs.php == 'true'
+        uses: actions/cache@v5
+        with:
+          path: .rector.cache
+          key: rector-${{ hashFiles('rector.php', 'composer.lock') }}
+
+      - name: Check Rector
+        if: needs.detect-changes.outputs.php == 'true'
+        run: vendor/bin/rector --dry-run
+
+      - name: Check Pint
+        if: needs.detect-changes.outputs.php == 'true'
+        run: vendor/bin/pint --parallel --test
+
+      - name: Run PHPStan
+        if: needs.detect-changes.outputs.php == 'true'
+        run: composer test:types
+
+  audit:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.deps == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Set Up Environment
+        uses: ./.github/actions/setup-env
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Composer Audit
+        run: composer audit
+
+      - name: npm Audit
+        run: npm audit
+
+  tests:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.code == 'true' && !contains(github.event.head_commit.message, '[skip tests]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Set Up Environment
+        uses: ./.github/actions/setup-env
+        with:
+          node: 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Prepare Environment
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan passport:keys --force
+          php artisan optimize:clear
+
+      - name: Run Test Suite
+        run: php artisan test --parallel --no-coverage
+
+      - name: Upload Laravel Logs
+        if: failure()
+        uses: actions/upload-artifact@v6
+        with:
+          name: laravel-logs
+          path: storage/logs/
+          retention-days: 5
+
+  coverage:
+    needs: detect-changes
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.detect-changes.outputs.code == 'true' && !contains(github.event.head_commit.message, '[skip tests]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Set Up Environment
+        uses: ./.github/actions/setup-env
+        with:
+          node: 'true'
+          coverage: 'xdebug'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Prepare Environment
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan passport:keys --force
+          php artisan optimize:clear
+
+      - name: Run Test Suite with Coverage
+        run: php artisan test --parallel
+
+      - name: Upload Code Coverage Report
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./clover.xml
+          verbose: true

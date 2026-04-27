@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
+use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
+use App\Filament\App\Resources\UserResource\Filters\QualificationsFilter;
 use App\Filament\App\Resources\UserResource\Pages\CreateUser;
 use App\Filament\App\Resources\UserResource\Pages\EditUser;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
@@ -30,15 +33,16 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\RepeatableEntry\TableColumn;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
+use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
@@ -232,91 +236,121 @@ class UserResource extends BaseResource
 
         return $schema
             ->components([
+                View::make('filament.app.infolists.user-hero')
+                    ->viewData(fn (User $record): array => [
+                        'user' => $record,
+                        'coverHeight' => resolve(DashboardSettings::class)->cover_photo_height ?? 224,
+                    ])
+                    ->columnSpanFull(),
                 Tabs::make()
                     ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
-                        Tab::make('Demographics')
-                            ->columnSpanFull()
-                            ->badge(fn (?User $record) => in_array('status_id', $hiddenFields) ? null : $record?->status?->name)
-                            ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                        Tab::make('Profile')
                             ->icon('heroicon-o-user')
                             ->schema([
-                                Section::make('Personnel File')
-                                    ->contained(false)
-                                    ->description("The user's vital statistics.")
+                                Fieldset::make('Identity')
+                                    ->columns(['default' => 1, 'md' => 2])
                                     ->schema([
-                                        ImageEntry::make('cover_photo_url')
-                                            ->hidden(fn (User $record): bool => in_array('cover_photo', $hiddenFields) || is_null($record->cover_photo_url))
-                                            ->imageHeight(function () {
-                                                /** @var DashboardSettings $settings */
-                                                $settings = resolve(DashboardSettings::class);
-
-                                                return $settings->cover_photo_height ?? 100;
-                                            })
-                                            ->extraAttributes([
-                                                'class' => 'user-cover-photo',
-                                            ])
-                                            ->columnSpanFull()
-                                            ->hiddenLabel(),
                                         TextEntry::make('display_name')
                                             ->label('Name')
                                             ->hidden(fn (): bool => in_array('name', $hiddenFields)),
+                                        TextEntry::make('email')
+                                            ->label('Email')
+                                            ->icon('heroicon-o-envelope')
+                                            ->copyable()
+                                            ->placeholder('—'),
+                                        TextEntry::make('email_verified_at')
+                                            ->label('Email Verified')
+                                            ->placeholder('Not verified')
+                                            ->dateTime(),
+                                        TextEntry::make('created_at')
+                                            ->label('Member Since')
+                                            ->dateTime(),
+                                    ]),
+                                Fieldset::make('Service')
+                                    ->columns(['default' => 1, 'md' => 3])
+                                    ->schema([
                                         TextEntry::make('time_in_service')
-                                            ->label('Time In Service')
+                                            ->label('Time in Service')
                                             ->hidden(fn (): bool => in_array('time_in_service', $hiddenFields))
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)->forHumans()),
+                                            ->placeholder('—')
+                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
+                                        TextEntry::make('time_in_grade')
+                                            ->label('Time in Grade')
+                                            ->hidden(fn (User $record): bool => in_array('time_in_grade', $hiddenFields) || is_null($record->time_in_grade))
+                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
+                                        TextEntry::make('time_in_assignment')
+                                            ->label('Time in Assignment')
+                                            ->hidden(fn (User $record): bool => in_array('time_in_assignment', $hiddenFields) || is_null($record->time_in_assignment))
+                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
                                         TextEntry::make('last_seen_at')
-                                            ->placeholder('Unknown')
                                             ->label('Last Online')
+                                            ->placeholder('Never')
                                             ->dateTime()
                                             ->hidden(fn (): bool => in_array('last_seen_at', $hiddenFields)),
+                                        TextEntry::make('last_rank_change_date')
+                                            ->label('Last Rank Change')
+                                            ->dateTime()
+                                            ->placeholder('—')
+                                            ->hidden(fn (): bool => in_array('last_rank_change_date', $hiddenFields)),
+                                        TextEntry::make('last_assignment_change_date')
+                                            ->label('Last Assignment Change')
+                                            ->dateTime()
+                                            ->placeholder('—')
+                                            ->hidden(fn (): bool => in_array('last_assignment_change_date', $hiddenFields)),
                                     ]),
                             ]),
                         Tab::make('Assignment')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
-                                Section::make('Primary Assignment')
-                                    ->contained(false)
-                                    ->description("The user's current primary assignment.")
-                                    ->columns(3)
+                                Fieldset::make('Primary Assignment')
+                                    ->columns(['default' => 1, 'md' => 3])
                                     ->schema([
                                         TextEntry::make('position.name')
-                                            ->label('Current Position')
+                                            ->label('Position')
                                             ->placeholder('No Position')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('position_id', $hiddenFields)),
                                         TextEntry::make('specialty.name')
-                                            ->label('Current Specialty')
+                                            ->label('Specialty')
                                             ->placeholder('No Specialty')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('specialty_id', $hiddenFields)),
                                         TextEntry::make('unit.name')
-                                            ->label('Current Unit')
-                                            ->placeholder('No Specialty')
+                                            ->label('Unit')
+                                            ->placeholder('No Unit')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('unit_id', $hiddenFields)),
-                                        TextEntry::make('time_in_assignment')
-                                            ->label('Time In Assignment')
-                                            ->hidden(fn (User $record): bool => in_array('time_in_assignment', $hiddenFields) || is_null($record->time_in_assignment))
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)->forHumans())
-                                            ->columnSpanFull(),
-                                        TextEntry::make('last_assignment_change_date')
-                                            ->label('Assignment Last Changed')
-                                            ->dateTime()
-                                            ->hidden(fn (User $record): bool => in_array('last_assignment_change_date', $hiddenFields) || is_null($record->last_assignment_change_date))
-                                            ->columnSpanFull(),
+                                        TextEntry::make('rank.name')
+                                            ->label('Rank')
+                                            ->placeholder('No Rank')
+                                            ->badge()
+                                            ->color('gray')
+                                            ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
+                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline mr-1' alt='%s' />", $url, $record->rank->name)))),
+                                        TextEntry::make('status.name')
+                                            ->label('Status')
+                                            ->placeholder('No Status')
+                                            ->badge()
+                                            ->color(fn (?User $record): array => Color::generateV3Palette($record?->status?->color ?? '#6b7280'))
+                                            ->hidden(fn (): bool => in_array('status_id', $hiddenFields)),
+                                        TextEntry::make('approved')
+                                            ->label('Approved')
+                                            ->badge()
+                                            ->state(fn (?User $record): string => $record?->approved ? 'Yes' : 'No')
+                                            ->color(fn (?User $record): string => $record?->approved ? 'success' : 'warning'),
                                     ]),
-                                Section::make()
+                                Section::make('Secondary Assignments')
                                     ->contained(false)
                                     ->hidden(fn (): bool => in_array('secondary_assignment_records', $hiddenFields))
                                     ->schema([
                                         RepeatableEntry::make('secondary_assignment_records')
                                             ->placeholder('No Secondary Assignment Records')
-                                            ->label('Secondary Assignment Records')
+                                            ->hiddenLabel()
                                             ->table([
                                                 TableColumn::make('Position'),
                                                 TableColumn::make('Specialty'),
@@ -339,76 +373,50 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Awards')
                             ->icon('heroicon-o-trophy')
+                            ->badge(fn (?User $record): ?int => $record?->awards?->count() ?: null)
+                            ->badgeColor('warning')
                             ->schema([
-                                Section::make('Awards')
+                                Section::make()
                                     ->contained(false)
-                                    ->description('The awards the user has received.')
                                     ->schema([
                                         TextEntry::make('awards.name')
-                                            ->placeholder('No Awards Available')
+                                            ->placeholder('No awards have been received yet.')
+                                            ->hiddenLabel()
+                                            ->listWithLineBreaks(),
+                                    ]),
+                            ]),
+                        Tab::make('Qualifications')
+                            ->icon('heroicon-o-star')
+                            ->badge(fn (?User $record): ?int => $record?->qualifications?->count() ?: null)
+                            ->badgeColor('success')
+                            ->schema([
+                                Section::make()
+                                    ->contained(false)
+                                    ->schema([
+                                        TextEntry::make('qualifications.name')
+                                            ->placeholder('No qualifications have been earned yet.')
                                             ->hiddenLabel()
                                             ->listWithLineBreaks(),
                                     ]),
                             ]),
                         Tab::make('Credentials')
                             ->icon('heroicon-o-identification')
+                            ->badge(fn (?User $record): ?int => $record?->credentials?->count() ?: null)
+                            ->badgeColor('info')
                             ->schema([
-                                Section::make('Credentials')
+                                Section::make()
                                     ->contained(false)
-                                    ->description('The credentials the user has assigned.')
                                     ->schema([
                                         TextEntry::make('credentials.name')
-                                            ->placeholder('No Credentials Available')
+                                            ->placeholder('No credentials have been assigned yet.')
                                             ->hiddenLabel()
                                             ->listWithLineBreaks(),
                                     ]),
                             ]),
-                        Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                        Tab::make('Custom Fields')
+                            ->icon('heroicon-o-pencil-square')
+                            ->visible(fn (User $record): bool => $record->fields->isNotEmpty())
                             ->schema(fn (User $record): array => UserResource::buildCustomFieldEntries($record->fields)),
-                        Tab::make('Qualifications')
-                            ->icon('heroicon-o-star')
-                            ->schema([
-                                Section::make('Qualifications')
-                                    ->contained(false)
-                                    ->description('The qualifications the user has earned.')
-                                    ->schema([
-                                        TextEntry::make('qualifications.name')
-                                            ->placeholder('No Qualifications Available')
-                                            ->hiddenLabel()
-                                            ->listWithLineBreaks(),
-                                    ]),
-                            ]),
-                        Tab::make('Rank')
-                            ->icon('heroicon-o-chevron-double-up')
-                            ->columns()
-                            ->schema([
-                                Section::make('Current Rank')
-                                    ->columnSpanFull()
-                                    ->contained(false)
-                                    ->description("The user's current rank.")
-                                    ->columns(3)
-                                    ->schema([
-                                        TextEntry::make('rank.name')
-                                            ->hiddenLabel()
-                                            ->badge()
-                                            ->color('gray')
-                                            ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
-                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline' alt='%s' />", $url, $record->rank->name))))
-                                            ->columnSpanFull(),
-                                        TextEntry::make('time_in_grade')
-                                            ->label('Time In Grade')
-                                            ->dateTime()
-                                            ->hidden(fn (User $record): bool => in_array('time_in_grade', $hiddenFields) || is_null($record->time_in_grade))
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)->forHumans())
-                                            ->columnSpanFull(),
-                                        TextEntry::make('last_rank_change_date')
-                                            ->label('Rank Last Changed')
-                                            ->dateTime()
-                                            ->hidden(fn (User $record): bool => in_array('last_rank_change_date', $hiddenFields) || is_null($record->last_rank_change_date))
-                                            ->columnSpanFull(),
-                                    ]),
-                            ]),
                     ]),
             ]);
     }
@@ -486,18 +494,13 @@ class UserResource extends BaseResource
             ->groups(['approved', 'position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
             ->filters([
                 TernaryFilter::make('approved'),
+                AwardsFilter::make(),
+                CredentialsFilter::make(),
                 SelectFilter::make('position')
                     ->relationship('position', 'name')
                     ->preload()
                     ->multiple(),
-                SelectFilter::make('specialty')
-                    ->relationship('specialty', 'name')
-                    ->preload()
-                    ->multiple(),
-                SelectFilter::make('unit')
-                    ->relationship('unit', 'name')
-                    ->preload()
-                    ->multiple(),
+                QualificationsFilter::make(),
                 SelectFilter::make('rank')
                     ->relationship('rank', 'name')
                     ->preload()
@@ -506,8 +509,16 @@ class UserResource extends BaseResource
                     ->relationship('roles', 'name')
                     ->preload()
                     ->multiple(),
+                SelectFilter::make('specialty')
+                    ->relationship('specialty', 'name')
+                    ->preload()
+                    ->multiple(),
                 SelectFilter::make('status')
                     ->relationship('status', 'name')
+                    ->preload()
+                    ->multiple(),
+                SelectFilter::make('unit')
+                    ->relationship('unit', 'name')
                     ->preload()
                     ->multiple(),
             ])

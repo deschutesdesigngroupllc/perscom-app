@@ -69,7 +69,34 @@ The application configuration is set with sensible defaults to get you started. 
    ```bash
    composer setup
    ```
-   
+
+   `composer setup` will install dependencies, copy `.env.example` to `.env`, generate application/JWT/Passport keys, build frontend assets, and run `php artisan perscom:install` to migrate, seed, and bootstrap the first tenant. When run interactively, the install command will prompt you to choose which type of organization to seed (Military, Fire Service, or Law Enforcement).
+
+### Reinstalling or Re-seeding
+
+The `perscom:install` command can be run on its own to (re)install the application:
+
+```bash
+# Interactive — you'll be prompted for the organization type
+php artisan perscom:install
+
+# Force a reinstall over an existing install (RESETS all data)
+php artisan perscom:install --force
+
+# Skip seeding entirely
+php artisan perscom:install --no-seed
+
+# Pick the organization template non-interactively
+php artisan perscom:install --seeder=military
+php artisan perscom:install --seeder=fire
+php artisan perscom:install --seeder=law
+
+# Demo environment only — also runs the DemoSeeder
+php artisan perscom:install --demo
+```
+
+Each organization seeder ships with realistic ranks, qualifications, awards, forms, and other reference data so you have a working dataset to explore immediately.
+
 ### Development Commands
 
 See [CLAUDE.md](../CLAUDE.md) for a complete list of available development commands including testing, code quality tools, and database management.

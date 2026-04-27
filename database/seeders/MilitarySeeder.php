@@ -13,12 +13,14 @@ use App\Models\CombatRecord;
 use App\Models\Credential;
 use App\Models\Document;
 use App\Models\Enums\CredentialType;
+use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use App\Models\Event;
 use App\Models\Field;
 use App\Models\Form;
 use App\Models\Group;
 use App\Models\Issuer;
+use App\Models\Newsfeed;
 use App\Models\Page;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -34,7 +36,6 @@ use App\Models\TrainingRecord;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -55,10 +56,26 @@ class MilitarySeeder extends Seeder
             ])
             ->create();
 
+        Announcement::factory()
+            ->state([
+                'title' => 'OPORD 25-04 - Exercise Robin Sage',
+                'content' => 'All ODA personnel will report in CIF-issued kit no later than 0500 on D-Day. Final back-briefs will be conducted by Detachment Commanders the night prior.',
+                'color' => '#facc15',
+                'global' => true,
+            ])
+            ->create();
+
         $documents = Document::factory()
-            ->count(5)
+            ->count(6)
             ->recycle($user)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])
+            ->sequence(
+                ['name' => 'FM 3-18 - Special Forces Operations', 'description' => 'Doctrinal publication describing the role, organization, and employment of U.S. Army Special Forces.'],
+                ['name' => 'TC 18-01 - Special Forces Unconventional Warfare', 'description' => 'Training circular outlining unconventional warfare doctrine and partnered force employment.'],
+                ['name' => 'ODA Standard Operating Procedures', 'description' => 'Detachment-level SOPs covering load plans, mission planning, communications, and battle drills.'],
+                ['name' => 'OPORD 25-04 - Exercise Robin Sage', 'description' => 'Five paragraph operations order for the culminating field training exercise of the SFQC.'],
+                ['name' => 'AR 600-8-22 - Military Awards', 'description' => 'Army regulation governing eligibility, criteria, and processing of military awards and decorations.'],
+                ['name' => 'Detachment Mission Brief - Operation Sandfly', 'description' => 'Confidential mission planning brief covering FID partnered training in CENTCOM AOR.'],
+            )
             ->create();
 
         $positions = Position::factory()
@@ -102,21 +119,22 @@ class MilitarySeeder extends Seeder
                     'name' => 'Special Forces Engineer Sergeant',
                     'abbreviation' => '18C',
                     'description' => 'Skilled in demolitions, construction, fortifications, and mobility operations to support mission objectives.',
+                    'order' => 5,
                 ], [
                     'name' => 'Special Forces Medical Sergeant',
                     'abbreviation' => '18D',
                     'description' => 'Provides advanced trauma care, prolonged field care, and medical training in austere environments.',
-                    'order' => 5,
+                    'order' => 6,
                 ], [
                     'name' => 'Special Forces Communications Sergeant',
                     'abbreviation' => '18E',
                     'description' => 'Manages radio, satellite, and cyber communications to ensure secure and reliable team connectivity.',
-                    'order' => 6,
+                    'order' => 7,
                 ], [
                     'name' => 'Special Forces Intelligence Sergeant',
                     'abbreviation' => '18F',
                     'description' => 'Conducts intelligence gathering, analysis, and target development to support mission planning and execution.',
-                    'order' => 7,
+                    'order' => 8,
                 ],
             )
             ->create();
@@ -215,14 +233,22 @@ class MilitarySeeder extends Seeder
                 $path = "awards/$award->name.png";
                 $image = storage_path("app/images/awards/$award->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $award->image()->create([
@@ -243,18 +269,29 @@ class MilitarySeeder extends Seeder
         $events = Event::factory()
             ->count(10)
             ->recycle($calendars)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Event $sequence->index"])
+            ->sequence(
+                ['name' => 'Range Day - M4 / M249 Qualification'],
+                ['name' => 'HALO Sustainment Jump'],
+                ['name' => 'CQB Lane Training'],
+                ['name' => 'Combat Lifesaver Recertification'],
+                ['name' => 'Mission Planning - OPORD 25-04'],
+                ['name' => 'Robin Sage Pre-Mission Brief'],
+                ['name' => 'PT Test - ACFT'],
+                ['name' => 'Foreign Weapons Familiarization'],
+                ['name' => 'Land Navigation - Day / Night'],
+                ['name' => 'Detachment AAR'],
+            )
             ->for($user, 'author')
             ->create();
 
         $fields = Field::factory()
             ->count(5)
             ->sequence(
-                ['name' => 'Field 1', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast()],
-                ['name' => 'Field 2', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast()],
-                ['name' => 'Field 3', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast()],
-                ['name' => 'Field 4', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast()],
-                ['name' => 'Field 5', 'type' => FieldType::FIELD_TIMEZONE, 'cast' => FieldType::FIELD_TIMEZONE->getCast()],
+                ['name' => 'DoD ID Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast()],
+                ['name' => 'Airborne Qualified', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast()],
+                ['name' => 'Date of Rank', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast()],
+                ['name' => 'AKO / Personal Email', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast()],
+                ['name' => 'Duty Time Zone', 'type' => FieldType::FIELD_TIMEZONE, 'cast' => FieldType::FIELD_TIMEZONE->getCast()],
             )
             ->create();
 
@@ -286,14 +323,22 @@ class MilitarySeeder extends Seeder
                 $path = "qualifications/$qualification->name.png";
                 $image = storage_path("app/images/qualifications/$qualification->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $qualification->image()->create([
@@ -345,17 +390,25 @@ class MilitarySeeder extends Seeder
             )
             ->create()
             ->each(function (Rank $rank) {
-                $path = "ranks/$rank->abbreviation.svg";
+                $path = "ranks/military/$rank->abbreviation.svg";
                 $image = storage_path("app/images/ranks/$rank->name.png");
 
-                if (! Storage::exists($path) && file_exists($image)) {
-                    if ($file = file_get_contents($image)) {
-                        Storage::put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
+                if (! Storage::exists($path)) {
+                    if (! file_exists($image)) {
+                        return;
                     }
+
+                    $file = file_get_contents($image);
+
+                    if ($file === false) {
+                        return;
+                    }
+
+                    Storage::put(
+                        path: $path,
+                        contents: $file,
+                        options: 'public'
+                    );
                 }
 
                 $rank->image()->create([
@@ -383,11 +436,12 @@ class MilitarySeeder extends Seeder
             ->create();
 
         $tasks = Task::factory()
-            ->count(3)
+            ->count(4)
             ->sequence(
-                ['title' => 'Submit After Action Report'],
-                ['title' => 'Update Personal Information'],
-                ['title' => 'Attend Promotion Ceremony'],
+                ['title' => 'Submit After Action Report', 'description' => 'Document and submit AAR for the most recent training event or mission per detachment SOP.'],
+                ['title' => 'Update DD Form 93 / SGLI', 'description' => 'Verify Record of Emergency Data and SGLI election with the S1 prior to next deployment cycle.'],
+                ['title' => 'Complete Annual Weapons Qualification', 'description' => 'Coordinate with the Range OIC and complete annual M4 / sidearm qualification.'],
+                ['title' => 'Attend Promotion Ceremony', 'description' => 'Attend the quarterly promotion and reenlistment ceremony in Class A uniform.'],
             )
             ->create();
 
@@ -402,7 +456,7 @@ class MilitarySeeder extends Seeder
             ->has(AssignmentRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$positions, $specialties, $statuses, $units, $documents])
-                ->count(5), 'service_records')
+                ->count(5), 'assignment_records')
             ->has(AwardRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$awards, $documents])
@@ -414,7 +468,7 @@ class MilitarySeeder extends Seeder
             ->has(QualificationRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$qualifications, $documents])
-                ->count(5), 'combat_records')
+                ->count(5), 'qualification_records')
             ->has(RankRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$ranks, $documents])
@@ -427,24 +481,155 @@ class MilitarySeeder extends Seeder
                 ->for($user, 'author')
                 ->for($user, 'instructor')
                 ->recycle($documents)
-                ->count(5), 'service_records')
+                ->count(5), 'training_records')
             ->hasAttached($tasks->random(3), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
             ->hasAttached($events->random(3))
             ->hasAttached($fields->take(3))
             ->create();
 
         Form::factory()
-            ->count(2)
-            ->sequence(
-                [
-                    'name' => 'Personnel Action Request',
-                    'description' => 'This form is used primarily for the purpose of requesting or recording personnel actions for or by soldiers in accordance with DA PAM 600-8.',
-                ], [
-                    'name' => 'After Action Report',
-                    'description' => 'An After Action Report (AAR) is a written report that documents a unit\'s actions for historical purposes and provides key observations and lessons learned. It is typically submitted after a training mission, combat operation or other mission.',
-                ],
+            ->state([
+                'name' => 'Personnel Action Request (DA Form 4187)',
+                'slug' => 'personnel-action-request',
+                'description' => 'Submit personnel actions in accordance with DA PAM 600-8, including reassignment, MOS reclassification, separation, and name changes.',
+                'instructions' => "Complete all sections in full. Provide supporting documentation under the Justification section. Routing:\n\n1. Soldier completes the request below.\n2. Immediate supervisor endorses.\n3. Detachment Commander reviews and forwards to S1.\n4. S1 staffs the action through the appropriate approval authority.\n\nIncomplete packets will be returned without action.",
+                'success_message' => 'Your DA 4187 has been submitted and routed to your immediate supervisor. You will receive notifications as the action progresses.',
+                'is_public' => false,
+            ])
+            ->hasAttached(Field::factory()
+                ->count(8)
+                ->sequence(
+                    ['name' => 'Soldier Full Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'LAST, FIRST MI'],
+                    ['name' => 'Rank / Grade', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. SFC / E-7'],
+                    ['name' => 'DoD ID Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => '10-digit DoD ID'],
+                    ['name' => 'Unit of Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. ODA 5111, A Co, 1st Btn, 5th SFG'],
+                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Promotion', 'Reassignment', 'MOS Reclassification', 'Separation / ETS', 'Retirement', 'Name Change', 'Other'])],
+                    ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Provide a clear, concise justification for the requested action.'],
+                    ['name' => 'Supporting Documentation', 'type' => FieldType::FIELD_FILE, 'cast' => FieldType::FIELD_FILE->getCast(), 'required' => false, 'help' => 'Attach memoranda, orders, or other supporting documents.'],
+                )
             )
-            ->hasAttached($fields->random(3))
+            ->create();
+
+        Form::factory()
+            ->state([
+                'name' => 'After Action Report',
+                'slug' => 'after-action-report',
+                'description' => 'Document training events, deployments, and operational missions to capture observations, lessons learned, and recommended improvements.',
+                'instructions' => 'Submit within 72 hours of mission or training completion. Do not include classified information; coordinate with the S2 if classified annexes are required.',
+                'success_message' => 'AAR received. Lessons learned will be staffed through the operations cell and added to the unit knowledge base.',
+                'is_public' => false,
+            ])
+            ->hasAttached(Field::factory()
+                ->count(8)
+                ->sequence(
+                    ['name' => 'Mission / Event Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. Exercise Robin Sage'],
+                    ['name' => 'Mission Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Location / Training Area', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'Grid coordinate or named area'],
+                    ['name' => 'Reporting Detachment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Mission Summary', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Task, purpose, and end state. Include task organization and key personnel.'],
+                    ['name' => 'Sustains - What Worked', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
+                    ['name' => 'Improves - What Did Not', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
+                    ['name' => 'Recommendations', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Recommended changes to TTPs, equipment, or training for the next iteration.'],
+                )
+            )
+            ->create();
+
+        Form::factory()
+            ->state([
+                'name' => 'Award Recommendation (DA Form 638)',
+                'slug' => 'award-recommendation',
+                'description' => 'Recommend a soldier for an individual decoration in accordance with AR 600-8-22.',
+                'instructions' => 'Provide a clearly written narrative-style proposed citation and achievement summary. Non-impact awards must be submitted no later than 30 days prior to the proposed presentation date.',
+                'success_message' => 'Award recommendation submitted. The packet has been routed to the first endorser in the chain of command.',
+                'is_public' => false,
+            ])
+            ->hasAttached(Field::factory()
+                ->count(8)
+                ->sequence(
+                    ['name' => 'Recommended Soldier - Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Recommended Soldier - Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Recommended Soldier - DoD ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Award Recommended', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Bronze Star', 'Silver Star', 'Distinguished Service Cross', 'Meritorious Service Medal', 'Army Commendation Medal', 'Army Achievement Medal', 'Purple Heart'])],
+                    ['name' => 'Period of Service - From', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Period of Service - To', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Proposed Citation', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Narrative-style citation, written in third person, that will appear on the certificate.'],
+                    ['name' => 'Achievement Summary', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Detailed bullets describing each act, achievement, or period of service that justifies the award.'],
+                )
+            )
+            ->create();
+
+        Form::factory()
+            ->state([
+                'name' => 'Leave Request (DA Form 31)',
+                'slug' => 'leave-request',
+                'description' => 'Request ordinary, emergency, convalescent, or permissive leave in accordance with AR 600-8-10.',
+                'instructions' => 'Submit at least 30 days in advance for ordinary leave. Personnel are required to sign in at the orderly room within 24 hours of return.',
+                'success_message' => 'Leave request submitted to your chain of command. Do not depart until you receive an approved DA 31.',
+                'is_public' => false,
+            ])
+            ->hasAttached(Field::factory()
+                ->count(7)
+                ->sequence(
+                    ['name' => 'Soldier Full Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Type of Leave', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Ordinary', 'Emergency', 'Convalescent', 'Permissive TDY', 'Terminal'])],
+                    ['name' => 'Departure Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Return Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Leave Address', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Street address, city, state, ZIP and a daytime phone number for the leave location.'],
+                    ['name' => 'Emergency Contact Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Emergency Contact Phone', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                )
+            )
+            ->create();
+
+        Form::factory()
+            ->state([
+                'name' => 'Special Forces Recruitment Application',
+                'slug' => 'recruitment-application',
+                'description' => 'Initial application for prospective Special Forces candidates interested in attending SFAS and the Q-Course.',
+                'instructions' => 'Provide accurate biographical, medical, and prior service information. Falsification of any portion of this application is grounds for immediate disqualification. A recruiter will contact you within five business days.',
+                'success_message' => 'Thank you for your interest in U.S. Army Special Forces. A recruiter will contact you within five business days.',
+                'is_public' => true,
+            ])
+            ->hasAttached(Field::factory()
+                ->count(8)
+                ->sequence(
+                    ['name' => 'Full Legal Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
+                    ['name' => 'Email Address', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast(), 'required' => true],
+                    ['name' => 'Date of Birth', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
+                    ['name' => 'Country of Citizenship', 'type' => FieldType::FIELD_COUNTRY, 'cast' => FieldType::FIELD_COUNTRY->getCast(), 'required' => true],
+                    ['name' => 'Prior Military Service', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
+                    ['name' => 'Current Branch / MOS', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => false, 'help' => 'Leave blank if no prior service.'],
+                    ['name' => 'Why do you want to be Special Forces?', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
+                    ['name' => 'DD Form 214 (if applicable)', 'type' => FieldType::FIELD_FILE, 'cast' => FieldType::FIELD_FILE->getCast(), 'required' => false],
+                )
+            )
+            ->create();
+
+        Newsfeed::factory()
+            ->state([
+                'event' => null,
+                'subject_type' => null,
+                'subject_id' => null,
+                'properties' => [
+                    'headline' => 'Detachment Reaches Full MTOE Strength',
+                    'text' => '5th Special Forces Group has successfully filled all primary ODA positions for the upcoming rotation. Welcome aboard to all newly assigned operators.',
+                ],
+            ])
+            ->for($user, 'causer')
+            ->create();
+
+        Newsfeed::factory()
+            ->state([
+                'event' => null,
+                'subject_type' => null,
+                'subject_id' => null,
+                'properties' => [
+                    'headline' => 'Promotions Approved',
+                    'text' => 'The most recent promotion board results have been published. Congratulations to those selected for promotion to the next grade.',
+                ],
+            ])
+            ->for($user, 'causer')
             ->create();
 
         $issuer = Issuer::factory()

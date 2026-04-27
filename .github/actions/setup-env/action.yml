@@ -1,0 +1,48 @@
+name: Set up environment
+description: Install PHP, Composer dependencies, and optionally Node with npm dependencies
+
+inputs:
+  node:
+    description: Set up Node and install npm dependencies
+    default: 'false'
+  coverage:
+    description: PHP coverage driver (none, xdebug, pcov)
+    default: 'none'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, :psr
+        ini-values: ${{ inputs.coverage == 'xdebug' && 'error_reporting=E_ALL, xdebug.mode=develop,coverage' || 'error_reporting=E_ALL' }}
+        tools: composer:v2
+        coverage: ${{ inputs.coverage }}
+      env:
+        COMPOSER_TOKEN: ${{ env.GITHUB_TOKEN }}
+
+    - name: Cache Composer
+      uses: actions/cache@v5
+      with:
+        path: vendor
+        key: composer-${{ hashFiles('composer.lock') }}
+
+    - name: Set Up Node
+      if: inputs.node == 'true'
+      uses: actions/setup-node@v6
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+
+    - name: Install npm Dependencies
+      if: inputs.node == 'true'
+      shell: bash
+      run: npm ci
+
+    - name: Install Composer Dependencies
+      shell: bash
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader
+      env:
+        COMPOSER_AUTH: ${{ env.COMPOSER_AUTH }}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 210 150">
+  <g transform="translate(105 78) rotate(-50) translate(-35 -9) scale(0.75)">
+    <ellipse cx="4" cy="9" rx="3" ry="6" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+    <path d="M 7 4 L 50 6 L 70 0 L 70 18 L 50 12 L 7 14 Z" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+  </g>
+  <g transform="translate(105 78) rotate(-25) translate(-35 -9) scale(0.75)">
+    <ellipse cx="4" cy="9" rx="3" ry="6" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+    <path d="M 7 4 L 50 6 L 70 0 L 70 18 L 50 12 L 7 14 Z" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+  </g>
+  <g transform="translate(105 78) translate(-35 -9) scale(0.75)">
+    <ellipse cx="4" cy="9" rx="3" ry="6" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+    <path d="M 7 4 L 50 6 L 70 0 L 70 18 L 50 12 L 7 14 Z" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+  </g>
+  <g transform="translate(105 78) rotate(25) translate(-35 -9) scale(0.75)">
+    <ellipse cx="4" cy="9" rx="3" ry="6" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+    <path d="M 7 4 L 50 6 L 70 0 L 70 18 L 50 12 L 7 14 Z" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+  </g>
+  <g transform="translate(105 78) rotate(50) translate(-35 -9) scale(0.75)">
+    <ellipse cx="4" cy="9" rx="3" ry="6" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+    <path d="M 7 4 L 50 6 L 70 0 L 70 18 L 50 12 L 7 14 Z" fill="#F3C463" stroke="#854d0e" stroke-width="1"/>
+  </g>
+</svg>
