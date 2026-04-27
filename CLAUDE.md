@@ -49,7 +49,7 @@ This is a **multi-tenant Laravel application** using the Stancl/Tenancy package 
 
 **API-First Design**
 - RESTful API using Laravel Orion for automatic CRUD endpoints
-- JWT authentication via php-open-source-saver/jwt-auth
+- JWT authentication via php-open-source-saver/jwt-auth and OAuth2 via Laravel Passport
 - API versioning and comprehensive logging
 - Rate limiting and permission-based access control
 
