@@ -52,8 +52,6 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -76,6 +74,8 @@ class EventResource extends BaseResource
     protected static string|UnitEnum|null $navigationGroup = 'Calendar';
 
     protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema
     {
@@ -316,11 +316,6 @@ class EventResource extends BaseResource
                                             ->hiddenLabel()
                                             ->visible(fn (?Event $record): bool => filled($record?->image?->image_url))
                                             ->extraImgAttributes(['class' => 'w-full rounded-lg object-cover max-h-72'])
-                                            ->columnSpanFull(),
-                                        TextEntry::make('name')
-                                            ->hiddenLabel()
-                                            ->size(TextSize::Large)
-                                            ->weight(FontWeight::Bold)
                                             ->columnSpanFull(),
                                         Grid::make()
                                             ->columns(['default' => 1, 'sm' => 2, 'md' => 4])

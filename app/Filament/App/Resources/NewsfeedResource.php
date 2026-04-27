@@ -27,7 +27,6 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\TextSize;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -52,6 +51,8 @@ class NewsfeedResource extends BaseResource
     protected static ?string $slug = 'newsfeed';
 
     protected static ?int $navigationSort = 3;
+
+    protected static ?string $recordTitleAttribute = 'headline';
 
     public static function form(Schema $schema): Schema
     {
@@ -137,18 +138,6 @@ class NewsfeedResource extends BaseResource
         return $schema
             ->columns(1)
             ->components([
-                TextEntry::make('headline')
-                    ->hiddenLabel()
-                    ->size(TextSize::Large)
-                    ->extraAttributes([
-                        'class' => 'font-bold',
-                    ]),
-                TextEntry::make('created_at')
-                    ->hiddenLabel()
-                    ->size(TextSize::Small)
-                    ->extraAttributes([
-                        'class' => '-mt-6 text-gray-700!',
-                    ]),
                 TextEntry::make('text')
                     ->hiddenLabel()
                     ->html(),
