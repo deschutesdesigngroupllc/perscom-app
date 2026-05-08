@@ -124,10 +124,12 @@ class Dashboard extends SettingsPage
                                     ->multiple()
                                     ->options(collect([
                                         'approved' => 'Approval Status',
+                                        'assignment' => 'Assignment',
                                         'assignment_records' => 'Assignment Records',
                                         'award_records' => 'Award Records',
                                         'combat_records' => 'Combat Records',
                                         'cover_photo' => 'Cover Photo',
+                                        'credentials' => 'Credentials',
                                         'created_at' => 'Joined At',
                                         'email' => 'Email',
                                         'email_verified_at' => 'Email Verification Date',

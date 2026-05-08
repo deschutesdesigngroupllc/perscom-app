@@ -19,7 +19,6 @@ use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
-use Carbon\CarbonInterval;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -240,6 +239,7 @@ class UserResource extends BaseResource
                     ->viewData(fn (User $record): array => [
                         'user' => $record,
                         'coverHeight' => resolve(DashboardSettings::class)->cover_photo_height ?? 224,
+                        'hiddenFields' => $hiddenFields,
                     ])
                     ->columnSpanFull(),
                 Tabs::make()
@@ -259,36 +259,22 @@ class UserResource extends BaseResource
                                             ->label('Email')
                                             ->icon('heroicon-o-envelope')
                                             ->copyable()
-                                            ->placeholder('—'),
+                                            ->placeholder('—')
+                                            ->hidden(fn (): bool => in_array('email', $hiddenFields)),
                                         TextEntry::make('email_verified_at')
                                             ->label('Email Verified')
                                             ->placeholder('Not verified')
-                                            ->dateTime(),
+                                            ->dateTime()
+                                            ->hidden(fn (): bool => in_array('email_verified_at', $hiddenFields)),
                                         TextEntry::make('created_at')
                                             ->label('Member Since')
-                                            ->dateTime(),
+                                            ->placeholder('—')
+                                            ->dateTime()
+                                            ->hidden(fn (): bool => in_array('created_at', $hiddenFields)),
                                     ]),
                                 Fieldset::make('Service')
-                                    ->columns(['default' => 1, 'md' => 3])
+                                    ->columns(['default' => 1, 'md' => 2])
                                     ->schema([
-                                        TextEntry::make('time_in_service')
-                                            ->label('Time in Service')
-                                            ->hidden(fn (): bool => in_array('time_in_service', $hiddenFields))
-                                            ->placeholder('—')
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
-                                        TextEntry::make('time_in_grade')
-                                            ->label('Time in Grade')
-                                            ->hidden(fn (User $record): bool => in_array('time_in_grade', $hiddenFields) || is_null($record->time_in_grade))
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
-                                        TextEntry::make('time_in_assignment')
-                                            ->label('Time in Assignment')
-                                            ->hidden(fn (User $record): bool => in_array('time_in_assignment', $hiddenFields) || is_null($record->time_in_assignment))
-                                            ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)?->forHumans() ?? '—'),
-                                        TextEntry::make('last_seen_at')
-                                            ->label('Last Online')
-                                            ->placeholder('Never')
-                                            ->dateTime()
-                                            ->hidden(fn (): bool => in_array('last_seen_at', $hiddenFields)),
                                         TextEntry::make('last_rank_change_date')
                                             ->label('Last Rank Change')
                                             ->dateTime()
@@ -303,6 +289,7 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Assignment')
                             ->icon('heroicon-o-rectangle-stack')
+                            ->visible(fn (): bool => ! in_array('assignment', $hiddenFields))
                             ->schema([
                                 Fieldset::make('Primary Assignment')
                                     ->columns(['default' => 1, 'md' => 3])
@@ -342,7 +329,8 @@ class UserResource extends BaseResource
                                             ->label('Approved')
                                             ->badge()
                                             ->state(fn (?User $record): string => $record?->approved ? 'Yes' : 'No')
-                                            ->color(fn (?User $record): string => $record?->approved ? 'success' : 'warning'),
+                                            ->color(fn (?User $record): string => $record?->approved ? 'success' : 'warning')
+                                            ->hidden(fn (): bool => in_array('approved', $hiddenFields)),
                                     ]),
                                 Section::make('Secondary Assignments')
                                     ->contained(false)
@@ -375,42 +363,42 @@ class UserResource extends BaseResource
                             ->icon('heroicon-o-trophy')
                             ->badge(fn (?User $record): ?int => $record?->awards?->count() ?: null)
                             ->badgeColor('warning')
+                            ->visible(fn (): bool => ! in_array('award_records', $hiddenFields))
                             ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->schema([
-                                        TextEntry::make('awards.name')
-                                            ->placeholder('No awards have been received yet.')
-                                            ->hiddenLabel()
-                                            ->listWithLineBreaks(),
+                                View::make('filament.app.infolists.user-image-grid')
+                                    ->columnSpanFull()
+                                    ->viewData(fn (User $record): array => [
+                                        'items' => $record->awards,
+                                        'emptyMessage' => 'No awards have been received yet.',
+                                        'fallbackIcon' => 'heroicon-o-trophy',
+                                        'storageKey' => 'user-awards-view',
                                     ]),
                             ]),
                         Tab::make('Qualifications')
                             ->icon('heroicon-o-star')
                             ->badge(fn (?User $record): ?int => $record?->qualifications?->count() ?: null)
                             ->badgeColor('success')
+                            ->visible(fn (): bool => ! in_array('qualification_records', $hiddenFields))
                             ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->schema([
-                                        TextEntry::make('qualifications.name')
-                                            ->placeholder('No qualifications have been earned yet.')
-                                            ->hiddenLabel()
-                                            ->listWithLineBreaks(),
+                                View::make('filament.app.infolists.user-image-grid')
+                                    ->columnSpanFull()
+                                    ->viewData(fn (User $record): array => [
+                                        'items' => $record->qualifications,
+                                        'emptyMessage' => 'No qualifications have been earned yet.',
+                                        'fallbackIcon' => 'heroicon-o-star',
                                     ]),
                             ]),
                         Tab::make('Credentials')
                             ->icon('heroicon-o-identification')
                             ->badge(fn (?User $record): ?int => $record?->credentials?->count() ?: null)
                             ->badgeColor('info')
+                            ->visible(fn (): bool => ! in_array('credentials', $hiddenFields))
                             ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->schema([
-                                        TextEntry::make('credentials.name')
-                                            ->placeholder('No credentials have been assigned yet.')
-                                            ->hiddenLabel()
-                                            ->listWithLineBreaks(),
+                                View::make('filament.app.infolists.user-credential-list')
+                                    ->columnSpanFull()
+                                    ->viewData(fn (User $record): array => [
+                                        'items' => $record->credentials,
+                                        'emptyMessage' => 'No credentials have been assigned yet.',
                                     ]),
                             ]),
                         Tab::make('Custom Fields')

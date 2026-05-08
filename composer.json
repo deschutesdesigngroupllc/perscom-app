@@ -79,6 +79,7 @@
     "filament/upgrade": "^5.6.1",
     "larastan/larastan": "^3.9.6",
     "laravel/pail": "^1.2.6",
+    "laravel/pao": "^1.0",
     "laravel/pint": "^1.29.1",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.9.4",

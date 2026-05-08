@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
@@ -24,6 +25,7 @@ abstract class TestCase extends BaseTestCase
 
         Queue::fake([PurgeApiCache::class]);
         Http::preventStrayRequests();
+        Config::set('inertia.ssr.enabled', false);
 
         $this->withoutMiddleware([ThrottleRequestsWithRedis::class, CacheResponse::class]);
     }
