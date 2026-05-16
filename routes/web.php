@@ -2,62 +2,37 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Landing\FindMyOrganizationController;
-use App\Http\Controllers\Landing\HomeController;
 use App\Http\Controllers\Landing\RegisterController;
 use App\Http\Controllers\Landing\VerifyController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
-use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST), 'middleware' => ['landing', CacheResponse::class]], static function (): void {
-    Route::get('/', [HomeController::class, 'index'])
-        ->name('landing.home');
+Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST)], static function (): void {
+    Route::get('/', static fn () => redirect()->away((string) config('app.landing_redirect_url'), 302))
+        ->name('landing.redirect');
 
-    Route::group(['prefix' => 'find-my-organization'], static function (): void {
-        Route::get('/', [FindMyOrganizationController::class, 'index'])
-            ->name('find-my-organization.index');
-        Route::post('/', [FindMyOrganizationController::class, 'store'])
-            ->name('find-my-organization.store')
-            ->middleware('throttle:find-my-organization');
-        Route::get('{tenant}', [FindMyOrganizationController::class, 'show'])
-            ->middleware('signed')
-            ->name('find-my-organization.show');
+    Route::get('health', HealthCheckResultsController::class)
+        ->middleware('auth:admin')
+        ->name('health');
+
+    Route::group(['middleware' => ['landing']], static function (): void {
+        Route::group(['prefix' => 'register', 'middleware' => ['env:production,local']], static function (): void {
+            Route::get('/', [RegisterController::class, 'index'])
+                ->name('register.index');
+            Route::post('/', [RegisterController::class, 'store'])
+                ->name('register.store')
+                ->middleware('throttle:register');
+            Route::get('verify/{registration}', VerifyController::class)
+                ->name('register.verify')
+                ->middleware('signed');
+            Route::get('complete', [RegisterController::class, 'show'])
+                ->name('register.show')
+                ->middleware('signed');
+        });
     });
 
-    Route::group(['prefix' => 'legal'], function (): void {
-        Route::inertia('acceptable-use-policy', 'legal/AcceptableUsePolicy')
-            ->name('acceptable-use-policy');
-
-        Route::inertia('cookie-policy', 'legal/CookiePolicy')
-            ->name('cookie-policy');
-
-        Route::inertia('privacy-policy', 'legal/PrivacyPolicy')
-            ->name('privacy-policy');
-
-        Route::inertia('terms-of-service', 'legal/TermsOfService')
-            ->name('terms-of-service');
-    });
-
-    Route::group(['prefix' => 'register', 'middleware' => ['env:production,local']], static function (): void {
-        Route::get('/', [RegisterController::class, 'index'])
-            ->name('register.index');
-        Route::post('/', [RegisterController::class, 'store'])
-            ->name('register.store')
-            ->middleware('throttle:register');
-        Route::get('verify/{registration}', VerifyController::class)
-            ->name('register.verify')
-            ->middleware('signed');
-        Route::get('complete', [RegisterController::class, 'show'])
-            ->name('register.show')
-            ->middleware('signed');
-    });
+    Route::fallback(static fn () => redirect()->away((string) config('app.landing_redirect_url'), 302));
 });
 
 Route::redirect('/slack', config('services.slack.invite_link'))
     ->name('slack');
-
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.'], function (): void {
-    Route::get('health', HealthCheckResultsController::class)
-        ->name('health');
-});
