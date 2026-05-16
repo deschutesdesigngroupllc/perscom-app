@@ -5,100 +5,153 @@ services:
       dockerfile: Dockerfile
       target: development
       args:
-        USER_ID: "${UID:-33}"
-        GROUP_ID: "${GID:-33}"
+        USER_ID: "${UID:-1000}"
+        GROUP_ID: "${GID:-1000}"
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     ports:
-      - 8080:8080
+      - "${APP_PORT:-8080}:8080"
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./:/var/www/html
     environment:
-      CACHE_STORE: 'redis'
-      DB_CONNECTION: '${DB_CONNECTION:-mysql}'
-      DB_DATABASE: '${DB_DATABASE:-perscom}'
-      DB_USERNAME: '${DB_USERNAME:-root}'
-      DB_HOST: "mysql"
+      RUN_SETUP: "1"
+      AUTORUN_LARAVEL_MIGRATION: "false"
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      APP_ENV: "${APP_ENV:-local}"
+      APP_DEBUG: "${APP_DEBUG:-true}"
+      CACHE_STORE: redis
+      DB_CONNECTION: "${DB_CONNECTION:-mysql}"
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: perscom
+      DB_USERNAME: perscom
+      DB_PASSWORD: perscom
       PHP_UPLOAD_MAX_FILE_SIZE: "250M"
       PHP_OPCACHE_ENABLE: "0"
-      QUEUE_CONNECTION: 'redis'
-      REDIS_HOST: 'redis'
-      SESSION_DRIVER: 'redis'
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "null"
+      SESSION_DRIVER: redis
     networks:
       - perscom
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/up"]
+      start_period: 30s
+      interval: 10s
+      retries: 5
 
   mysql:
-    image: 'mysql:8.4'
+    image: mysql:8.4
     ports:
-      - 3306:3306
+      - "${DB_PORT:-3306}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_DATABASE: perscom
+      MYSQL_USER: perscom
+      MYSQL_PASSWORD: perscom
+      MYSQL_ROOT_PASSWORD: perscom
       MYSQL_ROOT_HOST: "%"
-      MYSQL_DATABASE: '${DB_DATABASE:-perscom}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-      MYSQL_EXTRA_OPTIONS: '${MYSQL_EXTRA_OPTIONS:-}'
     volumes:
-      - 'mysql:/var/lib/mysql'
+      - mysql:/var/lib/mysql
     networks:
       - perscom
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
-      retries: 3
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pperscom"]
+      interval: 5s
+      retries: 10
       timeout: 5s
+      start_period: 20s
 
   redis:
-    image: 'redis:alpine'
+    image: redis:alpine
     ports:
-      - 6379:6379
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
-      - 'redis:/data'
-    environment:
-      DB_HOST: "mysql"
-      REDIS_HOST: "redis"
+      - redis:/data
     networks:
       - perscom
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      retries: 3
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 10
       timeout: 5s
 
   horizon:
-    image: serversideup/php:8.4-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        USER_ID: "${UID:-1000}"
+        GROUP_ID: "${GID:-1000}"
     depends_on:
-      - perscom
-      - redis
-      - mysql
+      perscom:
+        condition: service_healthy
     volumes:
       - ./:/var/www/html
     environment:
-      DB_HOST: "mysql"
-      REDIS_HOST: "redis"
-    command: [ "php", "/var/www/html/artisan", "horizon" ]
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      APP_KEY: "${APP_KEY:-}"
+      CACHE_STORE: redis
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: perscom
+      DB_USERNAME: perscom
+      DB_PASSWORD: perscom
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "null"
+      SESSION_DRIVER: redis
+    command: ["php", "/var/www/html/artisan", "horizon"]
     stop_signal: SIGTERM
     networks:
       - perscom
     healthcheck:
-      test: [ "CMD", "healthcheck-horizon" ]
-      start_period: 10s
+      test: ["CMD", "healthcheck-horizon"]
+      start_period: 30s
 
   scheduler:
-    image: serversideup/php:8.4-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+      args:
+        USER_ID: "${UID:-1000}"
+        GROUP_ID: "${GID:-1000}"
     depends_on:
-      - perscom
-      - mysql
+      perscom:
+        condition: service_healthy
     volumes:
       - ./:/var/www/html
-    command: [ "php", "/var/www/html/artisan", "schedule:work" ]
+    environment:
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      APP_KEY: "${APP_KEY:-}"
+      CACHE_STORE: redis
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: perscom
+      DB_USERNAME: perscom
+      DB_PASSWORD: perscom
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "null"
+      SESSION_DRIVER: redis
+    command: ["php", "/var/www/html/artisan", "schedule:work"]
     stop_signal: SIGTERM
     networks:
       - perscom
     healthcheck:
-      test: [ "CMD", "healthcheck-schedule" ]
-      start_period: 10s
+      test: ["CMD", "healthcheck-schedule"]
+      start_period: 30s
 
 networks:
   perscom:

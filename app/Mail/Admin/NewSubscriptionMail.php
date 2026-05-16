@@ -35,13 +35,15 @@ class NewSubscriptionMail extends Mailable
         /** @var Tenant $owner */
         $owner = $this->subscription->owner->fresh();
 
+        $plan = config('billing.plans.'.$this->subscription->stripe_price);
+
         return new Content(
             markdown: 'emails.admin.new-subscription',
             with: [
                 'tenant' => $owner->name,
                 'url' => $owner->url,
-                'plan' => $owner->sparkPlan()?->name,
-                'interval' => Str::ucfirst($owner->sparkPlan()?->interval),
+                'plan' => $plan['name'] ?? null,
+                'interval' => Str::ucfirst($plan['interval'] ?? ''),
             ]
         );
     }

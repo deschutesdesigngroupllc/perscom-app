@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST)], static function (): void {
-    Route::get('/', static fn () => redirect()->away((string) config('app.landing_redirect_url'), 302))
+    Route::get('/', static fn () => redirect()->away((string) config('app.landing_redirect_url')))
         ->name('landing.redirect');
 
     Route::get('health', HealthCheckResultsController::class)

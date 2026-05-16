@@ -23,7 +23,7 @@ class Billing extends Page
 
     public static function getUrl(array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null, bool $shouldGuessMissingParameters = false, ?string $configuration = null): string
     {
-        return route('spark.portal');
+        return tenant()?->billingPortalUrl(url()->current()) ?? '#';
     }
 
     public static function canAccess(): bool

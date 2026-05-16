@@ -179,7 +179,7 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->url(fn (): string => route('spark.portal'), shouldOpenInNewTab: true)
+                    ->action(fn () => tenant() ? redirect()->away(tenant()->billingPortalUrl(request()->headers->get('referer') ?: url('/'))) : null)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')

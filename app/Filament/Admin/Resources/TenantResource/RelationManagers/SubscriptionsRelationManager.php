@@ -61,7 +61,7 @@ class SubscriptionsRelationManager extends RelationManager
                     ->label('Price')
                     ->sortable(),
                 TextColumn::make('plan')
-                    ->getStateUsing(fn (?Subscription $record) => $record->owner?->sparkPlan()->name ?? null),
+                    ->getStateUsing(fn (?Subscription $record): ?string => config(sprintf('billing.plans.%s.name', $record?->stripe_price))),
                 TextColumn::make('quantity')
                     ->sortable(),
                 TextColumn::make('trial_ends_at')

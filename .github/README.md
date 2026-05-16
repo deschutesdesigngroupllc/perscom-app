@@ -56,14 +56,27 @@ The application configuration is set with sensible defaults to get you started. 
    cd perscom-app
    ```
 
-2. **Start the application:**
+2. **Start the application** using either Laravel Herd or Docker Compose:
+
+   **Option A — Laravel Herd (macOS, recommended):**
+
+   Install [Laravel Herd](https://herd.laravel.com/download) and park the cloned project in a Herd-managed directory. From the project root, run the wizard to provision PHP, services, and domain aliases from the bundled `herd.yml`:
+
    ```bash
-   # Laravel Herd
-   # Start Laravel Herd following documentation
-   
-   # Docker
-   docker compose up
+   herd init
    ```
+
+   This installs PHP 8.4, MySQL, and Redis (Herd Pro), and serves the site at `http://perscom.test` with the `app.perscom.test` alias used by tenant subdomain routing.
+
+   **Option B — Docker Compose (cross-platform):**
+
+   Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and bring up the stack defined in `compose.yaml` (app, MySQL, Redis, Horizon, scheduler):
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+   The app is served at `http://localhost:8080`. Run subsequent `composer`/`artisan`/`npm` commands inside the container with `docker compose exec perscom <command>`.
 
 3. **Run the setup:**
    ```bash

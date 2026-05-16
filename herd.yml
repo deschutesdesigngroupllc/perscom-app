@@ -1,0 +1,12 @@
+name: perscom
+php: '8.4'
+secured: false
+aliases:
+    - app.perscom
+services:
+    mysql:
+        version: 8.4
+        port: '${DB_PORT}'
+    redis:
+        version: 7.4
+        port: '${REDIS_PORT}'
