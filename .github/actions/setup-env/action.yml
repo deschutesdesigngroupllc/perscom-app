@@ -39,7 +39,7 @@ runs:
     - name: Install npm Dependencies
       if: inputs.node == 'true'
       shell: bash
-      run: npm ci
+      run: npm install --no-audit --no-fund
 
     - name: Install Composer Dependencies
       shell: bash

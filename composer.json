@@ -181,7 +181,7 @@
     "rector": "./vendor/bin/rector process --ansi",
     "reset": [
       "@composer install --no-interaction --no-progress",
-      "npm ci --no-audit --no-fund",
+      "npm install --no-audit --no-fund",
       "npm run build",
       "@php artisan migrate:fresh --seed",
       "@php artisan horizon:purge",

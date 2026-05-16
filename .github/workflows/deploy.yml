@@ -41,7 +41,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Javascript Dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

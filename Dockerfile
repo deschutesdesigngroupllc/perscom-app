@@ -42,7 +42,7 @@ RUN --mount=type=cache,target=/tmp/composer-cache \
 
 # Cache JS dependencies separately from source.
 COPY --chown=www-data:www-data package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm npm install --no-audit --no-fund
 
 COPY --chown=www-data:www-data . /var/www/html
 
@@ -117,7 +117,7 @@ RUN --mount=type=cache,target=/tmp/composer-cache \
 
 # Install JS dependencies first to leverage layer cache.
 COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm npm install --no-audit --no-fund
 
 # Copy the rest of the source and finalize the build.
 COPY . /var/www/html
