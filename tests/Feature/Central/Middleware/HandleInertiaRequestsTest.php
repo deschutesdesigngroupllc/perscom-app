@@ -26,7 +26,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
 
     public function test_internal_redirect_response_returns_302_status(): void
     {
-        Route::post('/redirect', static fn () => to_route('web.landing.home'))->middleware(HandleInertiaRequests::class);
+        Route::post('/redirect', static fn () => to_route('web.register.index'))->middleware(HandleInertiaRequests::class);
 
         $this->withHeader('X-Inertia', 'true')
             ->post('/redirect')
@@ -35,7 +35,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
 
     public function test_internal_redirect_response_returns_303_status(): void
     {
-        Route::delete('/redirect', static fn () => to_route('web.landing.home', status: 303))->middleware(HandleInertiaRequests::class);
+        Route::delete('/redirect', static fn () => to_route('web.register.index', status: 303))->middleware(HandleInertiaRequests::class);
 
         $this->withHeader('X-Inertia', 'true')
             ->delete('/redirect')
@@ -46,7 +46,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
     {
         $this->followRedirects = true;
 
-        Route::delete('/redirect', static fn () => to_route('web.landing.home', status: 303))->middleware(HandleInertiaRequests::class);
+        Route::delete('/redirect', static fn () => to_route('web.register.index', status: 303))->middleware(HandleInertiaRequests::class);
 
         $response = $this->withHeader('X-Inertia', 'true')
             ->delete('/redirect');

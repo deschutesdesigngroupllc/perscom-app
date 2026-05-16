@@ -13,8 +13,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
-use Spark\Plan;
-use Spark\Spark;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -110,10 +108,6 @@ class Subscription extends BaseSubscription
 
     protected function renewalTerm(): Attribute
     {
-        return Attribute::get(function (): ?string {
-            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan): array => [$plan->id => $plan->interval]);
-
-            return data_get($plans, $this->stripe_price);
-        })->shouldCache();
+        return Attribute::get(fn (): ?string => config(sprintf('billing.plans.%s.interval', $this->stripe_price)))->shouldCache();
     }
 }

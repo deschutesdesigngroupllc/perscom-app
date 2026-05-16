@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckSubscription extends VerifyBillableIsSubscribed
+class CheckSubscription
 {
-    private Request $request;
-
-    public function handle($request, $next, $billableType = null, $plan = null): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        $this->request = $request;
         $authenticated = array_any(['web', 'api'], fn ($guard) => Auth::guard($guard)->check());
 
         if (App::isDemo() ||
@@ -27,15 +24,16 @@ class CheckSubscription extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        return parent::handle($request, $next, $billableType, $plan);
-    }
+        $tenant = tenant();
 
-    protected function redirect(string $billableType): string
-    {
-        if ($this->request->expectsJson()) {
-            abort(402);
+        if ($tenant && ($tenant->onGenericTrial() || $tenant->onTrial() || $tenant->subscribed())) {
+            return $next($request);
         }
 
-        return parent::redirect($billableType);
+        if ($request->expectsJson()) {
+            abort(Response::HTTP_PAYMENT_REQUIRED);
+        }
+
+        return redirect()->to($tenant?->billingPortalUrl(url()->current()) ?? '/');
     }
 }

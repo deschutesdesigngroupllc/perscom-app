@@ -216,7 +216,7 @@ class TenantResource extends Resource
                 TextColumn::make('term')
                     ->label('Subscription Term')
                     ->color('gray')
-                    ->getStateUsing(fn (Tenant $record) => Str::headline($record->sparkPlan()?->interval ?? 'No Subscription'))
+                    ->getStateUsing(fn (Tenant $record): string => Str::headline($record->subscription()?->renewal_term ?? 'No Subscription'))
                     ->badge(),
                 TextColumn::make('subscriptions.ends_at')
                     ->placeholder('No End Date')

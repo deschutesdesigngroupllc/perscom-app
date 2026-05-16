@@ -17,7 +17,6 @@
     "dutchcodingcompany/filament-socialite": "^3.2.1",
     "fakerphp/faker": "^1.24.1",
     "filament/filament": "^5.6.1",
-    "filament/spark-billing-provider": "^5.6.1",
     "filament/spatie-laravel-google-fonts-plugin": "^5.6.1",
     "filament/spatie-laravel-settings-plugin": "^5.6.1",
     "flowframe/laravel-trend": "^0.5.0",
@@ -32,8 +31,8 @@
     "laravel/passport": "^13.7.5",
     "laravel/pennant": "^1.23.0",
     "laravel/pulse": "^1.7.3",
+    "laravel/cashier": "^16.0",
     "laravel/slack-notification-channel": "^3.8.0",
-    "laravel/spark-stripe": "^6.2.1",
     "laravel/telescope": "^5.20",
     "laravel/tinker": "^3.0.2",
     "league/flysystem-aws-s3-v3": "^3.32.0",
@@ -95,10 +94,6 @@
     "padmission/data-lens": "Custom report builder for Filament (^2.2.5)"
   },
   "repositories": [
-    {
-      "type": "composer",
-      "url": "https://spark.laravel.com"
-    },
     {
       "type": "vcs",
       "url": "https://github.com/jonerickson/laravel-meta"
@@ -186,7 +181,7 @@
     "rector": "./vendor/bin/rector process --ansi",
     "reset": [
       "@composer install --no-interaction --no-progress",
-      "npm ci --no-audit --no-fund",
+      "npm install --no-audit --no-fund",
       "npm run build",
       "@php artisan migrate:fresh --seed",
       "@php artisan horizon:purge",
@@ -201,7 +196,7 @@
       "@php artisan passport:keys --force",
       "npm install",
       "npm run build",
-      "@php artisan perscom:install"
+      "@php artisan perscom:install --force"
     ],
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "tc": "@test-coverage",

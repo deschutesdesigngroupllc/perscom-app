@@ -88,7 +88,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(fn (): string => Dashboard::getUrl());
 
         $middleware->preventRequestForgery(except: [
-            'spark/*',
+            'stripe/*',
         ]);
 
         $middleware->appendToGroup('landing', [

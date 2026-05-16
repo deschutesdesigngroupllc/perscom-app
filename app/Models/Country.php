@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Lwwcas\LaravelCountries\Models\Country as BaseCountry;
 use Lwwcas\LaravelCountries\Models\CountryCoordinates;
@@ -160,7 +159,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Country whereWorldMeteorologicalOrganizationCode(string $wmo)
  * @method static Builder<static>|Country withTranslation(?string $locale = null)
  *
- * @mixin Model
+ * @mixin \Illuminate\Database\Eloquent\Model
  */
 class Country extends BaseCountry
 {

@@ -44,7 +44,7 @@ class TenantObserverTest extends CentralTestCase
             'type' => 'default',
             'stripe_id' => Str::random(10),
             'stripe_status' => 'active',
-            'stripe_price' => config('spark.billables.tenant.plans.0.monthly_id'),
+            'stripe_price' => 'price_test_monthly',
             'quantity' => 1,
             'trial_ends_at' => now()->addWeek(),
             'ends_at' => null,

@@ -50,7 +50,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_with_subscription(): void
     {
-        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'));
+        $this->withSubscription('price_test_monthly');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -61,7 +61,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_subscription(): void
     {
-        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'), 'incomplete');
+        $this->withSubscription('price_test_monthly', 'incomplete');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -72,7 +72,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_expired_subscription(): void
     {
-        $this->withSubscription(config('spark.billables.tenant.plans.0.monthly_id'), 'incomplete_expired');
+        $this->withSubscription('price_test_monthly', 'incomplete_expired');
 
         $this->withMiddleware(CheckSubscription::class);
 

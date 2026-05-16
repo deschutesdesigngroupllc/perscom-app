@@ -14,7 +14,7 @@ trait TenantHelpers
 
     public function withSubscription(string|int|null $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
     {
-        $priceId ??= config('spark.billables.tenant.plans.0.monthly_id');
+        $priceId ??= array_key_first(array_filter(config('billing.plans', []))) ?? 'price_test_monthly';
 
         $this->withoutSubscription();
 

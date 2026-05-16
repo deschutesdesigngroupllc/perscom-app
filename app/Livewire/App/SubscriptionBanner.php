@@ -18,6 +18,8 @@ class SubscriptionBanner extends Component
 
     public bool $show = false;
 
+    public string $returnUrl = '';
+
     public function mount(): void
     {
         /** @var ?Tenant $tenant */
@@ -26,6 +28,8 @@ class SubscriptionBanner extends Component
         if (blank($tenant)) {
             return;
         }
+
+        $this->returnUrl = url()->current();
 
         $timezone = UserSettingsService::get('timezone', function () {
             /** @var OrganizationSettings $settings */
@@ -52,6 +56,18 @@ class SubscriptionBanner extends Component
         };
 
         $this->show = filled($this->message) && Auth::user() && Gate::check('billing');
+    }
+
+    public function redirectToBillingPortal(): void
+    {
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
+
+        if (blank($tenant)) {
+            return;
+        }
+
+        $this->redirect($tenant->billingPortalUrl($this->returnUrl));
     }
 
     public function render(): View

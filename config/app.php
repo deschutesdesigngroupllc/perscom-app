@@ -59,6 +59,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
     'base_url' => env('BASE_URL', '.localhost'),
     'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
+    'landing_redirect_url' => env('LANDING_REDIRECT_URL', 'https://perscom.io'),
     'asset_url' => env('ASSET_URL'),
     'scheme' => env('APP_SCHEME', 'http'),
     'mix_url' => env('ASSET_URL'),

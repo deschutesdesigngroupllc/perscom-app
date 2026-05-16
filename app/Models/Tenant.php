@@ -22,9 +22,9 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Str;
+use Laravel\Cashier\Billable;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Contracts\FeatureScopeable;
-use Spark\Billable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -49,7 +49,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @property string|null $billing_state
  * @property string|null $billing_postal_code
  * @property string|null $vat_id
- * @property array $invoice_emails
+ * @property string|null $invoice_emails
  * @property string|null $billing_country
  * @property array<array-key, mixed>|null $data
  * @property Carbon|null $last_login_at
@@ -113,7 +113,9 @@ use Stancl\Tenancy\Database\TenantCollection;
 #[ObservedBy(TenantObserver::class)]
 class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 {
-    use Billable;
+    use Billable {
+        billingPortalUrl as protected baseBillingPortalUrl;
+    }
     use CentralConnection;
     use ClearsResponseCache;
     use HasDatabase;
@@ -194,6 +196,16 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         }
 
         return parent::resolveRouteBinding($value, $field);
+    }
+
+    /**
+     * @param  array<string, mixed>  $options
+     */
+    public function billingPortalUrl($returnUrl = null, array $options = []): string
+    {
+        $this->createOrGetStripeCustomer();
+
+        return $this->baseBillingPortalUrl($returnUrl, $options);
     }
 
     protected function databaseStatus(): Attribute
@@ -285,14 +297,15 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     protected function subscriptionPlan(): Attribute
     {
         return Attribute::get(function (): SubscriptionPlanType {
-            $plan = $this->sparkPlan();
+            $price = $this->subscription()?->stripe_price;
+
+            $plan = $price ? config('billing.plans.'.$price) : null;
 
             if (blank($plan)) {
                 return SubscriptionPlanType::NONE;
             }
 
-            return SubscriptionPlanType::from(Str::lower($plan->name));
-
+            return SubscriptionPlanType::from(Str::lower($plan['name']));
         })->shouldCache();
     }
 

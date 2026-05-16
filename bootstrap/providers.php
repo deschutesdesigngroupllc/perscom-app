@@ -12,7 +12,6 @@ return [
     App\Providers\HorizonServiceProvider::class,
     App\Providers\HttpServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
-    App\Providers\SparkServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\TenancyServiceProvider::class,
     App\Providers\TwigServiceProvider::class,

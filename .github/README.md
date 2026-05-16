@@ -56,21 +56,39 @@ The application configuration is set with sensible defaults to get you started. 
    cd perscom-app
    ```
 
-2. **Start the application:**
+2. **Start the application** using either Laravel Herd or Docker Compose:
+
+   **Option A — Laravel Herd (macOS, recommended):**
+
+   Install [Laravel Herd](https://herd.laravel.com/download) and park the cloned project in a Herd-managed directory. From the project root, run the wizard to provision PHP, services, and domain aliases from the bundled `herd.yml`:
+
    ```bash
-   # Laravel Herd
-   # Start Laravel Herd following documentation
-   
-   # Docker
-   docker compose up
+   herd init
    ```
 
-3. **Run the setup:**
+   This installs PHP 8.4, MySQL, and Redis (Herd Pro), and serves the site at `http://perscom.test` with the `app.perscom.test` alias used by tenant subdomain routing.
+
+   Then bootstrap the application:
+
    ```bash
    composer setup
    ```
 
-   `composer setup` will install dependencies, copy `.env.example` to `.env`, generate application/JWT/Passport keys, build frontend assets, and run `php artisan perscom:install` to migrate, seed, and bootstrap the first tenant. When run interactively, the install command will prompt you to choose which type of organization to seed (Military, Fire Service, or Law Enforcement).
+   `composer setup` installs dependencies, copies `.env.example` to `.env`, generates application/JWT/Passport keys, builds frontend assets, and runs `php artisan perscom:install` to migrate, seed, and bootstrap the first tenant. When run interactively, the install command will prompt you to choose which type of organization to seed (Military, Fire Service, or Law Enforcement).
+
+   **Option B — Docker Compose (cross-platform):**
+
+   Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and bring up the stack defined in `compose.yaml` (app, MySQL, Redis, Horizon, scheduler):
+
+   ```bash
+   docker compose up -d --build
+   ```
+
+   On first start, the app container automatically runs `composer setup` inside the container if it detects a missing `.env`, missing `vendor/`, or unset `APP_KEY`. No additional command is required.
+
+   The app is served at `http://localhost:8080`. Run subsequent `composer`/`artisan`/`npm` commands inside the container with `docker compose exec perscom <command>`.
+
+   > **Note:** `.env.example` defaults to Herd-style URLs (`http://app.perscom.test`, `http://auth.perscom.test`, etc.). After the container generates your `.env`, update `APP_URL`, `AUTH_URL`, `API_URL`, `WIDGET_URL`, and any other URL values to use `http://localhost:8080` (or your chosen `APP_PORT`) so links, redirects, and OAuth callbacks resolve correctly. Service hosts like `DB_HOST` and `REDIS_HOST` are already overridden at runtime by the compose env vars and do not need to be edited.
 
 ### Reinstalling or Re-seeding
 

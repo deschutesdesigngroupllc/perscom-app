@@ -11,7 +11,7 @@ class AttachTraceAndRequestIdTest extends CentralTestCase
 {
     public function test_request_and_trace_ids_are_attached_to_response_headers(): void
     {
-        $this->get(route('web.landing.home'))
+        $this->get(route('web.register.index'))
             ->assertHeader('X-Perscom-Request-Id', Context::get('request_id'))
             ->assertHeader('X-Perscom-Trace-Id', Context::get('trace_id'));
     }

@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Filament\Admin\Pages\Auth\Login;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\SentryContext;
+use App\Http\Middleware\SetAuthGuard;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -52,19 +53,19 @@ class AdminPanelProvider extends PanelProvider
                     ->icon('heroicon-o-heart')
                     ->group('Tools')
                     ->sort(3)
-                    ->url(config('app.admin_url').'/admin/health', shouldOpenInNewTab: true),
+                    ->url(config('app.url').'/health', shouldOpenInNewTab: true),
                 NavigationItem::make('Horizon')
                     ->icon('heroicon-o-queue-list')
                     ->group('Tools')
                     ->sort(3)
-                    ->url(config('app.admin_url').'/admin/horizon', shouldOpenInNewTab: true),
+                    ->url(config('app.url').'/'.config('horizon.path'), shouldOpenInNewTab: true),
                 NavigationItem::make('Pulse')
-                    ->url(config('app.admin_url').'/admin/pulse', shouldOpenInNewTab: true)
+                    ->url(config('app.url').'/'.config('pulse.path'), shouldOpenInNewTab: true)
                     ->icon('heroicon-o-heart')
                     ->group('Tools')
                     ->sort(3),
                 NavigationItem::make('Telescope')
-                    ->url(config('app.admin_url').'/admin/telescope', shouldOpenInNewTab: true)
+                    ->url(config('app.url').'/'.config('telescope.path'), shouldOpenInNewTab: true)
                     ->visible(fn () => config('telescope.enabled'))
                     ->icon('heroicon-o-presentation-chart-line')
                     ->group('Tools')
@@ -72,6 +73,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->middleware([
+                SetAuthGuard::class.':admin',
                 AttachTraceAndRequestId::class,
                 SentryContext::class,
                 EncryptCookies::class,
