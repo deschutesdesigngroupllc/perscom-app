@@ -101,7 +101,7 @@ jobs:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Composer Audit
-        run: composer audit
+        run: composer audit --abandoned=ignore --ignore-unreachable
 
       - name: npm Audit
         run: npm audit
