@@ -2,11 +2,16 @@ name: perscom
 php: '8.4'
 secured: false
 aliases:
+    - api.perscom
     - app.perscom
+    - auth.perscom
 services:
     mysql:
-        version: 8.4
+        version: 8.4.2
         port: '${DB_PORT}'
     redis:
-        version: 7.4
+        version: 7.0.0
         port: '${REDIS_PORT}'
+    minio:
+        version: RELEASE.2025-09-07
+        port: 9000
