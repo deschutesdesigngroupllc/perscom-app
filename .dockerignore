@@ -7,6 +7,7 @@
 .phpunit.cache
 .phpunit.result.cache
 .phpstorm.meta.php
+.rector.cache
 
 node_modules
 vendor

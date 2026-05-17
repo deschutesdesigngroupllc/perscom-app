@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
@@ -13,9 +12,9 @@ use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
 return RectorConfig::configure()
+    ->withComposerBased(laravel: true)
     ->withCache(
-        cacheDirectory: '/tmp/rector',
-        cacheClass: FileCacheStorage::class
+        cacheDirectory: __DIR__.'/.rector.cache',
     )
     ->withPaths([
         __DIR__.'/app',

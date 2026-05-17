@@ -11,6 +11,7 @@ use App\Filament\Admin\Resources\TenantResource\Pages\ListTenants;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
 use App\Models\Enums\SubscriptionStatus;
+use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Rules\SubdomainRule;
@@ -216,7 +217,12 @@ class TenantResource extends Resource
                 TextColumn::make('term')
                     ->label('Subscription Term')
                     ->color('gray')
-                    ->getStateUsing(fn (Tenant $record): string => Str::headline($record->subscription()?->renewal_term ?? 'No Subscription'))
+                    ->getStateUsing(function (Tenant $record): string {
+                        /** @var Subscription|null $subscription */
+                        $subscription = $record->subscription();
+
+                        return Str::headline($subscription?->renewal_term ?? 'No Subscription');
+                    })
                     ->badge(),
                 TextColumn::make('subscriptions.ends_at')
                     ->placeholder('No End Date')

@@ -9,6 +9,7 @@
 .phpstorm.meta.php
 .phpunit.cache
 .phpunit.result.cache
+.rector.cache
 .rnd
 .styleci.yml
 /.ai/mcp/mcp.json
