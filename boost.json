@@ -1,8 +1,9 @@
 {
   "agents": ["claude_code", "opencode", "cursor", "codex"],
+  "cloud": false,
   "guidelines": true,
   "mcp": true,
-  "nightwatch_mcp": false,
+  "nightwatch": false,
   "packages": [
     "filament/filament",
     "spatie/laravel-ray",
