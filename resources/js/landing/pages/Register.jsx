@@ -34,7 +34,7 @@ export default function Register() {
     <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
-          <a href={route('web.landing.home')}>
+          <a href={route('filament.app.pages.dashboard')}>
             <Logo className='mb-2 h-16 w-auto sm:h-18 md:h-20' />
           </a>
         </div>
@@ -74,32 +74,25 @@ export default function Register() {
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} className='mt-1' />
                 <span className='ml-2 text-sm'>
                   I have read and agree to the{' '}
-                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.acceptable-use-policy')}>
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href='https://perscom.io/legal/acceptable-use'>
                     Acceptable Use Policy
                   </a>
                   ,{' '}
-                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.cookie-policy')}>
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href='https://perscom.io/legal/cookies'>
                     Cookie Policy
                   </a>
                   ,{' '}
-                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.privacy-policy')}>
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href='https://perscom.io/legal/privacy'>
                     Privacy Policy
                   </a>{' '}
                   and{' '}
-                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.terms-of-service')}>
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href='https://perscom.io/legal/terms'>
                     Terms of Service
                   </a>
                   .
                 </span>
               </label>
             </div>
-          </div>
-          <div className='pt-2 text-sm'>
-            Already have an account? Find it{' '}
-            <a href={route('web.find-my-organization.index')} className='font-semibold'>
-              here
-            </a>
-            .
           </div>
           {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} onSuccess={onTurnstileSuccess} />}
           <Button type='submit' processing={processing} color='blue' className='w-full'>

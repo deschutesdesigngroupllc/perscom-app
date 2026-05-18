@@ -353,6 +353,6 @@ class AppServiceProvider extends ServiceProvider
             $table->defaultSort('created_at', 'desc');
         });
 
-        URL::forceHttps(App::isProduction());
+        URL::forceHttps(App::isProduction() || $this->app->make('config')->get('app.scheme') === 'https');
     }
 }

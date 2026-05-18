@@ -1,6 +1,6 @@
 name: perscom
 php: '8.4'
-secured: false
+secured: true
 aliases:
     - api.perscom
     - app.perscom

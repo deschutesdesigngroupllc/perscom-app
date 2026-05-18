@@ -1,35 +1,30 @@
 {
-    "agents": [
-        "claude_code",
-        "opencode",
-        "cursor",
-        "codex"
-    ],
-    "guidelines": true,
-    "mcp": true,
-    "nightwatch_mcp": false,
-    "packages": [
-        "filament/filament",
-        "spatie/laravel-ray",
-        "spatie/laravel-backup",
-        "spatie/laravel-responsecache",
-        "barryvdh/laravel-debugbar"
-    ],
-    "sail": false,
-    "skills": [
-        "cashier-stripe-development",
-        "laravel-best-practices",
-        "configuring-horizon",
-        "passport-development",
-        "pennant-development",
-        "pulse-development",
-        "socialite-development",
-        "pest-testing",
-        "inertia-react-development",
-        "tailwindcss-development",
-        "laravel-backup",
-        "responsecache-development",
-        "debug-using-debugbar",
-        "debugging-output-and-previewing-html-using-ray"
-    ]
+  "agents": ["claude_code", "opencode", "cursor", "codex"],
+  "guidelines": true,
+  "mcp": true,
+  "nightwatch_mcp": false,
+  "packages": [
+    "filament/filament",
+    "spatie/laravel-ray",
+    "spatie/laravel-backup",
+    "spatie/laravel-responsecache",
+    "barryvdh/laravel-debugbar"
+  ],
+  "sail": false,
+  "skills": [
+    "cashier-stripe-development",
+    "laravel-best-practices",
+    "configuring-horizon",
+    "passport-development",
+    "pennant-development",
+    "pulse-development",
+    "socialite-development",
+    "pest-testing",
+    "inertia-react-development",
+    "tailwindcss-development",
+    "laravel-backup",
+    "responsecache-development",
+    "debug-using-debugbar",
+    "debugging-output-and-previewing-html-using-ray"
+  ]
 }

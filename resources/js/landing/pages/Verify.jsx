@@ -11,7 +11,7 @@ export default function Verify() {
     <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
-          <a href={route('web.landing.home')}>
+          <a href={route('filament.app.pages.dashboard')}>
             <Logo className='mb-2 h-16 w-auto sm:h-18 md:h-20' />
           </a>
         </div>
