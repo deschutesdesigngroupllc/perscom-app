@@ -26,7 +26,7 @@ class CheckSubscription
 
         $tenant = tenant();
 
-        if ($tenant && ($tenant->onGenericTrial() || $tenant->onTrial() || $tenant->subscribed())) {
+        if ($tenant && ($tenant->onGenericTrial() || $tenant->onTrial() || $tenant->subscribed() || $tenant->created_at?->gt(now()->subDays(7)))) {
             return $next($request);
         }
 
