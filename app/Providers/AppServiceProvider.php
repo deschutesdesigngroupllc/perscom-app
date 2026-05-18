@@ -16,6 +16,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Policies\CustomReportPolicy;
 use App\Services\ApiPermissionService;
+use App\Services\BillingService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use App\Support\Backup\TenantTemporaryDirectory;
@@ -70,6 +71,8 @@ class AppServiceProvider extends ServiceProvider
 
         Cashier::useCustomerModel(Tenant::class);
         Cashier::useSubscriptionModel(Subscription::class);
+
+        $this->app->singleton(BillingService::class);
 
         Passport::$cookie = 'perscom_api_key';
         Passport::$decryptsCookies = false;

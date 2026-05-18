@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
+use App\Facades\Billing;
 use App\Filament\Admin\Resources\TenantResource\Actions\SwapSubscriptionBulkAction;
 use App\Filament\Admin\Resources\TenantResource\Pages\CreateTenant;
 use App\Filament\Admin\Resources\TenantResource\Pages\EditTenant;
@@ -232,7 +233,7 @@ class TenantResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 IconColumn::make('trial')
                     ->boolean()
-                    ->getStateUsing(fn (Tenant $record): bool => $record->onTrial()),
+                    ->getStateUsing(fn (Tenant $record): bool => Billing::onTrial($record)),
                 TextColumn::make('subscriptions.trial_ends_at')
                     ->placeholder('No End Date')
                     ->label('Trial Ends')

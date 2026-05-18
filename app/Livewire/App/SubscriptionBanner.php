@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\App;
 
+use App\Facades\Billing;
 use App\Models\Tenant;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
@@ -49,7 +50,7 @@ class SubscriptionBanner extends Component
         }
 
         $this->message = match (true) {
-            $tenant->onTrial() && isset($left, $expiration) => sprintf('You are currently on trial. Your trial is set to expire %s on %s.', $left, $expiration),
+            Billing::onTrial($tenant) && isset($left, $expiration) => sprintf('You are currently on trial. Your trial is set to expire %s on %s.', $left, $expiration),
             $tenant->hasIncompletePayment() => 'Your subscription is currently past due. Please pay your invoice to continue using PERSCOM.',
             ! $tenant->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
             default => null
@@ -67,7 +68,7 @@ class SubscriptionBanner extends Component
             return;
         }
 
-        $this->redirect($tenant->billingPortalUrl($this->returnUrl));
+        $this->redirect(Billing::actionUrl($tenant, $this->returnUrl));
     }
 
     public function render(): View

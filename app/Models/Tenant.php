@@ -205,6 +205,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     {
         $this->createOrGetStripeCustomer();
 
+        $configuration = config('services.stripe.billing_portal_configuration');
+
+        if (filled($configuration) && ! array_key_exists('configuration', $options)) {
+            $options['configuration'] = $configuration;
+        }
+
         return $this->baseBillingPortalUrl($returnUrl, $options);
     }
 

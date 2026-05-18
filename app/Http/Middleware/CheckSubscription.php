@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Facades\Billing;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -26,7 +27,7 @@ class CheckSubscription
 
         $tenant = tenant();
 
-        if ($tenant && ($tenant->onGenericTrial() || $tenant->onTrial() || $tenant->subscribed() || $tenant->created_at?->gt(now()->subDays(7)))) {
+        if ($tenant && (Billing::onTrial($tenant) || $tenant->subscribed())) {
             return $next($request);
         }
 
@@ -34,6 +35,6 @@ class CheckSubscription
             abort(Response::HTTP_PAYMENT_REQUIRED);
         }
 
-        return redirect()->to($tenant?->billingPortalUrl(url()->current()) ?? '/');
+        return redirect()->to($tenant ? Billing::actionUrl($tenant, url()->current()) : '/');
     }
 }

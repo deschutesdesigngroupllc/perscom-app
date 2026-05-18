@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Facades\Billing;
 use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Auth\Login;
@@ -44,7 +45,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
@@ -57,45 +58,15 @@ class AppPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $registration = $this->app->environment('demo')
-            ? null
-            : Register::class;
-
-        $passwordReset = $this->app->environment('demo')
-            ? null
-            : RequestPasswordReset::class;
-
-        $emailVerification = $this->app->environment('demo')
-            ? null
-            : EmailVerificationPrompt::class;
-
-        $socialProviders = $this->app->environment('demo')
-            ? []
-            : [
-                Provider::make('google')
-                    ->label('Google')
-                    ->icon('fab-google')
-                    ->stateless()
-                    ->outlined(false),
-                Provider::make('discord')
-                    ->label('Discord')
-                    ->icon('fab-discord')
-                    ->stateless()
-                    ->outlined(false),
-                Provider::make('github')
-                    ->label('GitHub')
-                    ->icon('fab-github')
-                    ->stateless()
-                    ->outlined(false),
-            ];
+        $isDemo = $this->app->environment('demo');
 
         return $panel
             ->default()
             ->id('app')
             ->login(Login::class)
-            ->registration($registration)
-            ->passwordReset($passwordReset)
-            ->emailVerification($emailVerification)
+            ->unless($isDemo, fn (Panel $panel): Panel => $panel->registration(Register::class))
+            ->unless($isDemo, fn (Panel $panel): Panel => $panel->passwordReset(RequestPasswordReset::class))
+            ->unless($isDemo, fn (Panel $panel): Panel => $panel->emailVerification(EmailVerificationPrompt::class))
             ->domain(config('tenancy.enabled') ? '' : config('app.url'))
             ->profile(EditProfile::class, isSimple: false)
             ->colors([
@@ -134,7 +105,7 @@ class AppPanelProvider extends PanelProvider
                 StartSession::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
+                PreventRequestForgery::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
@@ -150,19 +121,6 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn (): Factory|View => view('components.logo'))
             ->plugins([
-                ...class_exists('Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin')
-                    ? [AdvancedTablesPlugin::make()
-                        ->persistActiveViewInSession()
-                        ->resourceEnabled(false)
-                        ->favoritesBarSize(Size::Small)
-                        ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme'))]
-                    : [],
-                ...class_exists('Padmission\DataLens\DataLensPlugin')
-                    ? [DataLensPlugin::make()
-                        ->navigationGroup('Reporting')
-                        ->navigationLabel('Custom Reports')
-                        ->navigationSort(10)]
-                    : [],
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
                     ->navigationSort(3)
@@ -172,14 +130,43 @@ class AppPanelProvider extends PanelProvider
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()
                     ->slug('app')
-                    ->providers($socialProviders),
+                    ->providers($isDemo ? [] : [
+                        Provider::make('google')
+                            ->label('Google')
+                            ->icon('fab-google')
+                            ->stateless()
+                            ->outlined(false),
+                        Provider::make('discord')
+                            ->label('Discord')
+                            ->icon('fab-discord')
+                            ->stateless()
+                            ->outlined(false),
+                        Provider::make('github')
+                            ->label('GitHub')
+                            ->icon('fab-github')
+                            ->stateless()
+                            ->outlined(false),
+                    ]),
             ])
+            ->when(class_exists(AdvancedTablesPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
+                AdvancedTablesPlugin::make()
+                    ->persistActiveViewInSession()
+                    ->resourceEnabled(false)
+                    ->favoritesBarSize(Size::Small)
+                    ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme'))
+            ))
+            ->when(class_exists(DataLensPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
+                DataLensPlugin::make()
+                    ->navigationGroup('Reporting')
+                    ->navigationLabel('Custom Reports')
+                    ->navigationSort(10)
+            ))
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->action(fn () => tenant() ? redirect()->away(tenant()->billingPortalUrl(request()->headers->get('referer') ?: url('/'))) : null)
+                    ->action(fn () => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
                     ->icon('heroicon-o-currency-dollar'),
                 Action::make('docs')

@@ -47,6 +47,12 @@ return [
         'key' => env('RESEND_KEY'),
     ],
 
+    'stripe' => [
+        'billing_portal_configuration' => env('STRIPE_BILLING_PORTAL_CONFIGURATION'),
+        'default_price_id' => env('STRIPE_DEFAULT_PRICE_ID'),
+        'trial_grace_days' => (int) env('STRIPE_TRIAL_GRACE_DAYS', 7),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

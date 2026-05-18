@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
+use App\Facades\Billing as BillingFacade;
 use App\Filament\App\Clusters\Settings;
 use BackedEnum;
 use Filament\Pages\Page;
@@ -23,7 +24,9 @@ class Billing extends Page
 
     public static function getUrl(array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null, bool $shouldGuessMissingParameters = false, ?string $configuration = null): string
     {
-        return tenant()?->billingPortalUrl(url()->current()) ?? '#';
+        $tenant = tenant();
+
+        return $tenant ? BillingFacade::actionUrl($tenant, url()->current()) : '#';
     }
 
     public static function canAccess(): bool

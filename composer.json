@@ -75,7 +75,6 @@
     "barryvdh/laravel-debugbar": "^4.2.8",
     "barryvdh/laravel-ide-helper": "^3.7.0",
     "driftingly/rector-laravel": "^2.3",
-    "filament/upgrade": "^5.6.1",
     "larastan/larastan": "^3.9.6",
     "laravel/pail": "^1.2.6",
     "laravel/pao": "^1.0",
