@@ -75,7 +75,7 @@ return [
 
     'middleware' => [
         'web',
-        'auth:web,admin',
+        'auth:'.(env('TENANT_ENABLED', false) ? 'admin' : 'web'),
     ],
 
     /*

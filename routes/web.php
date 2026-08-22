@@ -12,7 +12,7 @@ Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST)], 
         ->name('register.redirect');
 
     Route::get('health', HealthCheckResultsController::class)
-        ->middleware('auth:admin')
+        ->middleware('auth:'.(config('tenancy.enabled') ? 'admin' : 'web'))
         ->name('health');
 
     Route::group(['middleware' => ['landing']], static function (): void {

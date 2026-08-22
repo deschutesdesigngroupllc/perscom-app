@@ -89,6 +89,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->persistentMiddleware([
+                SetAuthGuard::class,
+            ])
             ->authGuard('admin')
             ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/admin/theme.css')

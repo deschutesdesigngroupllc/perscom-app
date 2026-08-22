@@ -129,7 +129,7 @@ return [
 
     'middleware' => [
         'web',
-        'auth:admin',
+        'auth:'.(env('TENANT_ENABLED', false) ? 'admin' : 'web'),
         Authorize::class,
     ],
 
