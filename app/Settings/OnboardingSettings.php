@@ -37,4 +37,12 @@ class OnboardingSettings extends Settings
         $this->dismissed = true;
         $this->save();
     }
+
+    public function resume(): void
+    {
+        $this->completed = false;
+        $this->dismissed = false;
+        $this->completed_at = null;
+        $this->save();
+    }
 }

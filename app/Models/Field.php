@@ -134,11 +134,11 @@ class Field extends Model implements HasLabel, Hideable
     protected function options(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ArrayObject {
-            if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::Array->value) {
+            if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::ARRAY->value) {
                 return new ArrayObject(json_decode($value), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 
-            if (filled(data_get($attributes, 'options_model')) && $this->options_model instanceof FieldOptionsModel && data_get($attributes, 'options_type') === FieldOptionsType::Model->value) {
+            if (filled(data_get($attributes, 'options_model')) && $this->options_model instanceof FieldOptionsModel && data_get($attributes, 'options_type') === FieldOptionsType::MODEL->value) {
                 return new ArrayObject($this->options_model->getOptions(), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 

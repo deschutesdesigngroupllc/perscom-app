@@ -25,7 +25,7 @@ trait ConfiguresModelNotifications
     {
         $data = data_get($this->form->getRawState(), 'model_notifications', []);
 
-        if (! empty($data) && ($record = $this->getRecord())) {
+        if (filled($data) && ($record = $this->getRecord())) {
             $this->performModelNotificationInserts($record, $data);
         }
     }
@@ -34,7 +34,7 @@ trait ConfiguresModelNotifications
     {
         $data = data_get($this->form->getRawState(), 'model_notifications', []);
 
-        if (! empty($data) && ($record = $this->getRecord())) {
+        if (filled($data) && ($record = $this->getRecord())) {
             $this->performModelNotificationInserts($record, $data);
         }
     }

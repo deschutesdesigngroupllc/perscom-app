@@ -58,7 +58,7 @@ class CredentialTest extends ApiResourceTestCase
             'name' => 'Test Credential',
             'description' => $this->faker->sentence,
             'issuer_id' => Issuer::factory()->create()->getKey(),
-            'type' => CredentialType::Other->value,
+            'type' => CredentialType::OTHER->value,
         ];
     }
 

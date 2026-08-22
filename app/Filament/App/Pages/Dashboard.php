@@ -22,6 +22,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Wizard\Step;
@@ -65,6 +66,20 @@ class Dashboard extends BaseDashboard
                 $this->completeOnboarding($data);
             })
             ->closeModalByClickingAway(false);
+    }
+
+    public function dismissOnboarding(): void
+    {
+        /** @var OnboardingSettings $settings */
+        $settings = resolve(OnboardingSettings::class);
+
+        $settings->markDismissed();
+
+        Notification::make()
+            ->success()
+            ->title('Setup Wizard Dismissed')
+            ->body("You won't see this wizard again. You can configure your organization from the settings menu.")
+            ->send();
     }
 
     /**
@@ -160,6 +175,21 @@ class Dashboard extends BaseDashboard
                 ->icon(Heroicon::OutlinedRectangleGroup)
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
+                    Actions::make([
+                        Action::make('dismissOnboarding')
+                            ->label("Don't show this setup wizard again")
+                            ->icon(Heroicon::OutlinedXCircle)
+                            ->color('gray')
+                            ->link()
+                            ->requiresConfirmation()
+                            ->modalHeading('Dismiss Setup Wizard')
+                            ->modalDescription("You won't see this wizard again. You can always configure your organization from the settings menu.")
+                            ->modalSubmitActionLabel("Yes, Don't Show Again")
+                            ->action(function (): void {
+                                $this->dismissOnboarding();
+                            })
+                            ->cancelParentActions(),
+                    ])->key('onboardingDismiss')->alignEnd(),
                     Section::make('Create a Group')
                         ->description('Groups are top-level divisions in your organization hierarchy (e.g., departments, divisions, or branches). Units are organized within groups.')
                         ->schema([

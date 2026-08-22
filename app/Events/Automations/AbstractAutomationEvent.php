@@ -39,7 +39,7 @@ abstract class AbstractAutomationEvent implements AutomationTriggerable
     {
         $changes = $model->getChanges();
 
-        if (empty($changes)) {
+        if (blank($changes)) {
             return null;
         }
 

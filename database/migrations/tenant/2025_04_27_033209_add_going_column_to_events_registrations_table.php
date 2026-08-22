@@ -15,7 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('events_registrations', function (Blueprint $table) {
-            $table->string('status')->after('event_id')->default(EventRegistrationStatus::Going)->nullable();
+            $table->string('status')->after('event_id')->default(EventRegistrationStatus::GOING)->nullable();
         });
     }
 

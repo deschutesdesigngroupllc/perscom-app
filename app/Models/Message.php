@@ -83,8 +83,8 @@ class Message extends Model implements HasLabel
     protected function status(): Attribute
     {
         return Attribute::get(fn (): MessageStatus => match (true) {
-            isset($this->sent_at) => MessageStatus::Sent,
-            default => MessageStatus::Pending,
+            isset($this->sent_at) => MessageStatus::SENT,
+            default => MessageStatus::PENDING,
         });
     }
 

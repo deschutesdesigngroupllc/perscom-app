@@ -40,7 +40,7 @@ class RegisterCustomPages
             ->sort($page->order)
             ->hidden($page->hidden))->toArray();
 
-        if (empty($pages)) {
+        if (blank($pages)) {
             return;
         }
 

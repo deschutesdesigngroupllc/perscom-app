@@ -116,7 +116,7 @@ class LogApiRequest
         }
 
         if (is_array($data)) {
-            return array_map($this->processMultipartData(...), $data);
+            return collect($data)->map($this->processMultipartData(...))->all();
         }
 
         return $data;

@@ -10,23 +10,23 @@ use Illuminate\Support\Str;
 
 enum SubscriptionStatus: string implements HasColor, HasLabel
 {
-    case Active = 'active';
-    case Incomplete = 'incomplete';
-    case IncompleteExpired = 'incomplete_expired';
-    case Trialing = 'trialing';
-    case PastDue = 'past_due';
-    case Canceled = 'canceled';
-    case Unpaid = 'unpaid';
-    case None = 'no_subscription';
+    case ACTIVE = 'active';
+    case INCOMPLETE = 'incomplete';
+    case INCOMPLETE_EXPIRED = 'incomplete_expired';
+    case TRIALING = 'trialing';
+    case PAST_DUE = 'past_due';
+    case CANCELED = 'canceled';
+    case UNPAID = 'unpaid';
+    case NONE = 'no_subscription';
 
     public function getColor(): string|array|null
     {
         return match ($this) {
-            SubscriptionStatus::Active => 'success',
-            SubscriptionStatus::Incomplete, SubscriptionStatus::IncompleteExpired => 'warning',
-            SubscriptionStatus::Trialing => 'info',
-            SubscriptionStatus::PastDue => 'danger',
-            SubscriptionStatus::Canceled, SubscriptionStatus::Unpaid, SubscriptionStatus::None => 'gray',
+            SubscriptionStatus::ACTIVE => 'success',
+            SubscriptionStatus::INCOMPLETE, SubscriptionStatus::INCOMPLETE_EXPIRED => 'warning',
+            SubscriptionStatus::TRIALING => 'info',
+            SubscriptionStatus::PAST_DUE => 'danger',
+            SubscriptionStatus::CANCELED, SubscriptionStatus::UNPAID, SubscriptionStatus::NONE => 'gray',
         };
     }
 

@@ -15,8 +15,6 @@ trait WithApiKey
 
     protected function apiKey(array|string $scopes = ['view:user'], ?User $user = null): string
     {
-        $action = new CreatePersonalAccessToken;
-
-        return $action->handle($user ?? User::factory()->unassigned()->createQuietly(), $this->faker->word, Arr::wrap($scopes))->accessToken;
+        return CreatePersonalAccessToken::handle($user ?? User::factory()->unassigned()->createQuietly(), $this->faker->word, Arr::wrap($scopes))->accessToken;
     }
 }

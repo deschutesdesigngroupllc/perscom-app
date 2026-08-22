@@ -19,7 +19,7 @@ class CreateNewUserTest extends TenantTestCase
 
         $email = $this->faker->unique()->safeEmail();
 
-        $user = (new CreateNewUser)->create([
+        $user = CreateNewUser::handle([
             'name' => 'John Doe',
             'email' => $email,
             'password' => 'Password123!',
@@ -41,7 +41,7 @@ class CreateNewUserTest extends TenantTestCase
     {
         $this->expectException(ValidationException::class);
 
-        (new CreateNewUser)->create([
+        CreateNewUser::handle([
             'name' => '',
             'email' => 'not-an-email',
             'password' => '123',
@@ -54,7 +54,7 @@ class CreateNewUserTest extends TenantTestCase
 
         $this->expectException(ValidationException::class);
 
-        (new CreateNewUser)->create([
+        CreateNewUser::handle([
             'name' => 'Jane Doe',
             'email' => $existing->email,
             'password' => 'Password123!',

@@ -26,7 +26,7 @@ class ResetTenantSubdomainTest extends TenantTestCase
         $settings->subdomain = 'customorg';
         $settings->save();
 
-        $deleted = (new ResetTenantSubdomain)->handle($this->tenant);
+        $deleted = ResetTenantSubdomain::handle($this->tenant);
 
         $this->assertSame(1, $deleted);
         $this->assertDatabaseMissing('domains', [
@@ -41,7 +41,7 @@ class ResetTenantSubdomainTest extends TenantTestCase
     {
         Notification::fake();
 
-        $deleted = (new ResetTenantSubdomain)->handle($this->tenant);
+        $deleted = ResetTenantSubdomain::handle($this->tenant);
 
         $this->assertSame(0, $deleted);
     }

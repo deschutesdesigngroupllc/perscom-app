@@ -13,10 +13,10 @@ use Inertia\Response;
 
 class VerifyController extends Controller
 {
-    public function __invoke(Request $request, Registration $registration, CreateNewTenant $createNewTenant): Response
+    public function __invoke(Request $request, Registration $registration): Response
     {
         if ($registration->verified_at === null) {
-            $tenant = $createNewTenant->create(
+            $tenant = CreateNewTenant::handle(
                 organization: $registration->organization,
                 email: $registration->email
             );

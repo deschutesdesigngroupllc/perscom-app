@@ -222,8 +222,7 @@ class Dashboard extends SettingsPage
             return;
         }
 
-        $action = new UpdateTenantSubdomain;
-        $action->handle($tenant, $subdomain);
+        UpdateTenantSubdomain::handle($tenant, $subdomain);
 
         Notification::make()
             ->success()
@@ -243,8 +242,7 @@ class Dashboard extends SettingsPage
             return;
         }
 
-        $action = new ResetTenantSubdomain;
-        $action->handle($tenant);
+        ResetTenantSubdomain::handle($tenant);
 
         Notification::make()
             ->success()

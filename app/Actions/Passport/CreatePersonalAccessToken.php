@@ -9,7 +9,7 @@ use Laravel\Passport\PersonalAccessTokenResult;
 
 class CreatePersonalAccessToken
 {
-    public function handle(User $user, string $name, array $scopes = []): PersonalAccessTokenResult
+    public static function handle(User $user, string $name, array $scopes = []): PersonalAccessTokenResult
     {
         $token = $user->createToken($name, $scopes);
         $token->getToken()->forceFill([

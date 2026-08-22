@@ -340,7 +340,7 @@ class AutomationService
      */
     protected function prepareContextForTwig(array $context): array
     {
-        return array_map(function ($value) {
+        return collect($context)->map(function ($value) {
             if ($value instanceof stdClass) {
                 return (array) $value;
             }
@@ -350,7 +350,7 @@ class AutomationService
             }
 
             return $value;
-        }, $context);
+        })->all();
     }
 
     /**
@@ -589,7 +589,7 @@ class AutomationService
             }
 
             if (is_array($result)) {
-                return array_map(intval(...), array_filter($result, is_numeric(...)));
+                return collect($result)->filter(fn ($value): bool => is_numeric($value))->map(fn ($value): int => (int) $value)->all();
             }
 
             return [];

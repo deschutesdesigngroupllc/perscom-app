@@ -18,9 +18,7 @@ class CreateNewTenantTest extends CentralTestCase
         Event::fake([BaseTenantCreated::class]);
         Notification::fake();
 
-        $action = new CreateNewTenant;
-
-        $tenant = $action->create('Acme Organization', 'owner@example.com');
+        $tenant = CreateNewTenant::handle('Acme Organization', 'owner@example.com');
 
         $this->assertInstanceOf(Tenant::class, $tenant);
         $this->assertDatabaseHas('tenants', [

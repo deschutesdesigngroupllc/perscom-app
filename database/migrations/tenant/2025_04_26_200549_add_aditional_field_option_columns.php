@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::table('fields', function (Blueprint $table) {
             $table->after('options', function (Blueprint $table) {
-                $table->string('options_type')->default(FieldOptionsType::Array->value)->nullable();
+                $table->string('options_type')->default(FieldOptionsType::ARRAY->value)->nullable();
                 $table->string('options_model')->nullable();
             });
         });

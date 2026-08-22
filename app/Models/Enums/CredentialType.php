@@ -9,9 +9,9 @@ use Illuminate\Support\Str;
 
 enum CredentialType: string implements HasLabel
 {
-    case Certification = 'certification';
-    case License = 'license';
-    case Other = 'other';
+    case CERTIFICATION = 'certification';
+    case LICENSE = 'license';
+    case OTHER = 'other';
 
     public function getLabel(): string
     {

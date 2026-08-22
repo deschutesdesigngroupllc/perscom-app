@@ -17,7 +17,7 @@ class UpdateTenantSubdomain
     /**
      * @throws Throwable
      */
-    public function handle(Tenant $tenant, string $subdomain): bool
+    public static function handle(Tenant $tenant, string $subdomain): bool
     {
         $validator = Validator::make([
             'subdomain' => $subdomain,
@@ -30,8 +30,7 @@ class UpdateTenantSubdomain
         }
 
         return DB::transaction(function () use ($tenant, $validator): true {
-            $action = new ResetTenantSubdomain;
-            $action->handle($tenant);
+            ResetTenantSubdomain::handle($tenant);
 
             $tenant->domains()->create([
                 'domain' => $subdomain = $validator->getValue('subdomain'),

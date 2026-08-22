@@ -7,9 +7,8 @@ namespace App\Http\Resources\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Orion\Http\Resources\Resource;
 
-class NewsfeedResource extends Resource
+class NewsfeedResource extends ApiResource
 {
     /**
      * @return array<string, mixed>

@@ -16,7 +16,7 @@ class UpdateTenantSubdomainTest extends TenantTestCase
     {
         Notification::fake();
 
-        $result = (new UpdateTenantSubdomain)->handle($this->tenant, 'brandneworg');
+        $result = UpdateTenantSubdomain::handle($this->tenant, 'brandneworg');
 
         $this->assertTrue($result);
         $this->assertDatabaseHas('domains', [
@@ -34,7 +34,7 @@ class UpdateTenantSubdomainTest extends TenantTestCase
 
         $reserved = SubdomainRule::$reservedSubdomains[0];
 
-        $result = (new UpdateTenantSubdomain)->handle($this->tenant, $reserved);
+        $result = UpdateTenantSubdomain::handle($this->tenant, $reserved);
 
         $this->assertFalse($result);
         $this->assertDatabaseMissing('domains', [

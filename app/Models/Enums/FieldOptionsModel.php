@@ -24,21 +24,21 @@ use Illuminate\Support\Str;
 
 enum FieldOptionsModel: string implements HasLabel
 {
-    case Awards = 'awards';
-    case Calendars = 'calendars';
-    case Events = 'events';
-    case Forms = 'forms';
-    case Groups = 'groups';
-    case Documents = 'documents';
-    case Positions = 'positions';
-    case Qualifications = 'qualifications';
-    case Ranks = 'ranks';
-    case Specialties = 'specialties';
-    case Statuses = 'statuses';
-    case Tasks = 'tasks';
-    case Slots = 'slots';
-    case Units = 'units';
-    case Users = 'users';
+    case AWARDS = 'awards';
+    case CALENDARS = 'calendars';
+    case EVENTS = 'events';
+    case FORMS = 'forms';
+    case GROUPS = 'groups';
+    case DOCUMENTS = 'documents';
+    case POSITIONS = 'positions';
+    case QUALIFICATIONS = 'qualifications';
+    case RANKS = 'ranks';
+    case SPECIALTIES = 'specialties';
+    case STATUSES = 'statuses';
+    case TASKS = 'tasks';
+    case SLOTS = 'slots';
+    case UNITS = 'units';
+    case USERS = 'users';
 
     public function getLabel(): string
     {
@@ -48,21 +48,21 @@ enum FieldOptionsModel: string implements HasLabel
     public function getOptions(): array
     {
         return match ($this) {
-            FieldOptionsModel::Awards => Award::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Calendars => Calendar::orderBy('name')->pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Events => Event::orderBy('name')->pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Forms => Form::orderBy('name')->pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Groups => Group::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Documents => Document::orderBy('name')->pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Positions => Position::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Qualifications => Qualification::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Ranks => Rank::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Specialties => Specialty::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Statuses => Status::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Tasks => Task::orderBy('title')->pluck('title', 'title')->toArray(),
-            FieldOptionsModel::Slots => Slot::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Units => Unit::pluck('name', 'name')->toArray(),
-            FieldOptionsModel::Users => User::orderBy('name')->pluck('name', 'name')->toArray(),
+            FieldOptionsModel::AWARDS => Award::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::CALENDARS => Calendar::orderBy('name')->pluck('name', 'name')->toArray(),
+            FieldOptionsModel::EVENTS => Event::orderBy('name')->pluck('name', 'name')->toArray(),
+            FieldOptionsModel::FORMS => Form::orderBy('name')->pluck('name', 'name')->toArray(),
+            FieldOptionsModel::GROUPS => Group::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::DOCUMENTS => Document::orderBy('name')->pluck('name', 'name')->toArray(),
+            FieldOptionsModel::POSITIONS => Position::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::QUALIFICATIONS => Qualification::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::RANKS => Rank::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::SPECIALTIES => Specialty::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::STATUSES => Status::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::TASKS => Task::orderBy('title')->pluck('title', 'title')->toArray(),
+            FieldOptionsModel::SLOTS => Slot::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::UNITS => Unit::pluck('name', 'name')->toArray(),
+            FieldOptionsModel::USERS => User::orderBy('name')->pluck('name', 'name')->toArray(),
         };
     }
 }

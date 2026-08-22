@@ -324,7 +324,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             $subscription = $this->subscription();
 
             if (blank($subscription)) {
-                return SubscriptionStatus::None;
+                return SubscriptionStatus::NONE;
             }
 
             return SubscriptionStatus::from($subscription->stripe_status);

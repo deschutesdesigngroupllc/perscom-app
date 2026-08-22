@@ -127,9 +127,7 @@ class SetupTenantAccount
     {
         $password = Str::password(length: 16, symbols: false);
 
-        $action = new CreateNewUser;
-
-        $user = $action->create([
+        $user = CreateNewUser::handle([
             'name' => 'Admin',
             'email' => $this->tenant->email,
             'password' => $password,

@@ -10,17 +10,17 @@ use Illuminate\Support\Str;
 
 enum EventRegistrationStatus: string implements HasColor, HasLabel
 {
-    case Going = 'going';
-    case NotGoing = 'not_going';
-    case Interested = 'interested';
-    case Waitlisted = 'waitlisted';
-    case Cancelled = 'cancelled';
-    case Declined = 'declined';
-    case Tentative = 'tentative';
-    case Invited = 'invited';
-    case Unknown = 'unknown';
-    case Attended = 'attended';
-    case NoShow = 'no_show';
+    case GOING = 'going';
+    case NOT_GOING = 'not_going';
+    case INTERESTED = 'interested';
+    case WAITLISTED = 'waitlisted';
+    case CANCELLED = 'cancelled';
+    case DECLINED = 'declined';
+    case TENTATIVE = 'tentative';
+    case INVITED = 'invited';
+    case UNKNOWN = 'unknown';
+    case ATTENDED = 'attended';
+    case NO_SHOW = 'no_show';
 
     public function getLabel(): string
     {
@@ -33,10 +33,10 @@ enum EventRegistrationStatus: string implements HasColor, HasLabel
     public function getColor(): string
     {
         return match ($this) {
-            EventRegistrationStatus::Going, EventRegistrationStatus::Attended => 'success',
-            EventRegistrationStatus::NotGoing, EventRegistrationStatus::NoShow, EventRegistrationStatus::Cancelled, EventRegistrationStatus::Declined => 'danger',
-            EventRegistrationStatus::Interested => 'warning',
-            EventRegistrationStatus::Waitlisted, EventRegistrationStatus::Tentative, EventRegistrationStatus::Invited, EventRegistrationStatus::Unknown => 'info',
+            EventRegistrationStatus::GOING, EventRegistrationStatus::ATTENDED => 'success',
+            EventRegistrationStatus::NOT_GOING, EventRegistrationStatus::NO_SHOW, EventRegistrationStatus::CANCELLED, EventRegistrationStatus::DECLINED => 'danger',
+            EventRegistrationStatus::INTERESTED => 'warning',
+            EventRegistrationStatus::WAITLISTED, EventRegistrationStatus::TENTATIVE, EventRegistrationStatus::INVITED, EventRegistrationStatus::UNKNOWN => 'info',
         };
     }
 }

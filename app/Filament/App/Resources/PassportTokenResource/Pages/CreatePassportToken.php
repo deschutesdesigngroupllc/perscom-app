@@ -16,13 +16,11 @@ class CreatePassportToken extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $action = new CreatePersonalAccessToken;
-
         $scopes = data_get($data, 'all_scopes')
             ? ['*']
             : data_get($data, 'scopes', []);
 
-        $result = $action->handle(Auth::user(), data_get($data, 'name'), $scopes);
+        $result = CreatePersonalAccessToken::handle(Auth::user(), data_get($data, 'name'), $scopes);
 
         return $result->getToken();
     }

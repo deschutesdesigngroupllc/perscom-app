@@ -406,7 +406,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Incident / Case Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date / Time of Incident', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
                     ['name' => 'Location', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Force Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Soft Empty Hand', 'Hard Empty Hand', 'OC Spray', 'Baton / Impact Weapon', 'Conducted Electrical Weapon (CEW)', 'Less-Lethal Munition', 'K9 Apprehension', 'Firearm - Display / Pointing', 'Firearm - Discharged'])],
+                    ['name' => 'Force Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Soft Empty Hand', 'Hard Empty Hand', 'OC Spray', 'Baton / Impact Weapon', 'Conducted Electrical Weapon (CEW)', 'Less-Lethal Munition', 'K9 Apprehension', 'Firearm - Display / Pointing', 'Firearm - Discharged'])],
                     ['name' => 'Subject Injury', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Officer Injury', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Narrative & Force Factors', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Articulate the totality of circumstances under Graham v. Connor, including subject behavior, severity of crime, and immediate threat assessment.'],
@@ -431,8 +431,8 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Case Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Pursuit Initiated', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
                     ['name' => 'Pursuit Terminated', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
-                    ['name' => 'Reason for Pursuit', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Felony - Violent', 'Felony - Property', 'Misdemeanor', 'Stolen Vehicle', 'DUI', 'Traffic Violation Only', 'Other'])],
-                    ['name' => 'Termination Reason', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Subject Stopped', 'PIT / Tactical Intervention', 'Subject Lost', 'Supervisor Termination', 'Officer Termination', 'Collision'])],
+                    ['name' => 'Reason for Pursuit', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Felony - Violent', 'Felony - Property', 'Misdemeanor', 'Stolen Vehicle', 'DUI', 'Traffic Violation Only', 'Other'])],
+                    ['name' => 'Termination Reason', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Subject Stopped', 'PIT / Tactical Intervention', 'Subject Lost', 'Supervisor Termination', 'Officer Termination', 'Collision'])],
                     ['name' => 'Collision or Injury Occurred?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Pursuit Narrative', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Include speeds, distance, weather, road conditions, traffic, supervisor notification, and tactics employed.'],
                 )
@@ -455,7 +455,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Badge Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Current Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Current Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Shift / Watch Change', 'Beat Reassignment', 'Specialty Assignment', 'Promotion', 'Transfer', 'Resignation / Retirement', 'Other'])],
+                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Shift / Watch Change', 'Beat Reassignment', 'Specialty Assignment', 'Promotion', 'Transfer', 'Resignation / Retirement', 'Other'])],
                     ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Reason / Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
                 )
@@ -502,7 +502,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Email Address', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast(), 'required' => true],
                     ['name' => 'Phone Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date of Birth', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
-                    ['name' => 'Application Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Recruit (Non-Certified)', 'Lateral (Currently Certified)', 'Returning Sworn Member'])],
+                    ['name' => 'Application Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Recruit (Non-Certified)', 'Lateral (Currently Certified)', 'Returning Sworn Member'])],
                     ['name' => 'Currently POST Certified?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Prior Sworn Service', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => false, 'help' => 'List previous agencies, dates of service, and assignments. Leave blank if non-certified.'],
                     ['name' => 'Why do you want to be a police officer?', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
@@ -524,11 +524,11 @@ class LawEnforcementSeeder extends Seeder
             ->count(5)
             ->recycle($issuers)
             ->sequence(
-                ['name' => 'POST Basic Peace Officer Certification', 'type' => CredentialType::Certification],
-                ['name' => 'POST Intermediate Certificate', 'type' => CredentialType::Certification],
-                ['name' => 'FBI National Academy Graduate', 'type' => CredentialType::Certification],
-                ['name' => 'Commercial Driver\'s License (Class A)', 'type' => CredentialType::License],
-                ['name' => 'Top Secret Security Clearance', 'type' => CredentialType::Other],
+                ['name' => 'POST Basic Peace Officer Certification', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'POST Intermediate Certificate', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'FBI National Academy Graduate', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'Commercial Driver\'s License (Class A)', 'type' => CredentialType::LICENSE],
+                ['name' => 'Top Secret Security Clearance', 'type' => CredentialType::OTHER],
             )
             ->create();
 

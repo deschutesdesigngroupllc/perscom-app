@@ -15,7 +15,7 @@ class CreatePersonalAccessTokenTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $result = (new CreatePersonalAccessToken)->handle($user, 'API Token', ['view:user']);
+        $result = CreatePersonalAccessToken::handle($user, 'API Token', ['view:user']);
 
         $this->assertInstanceOf(PersonalAccessTokenResult::class, $result);
         $this->assertNotEmpty($result->accessToken);
@@ -26,7 +26,7 @@ class CreatePersonalAccessTokenTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $result = (new CreatePersonalAccessToken)->handle($user, 'Persisted Token', ['view:user']);
+        $result = CreatePersonalAccessToken::handle($user, 'Persisted Token', ['view:user']);
 
         $token = $result->getToken()->fresh();
 

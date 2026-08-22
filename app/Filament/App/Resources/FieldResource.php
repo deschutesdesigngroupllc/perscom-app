@@ -108,7 +108,7 @@ class FieldResource extends BaseResource
                                     ->helperText('The default value of the field.'),
                                 Radio::make('options_type')
                                     ->validationAttribute('type')
-                                    ->default(FieldOptionsType::Array)
+                                    ->default(FieldOptionsType::ARRAY)
                                     ->label('Options Type')
                                     ->helperText('The source of the options.')
                                     ->options(FieldOptionsType::class)
@@ -120,8 +120,8 @@ class FieldResource extends BaseResource
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
                                     ->formatStateUsing(fn (?Field $record, $state): mixed => filled($record?->getRawOriginal('options')) ? json_decode((string) $record->getRawOriginal('options'), true) : null)
-                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Array)
-                                    ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::Array)
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::ARRAY)
+                                    ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::ARRAY)
                                     ->dehydrateStateUsing(fn ($state): string => Collection::wrap($state)->filter()->toJson()),
                                 Select::make('options_model')
                                     ->validationAttribute('resource')
@@ -130,8 +130,8 @@ class FieldResource extends BaseResource
                                     ->helperText('The resource to use for the options.')
                                     ->options(FieldOptionsModel::class)
                                     ->columnSpanFull()
-                                    ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::Model)
-                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::Model),
+                                    ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::MODEL)
+                                    ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::MODEL),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A optional brief description of the field.')

@@ -503,7 +503,7 @@ class MilitarySeeder extends Seeder
                     ['name' => 'Rank / Grade', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. SFC / E-7'],
                     ['name' => 'DoD ID Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => '10-digit DoD ID'],
                     ['name' => 'Unit of Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. ODA 5111, A Co, 1st Btn, 5th SFG'],
-                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Promotion', 'Reassignment', 'MOS Reclassification', 'Separation / ETS', 'Retirement', 'Name Change', 'Other'])],
+                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Promotion', 'Reassignment', 'MOS Reclassification', 'Separation / ETS', 'Retirement', 'Name Change', 'Other'])],
                     ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Provide a clear, concise justification for the requested action.'],
                     ['name' => 'Supporting Documentation', 'type' => FieldType::FIELD_FILE, 'cast' => FieldType::FIELD_FILE->getCast(), 'required' => false, 'help' => 'Attach memoranda, orders, or other supporting documents.'],
@@ -550,7 +550,7 @@ class MilitarySeeder extends Seeder
                     ['name' => 'Recommended Soldier - Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Recommended Soldier - Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Recommended Soldier - DoD ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Award Recommended', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Bronze Star', 'Silver Star', 'Distinguished Service Cross', 'Meritorious Service Medal', 'Army Commendation Medal', 'Army Achievement Medal', 'Purple Heart'])],
+                    ['name' => 'Award Recommended', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Bronze Star', 'Silver Star', 'Distinguished Service Cross', 'Meritorious Service Medal', 'Army Commendation Medal', 'Army Achievement Medal', 'Purple Heart'])],
                     ['name' => 'Period of Service - From', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Period of Service - To', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Proposed Citation', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Narrative-style citation, written in third person, that will appear on the certificate.'],
@@ -572,7 +572,7 @@ class MilitarySeeder extends Seeder
                 ->count(7)
                 ->sequence(
                     ['name' => 'Soldier Full Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Type of Leave', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Ordinary', 'Emergency', 'Convalescent', 'Permissive TDY', 'Terminal'])],
+                    ['name' => 'Type of Leave', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Ordinary', 'Emergency', 'Convalescent', 'Permissive TDY', 'Terminal'])],
                     ['name' => 'Departure Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Return Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Leave Address', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Street address, city, state, ZIP and a daytime phone number for the leave location.'],
@@ -644,15 +644,15 @@ class MilitarySeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Emergency Medical Technician (EMT)',
-                    'type' => CredentialType::Certification,
+                    'type' => CredentialType::CERTIFICATION,
                 ],
                 [
                     'name' => 'Commercial Driver\'s License (CDL)',
-                    'type' => CredentialType::License,
+                    'type' => CredentialType::LICENSE,
                 ],
                 [
                     'name' => 'Top Secret Security Clearance',
-                    'type' => CredentialType::Other,
+                    'type' => CredentialType::OTHER,
                 ]
             )
             ->create();

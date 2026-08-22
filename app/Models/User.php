@@ -496,7 +496,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
                 ];
 
                 return Str::of($format)
-                    ->swap(array_map(fn (?string $value): string => $value ?? '', $tokens))
+                    ->swap(collect($tokens)->map(fn (?string $value): string => $value ?? '')->all())
                     ->replaceMatches('/\s{2,}/', ' ')
                     ->replaceMatches('/\s*[-–—|,]\s*$/', '')
                     ->replaceMatches('/^\s*[-–—|,]\s*/', '')

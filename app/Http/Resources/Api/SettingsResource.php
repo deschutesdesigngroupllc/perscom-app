@@ -6,9 +6,8 @@ namespace App\Http\Resources\Api;
 
 use App\Models\Settings;
 use Illuminate\Http\Request;
-use Orion\Http\Resources\Resource;
 
-class SettingsResource extends Resource
+class SettingsResource extends ApiResource
 {
     public function toArray(Request $request): array
     {

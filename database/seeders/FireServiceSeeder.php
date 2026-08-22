@@ -385,7 +385,7 @@ class FireServiceSeeder extends Seeder
                     ['name' => 'Employee ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Current Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Station / Shift Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. Station 1 / A-Shift'],
-                    ['name' => 'Action Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Shift Change', 'Permanent Trade', 'Station Reassignment', 'Status Change', 'Promotion / Demotion', 'Resignation / Retirement', 'Other'])],
+                    ['name' => 'Action Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Shift Change', 'Permanent Trade', 'Station Reassignment', 'Status Change', 'Promotion / Demotion', 'Resignation / Retirement', 'Other'])],
                     ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Reason / Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
                 )
@@ -406,7 +406,7 @@ class FireServiceSeeder extends Seeder
                 ->sequence(
                     ['name' => 'Member Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Employee ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Leave Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Vacation', 'Sick', 'Personal', 'Comp Time', 'Bereavement', 'FMLA', 'Shift Trade'])],
+                    ['name' => 'Leave Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Vacation', 'Sick', 'Personal', 'Comp Time', 'Bereavement', 'FMLA', 'Shift Trade'])],
                     ['name' => 'Start Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'End Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Trading With (Member Name)', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => false, 'help' => 'Leave blank if not a shift trade.'],
@@ -430,7 +430,7 @@ class FireServiceSeeder extends Seeder
                     ['name' => 'Reporting Member', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Apparatus / Equipment ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. Engine 1, SCBA #214'],
                     ['name' => 'Date Discovered', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
-                    ['name' => 'Severity', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Cosmetic', 'Functional - In Service', 'Out of Service', 'Safety Critical'])],
+                    ['name' => 'Severity', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Cosmetic', 'Functional - In Service', 'Out of Service', 'Safety Critical'])],
                     ['name' => 'Out of Service?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Description of Issue', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Describe the issue, when it was discovered, and any related circumstances.'],
                     ['name' => 'Photo / Documentation', 'type' => FieldType::FIELD_FILE, 'cast' => FieldType::FIELD_FILE->getCast(), 'required' => false],
@@ -454,7 +454,7 @@ class FireServiceSeeder extends Seeder
                     ['name' => 'Employee ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Incident Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date / Time of Exposure', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
-                    ['name' => 'Type of Exposure', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['Bloodborne Pathogen', 'Airborne Pathogen', 'Hazardous Material', 'Smoke / Products of Combustion', 'Sharps / Needlestick', 'Other'])],
+                    ['name' => 'Type of Exposure', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Bloodborne Pathogen', 'Airborne Pathogen', 'Hazardous Material', 'Smoke / Products of Combustion', 'Sharps / Needlestick', 'Other'])],
                     ['name' => 'PPE in Use at Time of Exposure', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
                     ['name' => 'Description of Incident', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
                     ['name' => 'Sought Medical Evaluation?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
@@ -478,7 +478,7 @@ class FireServiceSeeder extends Seeder
                     ['name' => 'Email Address', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast(), 'required' => true],
                     ['name' => 'Phone Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date of Birth', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
-                    ['name' => 'Current EMS Certification', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::Array, 'options' => json_encode(['None', 'EMR', 'EMT-Basic', 'AEMT', 'Paramedic'])],
+                    ['name' => 'Current EMS Certification', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['None', 'EMR', 'EMT-Basic', 'AEMT', 'Paramedic'])],
                     ['name' => 'Currently Certified Firefighter?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'CPAT Card on File?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Why do you want to join the fire service?', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
@@ -500,11 +500,11 @@ class FireServiceSeeder extends Seeder
             ->count(5)
             ->recycle($issuers)
             ->sequence(
-                ['name' => 'EMT - Basic', 'type' => CredentialType::Certification],
-                ['name' => 'Paramedic', 'type' => CredentialType::Certification],
-                ['name' => 'Hazardous Materials Technician', 'type' => CredentialType::Certification],
-                ['name' => 'Commercial Driver\'s License (Class B)', 'type' => CredentialType::License],
-                ['name' => 'Fire Officer I', 'type' => CredentialType::Certification],
+                ['name' => 'EMT - Basic', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'Paramedic', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'Hazardous Materials Technician', 'type' => CredentialType::CERTIFICATION],
+                ['name' => 'Commercial Driver\'s License (Class B)', 'type' => CredentialType::LICENSE],
+                ['name' => 'Fire Officer I', 'type' => CredentialType::CERTIFICATION],
             )
             ->create();
 

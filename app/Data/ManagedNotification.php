@@ -9,11 +9,10 @@ use Spatie\LaravelData\Data;
 
 class ManagedNotification extends Data
 {
-    public NotificationGroup $group;
-
-    public string $title;
-
-    public string $description;
-
-    public string $notificationClass;
+    public function __construct(
+        public NotificationGroup $group,
+        public string $title,
+        public string $description,
+        public string $notificationClass,
+    ) {}
 }

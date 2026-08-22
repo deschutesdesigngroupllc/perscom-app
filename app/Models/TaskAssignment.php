@@ -172,6 +172,8 @@ class TaskAssignment extends Pivot
         });
     }
 
+    // Legacy accessor is required: a complete() action method already exists,
+    // so the Attribute-class style cannot reuse the `complete` name.
     protected function getCompleteAttribute(): bool
     {
         return (bool) $this->completed_at;

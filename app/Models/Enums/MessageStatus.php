@@ -11,8 +11,8 @@ use Illuminate\Support\Str;
 
 enum MessageStatus: string implements HasColor, HasLabel
 {
-    case Pending = 'pending';
-    case Sent = 'sent';
+    case PENDING = 'pending';
+    case SENT = 'sent';
 
     public function getLabel(): string|Htmlable|null
     {
@@ -24,8 +24,8 @@ enum MessageStatus: string implements HasColor, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            MessageStatus::Pending => 'info',
-            MessageStatus::Sent => 'success',
+            MessageStatus::PENDING => 'info',
+            MessageStatus::SENT => 'success',
         };
     }
 }

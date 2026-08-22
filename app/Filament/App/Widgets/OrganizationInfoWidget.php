@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
+use App\Filament\App\Pages\Dashboard;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Services\VersionService;
 use App\Settings\DashboardSettings;
+use App\Settings\OnboardingSettings;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationInfoWidget extends Widget
 {
@@ -45,5 +50,28 @@ class OrganizationInfoWidget extends Widget
 
         $this->plan = $tenant->subscription_plan->getLabel();
         $this->planColor = $tenant->subscription_plan->getColor();
+    }
+
+    public function canResumeOnboarding(): bool
+    {
+        /** @var ?User $user */
+        $user = Auth::user();
+
+        if (! $user?->hasRole(Utils::getSuperAdminName())) {
+            return false;
+        }
+
+        return ! resolve(OnboardingSettings::class)->isAccessible();
+    }
+
+    public function resumeOnboarding(): void
+    {
+        if (! $this->canResumeOnboarding()) {
+            return;
+        }
+
+        resolve(OnboardingSettings::class)->resume();
+
+        $this->redirect(Dashboard::getUrl());
     }
 }

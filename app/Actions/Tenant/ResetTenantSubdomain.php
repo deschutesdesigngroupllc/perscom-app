@@ -13,7 +13,7 @@ class ResetTenantSubdomain
     /**
      * @throws Throwable
      */
-    public function handle(Tenant $tenant): int
+    public static function handle(Tenant $tenant): int
     {
         /** @var DashboardSettings $settings */
         $settings = app()->make(DashboardSettings::class);

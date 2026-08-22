@@ -9,7 +9,7 @@ use App\Models\Tenant;
 
 class CreateNewTenant
 {
-    public function create(string $organization, string $email): Tenant
+    public static function handle(string $organization, string $email): Tenant
     {
         $tenant = Tenant::create([
             'name' => $organization,

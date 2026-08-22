@@ -54,6 +54,23 @@ class OnboardingSettingsTest extends TenantTestCase
         $this->assertFalse($settings->isAccessible());
     }
 
+    public function test_onboarding_is_accessible_again_after_resuming(): void
+    {
+        /** @var OnboardingSettings $settings */
+        $settings = resolve(OnboardingSettings::class);
+
+        $settings->markCompleted();
+
+        $this->assertFalse($settings->isAccessible());
+
+        $settings->resume();
+
+        $this->assertFalse($settings->completed);
+        $this->assertFalse($settings->dismissed);
+        $this->assertNull($settings->completed_at);
+        $this->assertTrue($settings->isAccessible());
+    }
+
     public function test_group_can_be_created(): void
     {
         Group::create([
