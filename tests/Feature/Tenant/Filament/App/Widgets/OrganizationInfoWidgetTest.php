@@ -44,6 +44,21 @@ class OrganizationInfoWidgetTest extends TenantTestCase
             ->assertDontSee('Resume Setup Wizard');
     }
 
+    public function test_resume_link_is_hidden_once_onboarding_was_completed(): void
+    {
+        OnboardingSettings::fake([
+            'completed' => true,
+            'dismissed' => false,
+            'completed_at' => '2026-01-17T00:00:00+00:00',
+        ]);
+
+        $this->actingAsSuperAdmin();
+
+        livewire(OrganizationInfoWidget::class)
+            ->assertOk()
+            ->assertDontSee('Resume Setup Wizard');
+    }
+
     public function test_non_super_admin_does_not_see_resume_link(): void
     {
         OnboardingSettings::fake([

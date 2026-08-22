@@ -61,7 +61,10 @@ class OrganizationInfoWidget extends Widget
             return false;
         }
 
-        return ! resolve(OnboardingSettings::class)->isAccessible();
+        /** @var OnboardingSettings $settings */
+        $settings = resolve(OnboardingSettings::class);
+
+        return ! $settings->isAccessible() && blank($settings->completed_at);
     }
 
     public function resumeOnboarding(): void
