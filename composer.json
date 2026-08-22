@@ -168,13 +168,12 @@
       "npx concurrently -k -c \"#2563eb,#d4d4d8,#4f46e5\" \"php artisan horizon\" \"php artisan pail\" \"npm run dev\" --names=queue,logs,vite"
     ],
     "docs:models": [
-      "@php artisan tenants:run --tenants=1 ide-helper:models --option='reset=true' --option='no-interaction=true' --option='write=true'",
+      "@php artisan perscom:ide-helper --models --no-interaction",
       "@cs-fix app/Models"
     ],
     "ide": [
-      "@php artisan tenants:run --tenants=1 ide-helper:generate",
-      "@php artisan tenants:run --tenants=1 ide-helper:meta",
-      "@docs:models"
+      "@php artisan perscom:ide-helper --no-interaction",
+      "@cs-fix app/Models"
     ],
     "lint": "@cs-fix",
     "rector": "./vendor/bin/rector process --ansi",

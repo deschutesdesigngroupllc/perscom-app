@@ -8,7 +8,6 @@ use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
@@ -34,11 +33,11 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-read Image|null $image
  * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
- * @property-read User|null $owner
+ * @property-read \Illuminate\Foundation\Auth\User|null $owner
  * @property-read string|null $plain_secret
  * @property-read Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient existsIn(array $haystack)
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])

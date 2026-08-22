@@ -8,7 +8,6 @@ use App\Models\Scopes\ApiLogScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
@@ -29,7 +28,7 @@ use Zoha\Metable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read mixed|null $body
- * @property-read Model|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read mixed|null $content
  * @property-read string|int|null|null $duration
  * @property-read string|null $endpoint
@@ -40,7 +39,7 @@ use Zoha\Metable;
  * @property-read string|null $request_id
  * @property-read mixed|null $response_headers
  * @property-read string|int|null|null $status
- * @property-read Model|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read string|null $trace_id
  * @property-read \Illuminate\Database\Eloquent\Collection|ApiPurgeLog[] $purges
  * @property-read int|null $purges_count

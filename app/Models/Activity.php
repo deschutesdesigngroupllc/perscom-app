@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Activity as BaseActivity;
@@ -24,9 +23,9 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
  * @property string|null $batch_uuid
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read Collection $changes
- * @property-read Model|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  *
  * @method static Builder<static>|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])

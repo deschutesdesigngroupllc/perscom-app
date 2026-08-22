@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -30,10 +29,10 @@ use Illuminate\Support\Collection;
  * @property ScheduleEndType|null $end_type
  * @property int|null $count
  * @property Carbon|null $until
- * @property Collection<array-key, mixed>|null $by_day
- * @property Collection<array-key, mixed>|null $by_month
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_day
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month
  * @property string|null $by_set_position
- * @property Collection<array-key, mixed>|null $by_month_day
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month_day
  * @property string|null $by_year_day
  * @property string|null $rrule
  * @property Carbon|null $next_occurrence

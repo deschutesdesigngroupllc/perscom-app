@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -46,7 +45,7 @@ use Illuminate\Support\Collection;
  * @property Carbon|null $registration_deadline
  * @property bool $notifications_enabled
  * @property array<array-key, mixed>|null $notifications_interval
- * @property Collection<int, NotificationChannel>|null $notifications_channels
+ * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $notifications_channels
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments

@@ -41,6 +41,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Stancl\Tenancy\Database\Models\ImpersonationToken;
 use UnitEnum;
 
 class TenantResource extends Resource
@@ -265,8 +266,12 @@ class TenantResource extends Resource
                             ->required(),
                     ])
                     ->action(function (Action $action, Tenant $record, array $data) {
-                        // @phpstan-ignore-next-line
-                        $token = tenancy()->impersonate($record, data_get($data, 'user'), $record->url, 'web');
+                        $token = ImpersonationToken::create([
+                            'tenant_id' => $record->getTenantKey(),
+                            'user_id' => data_get($data, 'user'),
+                            'redirect_url' => $record->url,
+                            'auth_guard' => 'web',
+                        ]);
 
                         return redirect()->to($record->route('app.impersonation', [
                             'token' => $token,

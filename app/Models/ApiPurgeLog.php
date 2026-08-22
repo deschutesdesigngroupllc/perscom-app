@@ -8,7 +8,6 @@ use App\Models\Scopes\ApiPurgeLogScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -29,11 +28,11 @@ use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
  * @property string|null $batch_uuid
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read Collection $changes
  * @property-read string|null $request_id
  * @property-read string $status
- * @property-read Model|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read array $tags
  * @property-read string|null $trace_id
  * @property-read \Illuminate\Database\Eloquent\Collection|ApiLog[] $apiLog

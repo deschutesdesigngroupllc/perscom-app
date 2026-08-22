@@ -11,7 +11,6 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
@@ -28,14 +27,14 @@ use Illuminate\Support\Collection;
  * @property string|null $batch_uuid
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Model|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read Collection $changes
  * @property-read mixed|null $payload
  * @property-read mixed|null $reason_phrase
  * @property-read string|null $request_id
  * @property-read string|null $resource_url
  * @property-read mixed|null $status_code
- * @property-read Model|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read string|null $trace_id
  *
  * @method static Builder<static>|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
