@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\System;
 
+use App\Contracts\RequiresTenancy;
 use App\Models\Tenant;
 use App\Notifications\System\DeleteAccount;
 use App\Notifications\System\DeleteAccountOneDay;
@@ -14,7 +15,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class RemoveInactiveAccounts implements ShouldQueue
+class RemoveInactiveAccounts implements RequiresTenancy, ShouldQueue
 {
     use Queueable;
 

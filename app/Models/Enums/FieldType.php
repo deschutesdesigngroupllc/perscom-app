@@ -24,6 +24,7 @@ use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Text;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -112,7 +113,9 @@ enum FieldType: string implements HasColor, HasLabel
             FieldType::FIELD_COUNTRY => Select::make($name)
                 ->preload()
                 ->searchable()
-                ->options(Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray()),
+                ->options(fn (): array => Schema::connection((new Country)->getConnectionName())->hasTable('lc_countries')
+                    ? Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray()
+                    : []),
             FieldType::FIELD_TIMEZONE => Select::make($name)
                 ->preload()
                 ->searchable()

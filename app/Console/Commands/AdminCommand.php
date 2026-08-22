@@ -24,6 +24,12 @@ class AdminCommand extends Command implements PromptsForMissingInput
 
     public function handle(): int
     {
+        if (! config('tenancy.enabled')) {
+            $this->components->error('Admin accounts are only available when tenancy is enabled.');
+
+            return static::FAILURE;
+        }
+
         $operation = select(
             label: 'Please select an operation:',
             options: [

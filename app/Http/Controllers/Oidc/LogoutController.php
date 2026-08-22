@@ -24,6 +24,6 @@ class LogoutController extends Controller
             return response('', Response::HTTP_NO_CONTENT);
         }
 
-        return redirect($request->input('post_logout_redirect_uri') ?? tenant()->url);
+        return redirect($request->input('post_logout_redirect_uri') ?? tenant()?->url ?? config('app.url'));
     }
 }

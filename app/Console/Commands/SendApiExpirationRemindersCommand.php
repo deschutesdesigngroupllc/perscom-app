@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\Central\CreateApiExpirationRemindersBatch;
+use App\Actions\Tenancy\DispatchTenantJob;
+use App\Jobs\Tenant\SendApiExpirationReminders;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +20,7 @@ class SendApiExpirationRemindersCommand extends Command
      */
     public function handle(): int
     {
-        CreateApiExpirationRemindersBatch::handle();
+        DispatchTenantJob::for(SendApiExpirationReminders::class, name: 'Send API Expiration Reminders');
 
         $this->components->info('The API expiration reminders job has been dispatched.');
 

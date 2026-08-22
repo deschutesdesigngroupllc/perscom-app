@@ -158,23 +158,27 @@ class PassportClientResource extends BaseResource
                                     ->hiddenLabel()
                                     ->keyLabel('Endpoint')
                                     ->valueLabel('URL')
-                                    ->getStateUsing(fn (): array => [
-                                        'Discovery Endpoint' => route('oidc.discovery', [
-                                            'tenant' => tenant()->domain?->domain,
-                                        ]),
-                                        'Authorization Endpoint' => route('passport.authorizations.authorize', [
-                                            'tenant' => tenant()->domain?->domain,
-                                        ]),
-                                        'Token Endpoint' => route('passport.token', [
-                                            'tenant' => tenant()->domain?->domain,
-                                        ]),
-                                        'Logout Endpoint' => route('oidc.logout', [
-                                            'tenant' => tenant()->domain?->domain,
-                                        ]),
-                                        'User Info Endpoint' => route('oidc.userinfo', [
-                                            'tenant' => tenant()->domain?->domain,
-                                        ]),
-                                    ]),
+                                    ->getStateUsing(function (): array {
+                                        $tenant = tenant()?->domain?->domain;
+
+                                        return [
+                                            'Discovery Endpoint' => route('oidc.discovery', [
+                                                'tenant' => $tenant,
+                                            ]),
+                                            'Authorization Endpoint' => route('passport.authorizations.authorize', [
+                                                'tenant' => $tenant,
+                                            ]),
+                                            'Token Endpoint' => route('passport.token', [
+                                                'tenant' => $tenant,
+                                            ]),
+                                            'Logout Endpoint' => route('oidc.logout', [
+                                                'tenant' => $tenant,
+                                            ]),
+                                            'User Info Endpoint' => route('oidc.userinfo', [
+                                                'tenant' => $tenant,
+                                            ]),
+                                        ];
+                                    }),
                             ]),
                     ]),
             ]);

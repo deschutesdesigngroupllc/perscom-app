@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\Central\CreatePruneTenantApiLogsBatch;
-use App\Actions\Batches\Central\CreatePruneTenantApiPurgeLogsBatch;
+use App\Actions\Tenancy\DispatchTenantJob;
+use App\Jobs\Tenant\PruneApiLogs;
+use App\Jobs\Tenant\PruneApiPurgeLogs;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Throwable;
@@ -37,13 +38,9 @@ class PruneActivityLogsCommand extends Command
             return Command::FAILURE;
         }
 
-        CreatePruneTenantApiLogsBatch::handle(
-            days: $days,
-        );
+        DispatchTenantJob::for(PruneApiLogs::class, name: 'Prune API Logs', queue: 'clean', arguments: [$days]);
 
-        CreatePruneTenantApiPurgeLogsBatch::handle(
-            days: $days,
-        );
+        DispatchTenantJob::for(PruneApiPurgeLogs::class, name: 'Prune API Purge Logs', queue: 'clean', arguments: [$days]);
 
         $this->components->info('The prune activity logs job has been dispatched to the queue.');
 

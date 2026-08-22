@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Jobs\Tenant;
 
+use App\Contracts\RunsPerTenant;
+use App\Jobs\Concerns\RunsForTenant;
 use App\Models\ApiPurgeLog;
-use App\Models\Tenant;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -13,40 +14,34 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
-class PruneApiPurgeLogs implements ShouldQueue
+class PruneApiPurgeLogs implements RunsPerTenant, ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
     use Queueable;
+    use RunsForTenant;
 
-    public function __construct(public int $tenantKey, public int $days = 30)
+    public function __construct(public ?int $tenantKey = null, public int $days = 30)
     {
-        $this->onQueue('clean');
-        $this->onConnection('central');
+        $this->configureForTenancy(queue: 'clean');
     }
 
-    public function handle(): void
+    public function work(): void
     {
-        if ($this->batch()?->canceled()) {
-            return;
-        }
+        $cutOffDate = Date::now()->subDays($this->days)->format('Y-m-d H:i:s');
 
-        Tenant::findOrFail($this->tenantKey)->run(function (): void {
-            $cutOffDate = Date::now()->subDays($this->days)->format('Y-m-d H:i:s');
+        $idsToDelete = ApiPurgeLog::query()
+            ->where('created_at', '<', $cutOffDate)
+            ->pluck('id');
 
-            $idsToDelete = ApiPurgeLog::query()
-                ->where('created_at', '<', $cutOffDate)
-                ->pluck('id');
+        DB::query()
+            ->from('meta')
+            ->where('owner_type', ApiPurgeLog::class)
+            ->whereIn('owner_id', $idsToDelete)
+            ->delete();
 
-            DB::query()
-                ->from('meta')
-                ->where('owner_type', ApiPurgeLog::class)
-                ->whereIn('owner_id', $idsToDelete)
-                ->delete();
-
-            ApiPurgeLog::query()
-                ->whereIn('id', $idsToDelete)
-                ->delete();
-        });
+        ApiPurgeLog::query()
+            ->whereIn('id', $idsToDelete)
+            ->delete();
     }
 }

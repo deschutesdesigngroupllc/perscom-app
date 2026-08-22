@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\Central\CreateCalculateTenantSchedulesBatch;
+use App\Actions\Tenancy\DispatchTenantJob;
+use App\Jobs\Tenant\CalculateSchedules;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +20,7 @@ class CalculateSchedulesCommand extends Command
      */
     public function handle(): int
     {
-        CreateCalculateTenantSchedulesBatch::handle();
+        DispatchTenantJob::for(CalculateSchedules::class, name: 'Calculate Schedules');
 
         $this->components->info('The schedule job has been dispatched.');
 

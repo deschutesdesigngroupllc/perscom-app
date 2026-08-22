@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\Tenant;
 
 use App\Exceptions\ApiCacheException;
+use App\Jobs\Concerns\ConfiguresTenantQueue;
 use App\Services\ApiCacheService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\App;
 
 class PurgeApiCache implements ShouldQueue
 {
+    use ConfiguresTenantQueue;
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
@@ -29,7 +31,7 @@ class PurgeApiCache implements ShouldQueue
     public function __construct(public Collection|string $tags, public string $event)
     {
         $this->overlapHash = md5(Collection::wrap($this->tags)->implode(','));
-        $this->onQueue('api');
+        $this->configureForTenancy(queue: 'api', connection: null);
     }
 
     public function middleware(): array

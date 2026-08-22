@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Batches\Central;
+namespace App\Actions\Tenancy;
 
 use App\Jobs\Central\SendMassEmail;
 use App\Models\Mail;
@@ -12,13 +12,21 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class CreateSendTenantMassEmailsBatch
+/**
+ * Sends an operator mass-email to tenants. This only applies to the multi-tenant
+ * SaaS deployment; self-hosted installs have no tenant audience.
+ */
+class DispatchTenantMassEmails
 {
     /**
      * @throws Throwable
      */
     public static function handle(Mail $mail): ?Batch
     {
+        if (! config('tenancy.enabled')) {
+            return null;
+        }
+
         if (filled($mail->sent_at) || (! $mail->send_now && blank($mail->send_at))) {
             return null;
         }
@@ -34,6 +42,6 @@ class CreateSendTenantMassEmailsBatch
             name: 'Send Tenant Mass Emails'
         )->onConnection(
             connection: 'central'
-        )->dispatch();
+        )->allowFailures()->dispatch();
     }
 }

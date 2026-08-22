@@ -16,6 +16,7 @@ Before planning or editing, find the row whose globs match the file's path and r
 | app/Facades/** | .ai/rules/facades.md |
 | tests/Feature/** | .ai/rules/feature.md |
 | tests/Feature/Tenant/Http/Controllers/Api/** | .ai/rules/http-controllers-api.md |
+| app/Jobs/** | .ai/rules/jobs.md |
 | resources/js/** | .ai/rules/js.md |
 | app/Livewire/** | .ai/rules/livewire.md |
 | app/Metrics/** | .ai/rules/metrics.md |

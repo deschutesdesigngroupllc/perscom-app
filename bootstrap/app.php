@@ -233,9 +233,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();
         $schedule->command(ScheduleCheckHeartbeatCommand::class)->environments('production')->everyMinute();
 
-        $schedule->job(new DeleteUnverifiedRegistrations)->dailyAt('11:00'); // 4 AM
+        $schedule->job(new DeleteUnverifiedRegistrations)->when(config('tenancy.enabled'))->dailyAt('11:00'); // 4 AM
         $schedule->job(new ResetDemoAccount)->environments('demo')->dailyAt('13:00'); // 6 AM
-        $schedule->job(new RemoveInactiveAccounts)->environments('production')->dailyAt('12:00'); // 5 AM
+        $schedule->job(new RemoveInactiveAccounts)->environments('production')->when(config('tenancy.enabled'))->dailyAt('12:00'); // 5 AM
     })
     ->withBroadcasting(__DIR__.'/../routes/channels.php', [
         'middleware' => [

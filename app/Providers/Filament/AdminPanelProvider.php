@@ -30,6 +30,20 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+    /**
+     * The admin panel manages the SaaS operator surface (tenants, subscriptions)
+     * and authenticates against the central-only `admins` table, so it is only
+     * registered when tenancy is enabled.
+     */
+    public function register(): void
+    {
+        if (! config('tenancy.enabled')) {
+            return;
+        }
+
+        parent::register();
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel

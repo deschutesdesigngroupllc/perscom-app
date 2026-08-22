@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
-use App\Actions\Batches\Central\CreateSendTenantMassEmailsBatch;
+use App\Actions\Tenancy\DispatchTenantMassEmails;
 use App\Models\Mail;
 use Throwable;
 
@@ -15,7 +15,7 @@ class MailObserver
      */
     public function created(Mail $mail): void
     {
-        CreateSendTenantMassEmailsBatch::handle($mail);
+        DispatchTenantMassEmails::handle($mail);
     }
 
     /**
@@ -23,6 +23,6 @@ class MailObserver
      */
     public function updated(Mail $mail): void
     {
-        CreateSendTenantMassEmailsBatch::handle($mail);
+        DispatchTenantMassEmails::handle($mail);
     }
 }

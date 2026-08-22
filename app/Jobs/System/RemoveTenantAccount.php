@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs\Tenant;
+namespace App\Jobs\System;
 
 use App\Actions\Tenant\RemoveTenantAccount as RemoveTenantAccountAction;
+use App\Contracts\RequiresTenancy;
 use App\Models\Tenant;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class RemoveTenantAccount implements ShouldQueue
+class RemoveTenantAccount implements RequiresTenancy, ShouldQueue
 {
     use Queueable;
 
