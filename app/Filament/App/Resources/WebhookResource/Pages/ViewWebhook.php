@@ -30,7 +30,7 @@ class ViewWebhook extends ViewRecord
                 ->schema([
                     CodeEditor::make('payload')
                         ->required()
-                        ->default(fn () => json_encode([
+                        ->default(fn (): string|false => json_encode([
                             'status' => 'ok',
                         ], JSON_PRETTY_PRINT))
                         ->json()

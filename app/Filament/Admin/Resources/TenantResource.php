@@ -110,7 +110,7 @@ class TenantResource extends Resource
                                     ->maxLength(255)
                                     ->label('Invoice Emails')
                                     ->helperText('Separate using a comma for multiple email addresses.')
-                                    ->dehydrateStateUsing(fn ($state) => json_encode($state)),
+                                    ->dehydrateStateUsing(fn ($state): string|false => json_encode($state)),
                                 TextInput::make('billing_address')
                                     ->maxLength(255)
                                     ->label('Address')
@@ -181,7 +181,7 @@ class TenantResource extends Resource
                                 CodeEditor::make('data')
                                     ->dehydrated(false)
                                     ->hiddenLabel()
-                                    ->formatStateUsing(fn (?Tenant $record) => json_encode(json_decode($record?->getRawOriginal('data') ?? ''), JSON_PRETTY_PRINT))
+                                    ->formatStateUsing(fn (?Tenant $record): string|false => json_encode(json_decode($record?->getRawOriginal('data') ?? ''), JSON_PRETTY_PRINT))
                                     ->json(),
                             ]),
                     ]),

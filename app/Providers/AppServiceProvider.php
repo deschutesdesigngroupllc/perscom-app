@@ -23,6 +23,7 @@ use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
+use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -139,6 +140,10 @@ class AppServiceProvider extends ServiceProvider
         App::macro('isDemo', fn () => $this->app->environment('demo'));
 
         Auth::viaRequest('api', static fn () => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());
+
+        FilamentShield::buildPermissionKeyUsing(
+            static fn (string $affix, string $subject): string => Str::snake($affix).'_'.Str::snake($subject)
+        );
 
         $authenticationRedirect = fn (): string => match (App::isAdmin()) {
             true => route('filament.admin.pages.dashboard'),

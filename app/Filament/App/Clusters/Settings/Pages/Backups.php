@@ -39,18 +39,23 @@ class Backups extends Page implements HasTable
 
     public static function canAccess(): bool
     {
-        $can = parent::canAccess()
-            && config('tenancy.enabled');
+        if (! parent::canAccess() || ! config('tenancy.enabled')) {
+            return false;
+        }
+
+        if (! static::isBackupStorageConfigured()) {
+            return false;
+        }
 
         /** @var AwsS3V3Adapter $disk */
         $disk = Storage::disk('backups');
         $driver = $disk->getClient();
 
         if (! $driver instanceof S3Client) {
-            return $can;
+            return true;
         }
 
-        return $can && $driver->doesBucketExist(config('filesystems.disks.backups.bucket'));
+        return $driver->doesBucketExist((string) config('filesystems.disks.backups.bucket'));
     }
 
     public static function table(Table $table): Table
@@ -74,6 +79,12 @@ class Backups extends Page implements HasTable
                     ->openUrlInNewTab()
                     ->url(fn (Backup $record) => $record->url),
             ]);
+    }
+
+    protected static function isBackupStorageConfigured(): bool
+    {
+        return collect(['key', 'secret', 'region', 'bucket'])
+            ->every(fn (string $key): bool => filled(config("filesystems.disks.backups.$key")));
     }
 
     /**

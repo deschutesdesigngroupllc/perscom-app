@@ -15,7 +15,7 @@ class CheckSubscription
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $authenticated = array_any(['web', 'api'], fn ($guard) => Auth::guard($guard)->check());
+        $authenticated = array_any(['web', 'api'], fn (string $guard) => Auth::guard($guard)->check());
 
         if (App::isDemo() ||
             App::isAdmin() ||

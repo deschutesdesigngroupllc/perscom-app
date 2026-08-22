@@ -32,7 +32,7 @@ class PublicPanelProvider extends PanelProvider
         return $panel
             ->id('public')
             ->path('public')
-            ->domain(config('tenancy.enabled') ? '' : config('app.url'))
+            ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
             ->colors([
                 'primary' => Color::Blue,
             ])

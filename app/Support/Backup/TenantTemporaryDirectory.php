@@ -8,19 +8,16 @@ use Spatie\TemporaryDirectory\TemporaryDirectory;
 
 class TenantTemporaryDirectory extends TemporaryDirectory
 {
-    public function __construct()
-    {
-        parent::__construct(storage_path('app/backup-temp'));
-    }
-
     protected function getFullPath(): string
     {
-        $tenantId = tenant()?->getTenantKey() ?? null;
+        $base = storage_path('app/backup-temp');
 
-        if (blank($tenantId)) {
-            return parent::getFullPath();
+        $tenantId = tenant()?->getTenantKey();
+
+        if (filled($tenantId)) {
+            $base .= DIRECTORY_SEPARATOR.'tenant'.$tenantId;
         }
 
-        return storage_path('app/backup-temp/tenant'.$tenantId).($this->name === '' || $this->name === '0' ? '' : DIRECTORY_SEPARATOR.$this->name);
+        return $base.(blank($this->name) ? '' : DIRECTORY_SEPARATOR.$this->name);
     }
 }

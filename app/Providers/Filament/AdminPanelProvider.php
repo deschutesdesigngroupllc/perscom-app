@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->id('admin')
             ->path('admin')
-            ->domain(config('app.url'))
+            ->domain(str(config('app.url'))->after('://')->toString())
             ->login(Login::class)
             ->emailVerification()
             ->colors([

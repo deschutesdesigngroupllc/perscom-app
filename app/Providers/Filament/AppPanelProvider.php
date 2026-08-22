@@ -67,7 +67,7 @@ class AppPanelProvider extends PanelProvider
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->registration(Register::class))
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->passwordReset(RequestPasswordReset::class))
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->emailVerification(EmailVerificationPrompt::class))
-            ->domain(config('tenancy.enabled') ? '' : config('app.url'))
+            ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
             ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Blue,

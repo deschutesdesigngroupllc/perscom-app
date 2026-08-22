@@ -16,3 +16,6 @@ Construct current-time values with now()/today() helpers rather than Carbon:: st
 
 ## Collection pipelines over imperative loops
 Transform data with collect()/->map()/->filter()/->each() chains rather than foreach or array_map.
+
+## Use filled()/blank() for emptiness checks
+Check emptiness with the filled()/blank() helpers, not === '' / !== '' comparisons or empty(). Applies to strings, arrays, and nullable values.
