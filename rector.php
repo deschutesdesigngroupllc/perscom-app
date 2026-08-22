@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
 use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
@@ -27,9 +26,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         AddOverrideAttributeToOverriddenMethodsRector::class,
-        EncapsedStringsToSprintfRector::class => [
-            __DIR__.'/app/Support/Orion/ComponentsResolver.php',
-        ],
         ParamTypeByMethodCallTypeRector::class => [
             __DIR__.'/app/Http/Controllers/Api/AuthorizesRequests.php',
         ],
