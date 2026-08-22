@@ -77,6 +77,9 @@ class UpdateWebhookPostWithFailureTest extends TenantTestCase
         return $webhookLog;
     }
 
+    /**
+     * @param  array<string, int>  $meta
+     */
     private function makeEvent(array $meta, string $errorType, string $errorMessage, ?Response $response): FinalWebhookCallFailedEvent
     {
         return new FinalWebhookCallFailedEvent(

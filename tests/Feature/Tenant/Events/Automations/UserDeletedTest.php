@@ -48,7 +48,7 @@ class UserDeletedTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $context = (new UserDeleted($user))->getExpressionContext();
+        $context = new UserDeleted($user)->getExpressionContext();
 
         $this->assertSame(User::class, $context->modelType);
         $this->assertSame($user->getKey(), $context->modelId);

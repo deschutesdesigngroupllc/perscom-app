@@ -26,7 +26,7 @@ class SendModelNotificationsTest extends TenantTestCase
             ModelNotification::forUser($user, 'test.event', 'Subject', 'Message', [NotificationChannel::MAIL])
         );
 
-        (new SendModelNotifications($announcement, 'test.event'))->handle();
+        new SendModelNotifications($announcement, 'test.event')->handle();
 
         Notification::assertSentTo($user, NewModelNotification::class);
     }
@@ -42,7 +42,7 @@ class SendModelNotificationsTest extends TenantTestCase
             ModelNotification::forUser($user, 'other.event', 'Subject', 'Message', [NotificationChannel::MAIL])
         );
 
-        (new SendModelNotifications($announcement, 'test.event'))->handle();
+        new SendModelNotifications($announcement, 'test.event')->handle();
 
         Notification::assertNothingSent();
     }
@@ -53,7 +53,7 @@ class SendModelNotificationsTest extends TenantTestCase
 
         $announcement = Announcement::factory()->createQuietly();
 
-        (new SendModelNotifications($announcement, 'test.event'))->handle();
+        new SendModelNotifications($announcement, 'test.event')->handle();
 
         Notification::assertNothingSent();
     }

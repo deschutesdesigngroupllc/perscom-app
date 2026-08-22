@@ -26,7 +26,7 @@ class SendMassEmailTest extends TenantTestCase
             'send_now' => true,
         ]));
 
-        (new SendMassEmail($user, $mail))->handle();
+        new SendMassEmail($user, $mail)->handle();
 
         MailFacade::assertSent(MassEmail::class);
         $this->assertNotNull($mail->fresh()->sent_at);

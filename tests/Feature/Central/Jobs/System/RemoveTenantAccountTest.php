@@ -32,7 +32,7 @@ class RemoveTenantAccountTest extends CentralTestCase
             }
         );
 
-        (new RemoveTenantAccount($tenant))->handle();
+        new RemoveTenantAccount($tenant)->handle();
 
         $this->assertNotNull($captured);
         $this->assertSame($tenant->getKey(), $captured->getKey());

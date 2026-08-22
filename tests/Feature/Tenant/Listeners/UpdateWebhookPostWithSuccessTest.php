@@ -52,6 +52,9 @@ class UpdateWebhookPostWithSuccessTest extends TenantTestCase
         return $webhookLog;
     }
 
+    /**
+     * @param  array<string, int>  $meta
+     */
     private function makeEvent(array $meta, ?Response $response): WebhookCallSucceededEvent
     {
         return new WebhookCallSucceededEvent(

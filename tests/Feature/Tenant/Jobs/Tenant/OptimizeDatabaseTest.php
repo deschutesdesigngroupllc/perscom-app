@@ -18,7 +18,7 @@ class OptimizeDatabaseTest extends TenantTestCase
         $db->shouldNotReceive('select');
         $db->shouldNotReceive('statement');
 
-        (new OptimizeDatabase($this->tenant->getKey()))->work();
+        new OptimizeDatabase($this->tenant->getKey())->work();
 
         $this->addToAssertionCount(1);
     }
@@ -28,7 +28,7 @@ class OptimizeDatabaseTest extends TenantTestCase
         Queue::fake();
         config(['tenancy.enabled' => true]);
 
-        OptimizeDatabase::dispatch($this->tenant->getKey());
+        dispatch(new OptimizeDatabase($this->tenant->getKey()));
 
         Queue::assertPushed(
             OptimizeDatabase::class,

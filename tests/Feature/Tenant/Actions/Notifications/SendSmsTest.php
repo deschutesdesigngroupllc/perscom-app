@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\TwilioService;
 use Exception;
 use Mockery;
+use Mockery\MockInterface;
 use Tests\Feature\Tenant\TenantTestCase;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
@@ -31,7 +32,7 @@ class SendSmsTest extends TenantTestCase
 
         $instance = Mockery::mock(MessageInstance::class);
 
-        $this->mock(TwilioService::class, function (Mockery\MockInterface $mock) use ($instance): void {
+        $this->mock(TwilioService::class, function (MockInterface $mock) use ($instance): void {
             $mock->shouldReceive('sendSms')
                 ->once()
                 ->with('+15555555555', 'Hello there.')
@@ -47,7 +48,7 @@ class SendSmsTest extends TenantTestCase
             'phone_number' => '+15555555555',
         ]);
 
-        $this->mock(TwilioService::class, function (Mockery\MockInterface $mock): void {
+        $this->mock(TwilioService::class, function (MockInterface $mock): void {
             $mock->shouldReceive('sendSms')
                 ->once()
                 ->andThrow(new Exception('Twilio failure'));

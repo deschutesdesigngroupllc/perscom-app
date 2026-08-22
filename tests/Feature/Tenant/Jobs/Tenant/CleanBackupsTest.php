@@ -18,7 +18,7 @@ class CleanBackupsTest extends TenantTestCase
             ->with('backup:clean')
             ->andReturn(0);
 
-        (new CleanBackups($this->tenant->getKey()))->work();
+        new CleanBackups($this->tenant->getKey())->work();
     }
 
     public function test_it_is_routed_to_the_clean_queue_when_tenancy_is_enabled(): void
@@ -26,7 +26,7 @@ class CleanBackupsTest extends TenantTestCase
         Queue::fake();
         config(['tenancy.enabled' => true]);
 
-        CleanBackups::dispatch($this->tenant->getKey());
+        dispatch(new CleanBackups($this->tenant->getKey()));
 
         Queue::assertPushed(
             CleanBackups::class,

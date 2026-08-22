@@ -27,7 +27,7 @@ class CalculateSchedulesTest extends TenantTestCase
             'last_occurrence' => null,
         ]);
 
-        (new CalculateSchedules($this->tenant->getKey()))->work();
+        new CalculateSchedules($this->tenant->getKey())->work();
 
         $schedule = Schedule::query()->firstOrFail();
 
@@ -46,7 +46,7 @@ class CalculateSchedulesTest extends TenantTestCase
         Queue::fake();
         config(['tenancy.enabled' => true]);
 
-        CalculateSchedules::dispatch($this->tenant->getKey());
+        dispatch(new CalculateSchedules($this->tenant->getKey()));
 
         Queue::assertPushed(
             CalculateSchedules::class,

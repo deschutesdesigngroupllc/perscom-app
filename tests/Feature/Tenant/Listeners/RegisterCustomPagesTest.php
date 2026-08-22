@@ -30,7 +30,7 @@ class RegisterCustomPagesTest extends TenantTestCase
         $panel = Filament::getCurrentOrDefaultPanel();
 
         $labels = collect($panel->getNavigationItems())
-            ->map(fn (NavigationItem $item): ?string => $item->getLabel());
+            ->map(fn (NavigationItem $item): string => $item->getLabel());
 
         $this->assertTrue($labels->contains($page->name));
     }
@@ -54,7 +54,7 @@ class RegisterCustomPagesTest extends TenantTestCase
         $panel = Filament::getCurrentOrDefaultPanel();
 
         $labels = collect($panel->getNavigationItems())
-            ->map(fn (NavigationItem $item): ?string => $item->getLabel());
+            ->map(fn (NavigationItem $item): string => $item->getLabel());
 
         $this->assertFalse($labels->contains($page->name));
     }

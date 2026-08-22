@@ -7,14 +7,14 @@ namespace Tests\Feature\Tenant\Listeners;
 use App\Listeners\UpdateTenantLastLoginDate;
 use App\Models\User;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class UpdateTenantLastLoginDateTest extends TenantTestCase
 {
     public function test_handle_stamps_the_current_tenant_last_login_at(): void
     {
-        Carbon::setTestNow('2026-08-22 10:00:00');
+        Date::setTestNow('2026-08-22 10:00:00');
 
         $user = User::factory()->createQuietly();
 
@@ -22,10 +22,10 @@ class UpdateTenantLastLoginDateTest extends TenantTestCase
 
         $this->assertNotNull($this->tenant->refresh()->last_login_at);
         $this->assertSame(
-            Carbon::now()->toDateTimeString(),
-            Carbon::parse($this->tenant->last_login_at)->toDateTimeString(),
+            Date::now()->toDateTimeString(),
+            Date::parse($this->tenant->last_login_at)->toDateTimeString(),
         );
 
-        Carbon::setTestNow();
+        Date::setTestNow();
     }
 }

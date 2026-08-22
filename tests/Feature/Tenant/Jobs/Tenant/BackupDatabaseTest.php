@@ -22,7 +22,7 @@ class BackupDatabaseTest extends TenantTestCase
             ])
             ->andReturn(0);
 
-        (new BackupDatabase($this->tenant->getKey()))->work();
+        new BackupDatabase($this->tenant->getKey())->work();
     }
 
     public function test_it_is_routed_to_the_backup_queue_when_tenancy_is_enabled(): void
@@ -30,7 +30,7 @@ class BackupDatabaseTest extends TenantTestCase
         Queue::fake();
         config(['tenancy.enabled' => true]);
 
-        BackupDatabase::dispatch($this->tenant->getKey());
+        dispatch(new BackupDatabase($this->tenant->getKey()));
 
         Queue::assertPushed(
             BackupDatabase::class,

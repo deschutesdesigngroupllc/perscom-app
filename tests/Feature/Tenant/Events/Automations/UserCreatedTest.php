@@ -49,7 +49,7 @@ class UserCreatedTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $context = (new UserCreated($user))->getExpressionContext();
+        $context = new UserCreated($user)->getExpressionContext();
 
         $this->assertSame(User::class, $context->modelType);
         $this->assertSame($user->getKey(), $context->modelId);

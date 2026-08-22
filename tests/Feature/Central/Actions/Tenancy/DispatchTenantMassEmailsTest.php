@@ -64,10 +64,8 @@ class DispatchTenantMassEmailsTest extends CentralTestCase
 
         DispatchTenantMassEmails::handle($mail);
 
-        Bus::assertBatched(function (PendingBatch $batch): bool {
-            return $batch->name === 'Send Tenant Mass Emails'
-                && $batch->jobs->isNotEmpty()
-                && $batch->jobs->first() instanceof SendMassEmail;
-        });
+        Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->name === 'Send Tenant Mass Emails'
+            && $batch->jobs->isNotEmpty()
+            && $batch->jobs->first() instanceof SendMassEmail);
     }
 }

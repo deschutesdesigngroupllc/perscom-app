@@ -17,7 +17,7 @@ class PruneApiPurgeLogsTest extends TenantTestCase
             'created_at' => now()->subDays(60),
         ]);
 
-        (new PruneApiPurgeLogs(days: 30))->work();
+        new PruneApiPurgeLogs(days: 30)->work();
 
         $this->assertDatabaseMissing('activity_log', ['id' => $old->getKey()]);
     }
@@ -29,7 +29,7 @@ class PruneApiPurgeLogsTest extends TenantTestCase
             'created_at' => now()->subDays(5),
         ]);
 
-        (new PruneApiPurgeLogs(days: 30))->work();
+        new PruneApiPurgeLogs(days: 30)->work();
 
         $this->assertDatabaseHas('activity_log', ['id' => $recent->getKey()]);
     }
@@ -41,7 +41,7 @@ class PruneApiPurgeLogsTest extends TenantTestCase
             'created_at' => now()->subDays(5),
         ]);
 
-        (new PruneApiPurgeLogs(days: 1))->work();
+        new PruneApiPurgeLogs(days: 1)->work();
 
         $this->assertDatabaseMissing('activity_log', ['id' => $log->getKey()]);
     }

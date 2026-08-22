@@ -32,7 +32,7 @@ class SetupTenantAccountTest extends CentralTestCase
             }
         );
 
-        (new SetupTenantAccount($tenant))->handle();
+        new SetupTenantAccount($tenant)->handle();
 
         $this->assertNotNull($captured);
         $this->assertSame($tenant->getKey(), $captured->getKey());
