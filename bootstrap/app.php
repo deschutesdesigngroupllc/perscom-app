@@ -6,7 +6,6 @@ use App\Filament\App\Pages\Dashboard;
 use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\AuthenticateApi;
-use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
@@ -99,10 +98,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup('api', [
             'throttle:api',
-        ]);
-
-        $middleware->appendToGroup('web', [
-            CaptureUserOnlineStatus::class,
         ]);
 
         $middleware->group('universal', []);

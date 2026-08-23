@@ -109,10 +109,12 @@ class AppPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                CaptureUserOnlineStatus::class,
                 CheckUserApprovalStatus::class,
                 RedirectSocialProvider::class,
             ])
+            ->middleware([
+                CaptureUserOnlineStatus::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ])
