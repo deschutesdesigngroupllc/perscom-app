@@ -110,9 +110,12 @@ class InstallCommand extends Command implements Isolatable
             $tenant->database()->manager()->createDatabase($tenant);
         }
 
-        $this->call('tenants:migrate', [
+        // Drop existing tables first: switching from non-tenancy to tenancy mode
+        // leaves the reset unable to enumerate tenant databases (the central
+        // tenants table does not exist yet), so a stale tenant database can
+        // survive and cause duplicate-key errors while seeding.
+        $this->call('tenants:migrate-fresh', [
             '--tenants' => $tenant->getTenantKey(),
-            '--force' => true,
         ]);
 
         $this->call('tenants:seed', [
