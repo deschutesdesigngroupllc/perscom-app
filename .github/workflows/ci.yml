@@ -66,13 +66,6 @@ jobs:
         if: needs.detect-changes.outputs.js == 'true'
         run: npm run format -- --check
 
-      - name: Cache Rector
-        if: needs.detect-changes.outputs.php == 'true'
-        uses: actions/cache@v5
-        with:
-          path: .rector.cache
-          key: rector-${{ hashFiles('rector.php', 'composer.lock') }}
-
       - name: Check Rector
         if: needs.detect-changes.outputs.php == 'true'
         run: vendor/bin/rector --dry-run
