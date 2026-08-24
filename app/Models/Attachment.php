@@ -100,7 +100,7 @@ class Attachment extends Model implements HasLabel
                 return null;
             }
 
-            /** @var resource $resource */
+            /** @var class-string<resource> $resource */
             $resource = Filament::getModelResource($this->model);
 
             if (blank($resource)) {

@@ -111,7 +111,7 @@ class WebhookLog extends Activity
                 return null;
             }
 
-            /** @var resource $resource */
+            /** @var class-string<resource> $resource */
             $resource = Filament::getModelResource($this->causer);
 
             if (blank($resource)) {

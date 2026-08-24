@@ -18,7 +18,7 @@ class CaptureUserOnlineStatusTest extends TestCase
     {
         $this->assertContains(
             CaptureUserOnlineStatus::class,
-            app(PersistentMiddleware::class)->getPersistentMiddleware(),
+            resolve(PersistentMiddleware::class)->getPersistentMiddleware(),
         );
     }
 
