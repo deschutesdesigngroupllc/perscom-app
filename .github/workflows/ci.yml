@@ -202,3 +202,47 @@ jobs:
           token: ${{ secrets.CODE_COV_TOKEN }}
           files: ./clover.xml
           verbose: true
+
+  secrets:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Scan for Verified Secrets
+        uses: trufflesecurity/trufflehog@v3.97.0
+        with:
+          extra_args: --results=verified,unknown
+
+  sast:
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep:1.173.0
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Semgrep Scan
+        run: semgrep ci --config=p/php --config=p/security-audit
+
+  deps-iac:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v6
+
+      - name: Trivy Filesystem Scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          exit-code: 1
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+          scanners: vuln,misconfig,secret
+          format: table

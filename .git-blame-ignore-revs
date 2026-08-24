@@ -1,0 +1,13 @@
+# Bulk formatting / automated-refactor commits to skip in `git blame`.
+# Enable locally with:
+#   git config blame.ignoreRevsFile .git-blame-ignore-revs
+# GitHub applies this file automatically.
+
+# Lint
+b1d19eac6a1a305c40f345ad6740e7273bf43029
+# Lint
+1fb1dfca07deed57368327ff70f490085d8c7bca
+# Apply coding-standards conventions from .ai/rules
+c10e8229e205f7f128256de3cbc7dfb26775cfa6
+# Rector
+9e0f5de56967bc8375b2d3d4dadb2f8ad68b6350
