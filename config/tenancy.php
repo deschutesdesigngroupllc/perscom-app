@@ -34,7 +34,7 @@ return [
      *
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
-    'central_domains' => [
+    'central_domains' => array_values(array_filter(array_unique([
         '127.0.0.1',
         'lvh.me',
         'localhost',
@@ -42,7 +42,8 @@ return [
         'app.perscom.io',
         'perscom.test',
         'perscom.io',
-    ],
+        parse_url((string) env('APP_URL'), PHP_URL_HOST),
+    ]))),
 
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.
