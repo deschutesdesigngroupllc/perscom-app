@@ -68,6 +68,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VITE_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ vars.VITE_CLOUDFLARE_TURNSTILE_SITE_KEY }}
+            VITE_PUSHER_APP_KEY=${{ vars.VITE_PUSHER_APP_KEY }}
+            VITE_PUSHER_APP_CLUSTER=${{ vars.VITE_PUSHER_APP_CLUSTER }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64

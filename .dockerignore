@@ -31,6 +31,7 @@ storage/debugbar
 storage/clockwork
 storage/pulse
 
+.env
 .env.bak
 .env.*
 !.env.example
@@ -50,7 +51,6 @@ Thumbs.db
 
 docs
 art
-operations
 webhook.py
 README.md
 *.md

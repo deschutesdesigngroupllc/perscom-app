@@ -144,6 +144,11 @@ USER root
 
 WORKDIR /var/www/html
 
+ENV AUTORUN_ENABLED=true \
+    AUTORUN_LARAVEL_MIGRATION=true \
+    AUTORUN_LARAVEL_MIGRATION_ISOLATION=true \
+    PHP_OPCACHE_ENABLE=1
+
 COPY --chmod=755 ./docker/entrypoint.d/production/ /etc/entrypoint.d/
 
 # Pull the built application from the build stage (already includes vendor/ and public/build/).
@@ -153,6 +158,9 @@ COPY --from=build --chown=www-data:www-data /var/www/html /var/www/html
 RUN --mount=type=cache,target=/tmp/composer-cache \
     COMPOSER_CACHE_DIR=/tmp/composer-cache composer install \
         --no-interaction --prefer-dist --no-dev --no-scripts --no-progress --optimize-autoloader \
-    && composer clear-cache
+    && composer clear-cache \
+    && rm -f bootstrap/cache/packages.php bootstrap/cache/services.php \
+    && php artisan package:discover --ansi \
+    && chown -R www-data:www-data bootstrap/cache
 
 USER www-data
