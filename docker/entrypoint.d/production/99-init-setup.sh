@@ -7,14 +7,15 @@
 # AUTORUN_LARAVEL_STORAGE_LINK). Migrations run with --isolated, so the web,
 # queue and scheduler containers never race each other during a deploy.
 #
-# This script only performs the *one-time* install, and only when an operator
-# opts in via RUN_SETUP=1. That keeps the heavy migrate+seed+tenant work off
-# every deploy and off the queue/scheduler containers, where it would race the
-# web container and stall the rollout.
+# This script runs perscom:install (seed + tenant provisioning), gated on
+# RUN_SETUP=1. Set RUN_SETUP=1 *permanently on the web service only* — the
+# install self-skips once the app is installed (isInstalled()), so it installs
+# on first launch and no-ops on every boot after. Leaving it unset on the
+# queue/scheduler containers keeps them from racing the first-launch seed.
 
 set -eu
 
-# Opt-in guard: skip entirely unless this is an intentional first-time install.
+# Gate: only the container told to run setup (the web service) installs.
 if [ "${RUN_SETUP:-0}" != "1" ]; then
     exit 0
 fi
@@ -26,9 +27,9 @@ fi
 
 cd "$APP_BASE_DIR"
 
-# perscom:install is idempotent — it short-circuits when the app is already
-# installed, so a repeated RUN_SETUP=1 boot is safe.
-php artisan perscom:install -n
+# Idempotent (short-circuits when installed) and --isolated (an atomic Redis
+# lock), so concurrent web replicas can't double-install on first launch.
+php artisan perscom:install -n --isolated
 
 # Hand storage back to www-data: the automations and the web server run as
 # www-data, but this script runs as root.
