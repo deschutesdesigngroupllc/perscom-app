@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Actions\Organization\CreateGroup;
+use App\Actions\Organization\CreatePosition;
+use App\Actions\Organization\CreateRank;
+use App\Actions\Organization\CreateStatus;
+use App\Actions\Organization\CreateUnit;
 use App\Filament\Actions\CopyAction;
 use App\Models\Group;
 use App\Models\Position;
@@ -433,13 +438,7 @@ class Dashboard extends BaseDashboard
             return Group::query()->first();
         }
 
-        $existingGroup = Group::query()->where('name', $name)->first();
-
-        if ($existingGroup) {
-            return $existingGroup;
-        }
-
-        return Group::create([
+        return CreateGroup::handle([
             'name' => $name,
             'description' => data_get($data, 'group.description'),
         ]);
@@ -456,26 +455,10 @@ class Dashboard extends BaseDashboard
             return Unit::query()->first();
         }
 
-        $existingUnit = Unit::query()->where('name', $name)->first();
-
-        if ($existingUnit) {
-            if ($group && $existingUnit->groups->doesntContain($group->id)) {
-                $existingUnit->groups()->attach($group->id);
-            }
-
-            return $existingUnit;
-        }
-
-        $unit = Unit::create([
+        return CreateUnit::handle([
             'name' => $name,
             'description' => data_get($data, 'unit.description'),
-        ]);
-
-        if ($group instanceof Group) {
-            $unit->groups()->attach($group->id);
-        }
-
-        return $unit;
+        ], $group);
     }
 
     /**
@@ -489,13 +472,7 @@ class Dashboard extends BaseDashboard
             return Position::query()->first();
         }
 
-        $existingPosition = Position::query()->where('name', $name)->first();
-
-        if ($existingPosition) {
-            return $existingPosition;
-        }
-
-        return Position::create([
+        return CreatePosition::handle([
             'name' => $name,
             'description' => data_get($data, 'position.description'),
         ]);
@@ -512,13 +489,7 @@ class Dashboard extends BaseDashboard
             return Rank::query()->first();
         }
 
-        $existingRank = Rank::query()->where('name', $name)->first();
-
-        if ($existingRank) {
-            return $existingRank;
-        }
-
-        return Rank::create([
+        return CreateRank::handle([
             'name' => $name,
             'abbreviation' => data_get($data, 'rank.abbreviation'),
             'paygrade' => data_get($data, 'rank.paygrade'),
@@ -536,13 +507,7 @@ class Dashboard extends BaseDashboard
             return Status::query()->first();
         }
 
-        $existingStatus = Status::query()->where('name', $name)->first();
-
-        if ($existingStatus) {
-            return $existingStatus;
-        }
-
-        return Status::create([
+        return CreateStatus::handle([
             'name' => $name,
             'color' => data_get($data, 'status.color'),
         ]);

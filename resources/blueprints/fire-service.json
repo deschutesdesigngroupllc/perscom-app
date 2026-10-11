@@ -1,0 +1,610 @@
+{
+    "name": "Fire Service",
+    "description": "A municipal fire department with stations, companies, fire service ranks, certifications, and personnel action forms.",
+    "positions": [
+        {
+            "name": "Shift Commander"
+        },
+        {
+            "name": "Company Officer"
+        },
+        {
+            "name": "Engineer / Driver-Operator"
+        },
+        {
+            "name": "Firefighter / Irons"
+        },
+        {
+            "name": "Firefighter / Nozzle"
+        },
+        {
+            "name": "Firefighter / OV"
+        },
+        {
+            "name": "Firefighter / Hydrant"
+        },
+        {
+            "name": "Paramedic"
+        }
+    ],
+    "specialties": [
+        {
+            "name": "Hazardous Materials Technician",
+            "abbreviation": "HMT",
+            "description": "Trained to NFPA 472 Hazmat Technician level for offensive operations on hazardous materials releases."
+        },
+        {
+            "name": "Technical Rescue",
+            "abbreviation": "TRT",
+            "description": "Specialty team trained in rope, confined space, trench, and structural collapse rescue."
+        },
+        {
+            "name": "Urban Search and Rescue",
+            "abbreviation": "USAR",
+            "description": "Federal task force qualified personnel responding to structural collapse and disaster operations."
+        },
+        {
+            "name": "Marine / Swift Water Rescue",
+            "abbreviation": "SWR",
+            "description": "Trained in surface water rescue, swift water entry, and small boat operations."
+        },
+        {
+            "name": "Wildland Firefighter",
+            "abbreviation": "WLF",
+            "description": "NWCG red-card qualified for wildland and wildland-urban interface assignments."
+        },
+        {
+            "name": "Fire Investigator",
+            "abbreviation": "FI",
+            "description": "IAAI/NFPA 1033 trained investigator responsible for cause-and-origin determination."
+        }
+    ],
+    "ranks": [
+        {
+            "name": "Fire Chief",
+            "abbreviation": "FC",
+            "paygrade": "F7"
+        },
+        {
+            "name": "Deputy Chief",
+            "abbreviation": "DPC",
+            "paygrade": "F6"
+        },
+        {
+            "name": "Battalion Chief",
+            "abbreviation": "BC",
+            "paygrade": "F5"
+        },
+        {
+            "name": "Captain",
+            "abbreviation": "CPT",
+            "paygrade": "F4"
+        },
+        {
+            "name": "Lieutenant",
+            "abbreviation": "LT",
+            "paygrade": "F3"
+        },
+        {
+            "name": "Engineer",
+            "abbreviation": "ENG",
+            "paygrade": "F2"
+        },
+        {
+            "name": "Firefighter",
+            "abbreviation": "FF",
+            "paygrade": "F1"
+        }
+    ],
+    "statuses": [
+        {
+            "name": "Active",
+            "color": "#16a34a"
+        },
+        {
+            "name": "Light Duty",
+            "color": "#facc15"
+        },
+        {
+            "name": "On Leave",
+            "color": "#0284c7"
+        },
+        {
+            "name": "Inactive",
+            "color": "#dc2626"
+        }
+    ],
+    "groups": [
+        {
+            "name": "Operations",
+            "icon": "heroicon-o-fire",
+            "units": [
+                {
+                    "name": "District 1 Headquarters",
+                    "slots": [
+                        {
+                            "name": "Captain",
+                            "position": "Company Officer"
+                        },
+                        {
+                            "name": "Engineer",
+                            "position": "Engineer / Driver-Operator"
+                        }
+                    ]
+                },
+                {
+                    "name": "Battalion 1",
+                    "slots": [
+                        {
+                            "name": "Firefighter / Irons",
+                            "position": "Firefighter / Irons"
+                        },
+                        {
+                            "name": "Firefighter / Nozzle",
+                            "position": "Firefighter / Nozzle"
+                        }
+                    ]
+                },
+                {
+                    "name": "Station 1 - Engine 1, Truck 1, Medic 1",
+                    "slots": [
+                        {
+                            "name": "Captain",
+                            "position": "Company Officer"
+                        },
+                        {
+                            "name": "Paramedic",
+                            "position": "Paramedic"
+                        }
+                    ]
+                },
+                {
+                    "name": "Station 2 - Engine 2, Medic 2",
+                    "slots": [
+                        {
+                            "name": "Engineer",
+                            "position": "Engineer / Driver-Operator"
+                        },
+                        {
+                            "name": "Firefighter / Irons",
+                            "position": "Firefighter / Irons"
+                        }
+                    ]
+                },
+                {
+                    "name": "Station 3 - Engine 3, Brush 3",
+                    "slots": [
+                        {
+                            "name": "Firefighter / Nozzle",
+                            "position": "Firefighter / Nozzle"
+                        },
+                        {
+                            "name": "Paramedic",
+                            "position": "Paramedic"
+                        }
+                    ]
+                },
+                {
+                    "name": "Battalion 2",
+                    "slots": [
+                        {
+                            "name": "Captain",
+                            "position": "Company Officer"
+                        },
+                        {
+                            "name": "Engineer",
+                            "position": "Engineer / Driver-Operator"
+                        }
+                    ]
+                },
+                {
+                    "name": "Station 4 - Engine 4, Tower 4",
+                    "slots": [
+                        {
+                            "name": "Firefighter / Irons",
+                            "position": "Firefighter / Irons"
+                        },
+                        {
+                            "name": "Firefighter / Nozzle",
+                            "position": "Firefighter / Nozzle"
+                        }
+                    ]
+                },
+                {
+                    "name": "Station 5 - Engine 5, Hazmat 5",
+                    "slots": [
+                        {
+                            "name": "Captain",
+                            "position": "Company Officer"
+                        },
+                        {
+                            "name": "Paramedic",
+                            "position": "Paramedic"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Training & Safety",
+            "icon": "heroicon-o-academic-cap",
+            "units": [
+                {
+                    "name": "Training Division",
+                    "slots": [
+                        {
+                            "name": "Training Officer"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "awards": [
+        {
+            "name": "Medal of Valor",
+            "description": "The department's highest honor, awarded for an act of conspicuous courage performed at extreme personal risk in the line of duty."
+        },
+        {
+            "name": "Medal of Honor",
+            "description": "Awarded posthumously to members who lose their lives in the line of duty while engaged in fire suppression, rescue, or emergency operations."
+        },
+        {
+            "name": "Lifesaving Medal",
+            "description": "Awarded to members who, through skill and decisive action, are directly responsible for saving a human life during an emergency incident."
+        },
+        {
+            "name": "Distinguished Service Award",
+            "description": "Recognizes sustained meritorious service or a single act of significant achievement that brings credit to the department."
+        },
+        {
+            "name": "EMS Excellence Award",
+            "description": "Awarded for exceptional patient care, clinical performance, or contributions to the department's emergency medical services program."
+        },
+        {
+            "name": "Unit Citation",
+            "description": "Recognizes a crew or company whose collective performance on a specific incident exemplifies teamwork and operational excellence."
+        },
+        {
+            "name": "Fire Chief Commendation",
+            "description": "Issued at the discretion of the Fire Chief for noteworthy service, professional achievement, or community contribution."
+        }
+    ],
+    "qualifications": [
+        {
+            "name": "Firefighter I",
+            "description": "NFPA 1001 entry-level firefighter certification covering PPE, SCBA, fire behavior, ropes and knots, ladders, hose, and basic fire suppression."
+        },
+        {
+            "name": "Firefighter II",
+            "description": "NFPA 1001 advanced firefighter certification covering size-up, command transfer, sprinkler systems, foam operations, and fire investigation preservation."
+        },
+        {
+            "name": "Driver / Operator - Pumper",
+            "description": "NFPA 1002 certification for driving and operating fire department pumping apparatus, including hydraulic calculations and relay pumping."
+        },
+        {
+            "name": "Driver / Operator - Aerial",
+            "description": "NFPA 1002 certification for operation of aerial ladder and platform apparatus, including positioning, stabilization, and elevated stream operations."
+        },
+        {
+            "name": "Hazardous Materials Technician",
+            "description": "NFPA 472 Technician-level qualification authorizing offensive hazmat operations, including product identification, decontamination, and containment."
+        },
+        {
+            "name": "Confined Space Rescue",
+            "description": "NFPA 1006 certification for non-entry and entry rescue from permit-required confined spaces, including atmospheric monitoring and ventilation."
+        },
+        {
+            "name": "Emergency Medical Technician (EMT)",
+            "description": "National Registry EMT-Basic certification authorizing the provision of basic life support patient care under regional protocols."
+        },
+        {
+            "name": "Paramedic",
+            "description": "National Registry Paramedic certification authorizing advanced life support patient care, including airway management, cardiac monitoring, and pharmacology."
+        }
+    ],
+    "credentials": [
+        {
+            "name": "EMT - Basic",
+            "type": "certification"
+        },
+        {
+            "name": "Paramedic",
+            "type": "certification"
+        },
+        {
+            "name": "Hazardous Materials Technician",
+            "type": "certification"
+        },
+        {
+            "name": "Commercial Driver's License (Class B)",
+            "type": "license"
+        },
+        {
+            "name": "Fire Officer I",
+            "type": "certification"
+        }
+    ],
+    "forms": [
+        {
+            "name": "Personnel Action Request",
+            "description": "Request changes to assignment, shift, classification, or other personnel actions.",
+            "instructions": "Submit at least 14 days prior to the desired effective date. Routing:\n\n1. Member completes the request below.\n2. Company Officer endorses.\n3. Battalion Chief reviews and forwards to the Operations Division.\n4. Final approval rests with the Deputy Chief of Operations.",
+            "success_message": "Your Personnel Action Request has been submitted and routed to your Company Officer.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Member Name",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "LAST, FIRST MI"
+                },
+                {
+                    "name": "Employee ID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Current Rank",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Station / Shift Assignment",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "e.g. Station 1 / A-Shift"
+                },
+                {
+                    "name": "Action Type",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Shift Change",
+                        "Permanent Trade",
+                        "Station Reassignment",
+                        "Status Change",
+                        "Promotion / Demotion",
+                        "Resignation / Retirement",
+                        "Other"
+                    ]
+                },
+                {
+                    "name": "Effective Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Reason / Justification",
+                    "type": "textarea",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "name": "Vacation / Leave Request",
+            "description": "Submit requests for vacation, sick, personal leave, or shift trades.",
+            "instructions": "Vacation requests must be submitted in accordance with the collective bargaining agreement. Trade requests require the trading member's acknowledgement signature and may not result in overtime.",
+            "success_message": "Leave request submitted. Do not modify your shift coverage until the request is approved.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Member Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Employee ID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Leave Type",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Vacation",
+                        "Sick",
+                        "Personal",
+                        "Comp Time",
+                        "Bereavement",
+                        "FMLA",
+                        "Shift Trade"
+                    ]
+                },
+                {
+                    "name": "Start Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "End Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Trading With (Member Name)",
+                    "type": "text",
+                    "required": false,
+                    "help": "Leave blank if not a shift trade."
+                },
+                {
+                    "name": "Notes",
+                    "type": "textarea",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "name": "Apparatus / Equipment Issue Report",
+            "description": "Report damaged, missing, or out-of-service apparatus and equipment so the maintenance division can take action.",
+            "instructions": "If the issue places the apparatus out of service, immediately notify the on-duty Battalion Chief in addition to submitting this report.",
+            "success_message": "Issue report submitted. The maintenance division will follow up within one business day.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Reporting Member",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Apparatus / Equipment ID",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "e.g. Engine 1, SCBA #214"
+                },
+                {
+                    "name": "Date Discovered",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Severity",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Cosmetic",
+                        "Functional - In Service",
+                        "Out of Service",
+                        "Safety Critical"
+                    ]
+                },
+                {
+                    "name": "Out of Service?",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Description of Issue",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Describe the issue, when it was discovered, and any related circumstances."
+                },
+                {
+                    "name": "Photo / Documentation",
+                    "type": "file",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "name": "Incident Exposure Report",
+            "description": "Report bloodborne pathogen, infectious disease, or hazardous substance exposures sustained on duty.",
+            "instructions": "Submit within 24 hours of exposure. Follow up with the department physician for medical evaluation. Confidentiality will be maintained in accordance with HIPAA and department policy.",
+            "success_message": "Exposure report submitted. The Safety Officer and department physician have been notified.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Member Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Employee ID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Incident Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Date / Time of Exposure",
+                    "type": "datetime-local",
+                    "required": true
+                },
+                {
+                    "name": "Type of Exposure",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Bloodborne Pathogen",
+                        "Airborne Pathogen",
+                        "Hazardous Material",
+                        "Smoke / Products of Combustion",
+                        "Sharps / Needlestick",
+                        "Other"
+                    ]
+                },
+                {
+                    "name": "PPE in Use at Time of Exposure",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Description of Incident",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Sought Medical Evaluation?",
+                    "type": "boolean",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "name": "Recruit / Cadet Application",
+            "description": "Apply to join the department as a recruit firefighter or cadet.",
+            "instructions": "Applicants must be at least 18 years of age, possess a valid driver's license, and pass the CPAT physical ability test prior to academy entry.",
+            "success_message": "Thank you for your interest in joining our department. The recruitment division will review your application and contact you regarding next steps.",
+            "is_public": true,
+            "fields": [
+                {
+                    "name": "Full Legal Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Email Address",
+                    "type": "email",
+                    "required": true
+                },
+                {
+                    "name": "Phone Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Date of Birth",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Current EMS Certification",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "None",
+                        "EMR",
+                        "EMT-Basic",
+                        "AEMT",
+                        "Paramedic"
+                    ]
+                },
+                {
+                    "name": "Currently Certified Firefighter?",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "CPAT Card on File?",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Why do you want to join the fire service?",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Resume / Application Packet",
+                    "type": "file",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}

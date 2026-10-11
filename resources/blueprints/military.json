@@ -1,0 +1,594 @@
+{
+    "name": "Military",
+    "description": "A special operations style military organization with enlisted ranks, operational detachments, decorations, and qualification schools.",
+    "positions": [
+        {
+            "name": "Detachment Commander"
+        },
+        {
+            "name": "Assistant Detachment Commander"
+        },
+        {
+            "name": "Operations Sergeant"
+        },
+        {
+            "name": "Assistant Operations and Intelligence Sergeant"
+        },
+        {
+            "name": "Weapons Sergeant"
+        },
+        {
+            "name": "Communications Sergeant"
+        },
+        {
+            "name": "Medical Sergeant"
+        },
+        {
+            "name": "Engineering Sergeant"
+        }
+    ],
+    "specialties": [
+        {
+            "name": "Special Forces Officer",
+            "abbreviation": "18A",
+            "description": "Commands an ODA, responsible for planning, executing, and leading Special Forces operations worldwide."
+        },
+        {
+            "name": "Special Forces Warrant Officer",
+            "abbreviation": "180A",
+            "description": "Serves as the assistant detachment commander, specializing in mission planning, unconventional warfare, and operational leadership."
+        },
+        {
+            "name": "Special Forces Operations Sergeant",
+            "abbreviation": "18Z",
+            "description": "A senior enlisted leader of an ODA, responsible for mission planning, training, and operational execution."
+        },
+        {
+            "name": "Special Forces Weapons Sergeant",
+            "abbreviation": "18B",
+            "description": "Expert in U.S. and foreign weapons, small-unit tactics, and training partner forces in combat operations."
+        },
+        {
+            "name": "Special Forces Engineer Sergeant",
+            "abbreviation": "18C",
+            "description": "Skilled in demolitions, construction, fortifications, and mobility operations to support mission objectives."
+        },
+        {
+            "name": "Special Forces Medical Sergeant",
+            "abbreviation": "18D",
+            "description": "Provides advanced trauma care, prolonged field care, and medical training in austere environments."
+        },
+        {
+            "name": "Special Forces Communications Sergeant",
+            "abbreviation": "18E",
+            "description": "Manages radio, satellite, and cyber communications to ensure secure and reliable team connectivity."
+        },
+        {
+            "name": "Special Forces Intelligence Sergeant",
+            "abbreviation": "18F",
+            "description": "Conducts intelligence gathering, analysis, and target development to support mission planning and execution."
+        }
+    ],
+    "ranks": [
+        {
+            "name": "Command Sergeant Major",
+            "abbreviation": "CSM",
+            "paygrade": "E-9"
+        },
+        {
+            "name": "Sergeant Major",
+            "abbreviation": "SGM",
+            "paygrade": "E-9"
+        },
+        {
+            "name": "First Sergeant",
+            "abbreviation": "1SG",
+            "paygrade": "E-8"
+        },
+        {
+            "name": "Master Sergeant",
+            "abbreviation": "MSG",
+            "paygrade": "E-8"
+        },
+        {
+            "name": "Sergeant First Class",
+            "abbreviation": "SFC",
+            "paygrade": "E-7"
+        },
+        {
+            "name": "Staff Sergeant",
+            "abbreviation": "SSG",
+            "paygrade": "E-6"
+        },
+        {
+            "name": "Sergeant",
+            "abbreviation": "SGT",
+            "paygrade": "E-5"
+        }
+    ],
+    "statuses": [
+        {
+            "name": "Active",
+            "color": "#16a34a"
+        },
+        {
+            "name": "Inactive",
+            "color": "#dc2626"
+        },
+        {
+            "name": "On Leave",
+            "color": "#0284c7"
+        }
+    ],
+    "groups": [
+        {
+            "name": "Operations",
+            "icon": "heroicon-o-fire",
+            "units": [
+                {
+                    "name": "Headquarters and Headquarters Company, 5th Special Forces Group",
+                    "slots": [
+                        {
+                            "name": "Group Commander",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Executive Officer",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Group Command Sergeant Major"
+                        }
+                    ]
+                },
+                {
+                    "name": "Alpha Company, 1st Btn, 5th SFG",
+                    "slots": [
+                        {
+                            "name": "Company Commander",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Executive Officer",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "First Sergeant"
+                        }
+                    ]
+                },
+                {
+                    "name": "ODB 5110, A Co, 1st Btn, 5th SFG",
+                    "slots": [
+                        {
+                            "name": "Detachment Commander",
+                            "position": "Detachment Commander",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Assistant Detachment Commander",
+                            "position": "Assistant Detachment Commander",
+                            "specialty": "Special Forces Warrant Officer"
+                        },
+                        {
+                            "name": "Operations Sergeant",
+                            "position": "Operations Sergeant",
+                            "specialty": "Special Forces Operations Sergeant"
+                        }
+                    ]
+                },
+                {
+                    "name": "ODA 5111, A Co, 1st Btn, 5th SFG",
+                    "slots": [
+                        {
+                            "name": "Detachment Commander",
+                            "position": "Detachment Commander",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Operations Sergeant",
+                            "position": "Operations Sergeant",
+                            "specialty": "Special Forces Operations Sergeant"
+                        },
+                        {
+                            "name": "Weapons Sergeant",
+                            "position": "Weapons Sergeant",
+                            "specialty": "Special Forces Weapons Sergeant"
+                        }
+                    ]
+                },
+                {
+                    "name": "ODA 5112, A Co, 1st Btn, 5th SFG",
+                    "slots": [
+                        {
+                            "name": "Detachment Commander",
+                            "position": "Detachment Commander",
+                            "specialty": "Special Forces Officer"
+                        },
+                        {
+                            "name": "Engineering Sergeant",
+                            "position": "Engineering Sergeant",
+                            "specialty": "Special Forces Engineer Sergeant"
+                        },
+                        {
+                            "name": "Medical Sergeant",
+                            "position": "Medical Sergeant",
+                            "specialty": "Special Forces Medical Sergeant"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Training",
+            "icon": "heroicon-o-academic-cap",
+            "units": [
+                {
+                    "name": "TRADOC",
+                    "slots": [
+                        {
+                            "name": "Training Command"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "awards": [
+        {
+            "name": "Distinguished Service Cross",
+            "description": "The Army Distinguished Service Cross Medal (DSC) is a U.S. Army decoration given for extreme gallantry and risk of life in actual combat with an armed enemy force. Operations which merit the DSC need to be of such a high degree to be above those mandatory for all other U.S. combat decorations but not meeting the criteria for the Medal of Honor. The DSC is equivalent to the Navy Cross (Navy and Marine Corps) and the Air Force Cross (Air Force). The DSC was first established and awarded during World War I. In accession, a number of awards were delegated for actions preceding World War I. In many cases, these were to soldiers who had acquired a Certificate of merit for gallantry which, at the time, was the only other honor beyond the Medal of Honor the Army could give. Others were delayed acknowledgement of actions in the Philippines, on the Mexican Border and during the Boxer Rebellion. This decoration should not be mistaken for the Distinguished Service Medal, which distinguishes meritorious service to the government of the U.S. (as a senior military officer or government official) rather than individual acts of bravery (as a member of the U.S. Army)."
+        },
+        {
+            "name": "Defense Distinguished Service Medal",
+            "description": "The Defense Distinguished Service Medal (DDSM) is presented to any member of the U.S. Armed Forces, while serving with the Department of Defense, who distinguishes themselves with exceptional performance of duty contributing to national security or defense of the United States. Created on July 9th, 1970 by President Richard Nixon's Executive Order 11545, the medals is typically awarded to senior officers such as the Chairman and Vice Chairman of the Joint Chiefs of Staff, the Chief and Vice Chiefs of the military services and other personnel whose duties bring them in direct and frequent contact with the Secretary of Defense, Deputy Secretary of Defense or other senior government officials."
+        },
+        {
+            "name": "Silver Star"
+        },
+        {
+            "name": "Defense Superior Service Medal",
+            "description": "The Defense Superior Service Medal (DSSM) is the second highest award bestowed by the Department of Defense. Awarded in the name of the Secretary of Defense, the award is presented to members of the U.S. Armed Forces who perform \"superior meritorious service in a position of significant responsibility.\"  Created on February 6th, 1976 by President Gerald R. Ford's Executive Order 11904, it is typically awarded only to senior officers of the Flag and General Officer grade."
+        },
+        {
+            "name": "Good Conduct Medal",
+            "description": "The Good Conduct Medal (GCM) is awarded to members of the United States military for exemplary behavior, efficiency, and fidelity during a specified period of active service. The medal is selective and is not automatically awarded. Recipients must also have excellent or higher character and efficiency ratings, and have not been convicted by court martial during the qualifying period."
+        },
+        {
+            "name": "Bronze Star",
+            "description": "The Bronze Star Medal (BSM or BSV) is an award presented to United States Armed Forces personnel for bravery, acts of merit or meritorious service. When awarded for combat heroism it is awarded with a V device for Valor. It is the fourth highest combat award of the Armed Forces."
+        },
+        {
+            "name": "Purple Heart",
+            "description": "The Purple Heart Medal (PH) is a decoration presented in the name of the President of the United States to recognize members of the U.S. military who have been wounded or killed in battle. It differs from other military decorations in that a \"recommendation\" from a superior is not required, but rather individuals are entitled based on meeting certain criteria found in AR 600-8-22. This criteria was expanded on March 28, 1973 to include injuries received as a result of an international terrorist attack against the U.S. and while serving outside the territory of the U.S. as part of a peacekeeping force. Personnel wounded or killed by friendly fire are also eligible for this award as long as the injuries were received in combat and with the intention of inflicting harm on the opposing forces. The Purple Heart is not awarded for non-combat injuries and commanders must take into account the extent of enemy involvement in the wound."
+        },
+        {
+            "name": "Meritorious Service Medal",
+            "description": "The Meritorious Service Medal (MSM) is a decoration presented by the United States Armed Forces to recognize superior and exceptional non-combat service that does not meet the caliber of the Legion of Merit Medal. As of September 11, 2001, this award may also be issued for outstanding service in specific combat theater. The majority of recipients are field grade officers, senior warrant officers, senior non-commissioned officers and foreign military personnel in the ranks of O-6 and below. Subsequent awards are denoted by bronze oak leafs for Army and Air Force members, and gold stars for Navy, Marine Corps and Coast Guard members."
+        }
+    ],
+    "qualifications": [
+        {
+            "name": "Airborne School",
+            "description": "The U.S. Army Airborne School is at the U.S. Army Infantry Center, Fort Benning Georgia. This course is designed to train Soldiers to become paratroopers. It develops the student's confidence through repetitious training so that the student can overcome the natural fear of jumping from an airplane; develop and maintain the high level of physical fitness required of a paratrooper, by rigorous and progressive physical training. Each student must satisfactorily complete 5 jumps from an aircraft while in flight."
+        },
+        {
+            "name": "Army Medical Department School",
+            "description": "The U.S. Army Medical Center of Excellence, or MEDCoE, located at Fort Sam Houston, TX is the largest medical education and training campus in the world producing nearly 30,000 medical profession Medical Services Traininggraduates every year. 360 programs of instruction covering the entire range of Army Medical Department Corps: Medical, Dental, Army Nurse, Veterinary, Medical Service, and Army Medical Specialist Corps are taught."
+        },
+        {
+            "name": "Pathfinder School",
+            "description": "The Pathfinder School trains Army Pathfinders are trained to provide navigational aid and advisory services to military aircraft in areas designated by supported unit commanders.  The Pathfinders' secondary missions include providing advice and limited aid to units planning air assault or airdrop operations.  During the Pathfinder course students are instructed in aircraft orientation, aero-medical evacuation, close combat assault, ground to air communication procedures, Control Center operations, all three phases of a sling load operation, Helicopter Landing Zone and Pick Up Zone operations, and Drop Zone operations (Computed Air Release Point, Ground Marker Release System, and Verbally Initiated Release System), dealing with U.S. military fixed and rotary wing aircraft for personnel and equipment."
+        },
+        {
+            "name": "Ranger School",
+            "description": "An Army service school, located at Fort Benning, GA teaches the fundamentals of small unit leadership and patrolling. Ranger School is the most physically and mentally demanding leadership school the Army has Ranger Schoolto offer. Trains both Officers and enlisted Soldiers through a two month course on combat arms related functional skills necessary to lead difficult missions. Training at this school is not MOS dependent. It is a prerequisite for Soldiers to have completed Airborne School."
+        },
+        {
+            "name": "Special Forces Assessment and Selection",
+            "description": "The Special Forces career management field (CMF) 18 includes positions concerned with the employment of highly specialized elements to accomplish specifically directed missions in times of peace and war. Many of these missions are conducted at times when employment of conventional military forces is not feasible or is not considered to be in the best interest of the United States. Training for and participation in these missions are arduous, somewhat hazardous, and often sensitive in nature. For these reasons, it is a prerequisite that every prospective Green Beret successfully completes the 19-day SFAS course and is selected for Special Forces training."
+        },
+        {
+            "name": "Special Forces Qualification Course",
+            "description": "Following successful completion of Special Forces Assessment and Selection (SFAS) and any other prerequisite courses, selected Soldiers will be scheduled to attend Special Forces Qualification Course (SFQC). SFQC focuses on core Special Forces tactical competencies in support of surgical strike and special warfare; Career Management Field 18 MOS classification; Survival, Evasion, Resistance and Escape (SERE); language proficiency; and regional cultural understanding. The qualification course consists of six sequential phases of training, upon completion of which Soldiers earn the right to join the Special Forces brotherhood, wear the Special Forces tab and don the green beret."
+        }
+    ],
+    "credentials": [
+        {
+            "name": "Emergency Medical Technician (EMT)",
+            "type": "certification",
+            "issuer": "Department of the Army"
+        },
+        {
+            "name": "Commercial Driver's License (CDL)",
+            "type": "license",
+            "issuer": "Department of the Army"
+        },
+        {
+            "name": "Top Secret Security Clearance",
+            "type": "other",
+            "issuer": "Department of the Army"
+        }
+    ],
+    "forms": [
+        {
+            "name": "Personnel Action Request (DA Form 4187)",
+            "description": "Submit personnel actions in accordance with DA PAM 600-8, including reassignment, MOS reclassification, separation, and name changes.",
+            "instructions": "Complete all sections in full. Provide supporting documentation under the Justification section. Routing:\n\n1. Soldier completes the request below.\n2. Immediate supervisor endorses.\n3. Detachment Commander reviews and forwards to S1.\n4. S1 staffs the action through the appropriate approval authority.\n\nIncomplete packets will be returned without action.",
+            "success_message": "Your DA 4187 has been submitted and routed to your immediate supervisor. You will receive notifications as the action progresses.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Soldier Full Name",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "LAST, FIRST MI"
+                },
+                {
+                    "name": "Rank / Grade",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "e.g. SFC / E-7"
+                },
+                {
+                    "name": "DoD ID Number",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "10-digit DoD ID"
+                },
+                {
+                    "name": "Unit of Assignment",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "e.g. ODA 5111, A Co, 1st Btn, 5th SFG"
+                },
+                {
+                    "name": "Action Requested",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Promotion",
+                        "Reassignment",
+                        "MOS Reclassification",
+                        "Separation / ETS",
+                        "Retirement",
+                        "Name Change",
+                        "Other"
+                    ]
+                },
+                {
+                    "name": "Effective Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Justification",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Provide a clear, concise justification for the requested action."
+                },
+                {
+                    "name": "Supporting Documentation",
+                    "type": "file",
+                    "required": false,
+                    "help": "Attach memoranda, orders, or other supporting documents."
+                }
+            ]
+        },
+        {
+            "name": "After Action Report",
+            "description": "Document training events, deployments, and operational missions to capture observations, lessons learned, and recommended improvements.",
+            "instructions": "Submit within 72 hours of mission or training completion. Do not include classified information; coordinate with the S2 if classified annexes are required.",
+            "success_message": "AAR received. Lessons learned will be staffed through the operations cell and added to the unit knowledge base.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Mission / Event Name",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "e.g. Exercise Robin Sage"
+                },
+                {
+                    "name": "Mission Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Location / Training Area",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "Grid coordinate or named area"
+                },
+                {
+                    "name": "Reporting Detachment",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Mission Summary",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Task, purpose, and end state. Include task organization and key personnel."
+                },
+                {
+                    "name": "Sustains - What Worked",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Improves - What Did Not",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Recommendations",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Recommended changes to TTPs, equipment, or training for the next iteration."
+                }
+            ]
+        },
+        {
+            "name": "Award Recommendation (DA Form 638)",
+            "description": "Recommend a soldier for an individual decoration in accordance with AR 600-8-22.",
+            "instructions": "Provide a clearly written narrative-style proposed citation and achievement summary. Non-impact awards must be submitted no later than 30 days prior to the proposed presentation date.",
+            "success_message": "Award recommendation submitted. The packet has been routed to the first endorser in the chain of command.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Recommended Soldier - Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Recommended Soldier - Rank",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Recommended Soldier - DoD ID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Award Recommended",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Bronze Star",
+                        "Silver Star",
+                        "Distinguished Service Cross",
+                        "Meritorious Service Medal",
+                        "Army Commendation Medal",
+                        "Army Achievement Medal",
+                        "Purple Heart"
+                    ]
+                },
+                {
+                    "name": "Period of Service - From",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Period of Service - To",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Proposed Citation",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Narrative-style citation, written in third person, that will appear on the certificate."
+                },
+                {
+                    "name": "Achievement Summary",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Detailed bullets describing each act, achievement, or period of service that justifies the award."
+                }
+            ]
+        },
+        {
+            "name": "Leave Request (DA Form 31)",
+            "description": "Request ordinary, emergency, convalescent, or permissive leave in accordance with AR 600-8-10.",
+            "instructions": "Submit at least 30 days in advance for ordinary leave. Personnel are required to sign in at the orderly room within 24 hours of return.",
+            "success_message": "Leave request submitted to your chain of command. Do not depart until you receive an approved DA 31.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Soldier Full Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Type of Leave",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Ordinary",
+                        "Emergency",
+                        "Convalescent",
+                        "Permissive TDY",
+                        "Terminal"
+                    ]
+                },
+                {
+                    "name": "Departure Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Return Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Leave Address",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Street address, city, state, ZIP and a daytime phone number for the leave location."
+                },
+                {
+                    "name": "Emergency Contact Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Emergency Contact Phone",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "name": "Special Forces Recruitment Application",
+            "description": "Initial application for prospective Special Forces candidates interested in attending SFAS and the Q-Course.",
+            "instructions": "Provide accurate biographical, medical, and prior service information. Falsification of any portion of this application is grounds for immediate disqualification. A recruiter will contact you within five business days.",
+            "success_message": "Thank you for your interest in U.S. Army Special Forces. A recruiter will contact you within five business days.",
+            "is_public": true,
+            "fields": [
+                {
+                    "name": "Full Legal Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Email Address",
+                    "type": "email",
+                    "required": true
+                },
+                {
+                    "name": "Date of Birth",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Country of Citizenship",
+                    "type": "country",
+                    "required": true
+                },
+                {
+                    "name": "Prior Military Service",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Current Branch / MOS",
+                    "type": "text",
+                    "required": false,
+                    "help": "Leave blank if no prior service."
+                },
+                {
+                    "name": "Why do you want to be Special Forces?",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "DD Form 214 (if applicable)",
+                    "type": "file",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}
