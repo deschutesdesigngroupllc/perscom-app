@@ -137,7 +137,9 @@
   },
   "extra": {
     "laravel": {
-      "dont-discover": []
+      "dont-discover": [
+        "zoha/laravel-meta"
+      ]
     }
   },
   "scripts": {
