@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\Actions\ClaimInviteAction;
 use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
 use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
 use App\Filament\App\Resources\UserResource\Filters\QualificationsFilter;
@@ -523,6 +524,7 @@ class UserResource extends BaseResource
 
                         $action->success();
                     }),
+                ClaimInviteAction::make(),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),

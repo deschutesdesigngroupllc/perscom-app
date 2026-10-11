@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Clusters\Settings\Resources\Roles\RoleResource;
 use App\Filament\App\Pages\Dashboard;
+use App\Filament\App\Resources\InviteResource;
 use App\Filament\App\Resources\UserResource;
 use App\Models\User;
 use Filament\Widgets\AccountWidget;
@@ -191,6 +192,13 @@ return [
         'subject' => 'model',
         'manage' => [
             RoleResource::class => [
+                'viewAny',
+                'view',
+                'create',
+                'update',
+                'delete',
+            ],
+            InviteResource::class => [
                 'viewAny',
                 'view',
                 'create',
