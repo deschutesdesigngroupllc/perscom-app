@@ -101,6 +101,7 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
         'id',
         'qualification_id',
         'text',
+        'expires_at',
         'created_at',
         'updated_at',
     ];
@@ -128,5 +129,25 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
     public function recipientForNewsfeedItem(): ?User
     {
         return $this->user;
+    }
+
+    protected function scopeExpiringWithin(Builder $query, int $days): Builder
+    {
+        return $query->whereBetween('expires_at', [now(), now()->addDays($days)]);
+    }
+
+    protected function scopeExpired(Builder $query): Builder
+    {
+        return $query->where('expires_at', '<=', now());
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'expires_at' => 'datetime',
+        ];
     }
 }

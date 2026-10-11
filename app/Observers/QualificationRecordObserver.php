@@ -6,6 +6,7 @@ namespace App\Observers;
 
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\WebhookEvent;
+use App\Models\Qualification;
 use App\Models\QualificationRecord;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewQualificationRecord;
@@ -16,6 +17,19 @@ use Illuminate\Support\Facades\Notification;
 class QualificationRecordObserver
 {
     use DispatchesAutomationEvents;
+
+    public function creating(QualificationRecord $qualification): void
+    {
+        if (filled($qualification->getAttribute('expires_at'))) {
+            return;
+        }
+
+        $validityDays = Qualification::query()->whereKey($qualification->qualification_id)->value('validity_days');
+
+        if (filled($validityDays)) {
+            $qualification->setAttribute('expires_at', ($qualification->created_at ?? now())->copy()->addDays((int) $validityDays));
+        }
+    }
 
     public function created(QualificationRecord $qualification): void
     {

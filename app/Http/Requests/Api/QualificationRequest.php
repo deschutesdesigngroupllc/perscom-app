@@ -16,6 +16,7 @@ class QualificationRequest extends Request
         return [
             'name' => 'string|max:255',
             'description' => 'nullable|string|max:65535',
+            'validity_days' => 'nullable|integer|min:1',
             'order' => 'integer',
             'updated_at' => 'date',
             'created_at' => 'date',

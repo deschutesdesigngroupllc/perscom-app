@@ -30,7 +30,7 @@ class QualificationsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at'];
+        return ['id', 'name', 'description', 'validity_days', 'order', 'created_at', 'updated_at'];
     }
 
     /**
@@ -38,7 +38,7 @@ class QualificationsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at'];
+        return ['id', 'name', 'description', 'validity_days', 'order', 'created_at', 'updated_at'];
     }
 
     /**
@@ -46,6 +46,6 @@ class QualificationsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at'];
+        return ['id', 'name', 'description', 'validity_days', 'order', 'created_at', 'updated_at'];
     }
 }

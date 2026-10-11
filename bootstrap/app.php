@@ -222,6 +222,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('10:00'); // 2 AM
         $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('10:00'); // 2 AM
         $schedule->command('perscom:recurring-messages')->environments('production')->dailyAt('10:00'); // 2 AM
+        $schedule->command('perscom:scheduled-automations')->environments('production')->dailyAt('14:00'); // 7 AM
         $schedule->command('perscom:api-expiration-reminders')->environments('production')->dailyAt('15:00'); // 8 AM
 
         $schedule->command(RunHealthChecksCommand::class)->environments('production')->everyMinute();

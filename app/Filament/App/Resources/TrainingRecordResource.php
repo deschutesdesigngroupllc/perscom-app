@@ -14,7 +14,9 @@ use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\Attachmen
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CompetenciesRelationManager;
 use App\Filament\Exports\TrainingRecordExporter;
+use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
+use App\Models\Credential;
 use App\Models\Field;
 use App\Models\TrainingRecord;
 use App\Models\User;
@@ -162,9 +164,16 @@ class TrainingRecordResource extends BaseResource
                                     ->label('User'),
                                 TextEntry::make('instructor.display_name')
                                     ->label('Instructor'),
-                                TextEntry::make('credentials.name')
+                                TextEntry::make('credential_expirations')
                                     ->label('Credentials')
-                                    ->listWithLineBreaks(),
+                                    ->placeholder('No Credentials')
+                                    ->badge()
+                                    ->listWithLineBreaks()
+                                    ->state(fn (TrainingRecord $record): array => $record->credentials
+                                        ->map(fn (Credential $credential): string => $credential->pivot->getAttribute('expires_at')
+                                            ? sprintf('%s (%s)', $credential->name, ExpiresAtColumn::labelFor($credential->pivot->getAttribute('expires_at')))
+                                            : $credential->name)
+                                        ->all()),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -201,9 +210,8 @@ class TrainingRecordResource extends BaseResource
                     ->label('User')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
-                TextColumn::make('credentials.name')
-                    ->placeholder(new HtmlString('&ndash;'))
-                    ->listWithLineBreaks(),
+                ExpiresAtColumn::makeForCredentials()
+                    ->placeholder(new HtmlString('&ndash;')),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon('heroicon-o-document')
