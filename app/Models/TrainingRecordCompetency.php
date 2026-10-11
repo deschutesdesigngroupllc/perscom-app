@@ -16,5 +16,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class TrainingRecordCompetency extends Pivot
 {
-    protected $table = 'records_training_competencies';
+    protected $table = 'records_trainings_competencies';
 }

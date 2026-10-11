@@ -31,7 +31,7 @@ class ExpressionLanguageService
             'starts_with(haystack, needle)' => 'Check if string starts with prefix',
             'ends_with(haystack, needle)' => 'Check if string ends with suffix',
             'changed(key)' => 'Check if attribute was changed (requires changes context)',
-            'strip_characters(text)' => 'Check if attribute was changed (requires changes context)',
+            'strip_characters(text, characters)' => 'Remove the given characters from text (non-alphanumeric characters when omitted)',
             'old_value(key)' => 'Get old value of changed attribute',
             'new_value(key)' => 'Get new value of changed attribute',
             'blank(value)' => 'Check if value is empty',
@@ -151,6 +151,20 @@ class ExpressionLanguageService
                 $changes = $arguments['changes'] ?? null;
 
                 return is_array($changes) && array_key_exists($key, $changes);
+            }
+        );
+
+        $this->expressionLanguage->register(
+            'strip_characters',
+            fn (string $text, ?string $characters = null): string => $characters === null
+                ? sprintf('preg_replace("/[^A-Za-z0-9]/", "", (string) %s)', $text)
+                : sprintf('str_replace(mb_str_split(%s), "", (string) %s)', $characters, $text),
+            function (array $arguments, $text, $characters = null): string {
+                if (blank($characters)) {
+                    return (string) preg_replace('/[^A-Za-z0-9]/', '', (string) $text);
+                }
+
+                return str_replace(mb_str_split((string) $characters), '', (string) $text);
             }
         );
 

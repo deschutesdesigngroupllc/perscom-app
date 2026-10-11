@@ -14,6 +14,7 @@ use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Submission;
+use App\Models\TrainingRecord;
 use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
@@ -52,6 +53,9 @@ enum AutomationTrigger: string implements HasLabel
     case SUBMISSION_CREATED = 'submission.created';
     case SUBMISSION_UPDATED = 'submission.updated';
     case SUBMISSION_DELETED = 'submission.deleted';
+    case TRAINING_RECORD_CREATED = 'trainingrecord.created';
+    case TRAINING_RECORD_UPDATED = 'trainingrecord.updated';
+    case TRAINING_RECORD_DELETED = 'trainingrecord.deleted';
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';
@@ -96,6 +100,11 @@ enum AutomationTrigger: string implements HasLabel
                 self::SERVICE_RECORD_CREATED->value => self::SERVICE_RECORD_CREATED->getLabel(),
                 self::SERVICE_RECORD_UPDATED->value => self::SERVICE_RECORD_UPDATED->getLabel(),
                 self::SERVICE_RECORD_DELETED->value => self::SERVICE_RECORD_DELETED->getLabel(),
+            ],
+            'Training Record' => [
+                self::TRAINING_RECORD_CREATED->value => self::TRAINING_RECORD_CREATED->getLabel(),
+                self::TRAINING_RECORD_UPDATED->value => self::TRAINING_RECORD_UPDATED->getLabel(),
+                self::TRAINING_RECORD_DELETED->value => self::TRAINING_RECORD_DELETED->getLabel(),
             ],
             'Calendar' => [
                 self::CALENDAR_CREATED->value => self::CALENDAR_CREATED->getLabel(),
@@ -153,6 +162,9 @@ enum AutomationTrigger: string implements HasLabel
             self::SUBMISSION_CREATED => 'Submission Created',
             self::SUBMISSION_UPDATED => 'Submission Updated',
             self::SUBMISSION_DELETED => 'Submission Deleted',
+            self::TRAINING_RECORD_CREATED => 'Training Record Created',
+            self::TRAINING_RECORD_UPDATED => 'Training Record Updated',
+            self::TRAINING_RECORD_DELETED => 'Training Record Deleted',
             self::USER_CREATED => 'User Created',
             self::USER_UPDATED => 'User Updated',
             self::USER_DELETED => 'User Deleted',
@@ -201,6 +213,10 @@ enum AutomationTrigger: string implements HasLabel
             self::SUBMISSION_CREATED,
             self::SUBMISSION_UPDATED,
             self::SUBMISSION_DELETED => Submission::class,
+
+            self::TRAINING_RECORD_CREATED,
+            self::TRAINING_RECORD_UPDATED,
+            self::TRAINING_RECORD_DELETED => TrainingRecord::class,
 
             self::USER_CREATED,
             self::USER_UPDATED,
