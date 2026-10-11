@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\Support\Discord;
+namespace Tests\Feature\Central\Support\Discord;
 
 use App\Support\Discord\DiscordEmbed;
 use Illuminate\Support\Str;
-use Tests\TestCase;
+use Tests\Feature\Central\CentralTestCase;
 
-class DiscordEmbedTest extends TestCase
+class DiscordEmbedTest extends CentralTestCase
 {
     public function test_it_builds_a_discord_embed_object(): void
     {
