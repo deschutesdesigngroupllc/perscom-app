@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Models\Enums\WebhookEvent;
+use App\Models\Qualification;
 use App\Models\QualificationRecord;
 use App\Models\User;
 use App\Models\Webhook;
@@ -73,5 +74,40 @@ class QualificationRecordObserverTest extends TenantTestCase
         $qualification->delete();
 
         Queue::assertPushed(CallWebhookJob::class);
+    }
+
+    public function test_create_qualification_record_sets_expiration_from_validity_period(): void
+    {
+        Notification::fake();
+        $this->freezeSecond();
+
+        $qualification = Qualification::factory()->createQuietly(['validity_days' => 365]);
+
+        $record = QualificationRecord::factory()->for($qualification)->create();
+
+        $this->assertTrue($record->refresh()->expires_at->equalTo(now()->addDays(365)));
+    }
+
+    public function test_create_qualification_record_without_validity_period_never_expires(): void
+    {
+        Notification::fake();
+
+        $qualification = Qualification::factory()->createQuietly(['validity_days' => null]);
+
+        $record = QualificationRecord::factory()->for($qualification)->create();
+
+        $this->assertNull($record->refresh()->expires_at);
+    }
+
+    public function test_create_qualification_record_keeps_explicit_expiration(): void
+    {
+        Notification::fake();
+        $this->freezeSecond();
+
+        $qualification = Qualification::factory()->createQuietly(['validity_days' => 365]);
+
+        $record = QualificationRecord::factory()->for($qualification)->create(['expires_at' => now()->addDays(7)]);
+
+        $this->assertTrue($record->refresh()->expires_at->equalTo(now()->addDays(7)));
     }
 }

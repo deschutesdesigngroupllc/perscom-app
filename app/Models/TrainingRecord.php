@@ -120,7 +120,8 @@ class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedIt
     public function credentials(): BelongsToMany
     {
         return $this->belongsToMany(Credential::class, 'records_trainings_credentials')
-            ->using(TrainingRecordCredential::class);
+            ->using(TrainingRecordCredential::class)
+            ->withPivot(['id', 'issued_at', 'expires_at']);
     }
 
     public function instructor(): BelongsTo

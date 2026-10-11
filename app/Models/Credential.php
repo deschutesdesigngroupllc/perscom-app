@@ -67,6 +67,7 @@ class Credential extends Model implements HasLabel, Sortable
         'description',
         'type',
         'issuer_id',
+        'validity_days',
     ];
 
     public function issuer(): BelongsTo
@@ -77,13 +78,15 @@ class Credential extends Model implements HasLabel, Sortable
     public function training_records(): BelongsToMany
     {
         return $this->belongsToMany(TrainingRecord::class, 'records_trainings_credentials')
-            ->using(TrainingRecordCredential::class);
+            ->using(TrainingRecordCredential::class)
+            ->withPivot(['id', 'issued_at', 'expires_at']);
     }
 
     protected function casts(): array
     {
         return [
             'type' => CredentialType::class,
+            'validity_days' => 'integer',
         ];
     }
 }

@@ -73,8 +73,19 @@ class Qualification extends Model implements HasLabel, Sortable
     protected $fillable = [
         'name',
         'description',
+        'validity_days',
         'order',
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'validity_days' => 'integer',
+        ];
+    }
 }

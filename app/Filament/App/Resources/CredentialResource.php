@@ -64,6 +64,13 @@ class CredentialResource extends BaseResource
                                     ->searchable()
                                     ->relationship('issuer', 'name')
                                     ->required(),
+                                TextInput::make('validity_days')
+                                    ->label('Validity Period')
+                                    ->helperText('The number of days the credential remains valid after it is issued. Leave blank if it never expires.')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix('days')
+                                    ->nullable(),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the credential.')
@@ -89,6 +96,11 @@ class CredentialResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('type')
                     ->badge()
+                    ->sortable(),
+                TextColumn::make('validity_days')
+                    ->label('Validity')
+                    ->formatStateUsing(fn (?int $state): string => filled($state) ? trans_choice(':count day|:count days', $state) : 'Never expires')
+                    ->placeholder('Never expires')
                     ->sortable(),
             ])
             ->filters([

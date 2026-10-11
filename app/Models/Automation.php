@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\AutomationActionType;
+use App\Models\Enums\AutomationRunLimit;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
@@ -96,6 +97,11 @@ class Automation extends Model
         'model_update_fields',
         'enabled',
         'priority',
+        'run_limit',
+    ];
+
+    protected $attributes = [
+        'run_limit' => 'always',
     ];
 
     public function webhook(): BelongsTo
@@ -106,6 +112,36 @@ class Automation extends Model
     public function logs(): HasMany
     {
         return $this->hasMany(AutomationLog::class);
+    }
+
+    /**
+     * @return HasMany<AutomationRun, $this>
+     */
+    public function runs(): HasMany
+    {
+        return $this->hasMany(AutomationRun::class);
+    }
+
+    public function hasReachedRunLimitFor(Model $subject): bool
+    {
+        return match ($this->run_limit) {
+            AutomationRunLimit::ALWAYS => false,
+            AutomationRunLimit::ONCE_PER_MODEL => $this->runs()->forSubject($subject)->exists(),
+            AutomationRunLimit::ONCE_PER_DAY => $this->runs()->forSubject($subject)->whereDate('run_on', today())->exists(),
+        };
+    }
+
+    public function recordRunFor(Model $subject): void
+    {
+        if ($this->run_limit === AutomationRunLimit::ALWAYS) {
+            return;
+        }
+
+        $this->runs()->create([
+            'subject_type' => $subject::class,
+            'subject_id' => $subject->getKey(),
+            'run_on' => today(),
+        ]);
     }
 
     public function isWebhookAction(): bool
@@ -165,6 +201,7 @@ class Automation extends Model
             'model_update_fields' => 'array',
             'enabled' => 'boolean',
             'priority' => 'integer',
+            'run_limit' => AutomationRunLimit::class,
         ];
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Automation;
 use App\Models\AutomationLog;
 use App\Models\Enums\AutomationActionType;
 use App\Models\Enums\AutomationLogStatus;
+use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Message;
 use Illuminate\Database\Eloquent\Model;
@@ -82,6 +83,7 @@ class AutomationService
         $startTime = microtime(true);
         $context = $event->getExpressionContext();
         $contextArray = $context->toExpressionArray();
+        $isScheduled = AutomationTrigger::tryFrom($event->getTriggerType())?->isScheduled() ?? false;
 
         try {
             $conditionResult = true;
@@ -94,6 +96,13 @@ class AutomationService
 
             if (! $conditionResult) {
                 $executionTimeMs = (int) ((microtime(true) - $startTime) * 1000);
+
+                if ($isScheduled) {
+                    return new AutomationResultData(
+                        status: AutomationLogStatus::CONDITION_FAILED,
+                        executionTimeMs: $executionTimeMs,
+                    );
+                }
 
                 $log = $this->createLog($automation, $event, $context, [
                     'status' => AutomationLogStatus::CONDITION_FAILED,
@@ -109,11 +118,20 @@ class AutomationService
                 );
             }
 
+            if ($automation->hasReachedRunLimitFor($event->getSubject())) {
+                return new AutomationResultData(
+                    status: AutomationLogStatus::SKIPPED,
+                    executionTimeMs: (int) ((microtime(true) - $startTime) * 1000),
+                );
+            }
+
             $actionPayload = match ($automation->action_type) {
                 AutomationActionType::WEBHOOK => $this->executeWebhookAction($automation, $event, $context),
                 AutomationActionType::MESSAGE => $this->executeMessageAction($automation, $context),
                 AutomationActionType::MODEL_UPDATE => $this->executeModelUpdateAction($automation, $context),
             };
+
+            $automation->recordRunFor($event->getSubject());
 
             $executionTimeMs = (int) ((microtime(true) - $startTime) * 1000);
 

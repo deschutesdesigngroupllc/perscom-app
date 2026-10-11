@@ -21,6 +21,7 @@ class CredentialRequest extends Request
             'description' => 'nullable|string|max:65535',
             'type' => [Rule::enum(CredentialType::class), 'max:255'],
             'issuer_id' => 'integer|exists:issuers,id',
+            'validity_days' => 'nullable|integer|min:1',
             'order' => 'integer',
             'updated_at' => 'date',
             'created_at' => 'date',

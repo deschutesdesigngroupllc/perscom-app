@@ -13,6 +13,7 @@ use App\Filament\App\Resources\QualificationRecordResource\Pages\ViewQualificati
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\QualificationRecordExporter;
+use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
 use App\Models\Field;
 use App\Models\QualificationRecord;
@@ -154,6 +155,12 @@ class QualificationRecordResource extends BaseResource
                                     ->label('User'),
                                 TextEntry::make('qualification.name')
                                     ->label('Qualification'),
+                                TextEntry::make('expires_at')
+                                    ->label('Expires')
+                                    ->badge()
+                                    ->placeholder('Never')
+                                    ->formatStateUsing(fn (mixed $state): string => ExpiresAtColumn::labelFor($state))
+                                    ->color(fn (mixed $state): string => ExpiresAtColumn::colorFor($state)),
                                 ImageEntry::make('qualification.image.path')
                                     ->visible(fn (?QualificationRecord $record): bool => isset($record->qualification->image))
                                     ->height(32)
@@ -197,6 +204,8 @@ class QualificationRecordResource extends BaseResource
                 TextColumn::make('qualification.name')
                     ->sortable()
                     ->searchable(),
+                ExpiresAtColumn::make()
+                    ->sortable(),
                 ImageColumn::make('qualification.image.path')
                     ->placeholder('No Image')
                     ->label(''),
