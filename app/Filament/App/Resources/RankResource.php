@@ -9,6 +9,8 @@ use App\Filament\App\Resources\RankResource\Pages\CreateRank;
 use App\Filament\App\Resources\RankResource\Pages\EditRank;
 use App\Filament\App\Resources\RankResource\Pages\ListRanks;
 use App\Filament\Exports\RankExporter;
+use App\Models\Credential;
+use App\Models\Qualification;
 use App\Models\Rank;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -86,6 +88,50 @@ class RankResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
+                            ]),
+                        Tab::make('Promotion Requirements')
+                            ->icon(Heroicon::OutlinedClipboardDocumentCheck)
+                            ->schema([
+                                Section::make()
+                                    ->contained(false)
+                                    ->hiddenLabel()
+                                    ->columns()
+                                    ->relationship('requirement', fn (?array $state): bool => collect($state ?? [])->filter(fn (mixed $value): bool => filled($value))->isNotEmpty())
+                                    ->schema([
+                                        TextInput::make('min_days_in_grade')
+                                            ->label('Minimum Days In Grade')
+                                            ->helperText('The number of days a member must hold the previous rank before promotion to this rank.')
+                                            ->numeric()
+                                            ->minValue(0)
+                                            ->nullable(),
+                                        TextInput::make('min_days_in_service')
+                                            ->label('Minimum Days In Service')
+                                            ->helperText('The number of days a member must have been in the organization before promotion to this rank.')
+                                            ->numeric()
+                                            ->minValue(0)
+                                            ->nullable(),
+                                        TextInput::make('min_events_attended_90d')
+                                            ->label('Minimum Events Attended')
+                                            ->helperText('The number of events a member must have attended in the last 90 days.')
+                                            ->numeric()
+                                            ->minValue(0)
+                                            ->nullable(),
+                                        Select::make('required_qualification_ids')
+                                            ->label('Required Qualifications')
+                                            ->helperText('The qualifications a member must currently hold.')
+                                            ->options(fn (): array => Qualification::query()->pluck('name', 'id')->all())
+                                            ->multiple()
+                                            ->searchable()
+                                            ->nullable(),
+                                        Select::make('required_credential_ids')
+                                            ->label('Required Credentials')
+                                            ->helperText('The credentials a member must currently hold and that have not expired.')
+                                            ->options(fn (): array => Credential::query()->pluck('name', 'id')->all())
+                                            ->multiple()
+                                            ->searchable()
+                                            ->nullable()
+                                            ->columnSpanFull(),
+                                    ]),
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
@@ -85,4 +86,12 @@ class Rank extends Model implements HasLabel, Sortable
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return HasOne<RankRequirement, $this>
+     */
+    public function requirement(): HasOne
+    {
+        return $this->hasOne(RankRequirement::class);
+    }
 }
