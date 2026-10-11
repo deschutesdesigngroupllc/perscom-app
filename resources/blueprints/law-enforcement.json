@@ -1,0 +1,634 @@
+{
+    "name": "Law Enforcement",
+    "description": "A police department with divisions, patrol units, law enforcement ranks, commendations, and certifications.",
+    "positions": [
+        {
+            "name": "Chief of Police"
+        },
+        {
+            "name": "Deputy Chief"
+        },
+        {
+            "name": "Division Commander"
+        },
+        {
+            "name": "Watch Commander"
+        },
+        {
+            "name": "Patrol Sergeant"
+        },
+        {
+            "name": "Field Training Officer"
+        },
+        {
+            "name": "Patrol Officer"
+        },
+        {
+            "name": "Detective"
+        },
+        {
+            "name": "K9 Handler"
+        }
+    ],
+    "specialties": [
+        {
+            "name": "Special Weapons and Tactics",
+            "abbreviation": "SWAT",
+            "description": "Tactical team trained in high-risk warrant service, hostage rescue, barricaded subjects, and active threat response."
+        },
+        {
+            "name": "Crisis Negotiation Team",
+            "abbreviation": "CNT",
+            "description": "Specialty team trained to communicate with subjects in crisis, hostage takers, and barricaded individuals to achieve peaceful resolution."
+        },
+        {
+            "name": "K9 Unit",
+            "abbreviation": "K9",
+            "description": "Handlers and canines certified for patrol, narcotics, explosives detection, or tracking and apprehension operations."
+        },
+        {
+            "name": "Criminal Investigations",
+            "abbreviation": "CID",
+            "description": "Plain-clothes investigators assigned to follow-up investigations of person and property crimes, narcotics, and major cases."
+        },
+        {
+            "name": "Traffic Enforcement Unit",
+            "abbreviation": "TEU",
+            "description": "Specialized traffic enforcement, crash reconstruction, and DUI interdiction."
+        },
+        {
+            "name": "School Resource Officer",
+            "abbreviation": "SRO",
+            "description": "Sworn officers assigned to public school campuses for safety, mentorship, and law enforcement liaison duties."
+        },
+        {
+            "name": "Marine Patrol",
+            "abbreviation": "MAR",
+            "description": "Waterborne patrol and rescue operations, including boating safety enforcement and dive recovery support."
+        },
+        {
+            "name": "Drone / sUAS Operator",
+            "abbreviation": "sUAS",
+            "description": "FAA Part 107 certified operators flying small unmanned aircraft systems for tactical, search, and crash reconstruction support."
+        }
+    ],
+    "ranks": [
+        {
+            "name": "Chief of Police",
+            "abbreviation": "COP",
+            "paygrade": "P8"
+        },
+        {
+            "name": "Deputy Chief",
+            "abbreviation": "DPC",
+            "paygrade": "P7"
+        },
+        {
+            "name": "Captain",
+            "abbreviation": "CPT",
+            "paygrade": "P6"
+        },
+        {
+            "name": "Lieutenant",
+            "abbreviation": "LT",
+            "paygrade": "P5"
+        },
+        {
+            "name": "Sergeant",
+            "abbreviation": "SGT",
+            "paygrade": "P4"
+        },
+        {
+            "name": "Corporal",
+            "abbreviation": "CPL",
+            "paygrade": "P3"
+        },
+        {
+            "name": "Detective",
+            "abbreviation": "DET",
+            "paygrade": "P2"
+        },
+        {
+            "name": "Police Officer",
+            "abbreviation": "PO",
+            "paygrade": "P1"
+        }
+    ],
+    "statuses": [
+        {
+            "name": "Active Duty",
+            "color": "#16a34a"
+        },
+        {
+            "name": "Light / Modified Duty",
+            "color": "#facc15"
+        },
+        {
+            "name": "Administrative Leave",
+            "color": "#0284c7"
+        },
+        {
+            "name": "Field Training",
+            "color": "#7c3aed"
+        },
+        {
+            "name": "Inactive",
+            "color": "#dc2626"
+        }
+    ],
+    "groups": [
+        {
+            "name": "Operations",
+            "icon": "heroicon-o-shield-check",
+            "units": [
+                {
+                    "name": "Office of the Chief",
+                    "slots": [
+                        {
+                            "name": "Patrol Sergeant",
+                            "position": "Patrol Sergeant"
+                        },
+                        {
+                            "name": "Field Training Officer",
+                            "position": "Field Training Officer"
+                        }
+                    ]
+                },
+                {
+                    "name": "Patrol Division - A Squad",
+                    "slots": [
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        },
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        }
+                    ]
+                },
+                {
+                    "name": "Patrol Division - B Squad",
+                    "slots": [
+                        {
+                            "name": "Patrol Sergeant",
+                            "position": "Patrol Sergeant"
+                        },
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        }
+                    ]
+                },
+                {
+                    "name": "Patrol Division - C Squad",
+                    "slots": [
+                        {
+                            "name": "Field Training Officer",
+                            "position": "Field Training Officer"
+                        },
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        }
+                    ]
+                },
+                {
+                    "name": "Criminal Investigations Division",
+                    "slots": [
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        },
+                        {
+                            "name": "Patrol Officer",
+                            "position": "Patrol Officer"
+                        }
+                    ]
+                },
+                {
+                    "name": "Special Operations Division",
+                    "slots": [
+                        {
+                            "name": "Patrol Sergeant",
+                            "position": "Patrol Sergeant"
+                        },
+                        {
+                            "name": "Field Training Officer",
+                            "position": "Field Training Officer"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Training & Professional Standards",
+            "icon": "heroicon-o-academic-cap",
+            "units": [
+                {
+                    "name": "Training Bureau",
+                    "slots": [
+                        {
+                            "name": "Training Sergeant"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "awards": [
+        {
+            "name": "Medal of Honor",
+            "description": "The department's highest honor, awarded for an act of conspicuous bravery performed at imminent and personal risk of life with full knowledge of the risks involved."
+        },
+        {
+            "name": "Medal of Valor",
+            "description": "Awarded for an act of bravery performed in the line of duty at significant personal risk that goes beyond the expected scope of duty."
+        },
+        {
+            "name": "Purple Heart",
+            "description": "Awarded to officers who sustain serious physical injury as a result of a felonious, unlawful act committed against them in the line of duty."
+        },
+        {
+            "name": "Lifesaving Medal",
+            "description": "Awarded to officers whose direct and decisive actions are responsible for saving a human life, including CPR, water rescue, or applied tourniquet care."
+        },
+        {
+            "name": "Distinguished Service Medal",
+            "description": "Awarded for sustained meritorious service or a single act of significant achievement that brings substantial credit to the department."
+        },
+        {
+            "name": "Meritorious Service Award",
+            "description": "Recognizes exceptional performance of duty in a specific incident or assignment that exceeds normally expected service."
+        },
+        {
+            "name": "Community Policing Award",
+            "description": "Awarded to officers whose sustained engagement, problem-solving, and partnership with community members produces measurable improvements in public safety."
+        },
+        {
+            "name": "Officer of the Year",
+            "description": "Annual department honor recognizing the sworn member whose overall performance, professionalism, and leadership best represent the agency throughout the calendar year."
+        }
+    ],
+    "qualifications": [
+        {
+            "name": "POST Basic Law Enforcement Academy",
+            "description": "State Peace Officer Standards and Training basic academy certification, the prerequisite for sworn law enforcement service."
+        },
+        {
+            "name": "Field Training Program (FTO)",
+            "description": "Successful completion of the department's phased FTO program, qualifying the officer for solo patrol assignment."
+        },
+        {
+            "name": "Firearms Qualification - Duty Handgun",
+            "description": "Annual day and low-light qualification with the assigned duty handgun, performed under the supervision of a certified firearms instructor."
+        },
+        {
+            "name": "Patrol Rifle Operator",
+            "description": "Department-issued patrol rifle qualification covering manipulation, zeroing, transitions, and use of force application."
+        },
+        {
+            "name": "Emergency Vehicle Operations (EVOC)",
+            "description": "Initial and refresher emergency vehicle operations training including pursuit driving, precision maneuvers, and response code policies."
+        },
+        {
+            "name": "Crisis Intervention Team (CIT)",
+            "description": "40-hour Memphis Model Crisis Intervention Team training for response to mental health and behavioral health crises."
+        },
+        {
+            "name": "Taser / CEW Operator",
+            "description": "Annual conducted electrical weapon (CEW) operator certification including device operations, deployment guidelines, and reporting requirements."
+        },
+        {
+            "name": "SWAT Operator Course",
+            "description": "Selection and basic SWAT operator training in close quarters battle, dynamic entry, breaching, and team movement."
+        }
+    ],
+    "credentials": [
+        {
+            "name": "POST Basic Peace Officer Certification",
+            "type": "certification"
+        },
+        {
+            "name": "POST Intermediate Certificate",
+            "type": "certification"
+        },
+        {
+            "name": "FBI National Academy Graduate",
+            "type": "certification"
+        },
+        {
+            "name": "Commercial Driver's License (Class A)",
+            "type": "license"
+        },
+        {
+            "name": "Top Secret Security Clearance",
+            "type": "other"
+        }
+    ],
+    "forms": [
+        {
+            "name": "Use of Force Report",
+            "description": "Required documentation any time a sworn member uses force above unresisted handcuffing, displays a weapon, or deploys less-lethal or lethal options.",
+            "instructions": "Submit prior to end of shift unless the involved officer is the subject of a critical incident review. Include narrative, force factors articulation, and BWC review references.\n\nAll reports are reviewed by the chain of command and the Use of Force Review Board.",
+            "success_message": "Use of Force Report submitted. The report has been routed to your immediate supervisor and the UoF Review Board.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Reporting Officer",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Badge Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Incident / Case Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Date / Time of Incident",
+                    "type": "datetime-local",
+                    "required": true
+                },
+                {
+                    "name": "Location",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Force Type",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Soft Empty Hand",
+                        "Hard Empty Hand",
+                        "OC Spray",
+                        "Baton / Impact Weapon",
+                        "Conducted Electrical Weapon (CEW)",
+                        "Less-Lethal Munition",
+                        "K9 Apprehension",
+                        "Firearm - Display / Pointing",
+                        "Firearm - Discharged"
+                    ]
+                },
+                {
+                    "name": "Subject Injury",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Officer Injury",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Narrative & Force Factors",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Articulate the totality of circumstances under Graham v. Connor, including subject behavior, severity of crime, and immediate threat assessment."
+                }
+            ]
+        },
+        {
+            "name": "Vehicle Pursuit Report",
+            "description": "Required documentation following any vehicle pursuit, terminated or otherwise, in accordance with General Order 215.",
+            "instructions": "Submit prior to end of shift. Pursuits resulting in collision, injury, or property damage will be reviewed by the Pursuit Review Board within 30 days.",
+            "success_message": "Pursuit Report submitted. A supervisor will follow up to complete the review process.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Initiating Officer",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Badge Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Case Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Pursuit Initiated",
+                    "type": "datetime-local",
+                    "required": true
+                },
+                {
+                    "name": "Pursuit Terminated",
+                    "type": "datetime-local",
+                    "required": true
+                },
+                {
+                    "name": "Reason for Pursuit",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Felony - Violent",
+                        "Felony - Property",
+                        "Misdemeanor",
+                        "Stolen Vehicle",
+                        "DUI",
+                        "Traffic Violation Only",
+                        "Other"
+                    ]
+                },
+                {
+                    "name": "Termination Reason",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Subject Stopped",
+                        "PIT / Tactical Intervention",
+                        "Subject Lost",
+                        "Supervisor Termination",
+                        "Officer Termination",
+                        "Collision"
+                    ]
+                },
+                {
+                    "name": "Collision or Injury Occurred?",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Pursuit Narrative",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Include speeds, distance, weather, road conditions, traffic, supervisor notification, and tactics employed."
+                }
+            ]
+        },
+        {
+            "name": "Personnel Action Request",
+            "description": "Request changes to assignment, shift, classification, or other personnel actions.",
+            "instructions": "Submit at least 14 days prior to the desired effective date. Routing:\n\n1. Member completes the request below.\n2. Immediate supervisor endorses.\n3. Bureau commander reviews and forwards to the Office of the Chief.",
+            "success_message": "Personnel Action Request submitted and routed to your immediate supervisor.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Member Name",
+                    "type": "text",
+                    "required": true,
+                    "placeholder": "LAST, FIRST MI"
+                },
+                {
+                    "name": "Badge Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Current Rank",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Current Assignment",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Action Requested",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Shift / Watch Change",
+                        "Beat Reassignment",
+                        "Specialty Assignment",
+                        "Promotion",
+                        "Transfer",
+                        "Resignation / Retirement",
+                        "Other"
+                    ]
+                },
+                {
+                    "name": "Effective Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Reason / Justification",
+                    "type": "textarea",
+                    "required": true
+                }
+            ]
+        },
+        {
+            "name": "Training Course Request",
+            "description": "Request approval and funding to attend an external training course, conference, or instructor development.",
+            "instructions": "Submit at least 30 days prior to the course start date. Include course flyer, cost breakdown, and a written justification of how the training supports current and future job duties.",
+            "success_message": "Training request submitted to the Training Bureau for review.",
+            "is_public": false,
+            "fields": [
+                {
+                    "name": "Requesting Member",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Badge Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Course Title",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Hosting Agency / Vendor",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Course Start Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Course End Date",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Estimated Total Cost",
+                    "type": "number",
+                    "required": true,
+                    "help": "Include tuition, lodging, per diem, and travel."
+                },
+                {
+                    "name": "Justification",
+                    "type": "textarea",
+                    "required": true,
+                    "help": "Explain how this training supports current duties, professional development, or department initiatives."
+                }
+            ]
+        },
+        {
+            "name": "Recruit / Lateral Application",
+            "description": "Apply to join the department as a recruit officer, lateral transfer, or returning sworn member.",
+            "instructions": "Applicants must be at least 21 years of age, possess a valid driver's license, and be free from any disqualifying criminal history. Lateral applicants must hold a current state POST certification in good standing.",
+            "success_message": "Thank you for your interest in joining our department. The recruitment unit will review your application and contact you regarding next steps.",
+            "is_public": true,
+            "fields": [
+                {
+                    "name": "Full Legal Name",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Email Address",
+                    "type": "email",
+                    "required": true
+                },
+                {
+                    "name": "Phone Number",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "Date of Birth",
+                    "type": "date",
+                    "required": true
+                },
+                {
+                    "name": "Application Type",
+                    "type": "select",
+                    "required": true,
+                    "options": [
+                        "Recruit (Non-Certified)",
+                        "Lateral (Currently Certified)",
+                        "Returning Sworn Member"
+                    ]
+                },
+                {
+                    "name": "Currently POST Certified?",
+                    "type": "boolean",
+                    "required": true
+                },
+                {
+                    "name": "Prior Sworn Service",
+                    "type": "textarea",
+                    "required": false,
+                    "help": "List previous agencies, dates of service, and assignments. Leave blank if non-certified."
+                },
+                {
+                    "name": "Why do you want to be a police officer?",
+                    "type": "textarea",
+                    "required": true
+                },
+                {
+                    "name": "Resume / Application Packet",
+                    "type": "file",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}
