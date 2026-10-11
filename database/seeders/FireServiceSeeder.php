@@ -36,12 +36,28 @@ use App\Models\TrainingRecord;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
 class FireServiceSeeder extends Seeder
 {
     use WithoutModelEvents;
+
+    /**
+     * Child unit name => parent unit name.
+     *
+     * @var array<string, string>
+     */
+    public const array UNIT_HIERARCHY = [
+        'Battalion 1' => 'District 1 Headquarters',
+        'Battalion 2' => 'District 1 Headquarters',
+        'Station 1 - Engine 1, Truck 1, Medic 1' => 'Battalion 1',
+        'Station 2 - Engine 2, Medic 2' => 'Battalion 1',
+        'Station 3 - Engine 3, Brush 3' => 'Battalion 1',
+        'Station 4 - Engine 4, Tower 4' => 'Battalion 2',
+        'Station 5 - Engine 5, Hazmat 5' => 'Battalion 2',
+    ];
 
     public function run(): void
     {
@@ -127,6 +143,8 @@ class FireServiceSeeder extends Seeder
                 ['name' => 'Station 5 - Engine 5, Hazmat 5', 'order' => 8],
             )
             ->create();
+
+        $this->nestUnits($units, static::UNIT_HIERARCHY);
 
         Group::factory()
             ->state([
@@ -598,5 +616,20 @@ HTML,
                 ],
             )
             ->create();
+    }
+
+    /**
+     * Nest seeded units under their parent unit to build the organization hierarchy.
+     *
+     * @param  Collection<int, Unit>  $units
+     * @param  array<string, string>  $parents  Child unit name => parent unit name
+     */
+    public function nestUnits(Collection $units, array $parents): void
+    {
+        $unitsByName = $units->keyBy('name');
+
+        foreach ($parents as $child => $parent) {
+            $unitsByName->get($child)?->parent()->associate($unitsByName->get($parent))->save();
+        }
     }
 }
