@@ -12,6 +12,7 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
 use App\Models\User;
 use App\Services\TwilioService;
+use App\Support\Discord\DiscordEmbed;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -20,7 +21,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
-use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
@@ -113,14 +113,18 @@ HTML;
 
     public function toDiscord(): DiscordMessage
     {
-        $converter = new HtmlConverter([
-            'strip_tags' => true,
-            'remove_nodes' => true,
-        ]);
+        $embed = DiscordEmbed::make()
+            ->title('New Award Record')
+            ->description(Str::limit(strip_tags((string) $this->awardRecord->text), 500))
+            ->url($this->url)
+            ->color('#eab308')
+            ->thumbnail($this->awardRecord->award?->image?->image_url)
+            ->field('Member', $this->awardRecord->user?->name)
+            ->field('Award', $this->awardRecord->award?->name)
+            ->field('Author', $this->awardRecord->author?->name)
+            ->timestamp($this->awardRecord->created_at);
 
-        return DiscordMessage::create(
-            body: $converter->convert($this->message)
-        );
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null

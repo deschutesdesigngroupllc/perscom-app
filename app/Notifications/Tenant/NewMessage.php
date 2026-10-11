@@ -9,6 +9,7 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\TwilioService;
+use App\Support\Discord\DiscordEmbed;
 use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -81,7 +82,13 @@ class NewMessage extends Notification implements ShouldQueue
             'remove_nodes' => true,
         ]);
 
-        return DiscordMessage::create($converter->convert($this->message->message));
+        $embed = DiscordEmbed::make()
+            ->title('New Message')
+            ->description($converter->convert($this->message->message))
+            ->color('#0ea5e9')
+            ->timestamp($this->message->send_at ?? $this->message->created_at);
+
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
