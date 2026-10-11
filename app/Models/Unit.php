@@ -24,7 +24,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -105,6 +107,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     ];
 
     protected $fillable = [
+        'parent_id',
         'name',
         'description',
         'empty',
@@ -112,6 +115,47 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return BelongsTo<Unit, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'parent_id');
+    }
+
+    /**
+     * @return HasMany<Unit, $this>
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(Unit::class, 'parent_id');
+    }
+
+    /**
+     * The IDs of every unit nested beneath this unit, at any depth.
+     *
+     * @return array<int, int>
+     */
+    public function descendantIds(): array
+    {
+        $descendants = [];
+        $frontier = [(int) $this->getKey()];
+
+        while (filled($frontier)) {
+            $frontier = Unit::query()
+                ->withoutGlobalScopes()
+                ->whereIn('parent_id', $frontier)
+                ->whereNotIn('id', [...$descendants, (int) $this->getKey()])
+                ->pluck('id')
+                ->map(fn (mixed $id): int => (int) $id)
+                ->all();
+
+            $descendants = [...$descendants, ...$frontier];
+        }
+
+        return $descendants;
+    }
 
     public function groups(): BelongsToMany
     {
