@@ -44,6 +44,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -80,6 +81,7 @@ class AppPanelProvider extends PanelProvider
                     EmailAuthentication::make(),
                 ], isRequired: true)
                 ->multiFactorAuthenticationRequiredMiddlewareName(EnsureMultiFactorAuthenticationIsRequired::class))
+            ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): Factory|View => view('filament.render-hooks.user-menu-before.copilot'))
             ->colors([
                 'primary' => Color::Blue,
             ])

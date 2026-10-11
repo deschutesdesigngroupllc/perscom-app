@@ -1,0 +1,1 @@
+@livewire('filament.app.copilot')
