@@ -72,6 +72,24 @@ class ExpressionLanguageServiceTest extends TenantTestCase
         $this->assertTrue($result);
     }
 
+    public function test_it_evaluates_strip_characters_function_with_given_characters(): void
+    {
+        $result = $this->service->evaluate('strip_characters(model["phone"], "-() ")', [
+            'model' => ['phone' => '(555) 123-4567'],
+        ]);
+
+        $this->assertSame('5551234567', $result);
+    }
+
+    public function test_it_evaluates_strip_characters_function_without_characters(): void
+    {
+        $result = $this->service->evaluate('strip_characters(model["callsign"]) == "Alpha1"', [
+            'model' => ['callsign' => 'Alpha-1!'],
+        ]);
+
+        $this->assertTrue($result);
+    }
+
     public function test_it_evaluates_starts_with_function(): void
     {
         $result = $this->service->evaluate('starts_with(model["name"], "John")', [

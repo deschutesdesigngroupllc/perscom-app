@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
+use App\Observers\TrainingRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
@@ -14,7 +16,11 @@ use App\Traits\HasDocument;
 use App\Traits\HasEvent;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -77,7 +83,8 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-class TrainingRecord extends Model
+#[ObservedBy(TrainingRecordObserver::class)]
+class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -90,6 +97,8 @@ class TrainingRecord extends Model
     use HasFactory;
     use HasLogs;
     use HasModelNotifications;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasUser;
 
     protected $table = 'records_trainings';
@@ -117,5 +126,25 @@ class TrainingRecord extends Model
     public function instructor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'instructor_id');
+    }
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return 'A training record has been added for '.$this->user->name;
+    }
+
+    public function textForNewsfeedItem(): ?string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return optional($this->event, fn (Event $event): string => 'Event: '.$event->name);
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
     }
 }

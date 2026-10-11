@@ -39,6 +39,9 @@ enum WebhookEvent: string implements HasLabel
     case SUBMISSION_UPDATED = 'submission.updated';
     case SUBMISSION_DELETED = 'submission.deleted';
     case TEST_WEBHOOK = 'webhook.test';
+    case TRAINING_RECORD_CREATED = 'trainingrecord.created';
+    case TRAINING_RECORD_UPDATED = 'trainingrecord.updated';
+    case TRAINING_RECORD_DELETED = 'trainingrecord.deleted';
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';
