@@ -71,7 +71,7 @@ class PromotionEligibilityServiceTest extends TenantTestCase
         $evaluation = PromotionEligibilityService::evaluate($user->fresh());
 
         $this->assertFalse($evaluation->eligible);
-        $this->assertSame('10 of 30 days', $evaluation->unmetRequirements()[0]->detail);
+        $this->assertSame('10 days (30 required)', $evaluation->unmetRequirements()[0]->detail);
     }
 
     public function test_time_in_service_requirement(): void

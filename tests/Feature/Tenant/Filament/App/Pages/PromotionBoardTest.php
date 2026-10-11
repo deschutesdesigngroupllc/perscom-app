@@ -58,7 +58,7 @@ class PromotionBoardTest extends TenantTestCase
             ->set('activeTab', 'not_yet_eligible')
             ->assertCanSeeTableRecords([$this->notEligible])
             ->assertCanNotSeeTableRecords([$this->eligible])
-            ->assertSee('Time in service: 5 of 30 days');
+            ->assertSee('Time in service: 5 days (30 required)');
     }
 
     public function test_promote_action_creates_a_promotion_rank_record(): void

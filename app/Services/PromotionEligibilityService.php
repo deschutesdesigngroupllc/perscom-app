@@ -201,17 +201,17 @@ class PromotionEligibilityService
             filled($requirement->min_days_in_grade) ? new RequirementResultData(
                 label: 'Time in grade',
                 met: $daysInGrade >= $requirement->min_days_in_grade,
-                detail: sprintf('%d of %d days', $daysInGrade, $requirement->min_days_in_grade),
+                detail: sprintf('%s days (%s required)', number_format($daysInGrade), number_format($requirement->min_days_in_grade)),
             ) : null,
             filled($requirement->min_days_in_service) ? new RequirementResultData(
                 label: 'Time in service',
                 met: $daysInService >= $requirement->min_days_in_service,
-                detail: sprintf('%d of %d days', $daysInService, $requirement->min_days_in_service),
+                detail: sprintf('%s days (%s required)', number_format($daysInService), number_format($requirement->min_days_in_service)),
             ) : null,
             filled($requirement->min_events_attended_90d) ? new RequirementResultData(
                 label: 'Events attended',
                 met: $eventsAttended >= $requirement->min_events_attended_90d,
-                detail: sprintf('%d of %d in the last %d days', $eventsAttended, $requirement->min_events_attended_90d, static::ATTENDANCE_WINDOW_DAYS),
+                detail: sprintf('%d in the last %d days (%d required)', $eventsAttended, static::ATTENDANCE_WINDOW_DAYS, $requirement->min_events_attended_90d),
             ) : null,
         ])
             ->merge(collect($requirement->required_qualification_ids ?? [])->map(fn (mixed $id): RequirementResultData => new RequirementResultData(
