@@ -46,7 +46,7 @@ class UserObserver
 
         /** @var RegistrationSettings $registrationSettings */
         $registrationSettings = resolve(RegistrationSettings::class);
-        if ($registrationSettings->admin_approval_required) {
+        if ($registrationSettings->admin_approval_required && ! $user->approved) {
             $user->updateQuietly([
                 'approved' => false,
             ]);
@@ -87,7 +87,7 @@ class UserObserver
             Notification::send($user, new AccountApproved);
         }
 
-        if ($user->isDirty('password')) {
+        if ($user->isDirty('password') && filled($user->getOriginal('password'))) {
             Notification::send($user, new PasswordChanged);
         }
 

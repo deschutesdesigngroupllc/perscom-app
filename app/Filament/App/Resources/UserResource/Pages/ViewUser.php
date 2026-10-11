@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\Pages;
 
+use App\Filament\Actions\ClaimInviteAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
@@ -67,6 +68,8 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            ClaimInviteAction::make()
+                ->color('gray'),
             Action::make('email')
                 ->hidden(fn (): bool => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
                 ->color('gray')

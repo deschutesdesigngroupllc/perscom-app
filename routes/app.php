@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Filament\App\Pages\AccountRequiresApproval;
+use App\Filament\App\Pages\Auth\AcceptInvite;
 use App\Http\Controllers\App\Pages\EditorController;
 use App\Http\Controllers\App\Pages\PreviewController;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -13,6 +14,10 @@ use Stancl\Tenancy\Features\UserImpersonation;
 
 Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], function (): void {
     Route::get('impersonate/{token}', fn ($token): RedirectResponse => UserImpersonation::makeResponse($token))->name('impersonation');
+
+    Route::get('invitation/{token}', AcceptInvite::class)
+        ->middleware('throttle:invites')
+        ->name('invites.accept');
 
     Route::group(['middleware' => ['auth:web']], function (): void {
         Route::get('approval-required', AccountRequiresApproval::class)

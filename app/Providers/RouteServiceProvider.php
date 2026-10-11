@@ -40,6 +40,8 @@ class RouteServiceProvider extends ServiceProvider
 
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
 
+        RateLimiter::for('invites', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+
         RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
             if (blank($tenant)) {
                 return false;
