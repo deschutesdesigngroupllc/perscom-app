@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Pages;
 
+use App\Ai\Agents\OrganizationBlueprintAgent;
+use App\Data\Organization\OrganizationBlueprintData;
 use App\Filament\App\Pages\Dashboard;
+use App\Models\Award;
 use App\Models\Group;
 use App\Models\Position;
+use App\Models\Qualification;
 use App\Models\Rank;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Actions\Testing\TestAction;
+use Laravel\Ai\Prompts\AgentPrompt;
 use Livewire\Livewire;
+use Tests\Feature\Tenant\Services\Ai\OrganizationBlueprintServiceTest;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class DashboardOnboardingTest extends TenantTestCase
@@ -108,6 +115,82 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->assertTrue($unit->groups()->whereKey($group->getKey())->exists());
         $this->assertSame('Sergeant', $rank->refresh()->name);
         $this->assertTrue(resolve(OnboardingSettings::class)->dismissed);
+    }
+
+    public function test_onboarding_can_apply_a_preset_without_ai(): void
+    {
+        config(['ai.providers.anthropic.key' => null]);
+
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        $preset = OrganizationBlueprintData::fromPreset('law-enforcement');
+
+        Livewire::test(Dashboard::class)
+            ->mountAction('onboarding')
+            ->assertMountedActionModalDontSee('Generate Structure')
+            ->assertMountedActionModalSee('AI generation is not available')
+            ->fillForm(['builder' => ['preset' => 'law-enforcement']])
+            ->callAction(TestAction::make('loadPreset')->schemaComponent('onboardingBuilderActions'))
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        $this->assertSame(count($preset->ranks), Rank::query()->whereIn('name', collect($preset->ranks)->pluck('name'))->count());
+        $this->assertDatabaseHas(Group::class, ['name' => $preset->groups[0]->name]);
+        $this->assertDatabaseHas(Unit::class, ['name' => $preset->groups[0]->units[0]->name]);
+        $this->assertTrue(resolve(OnboardingSettings::class)->completed);
+    }
+
+    public function test_onboarding_generates_and_applies_an_ai_blueprint(): void
+    {
+        config([
+            'ai.default' => 'anthropic',
+            'ai.providers.anthropic.key' => 'test-key',
+        ]);
+
+        OrganizationBlueprintAgent::fake([OrganizationBlueprintServiceTest::structuredResponse()]);
+
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Dashboard::class)
+            ->mountAction('onboarding')
+            ->fillForm(['builder' => ['description' => 'A WWII airborne rifle company.']])
+            ->callAction(TestAction::make('generateBlueprint')->schemaComponent('onboardingBuilderActions'))
+            ->assertNotified('Structure Generated')
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        OrganizationBlueprintAgent::assertPrompted(fn (AgentPrompt $prompt): bool => $prompt->contains('A WWII airborne rifle company.'));
+
+        $this->assertSame(['Captain', 'Sergeant', 'Private'], Rank::query()->whereIn('name', ['Captain', 'Sergeant', 'Private'])->pluck('name')->all());
+        $this->assertTrue(Unit::query()->where('name', '1st Platoon')->firstOrFail()->groups()->where('name', 'Airborne')->exists());
+        $this->assertDatabaseHas(Award::class, ['name' => 'Bronze Star']);
+        $this->assertDatabaseHas(Qualification::class, ['name' => 'Parachutist']);
+        $this->assertDatabaseHas(Status::class, ['name' => 'Active', 'color' => '#22c55e']);
+    }
+
+    public function test_onboarding_generation_requires_a_description(): void
+    {
+        config([
+            'ai.default' => 'anthropic',
+            'ai.providers.anthropic.key' => 'test-key',
+        ]);
+
+        OrganizationBlueprintAgent::fake();
+
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Dashboard::class)
+            ->mountAction('onboarding')
+            ->callAction(TestAction::make('generateBlueprint')->schemaComponent('onboardingBuilderActions'))
+            ->assertNotified('Description Required');
+
+        OrganizationBlueprintAgent::assertNeverPrompted();
     }
 
     private function fakeAccessibleOnboarding(): void
