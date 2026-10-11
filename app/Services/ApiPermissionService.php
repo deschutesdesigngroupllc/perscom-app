@@ -71,6 +71,7 @@ class ApiPermissionService
                 'profile' => 'Can view your profile',
                 'email' => 'Can view your email',
                 'openid' => 'Can perform Single Sign On',
+                'mcp:use' => 'Can connect AI tools through MCP',
             ]
         );
     }

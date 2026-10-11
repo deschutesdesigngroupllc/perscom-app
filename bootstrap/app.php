@@ -76,6 +76,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/oidc.php'));
 
             Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
+                ->group(base_path('routes/mcp.php'));
+
+            Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
                 ->name('passport.')
                 ->namespace('Laravel\\Passport\\Http\\Controllers')
                 ->prefix('oauth')
