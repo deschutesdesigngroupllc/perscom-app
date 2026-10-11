@@ -222,6 +222,7 @@ class TokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('auth_time', $claims);
         $this->assertArrayNotHasKey('name', $claims);
         $this->assertArrayNotHasKey('nonce', $claims);
+        $this->assertLessThanOrEqual(now()->addHour()->getTimestamp(), (int) $claims['exp']);
 
         $accessToken = JWT::decode($response->json('access_token'), JWK::parseKeySet($jwks));
 

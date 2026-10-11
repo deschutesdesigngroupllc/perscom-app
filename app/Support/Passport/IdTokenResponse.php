@@ -73,7 +73,7 @@ class IdTokenResponse extends BearerTokenResponse
             ->permittedFor($clientId)
             ->relatedTo((string) $user->getKey())
             ->issuedAt(now()->toImmutable())
-            ->expiresAt($accessToken->getExpiryDateTime())
+            ->expiresAt(min($accessToken->getExpiryDateTime(), now()->addHour()->toImmutable()))
             ->withClaim('auth_time', $authorization['auth_time'] ?? now()->getTimestamp());
 
         if (filled($authorization['nonce'] ?? null)) {
