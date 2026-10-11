@@ -12,6 +12,8 @@ class PermissionSettings extends Settings
 
     public array $default_permissions;
 
+    public bool $require_multi_factor_authentication = false;
+
     public static function group(): string
     {
         return 'permission';

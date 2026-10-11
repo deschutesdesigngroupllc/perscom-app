@@ -22,6 +22,7 @@ use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
+use App\Http\Middleware\EnsureMultiFactorAuthenticationIsRequired;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
@@ -32,6 +33,8 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Actions\Action;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -69,6 +72,14 @@ class AppPanelProvider extends PanelProvider
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->emailVerification(EmailVerificationPrompt::class))
             ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
             ->profile(EditProfile::class, isSimple: false)
+            ->unless($isDemo, fn (Panel $panel): Panel => $panel
+                ->multiFactorAuthentication([
+                    AppAuthentication::make()
+                        ->recoverable()
+                        ->regenerableRecoveryCodes(),
+                    EmailAuthentication::make(),
+                ], isRequired: true)
+                ->multiFactorAuthenticationRequiredMiddlewareName(EnsureMultiFactorAuthenticationIsRequired::class))
             ->colors([
                 'primary' => Color::Blue,
             ])
