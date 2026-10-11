@@ -184,7 +184,7 @@ class Event extends Model implements HasLabel
 
     protected function url(): Attribute
     {
-        return Attribute::get(function ($value): string {
+        return Attribute::get(function ($value): ?string {
             if (filled($value)) {
                 return $value;
             }

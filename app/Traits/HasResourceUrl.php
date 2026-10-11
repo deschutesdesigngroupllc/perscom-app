@@ -18,25 +18,27 @@ trait HasResourceUrl
     protected function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
+            get: fn (): ?string => optional($this->getKey(), fn () => optional(Filament::getModelResource($this), function ($class) {
+                /** @var ?Tenant $tenant */
+                $tenant = tenant();
+
+                $parameters = array_filter([
+                    'record' => $this,
+                    'tenant' => $tenant,
+                ]);
+
                 /** @var class-string<resource> $class */
                 if ($class::hasPage('view')) {
-                    return $class::getUrl('view', [
-                        'record' => $this,
-                        'tenant' => $tenant,
-                    ], panel: 'app');
+                    return $class::getUrl('view', $parameters, panel: 'app');
                 }
 
                 /** @var class-string<resource> $class */
                 if ($class::hasPage('edit')) {
-                    return $class::getUrl('edit', [
-                        'record' => $this,
-                        'tenant' => $tenant,
-                    ], panel: 'app');
+                    return $class::getUrl('edit', $parameters, panel: 'app');
                 }
 
                 return null;
-            })))
+            }))
         )->shouldCache();
     }
 
