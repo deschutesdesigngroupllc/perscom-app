@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Mcp\Servers;
 
+use App\Http\Controllers\Mcp\ProtectedResourceMetadataController;
 use App\Mcp\ApiResourceRegistry;
 use App\Models\Rank;
 use App\Models\Unit;
+use App\Settings\OrganizationSettings;
 use Illuminate\Support\Str;
 use Laravel\Passport\Token;
 use Tests\Feature\Tenant\Mcp\McpTestCase;
@@ -77,6 +79,22 @@ class PerscomServerTest extends McpTestCase
             ->assertJsonPath('resource', $this->tenant->url.'/mcp')
             ->assertJsonPath('authorization_servers', [Str::lower($this->tenant->url)])
             ->assertJsonPath('scopes_supported', ApiResourceRegistry::scopes());
+    }
+
+    public function test_the_protected_resource_metadata_uses_the_organization_name_without_a_tenant(): void
+    {
+        OrganizationSettings::fake(['name' => 'Single Database Org', 'email' => 'org@example.com', 'timezone' => 'UTC']);
+
+        tenancy()->end();
+
+        try {
+            $response = resolve(ProtectedResourceMetadataController::class)();
+        } finally {
+            tenancy()->initialize($this->tenant);
+        }
+
+        $this->assertSame('Single Database Org PERSCOM', $response->getData(true)['resource_name']);
+        $this->assertSame(ApiResourceRegistry::scopes(), $response->getData(true)['scopes_supported']);
     }
 
     public function test_the_authorization_server_metadata_uses_the_tenant_passport_endpoints(): void
