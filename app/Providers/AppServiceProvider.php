@@ -23,6 +23,7 @@ use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
+use App\Support\Passport\IdTokenResponse;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\ExportAction;
@@ -82,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::ignoreRoutes();
         Passport::tokensCan(ApiPermissionService::scopes());
         Passport::useAccessTokenEntity(AccessToken::class);
+        Passport::useAuthorizationServerResponseType(new IdTokenResponse);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(fn (array $parameters) => Inertia::render('passport/Authorize', [

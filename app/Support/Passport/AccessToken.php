@@ -18,6 +18,7 @@ class AccessToken extends PassportAccessToken
         $this->initJwtConfiguration();
 
         $builder = $this->jwtConfiguration->builder()
+            ->withHeader('kid', JsonWebKey::thumbprint())
             ->permittedFor($this->getClient()->getIdentifier())
             ->identifiedBy($this->getIdentifier())
             ->issuedAt(now()->toImmutable())
