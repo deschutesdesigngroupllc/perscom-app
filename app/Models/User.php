@@ -309,6 +309,25 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     ];
 
     /**
+     * @throws Exception
+     */
+    /**
+     * Columns stored on the users table rather than in the custom field data column. Multi-factor
+     * authentication secrets live in their own encrypted columns but must never be mass assignable.
+     *
+     * @return string[]
+     */
+    public static function getCustomColumns(): array
+    {
+        return [
+            ...(new self)->getFillable(),
+            'app_authentication_secret',
+            'app_authentication_recovery_codes',
+            'has_email_authentication',
+        ];
+    }
+
+    /**
      * @return array<int, Tenant>|Collection<int, Tenant>
      */
     public function getTenants(Panel $panel): array|Collection
@@ -321,9 +340,6 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return true;
     }
 
-    /**
-     * @throws Exception
-     */
     public function canAccessPanel(Panel $panel): bool
     {
         return $panel->getId() === 'app';

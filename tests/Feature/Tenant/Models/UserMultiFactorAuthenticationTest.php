@@ -41,7 +41,11 @@ class UserMultiFactorAuthenticationTest extends TenantTestCase
         $user->refresh();
 
         $this->assertSame('SECRETVALUE123456', $user->getAppAuthenticationSecret());
-        $this->assertNotSame('SECRETVALUE123456', DB::connection('tenant')->table('users')->where('id', $user->id)->value('app_authentication_secret'));
+        $row = DB::connection('tenant')->table('users')->where('id', $user->id)->first(['app_authentication_secret', 'data']);
+
+        $this->assertNotNull($row->app_authentication_secret);
+        $this->assertNotSame('SECRETVALUE123456', $row->app_authentication_secret);
+        $this->assertArrayNotHasKey('app_authentication_secret', (array) json_decode((string) $row->data, true));
         $this->assertArrayNotHasKey('app_authentication_secret', $user->toArray());
     }
 
@@ -54,6 +58,7 @@ class UserMultiFactorAuthenticationTest extends TenantTestCase
         $user->refresh();
 
         $this->assertSame(['code-one', 'code-two'], $user->getAppAuthenticationRecoveryCodes());
+        $this->assertNotNull(DB::connection('tenant')->table('users')->where('id', $user->id)->value('app_authentication_recovery_codes'));
         $this->assertArrayNotHasKey('app_authentication_recovery_codes', $user->toArray());
     }
 
