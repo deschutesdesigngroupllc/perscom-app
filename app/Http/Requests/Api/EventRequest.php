@@ -31,6 +31,7 @@ class EventRequest extends Request
             'repeats' => 'boolean',
             'registrations_enabled' => 'boolean',
             'registrations_deadline' => 'nullable|datetime',
+            'creates_training_record' => 'boolean',
             'notifications_enabled' => 'boolean',
             'notifications_interval' => Rule::enum(NotificationInterval::class),
             'notifications_channels' => Rule::enum(NotificationChannel::class),

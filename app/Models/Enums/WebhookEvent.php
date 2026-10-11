@@ -23,6 +23,8 @@ enum WebhookEvent: string implements HasLabel
     case EVENT_CREATED = 'event.created';
     case EVENT_UPDATED = 'event.updated';
     case EVENT_DELETED = 'event.deleted';
+    case EVENT_REGISTRATION_ATTENDED = 'eventregistration.attended';
+    case EVENT_REGISTRATION_NO_SHOW = 'eventregistration.no_show';
     case MESSAGE_CREATED = 'message.created';
     case MESSAGE_UPDATED = 'message.updated';
     case MESSAGE_DELETED = 'message.deleted';

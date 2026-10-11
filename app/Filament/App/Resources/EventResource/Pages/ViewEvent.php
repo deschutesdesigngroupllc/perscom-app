@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\EventResource\Pages;
 
 use App\Filament\App\Resources\EventResource;
+use App\Filament\App\Resources\EventResource\Actions\CheckInLinkAction;
 use App\Filament\App\Resources\EventResource\Actions\RsvpAction;
+use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
 use App\Models\Event;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -40,6 +42,8 @@ class ViewEvent extends ViewRecord
                 ->color('gray')
                 ->label('Open'),
             RsvpAction::make(),
+            TakeAttendanceAction::make(),
+            CheckInLinkAction::make(),
             EditAction::make(),
             DeleteAction::make(),
         ];

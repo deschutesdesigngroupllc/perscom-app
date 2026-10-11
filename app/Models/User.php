@@ -357,7 +357,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
-            ->withPivot(['id', 'status'])
+            ->withPivot(['id', 'status', 'checked_in_at'])
             ->withTimestamps()
             ->as('registration')
             ->using(EventRegistration::class);
