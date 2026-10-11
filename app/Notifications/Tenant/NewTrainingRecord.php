@@ -12,6 +12,7 @@ use App\Models\Enums\NotificationGroup;
 use App\Models\TrainingRecord;
 use App\Models\User;
 use App\Services\TwilioService;
+use App\Support\Discord\DiscordEmbed;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -20,7 +21,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
-use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
@@ -117,14 +117,18 @@ HTML;
 
     public function toDiscord(): DiscordMessage
     {
-        $converter = new HtmlConverter([
-            'strip_tags' => true,
-            'remove_nodes' => true,
-        ]);
+        $embed = DiscordEmbed::make()
+            ->title('New Training Record')
+            ->description(Str::limit(strip_tags((string) $this->trainingRecord->text), 500))
+            ->url($this->url)
+            ->color('#0ea5e9')
+            ->field('Member', $this->trainingRecord->user?->name)
+            ->field('Event', $this->trainingRecord->event?->name)
+            ->field('Instructor', $this->trainingRecord->instructor?->name)
+            ->field('Author', $this->trainingRecord->author?->name)
+            ->timestamp($this->trainingRecord->created_at);
 
-        return DiscordMessage::create(
-            body: $converter->convert($this->message)
-        );
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null

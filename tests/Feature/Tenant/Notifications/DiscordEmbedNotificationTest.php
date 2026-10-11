@@ -16,6 +16,7 @@ use App\Models\ModelNotification;
 use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
+use App\Models\TrainingRecord;
 use App\Models\User;
 use App\Notifications\Tenant\NewAssignmentRecord;
 use App\Notifications\Tenant\NewAwardRecord;
@@ -25,6 +26,7 @@ use App\Notifications\Tenant\NewModelNotification;
 use App\Notifications\Tenant\NewQualificationRecord;
 use App\Notifications\Tenant\NewRankRecord;
 use App\Notifications\Tenant\NewServiceRecord;
+use App\Notifications\Tenant\NewTrainingRecord;
 use App\Notifications\Tenant\UpcomingEvent;
 use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -69,6 +71,18 @@ class DiscordEmbedNotificationTest extends TenantTestCase
 
         $this->assertSame('New Qualification Record', $message->embed['title']);
         $this->assertContains(['name' => 'Qualification', 'value' => $record->qualification->name, 'inline' => true], $message->embed['fields']);
+    }
+
+    public function test_training_record_notification_sends_rich_embed(): void
+    {
+        $user = User::factory()->createQuietly();
+        $record = TrainingRecord::factory()->for($user)->createQuietly();
+
+        $message = new NewTrainingRecord($record)->toDiscord();
+
+        $this->assertSame('New Training Record', $message->embed['title']);
+        $this->assertSame('', $message->body);
+        $this->assertContains(['name' => 'Member', 'value' => $user->name, 'inline' => true], $message->embed['fields']);
     }
 
     public function test_assignment_record_notification_sends_rich_embed(): void
