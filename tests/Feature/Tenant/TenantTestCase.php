@@ -53,7 +53,7 @@ class TenantTestCase extends TestCase
         $testToken = ParallelTesting::token() ?: 1;
 
         $tenantName = 'Tenant '.$testToken;
-        $tenantDatabaseName = sprintf('tenant%s_testing', $testToken);
+        $tenantDatabaseName = sprintf('tenant%s_%s', $testToken, config('database.connections.mysql.database'));
 
         $this->tenant = Tenant::factory()->state([
             'name' => $tenantName,
