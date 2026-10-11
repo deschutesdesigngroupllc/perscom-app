@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Console\Commands;
 
+use App\Jobs\Tenant\NotifyPromotionEligibleMembers;
 use App\Jobs\Tenant\ProcessExpiringRecords;
 use App\Jobs\Tenant\RunDailyUserReview;
 use Illuminate\Bus\PendingBatch;
@@ -20,6 +21,7 @@ class RunScheduledAutomationsCommandTest extends TestCase
 
         Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->name === 'Process Expiring Records');
         Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->name === 'Run Daily User Review');
+        Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->name === 'Notify Promotion Eligible Members');
     }
 
     public function test_command_dispatches_jobs_when_self_hosted(): void
@@ -32,5 +34,6 @@ class RunScheduledAutomationsCommandTest extends TestCase
 
         Bus::assertDispatched(ProcessExpiringRecords::class);
         Bus::assertDispatched(RunDailyUserReview::class);
+        Bus::assertDispatched(NotifyPromotionEligibleMembers::class);
     }
 }
