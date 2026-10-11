@@ -15,6 +15,7 @@ use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
+use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
 use App\Filament\App\Widgets\UserProfileWidget;
@@ -95,6 +96,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->discoverClusters(in: app_path('Filament/App/Clusters'), for: 'App\\Filament\\App\\Clusters')
             ->widgets([
+                ConnectAiAgentWidget::class,
                 OrganizationInfoWidget::class,
                 AccountWidget::class,
                 UserProfileWidget::class,

@@ -12,6 +12,8 @@ class UserSettings extends Settings
 
     public array $timezone;
 
+    public array $dismissed_widgets;
+
     public static function group(): string
     {
         return 'user';
