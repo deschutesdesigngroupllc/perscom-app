@@ -11,6 +11,7 @@ use App\Settings\PermissionSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -70,6 +71,13 @@ class Permission extends SettingsPage
                                     ->options(PermissionModel::query()->orderBy('name')->pluck('name', 'id')->toArray())
                                     ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->all())
                                     ->helperText('The default permission(s) a new user will be granted when created.'),
+                            ]),
+                        Tab::make('Security')
+                            ->icon('heroicon-o-lock-closed')
+                            ->schema([
+                                Toggle::make('require_multi_factor_authentication')
+                                    ->label('Require multi-factor authentication')
+                                    ->helperText('When enabled, every user must set up an authenticator app or email code before they can access the dashboard.'),
                             ]),
                     ]),
             ]);

@@ -34,6 +34,12 @@ use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Carbon\CarbonInterval;
 use Exception;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\Email\Concerns\InteractsWithEmailAuthentication;
+use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -219,7 +225,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
+class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasAvatar, HasEmailAuthentication, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
 {
     use CanReceiveNotifications;
     use ClearsApiCache;
@@ -250,6 +256,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasTrainingRecords;
     use HasUnit;
     use HasViews;
+    use InteractsWithAppAuthentication;
+    use InteractsWithAppAuthenticationRecovery;
+    use InteractsWithEmailAuthentication;
     use JwtClaims;
     use Notifiable;
     use SocialRelationships;
@@ -287,6 +296,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'password',
         'remember_token',
         'discord_private_channel_id',
+        'has_email_authentication',
     ];
 
     protected $appends = [
