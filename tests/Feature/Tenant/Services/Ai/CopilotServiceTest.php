@@ -25,7 +25,7 @@ class CopilotServiceTest extends TenantTestCase
 
         $this->assertSame('There are 12 members in 2nd Platoon.', $result['answer']);
         $this->assertTrue($result['changeSet']->isEmpty());
-        CommandCopilot::assertPrompted(fn (AgentPrompt $prompt): bool => $prompt->contains('2nd Platoon') && $prompt->agent->actor->is($actor));
+        CommandCopilot::assertPrompted(fn (AgentPrompt $prompt): bool => $prompt->contains('2nd Platoon') && $prompt->agent instanceof CommandCopilot && $prompt->agent->actor->is($actor));
     }
 
     public function test_it_refuses_to_prompt_once_the_monthly_limit_is_reached(): void

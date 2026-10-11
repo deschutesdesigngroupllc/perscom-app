@@ -22,8 +22,8 @@ class TrainingRecordCredentialObserverTest extends TenantTestCase
 
         $pivot = TrainingRecordCredential::query()->firstOrFail();
 
-        $this->assertTrue($pivot->issued_at->equalTo(now()->subDays(10)));
-        $this->assertTrue($pivot->expires_at->equalTo(now()->subDays(10)->addDays(90)));
+        $this->assertTrue(now()->subDays(10)->equalTo($pivot->issued_at));
+        $this->assertTrue(now()->subDays(10)->addDays(90)->equalTo($pivot->expires_at));
     }
 
     public function test_credentials_without_a_validity_period_never_expire(): void
@@ -48,7 +48,7 @@ class TrainingRecordCredentialObserverTest extends TenantTestCase
 
         $trainingRecord->credentials()->attach($credential, ['expires_at' => now()->addDays(5)]);
 
-        $this->assertTrue(TrainingRecordCredential::query()->firstOrFail()->expires_at->equalTo(now()->addDays(5)));
+        $this->assertTrue(now()->addDays(5)->equalTo(TrainingRecordCredential::query()->firstOrFail()->expires_at));
     }
 
     public function test_syncing_credentials_calculates_expiration(): void
@@ -58,6 +58,6 @@ class TrainingRecordCredentialObserverTest extends TenantTestCase
 
         $trainingRecord->credentials()->sync([$credential->getKey()]);
 
-        $this->assertNotNull($trainingRecord->credentials()->firstOrFail()->pivot->expires_at);
+        $this->assertNotNull(TrainingRecordCredential::query()->firstOrFail()->expires_at);
     }
 }

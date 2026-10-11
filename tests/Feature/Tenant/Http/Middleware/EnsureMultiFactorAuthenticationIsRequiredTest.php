@@ -10,7 +10,6 @@ use App\Settings\PermissionSettings;
 use Filament\Facades\Filament;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Mockery;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -41,12 +40,11 @@ class EnsureMultiFactorAuthenticationIsRequiredTest extends TenantTestCase
 
         $this->actingAs(User::factory()->createQuietly());
 
-        $middleware = Mockery::mock(EnsureMultiFactorAuthenticationIsRequired::class)->makePartial();
+        $middleware = resolve(EnsureMultiFactorAuthenticationIsRequired::class);
 
         $response = $middleware->handle(Request::create('/'), fn (): Response => new Response('ok'));
 
         $this->assertSame('ok', $response->getContent());
-        $middleware->shouldHaveReceived('handle')->once();
     }
 
     public function test_it_redirects_to_set_up_when_required_and_user_has_no_mfa(): void
@@ -59,13 +57,12 @@ class EnsureMultiFactorAuthenticationIsRequiredTest extends TenantTestCase
 
         $this->actingAs(User::factory()->createQuietly());
 
-        $middleware = Mockery::mock(EnsureMultiFactorAuthenticationIsRequired::class)->makePartial();
+        $middleware = resolve(EnsureMultiFactorAuthenticationIsRequired::class);
 
         $response = $middleware->handle(Request::create('/'), fn (): Response => new Response('ok'));
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(Filament::getSetUpRequiredMultiFactorAuthenticationUrl(), $response->getTargetUrl());
-        $middleware->shouldHaveReceived('handle')->once();
     }
 
     public function test_it_passes_through_when_required_and_user_has_mfa_enabled(): void
@@ -81,11 +78,10 @@ class EnsureMultiFactorAuthenticationIsRequiredTest extends TenantTestCase
 
         $this->actingAs($user);
 
-        $middleware = Mockery::mock(EnsureMultiFactorAuthenticationIsRequired::class)->makePartial();
+        $middleware = resolve(EnsureMultiFactorAuthenticationIsRequired::class);
 
         $response = $middleware->handle(Request::create('/'), fn (): Response => new Response('ok'));
 
         $this->assertSame('ok', $response->getContent());
-        $middleware->shouldHaveReceived('handle')->once();
     }
 }

@@ -85,7 +85,7 @@ class EventTest extends ApiResourceTestCase
             ])
             ->assertSuccessful();
 
-        $this->assertFalse($this->factory->fresh()->registration_enabled);
+        $this->assertFalse(Event::query()->findOrFail($this->factory->getKey())->registration_enabled);
     }
 
     public function test_cannot_update_event_to_end_before_it_starts(): void

@@ -13,6 +13,7 @@ use App\Services\AiUsageService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Laravel\Ai\Responses\StructuredAgentResponse;
 
 class OrganizationBlueprintService
 {
@@ -204,6 +205,12 @@ class OrganizationBlueprintService
     protected static function prompt(string $prompt): OrganizationBlueprintData
     {
         $response = new OrganizationBlueprintAgent()->prompt($prompt);
+
+        if (! $response instanceof StructuredAgentResponse) {
+            throw ValidationException::withMessages([
+                'blueprint' => 'The AI did not return a structured organization.',
+            ]);
+        }
 
         return static::toBlueprint($response->toArray());
     }

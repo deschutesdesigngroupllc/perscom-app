@@ -32,6 +32,9 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use UnitEnum;
 
+/**
+ * @property-read Schema $form
+ */
 class OrganizationBuilder extends Page
 {
     use GeneratesOrganizationBlueprints;

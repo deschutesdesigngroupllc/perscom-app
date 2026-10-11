@@ -18,7 +18,7 @@ class CaptureOidcAuthorizationTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        Cache::spy();
+        $cache = Cache::spy();
 
         $request = Request::create('/oauth/authorize', parameters: [
             'client_id' => 'client-id',
@@ -29,7 +29,7 @@ class CaptureOidcAuthorizationTest extends TenantTestCase
 
         (new CaptureOidcAuthorization)->handle($request, fn (): Response => new Response);
 
-        Cache::shouldHaveReceived('put')
+        $cache->shouldHaveReceived('put')
             ->once()
             ->withArgs(fn (string $key, array $value): bool => $key === IdTokenResponse::authorizationCacheKey('client-id', (string) $user->getKey())
                 && $value['nonce'] === 'nonce-value'
@@ -40,7 +40,7 @@ class CaptureOidcAuthorizationTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        Cache::spy();
+        $cache = Cache::spy();
 
         $request = Request::create('/oauth/authorize', parameters: [
             'client_id' => 'client-id',
@@ -51,12 +51,12 @@ class CaptureOidcAuthorizationTest extends TenantTestCase
 
         (new CaptureOidcAuthorization)->handle($request, fn (): Response => new Response);
 
-        Cache::shouldNotHaveReceived('put');
+        $cache->shouldNotHaveReceived('put');
     }
 
     public function test_it_ignores_guests(): void
     {
-        Cache::spy();
+        $cache = Cache::spy();
 
         $request = Request::create('/oauth/authorize', parameters: [
             'client_id' => 'client-id',
@@ -66,6 +66,6 @@ class CaptureOidcAuthorizationTest extends TenantTestCase
 
         (new CaptureOidcAuthorization)->handle($request, fn (): Response => new Response);
 
-        Cache::shouldNotHaveReceived('put');
+        $cache->shouldNotHaveReceived('put');
     }
 }

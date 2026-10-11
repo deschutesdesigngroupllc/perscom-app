@@ -88,9 +88,10 @@ class PromotionBoardTest extends TenantTestCase
 
         $this->actingAsSuperAdmin();
 
-        $count = Livewire::test(PromotionBoard::class)
-            ->instance()
-            ->promote(new Collection([$this->eligible, $this->notEligible]));
+        $page = Livewire::test(PromotionBoard::class)->instance();
+        $this->assertInstanceOf(PromotionBoard::class, $page);
+
+        $count = $page->promote(new Collection([$this->eligible, $this->notEligible]));
 
         $this->assertSame(1, $count);
         $this->assertSame(1, RankRecord::query()->where('rank_id', $this->senior->getKey())->count());

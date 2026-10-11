@@ -85,7 +85,7 @@ class QualificationRecordObserverTest extends TenantTestCase
 
         $record = QualificationRecord::factory()->for($qualification)->create();
 
-        $this->assertTrue($record->refresh()->expires_at->equalTo(now()->addDays(365)));
+        $this->assertTrue(now()->addDays(365)->equalTo($record->refresh()->expires_at));
     }
 
     public function test_create_qualification_record_without_validity_period_never_expires(): void
@@ -108,6 +108,6 @@ class QualificationRecordObserverTest extends TenantTestCase
 
         $record = QualificationRecord::factory()->for($qualification)->create(['expires_at' => now()->addDays(7)]);
 
-        $this->assertTrue($record->refresh()->expires_at->equalTo(now()->addDays(7)));
+        $this->assertTrue(now()->addDays(7)->equalTo($record->refresh()->expires_at));
     }
 }

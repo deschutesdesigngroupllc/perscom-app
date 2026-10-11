@@ -44,6 +44,9 @@ class MultiFactorAuthenticationTest extends TenantTestCase
             ->call('save')
             ->assertHasNoFormErrors();
 
-        $this->assertTrue(resolve(PermissionSettings::class)->refresh()->require_multi_factor_authentication);
+        $settings = resolve(PermissionSettings::class);
+        $settings->refresh();
+
+        $this->assertTrue($settings->require_multi_factor_authentication);
     }
 }
