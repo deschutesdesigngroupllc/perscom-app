@@ -125,6 +125,25 @@ class TenancyServiceProvider extends ServiceProvider
     {
         $this->bootEvents();
         $this->makeTenancyMiddlewareHighestPriority();
+        $this->registerMigrationPaths();
+    }
+
+    /**
+     * Central migrations only apply when tenancy is enabled. Single-database installs run the
+     * tenant and settings migrations against the default connection instead.
+     */
+    protected function registerMigrationPaths(): void
+    {
+        if (config('tenancy.enabled')) {
+            $this->loadMigrationsFrom(database_path('migrations/central'));
+
+            return;
+        }
+
+        $this->loadMigrationsFrom([
+            database_path('migrations/tenant'),
+            database_path('settings/tenant'),
+        ]);
     }
 
     protected function bootEvents(): void
