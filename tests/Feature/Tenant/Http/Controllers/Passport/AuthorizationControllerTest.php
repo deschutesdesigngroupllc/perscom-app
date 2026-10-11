@@ -100,6 +100,42 @@ class AuthorizationControllerTest extends TenantTestCase
         $this->assertTrue(array_key_exists('state', $redirect->getAllQueryParameters()));
     }
 
+    public function test_inertia_approval_hands_the_client_callback_to_inertia_for_a_full_page_visit(): void
+    {
+        $this->withoutMiddleware(CheckSubscription::class);
+
+        $user = User::factory()->createQuietly();
+
+        /** @var PassportClient $client */
+        $client = ClientFactory::new()->create();
+
+        $this->actingAs($user)
+            ->get($this->tenant->route('passport.authorizations.authorize', [
+                'response_type' => 'code',
+                'client_id' => $client->getKey(),
+                'state' => Str::random(),
+                'redirect_url' => $client->redirect_uris[0],
+                'scope' => 'view:user',
+            ]));
+
+        $authToken = session()->get('authToken');
+
+        $response = $this->withSession([
+            'authToken' => $authToken,
+            'authRequest' => session()->get('authRequest'),
+        ])->withHeaders(['X-Inertia' => 'true'])
+            ->post($this->tenant->route('passport.authorizations.approve'), [
+                'auth_token' => $authToken,
+            ]);
+
+        $response->assertStatus(409);
+
+        $redirect = Url::fromString((string) $response->headers->get('X-Inertia-Location'));
+
+        $this->assertStringStartsWith($client->redirect_uris[0], (string) $redirect);
+        $this->assertTrue(array_key_exists('code', $redirect->getAllQueryParameters()));
+    }
+
     public function test_implicit_grant_returns_token_as_fragment_parameter(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
