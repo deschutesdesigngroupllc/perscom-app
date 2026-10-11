@@ -17,6 +17,7 @@ class DiscoveryControllerTest extends TenantTestCase
                 'authorization_endpoint' => $this->tenant->route('passport.authorizations.authorize'),
                 'token_endpoint' => $this->tenant->route('passport.token'),
                 'userinfo_endpoint' => $this->tenant->route('oidc.userinfo'),
+                'jwks_uri' => $this->tenant->route('oidc.jwks'),
                 'grant_types_supported' => [
                     'authorization_code',
                     'implicit',
@@ -36,7 +37,7 @@ class DiscoveryControllerTest extends TenantTestCase
                     'fragment',
                 ],
                 'id_token_signing_alg_values_supported' => [
-                    'HS256',
+                    'RS256',
                 ],
                 'scopes_supported' => [
                     'openid',
@@ -49,6 +50,8 @@ class DiscoveryControllerTest extends TenantTestCase
                     'iat',
                     'exp',
                     'sub',
+                    'auth_time',
+                    'nonce',
                     'name',
                     'preferred_username',
                     'profile',
