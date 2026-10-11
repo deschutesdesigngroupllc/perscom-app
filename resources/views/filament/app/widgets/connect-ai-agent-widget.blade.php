@@ -1,7 +1,9 @@
 <x-filament-widgets::widget class="fi-connect-ai-agent-widget">
   <div
     class="relative overflow-hidden rounded-xl bg-linear-to-br from-primary-600 via-primary-700 to-gray-900 p-6 text-white shadow-sm ring-1 ring-gray-950/5 sm:p-8 dark:ring-white/10"
-    x-data="{ copied: null, copy(text, key) { navigator.clipboard.writeText(text); this.copied = key; setTimeout(() => this.copied = null, 2000) } }">
+    x-data="{ copied: null, copy(text, key) { navigator.clipboard.writeText(text);
+            this.copied = key;
+            setTimeout(() => this.copied = null, 2000) } }">
     <div class="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-white/10 blur-3xl"></div>
 
     <button type="button" wire:click="dismiss" title="Dismiss"
@@ -12,8 +14,7 @@
 
     <div class="relative grid gap-8 lg:grid-cols-5">
       <div class="lg:col-span-3">
-        <div
-          class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
+        <div class="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide">
           <x-filament::icon icon="heroicon-m-sparkles" class="size-4" />
           New
         </div>
@@ -41,9 +42,11 @@
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">
-          <x-filament::button tag="a" :href="$this->getSetupUrl()" icon="heroicon-m-bolt" color="gray" size="lg">
+          <a href="{{ $this->getSetupUrl() }}"
+            class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-primary-700 shadow-sm transition hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
+            <x-filament::icon icon="heroicon-m-bolt" class="size-5 text-primary-600" />
             Connect Your AI Tool
-          </x-filament::button>
+          </a>
           <button type="button" x-on:click="copy(@js('claude mcp add --transport http perscom ' . $this->getServerUrl()), 'claude-code')"
             class="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/10">
             <x-filament::icon icon="heroicon-m-command-line" class="size-4" />
@@ -61,8 +64,7 @@
                 class="group flex w-full items-start gap-3 rounded-lg bg-white/10 p-3 text-left text-sm ring-1 ring-white/10 transition hover:bg-white/15">
                 <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="mt-0.5 size-4 shrink-0 text-white/70" />
                 <span class="flex-1">{{ $prompt }}</span>
-                <span class="shrink-0 text-xs text-white/60"
-                  x-text="copied === 'prompt-{{ $index }}' ? 'Copied' : ''"></span>
+                <span class="shrink-0 text-xs text-white/60" x-text="copied === 'prompt-{{ $index }}' ? 'Copied' : ''"></span>
               </button>
             </li>
           @endforeach

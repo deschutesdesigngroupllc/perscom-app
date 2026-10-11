@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Widgets;
 
-use App\Filament\App\Widgets\MyServiceWidget;
+use App\Filament\App\Widgets\UserProfileWidget;
 use App\Models\Award;
 use App\Models\AwardRecord;
 use App\Models\Enums\EventRegistrationStatus;
@@ -13,10 +13,12 @@ use App\Models\Rank;
 use App\Models\RankRequirement;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\SettingsService;
+use App\Settings\DashboardSettings;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
-class MyServiceWidgetTest extends TenantTestCase
+class UserProfileWidgetTest extends TenantTestCase
 {
     public function test_it_shows_the_members_service_summary(): void
     {
@@ -24,13 +26,12 @@ class MyServiceWidgetTest extends TenantTestCase
         $user = User::factory()->createQuietly(['unit_id' => $unit->getKey()]);
         $this->actingAs($user);
 
-        Livewire::test(MyServiceWidget::class)
+        Livewire::test(UserProfileWidget::class)
             ->assertOk()
-            ->assertSee('My Service')
-            ->assertSee('Service Summary')
+            ->assertSee('Current Rank')
+            ->assertSee('Current Assignment')
             ->assertSee('Bravo Company')
-            ->assertSee($user->rank->name)
-            ->assertSee('Time In Grade');
+            ->assertSee($user->rank->name);
     }
 
     public function test_it_shows_the_members_awards_in_the_ribbon_rack(): void
@@ -41,7 +42,7 @@ class MyServiceWidgetTest extends TenantTestCase
         $award = Award::factory()->createQuietly(['name' => 'Bronze Star']);
         AwardRecord::factory()->createQuietly(['user_id' => $user->getKey(), 'award_id' => $award->getKey(), 'document_id' => null]);
 
-        Livewire::test(MyServiceWidget::class)
+        Livewire::test(UserProfileWidget::class)
             ->assertSee('Ribbon Rack')
             ->assertSee('Bronze Star');
     }
@@ -61,9 +62,8 @@ class MyServiceWidgetTest extends TenantTestCase
         ]);
         $event->registrations()->attach($user, ['status' => EventRegistrationStatus::GOING->value]);
 
-        Livewire::test(MyServiceWidget::class)
+        Livewire::test(UserProfileWidget::class)
             ->assertSee('Weekly Drill')
-            ->assertSee(EventRegistrationStatus::GOING->getLabel())
             ->assertSee('Check In');
     }
 
@@ -80,9 +80,8 @@ class MyServiceWidgetTest extends TenantTestCase
             'ends' => now()->addDays(10)->addHour(),
         ]);
 
-        Livewire::test(MyServiceWidget::class)
+        Livewire::test(UserProfileWidget::class)
             ->assertSee('Next Month Exercise')
-            ->assertSee('Not Registered')
             ->assertDontSee('Check In');
     }
 
@@ -95,10 +94,66 @@ class MyServiceWidgetTest extends TenantTestCase
         $user = User::factory()->createQuietly(['rank_id' => $junior->getKey()]);
         $this->actingAs($user);
 
-        Livewire::test(MyServiceWidget::class)
+        Livewire::test(UserProfileWidget::class)
             ->assertSee('Next Promotion')
             ->assertSee('Progress toward')
             ->assertSee('Sergeant')
             ->assertSee('0 of 1 met');
+    }
+
+    public function test_it_shows_the_registration_status_when_check_in_is_not_open(): void
+    {
+        $user = User::factory()->createQuietly();
+        $this->actingAs($user);
+
+        $event = Event::factory()->createQuietly([
+            'name' => 'Field Exercise',
+            'all_day' => false,
+            'repeats' => false,
+            'starts' => now()->addDays(3),
+            'ends' => now()->addDays(3)->addHours(2),
+        ]);
+        $event->registrations()->attach($user, ['status' => EventRegistrationStatus::GOING->value]);
+
+        Livewire::test(UserProfileWidget::class)
+            ->assertSee('Field Exercise')
+            ->assertSee(EventRegistrationStatus::GOING->getLabel());
+    }
+
+    public function test_record_links_follow_the_profile_tabs_the_organization_shows(): void
+    {
+        $this->hideProfileRecords(['assignment_records', 'combat_records']);
+
+        $user = User::factory()->createQuietly();
+        $this->actingAs($user);
+
+        Livewire::test(UserProfileWidget::class)
+            ->assertSee('View Award Records')
+            ->assertSee(sprintf('users/%d?relation=0', $user->getKey()), false)
+            ->assertSee('View Rank Records')
+            ->assertSee(sprintf('users/%d?relation=2', $user->getKey()), false)
+            ->assertDontSee('View Assignment Records');
+    }
+
+    public function test_the_ribbon_rack_is_hidden_when_award_records_are_hidden(): void
+    {
+        $this->hideProfileRecords(['award_records']);
+
+        $this->actingAs(User::factory()->createQuietly());
+
+        Livewire::test(UserProfileWidget::class)
+            ->assertDontSee('Ribbon Rack');
+    }
+
+    /**
+     * @param  array<int, string>  $records
+     */
+    private function hideProfileRecords(array $records): void
+    {
+        $settings = resolve(DashboardSettings::class);
+        $settings->user_hidden_fields = $records;
+        $settings->save();
+
+        SettingsService::flush(DashboardSettings::class);
     }
 }

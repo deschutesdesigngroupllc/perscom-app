@@ -16,7 +16,6 @@ use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
-use App\Filament\App\Widgets\MyServiceWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
 use App\Filament\App\Widgets\UserProfileWidget;
@@ -101,7 +100,6 @@ class AppPanelProvider extends PanelProvider
                 OrganizationInfoWidget::class,
                 AccountWidget::class,
                 UserProfileWidget::class,
-                MyServiceWidget::class,
                 RecentRecordsWidget::class,
                 UsersOverview::class,
                 RecentAnnouncements::class,
