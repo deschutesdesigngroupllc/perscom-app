@@ -6,10 +6,13 @@ namespace App\Notifications\Tenant;
 
 use App\Facades\ContentTagParser;
 use App\Models\Enums\NotificationChannel;
+use App\Models\Event;
 use App\Models\ModelNotification;
 use App\Models\User;
 use App\Pipes\ConvertHtmlToMarkdown;
 use App\Services\TwilioService;
+use App\Support\Discord\DiscordEmbed;
+use App\Traits\HasResourceUrl;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
@@ -106,18 +109,22 @@ class NewModelNotification extends Notification implements ShouldQueue
 
     public function toDiscord(): DiscordMessage
     {
-        $text = <<<HTML
-<p>$this->subject</p>
-{$this->message}
-HTML;
-        $message = Pipeline::send($text)
+        $message = Pipeline::send($this->message)
             ->through([
                 ConvertHtmlToMarkdown::class,
             ])->thenReturn();
 
-        return DiscordMessage::create(
-            body: $message
-        );
+        $model = $this->modelNotification->model;
+        $color = $model instanceof HasColor ? $model->getColor() : null;
+
+        $embed = DiscordEmbed::make()
+            ->title($this->subject)
+            ->description($message)
+            ->url($this->getModelUrl())
+            ->color(is_string($color) && str_starts_with($color, '#') ? $color : '#64748b')
+            ->timestamp(now());
+
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
@@ -132,5 +139,16 @@ HTML;
         }
 
         return $channel;
+    }
+
+    protected function getModelUrl(): ?string
+    {
+        $model = $this->modelNotification->model;
+
+        if (blank($model) || ! in_array(HasResourceUrl::class, class_uses_recursive($model), true)) {
+            return null;
+        }
+
+        return $model->getAttribute($model instanceof Event ? 'resource_url' : 'url');
     }
 }
