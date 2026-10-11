@@ -9,6 +9,7 @@ use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\Message;
 use App\Models\QualificationRecord;
 use App\Models\RankRecord;
@@ -37,6 +38,8 @@ enum AutomationTrigger: string implements HasLabel
     case EVENT_CREATED = 'event.created';
     case EVENT_UPDATED = 'event.updated';
     case EVENT_DELETED = 'event.deleted';
+    case EVENT_REGISTRATION_ATTENDED = 'eventregistration.attended';
+    case EVENT_REGISTRATION_NO_SHOW = 'eventregistration.no_show';
     case MESSAGE_CREATED = 'message.created';
     case MESSAGE_UPDATED = 'message.updated';
     case MESSAGE_DELETED = 'message.deleted';
@@ -107,6 +110,10 @@ enum AutomationTrigger: string implements HasLabel
                 self::EVENT_UPDATED->value => self::EVENT_UPDATED->getLabel(),
                 self::EVENT_DELETED->value => self::EVENT_DELETED->getLabel(),
             ],
+            'Event Registration' => [
+                self::EVENT_REGISTRATION_ATTENDED->value => self::EVENT_REGISTRATION_ATTENDED->getLabel(),
+                self::EVENT_REGISTRATION_NO_SHOW->value => self::EVENT_REGISTRATION_NO_SHOW->getLabel(),
+            ],
             'Message' => [
                 self::MESSAGE_CREATED->value => self::MESSAGE_CREATED->getLabel(),
                 self::MESSAGE_UPDATED->value => self::MESSAGE_UPDATED->getLabel(),
@@ -138,6 +145,8 @@ enum AutomationTrigger: string implements HasLabel
             self::EVENT_CREATED => 'Event Created',
             self::EVENT_UPDATED => 'Event Updated',
             self::EVENT_DELETED => 'Event Deleted',
+            self::EVENT_REGISTRATION_ATTENDED => 'Event Registration Attended',
+            self::EVENT_REGISTRATION_NO_SHOW => 'Event Registration No Show',
             self::MESSAGE_CREATED => 'Message Created',
             self::MESSAGE_UPDATED => 'Message Updated',
             self::MESSAGE_DELETED => 'Message Deleted',
@@ -181,6 +190,9 @@ enum AutomationTrigger: string implements HasLabel
             self::EVENT_CREATED,
             self::EVENT_UPDATED,
             self::EVENT_DELETED => Event::class,
+
+            self::EVENT_REGISTRATION_ATTENDED,
+            self::EVENT_REGISTRATION_NO_SHOW => EventRegistration::class,
 
             self::MESSAGE_CREATED,
             self::MESSAGE_UPDATED,

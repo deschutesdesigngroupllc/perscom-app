@@ -121,6 +121,7 @@ class Event extends Model implements HasLabel
         'all_day' => false,
         'repeats' => false,
         'registration_enabled' => true,
+        'creates_training_record' => false,
         'notifications_enabled' => true,
     ];
 
@@ -137,6 +138,7 @@ class Event extends Model implements HasLabel
         'repeats',
         'registration_enabled',
         'registration_deadline',
+        'creates_training_record',
         'notifications_enabled',
         'notifications_interval',
         'notifications_channels',
@@ -152,7 +154,7 @@ class Event extends Model implements HasLabel
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
-            ->withPivot(['id', 'user_id', 'event_id', 'status'])
+            ->withPivot(['id', 'user_id', 'event_id', 'status', 'checked_in_at'])
             ->as('registration')
             ->using(EventRegistration::class)
             ->withTimestamps();
@@ -203,6 +205,7 @@ class Event extends Model implements HasLabel
             'repeats' => 'boolean',
             'registration_enabled' => 'boolean',
             'registration_deadline' => 'datetime',
+            'creates_training_record' => 'boolean',
             'notifications_enabled' => 'boolean',
             'notifications_interval' => 'array',
             'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),

@@ -286,6 +286,10 @@ class EventResource extends BaseResource
                                     ->label('Deadline')
                                     ->nullable()
                                     ->helperText('The deadline for registration. Leave blank for no deadline.'),
+                                Toggle::make('creates_training_record')
+                                    ->label('Create training records')
+                                    ->helperText('Automatically create a training record for each member marked as attended.')
+                                    ->default(false),
                             ]),
                     ]),
             ]);

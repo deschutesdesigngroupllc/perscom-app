@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Filament\App\Pages\AccountRequiresApproval;
 use App\Filament\App\Pages\Auth\AcceptInvite;
+use App\Http\Controllers\App\Events\CheckInController;
 use App\Http\Controllers\App\Pages\EditorController;
 use App\Http\Controllers\App\Pages\PreviewController;
 use App\Http\Middleware\HandleInertiaRequests;
@@ -22,6 +23,10 @@ Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], fun
     Route::group(['middleware' => ['auth:web']], function (): void {
         Route::get('approval-required', AccountRequiresApproval::class)
             ->name('approval-required');
+
+        Route::get('events/{event}/check-in', CheckInController::class)
+            ->middleware('signed:relative')
+            ->name('events.check-in');
 
         Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (): void {
             Route::post('pages/preview', PreviewController::class)->name('pages.preview');

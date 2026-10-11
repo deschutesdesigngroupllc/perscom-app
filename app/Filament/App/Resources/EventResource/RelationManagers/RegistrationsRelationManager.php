@@ -51,6 +51,16 @@ class RegistrationsRelationManager extends RelationManager
                         return $settings->timezone ?? config('app.timezone');
                     }))
                     ->dateTime(),
+                TextColumn::make('registration.checked_in_at')
+                    ->label('Checked In')
+                    ->placeholder('Not checked in')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = resolve(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
+                    ->dateTime(),
             ])
             ->defaultSort('events_registrations.created_at', 'desc');
     }

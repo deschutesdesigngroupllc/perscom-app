@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\EventRegistrationStatus;
+use App\Observers\EventRegistrationObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Exception;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -41,17 +43,21 @@ use Illuminate\Support\Facades\Date;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[ObservedBy(EventRegistrationObserver::class)]
 class EventRegistration extends Pivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasUser;
 
+    public $incrementing = true;
+
     protected $table = 'events_registrations';
 
     protected $fillable = [
         'event_id',
         'status',
+        'checked_in_at',
     ];
 
     public function event(): BelongsTo
@@ -59,11 +65,23 @@ class EventRegistration extends Pivot
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * Attendance is recorded after the fact, so it is not subject to registration rules.
+     */
+    public function isAttendanceStatus(): bool
+    {
+        return in_array($this->status, [EventRegistrationStatus::ATTENDED, EventRegistrationStatus::NO_SHOW], true);
+    }
+
     protected static function boot(): void
     {
         parent::boot();
 
         static::creating(function (EventRegistration $eventRegistration): void {
+            if ($eventRegistration->isAttendanceStatus()) {
+                return;
+            }
+
             /** @var \Illuminate\Support\Facades\Event $event */
             $event = $eventRegistration->event;
 
@@ -94,6 +112,7 @@ class EventRegistration extends Pivot
     {
         return [
             'status' => EventRegistrationStatus::class,
+            'checked_in_at' => 'datetime',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
