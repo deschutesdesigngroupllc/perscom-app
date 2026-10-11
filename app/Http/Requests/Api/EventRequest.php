@@ -26,11 +26,11 @@ class EventRequest extends Request
             'url' => 'nullable|string|max:65535',
             'author_id' => 'integer|exists:users,id',
             'all_day' => 'boolean',
-            'starts' => 'datetime',
-            'ends' => 'datetime|after:start',
+            'starts' => 'date',
+            'ends' => 'date|after_or_equal:starts',
             'repeats' => 'boolean',
-            'registrations_enabled' => 'boolean',
-            'registrations_deadline' => 'nullable|datetime',
+            'registration_enabled' => 'boolean',
+            'registration_deadline' => 'nullable|date',
             'creates_training_record' => 'boolean',
             'notifications_enabled' => 'boolean',
             'notifications_interval' => Rule::enum(NotificationInterval::class),
@@ -52,7 +52,7 @@ class EventRequest extends Request
         return array_merge($rules, [
             'name' => 'required|string|max:255',
             'starts' => 'required|date',
-            'ends' => 'required|date|after:start',
+            'ends' => 'required|date|after_or_equal:starts',
             'all_day' => 'required|boolean',
         ]);
     }
