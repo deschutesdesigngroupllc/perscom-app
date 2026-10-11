@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Actions\Organization\ApplyOrganizationBlueprint;
 use App\Actions\Organization\CreateGroup;
 use App\Actions\Organization\CreatePosition;
 use App\Actions\Organization\CreateRank;
 use App\Actions\Organization\CreateStatus;
 use App\Actions\Organization\CreateUnit;
+use App\Data\Organization\OrganizationBlueprintData;
 use App\Filament\Actions\CopyAction;
+use App\Filament\Concerns\GeneratesOrganizationBlueprints;
+use App\Forms\Components\OrganizationBlueprint;
 use App\Models\Group;
 use App\Models\Position;
 use App\Models\Rank;
@@ -17,6 +21,8 @@ use App\Models\Status;
 use App\Models\Tenant;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\Ai\OrganizationBlueprintService;
+use App\Services\AiUsageService;
 use App\Settings\OnboardingSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -24,21 +30,28 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Text;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\Width;
+use Filament\Support\Exceptions\Halt;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
+use Illuminate\Validation\ValidationException;
 
 class Dashboard extends BaseDashboard
 {
+    use GeneratesOrganizationBlueprints;
+
     public $defaultAction = 'onboarding';
 
     protected static ?string $navigationLabel = 'Dashboard';
@@ -134,6 +147,11 @@ class Dashboard extends BaseDashboard
         $existingStatus = Status::query()->first();
 
         return [
+            'builder' => [
+                'preset' => 'blank',
+                'description' => null,
+            ],
+            'blueprint' => OrganizationBlueprint::toState(),
             'group' => [
                 'name' => $existingGroup?->name,
                 'description' => $existingGroup?->description,
@@ -175,9 +193,10 @@ class Dashboard extends BaseDashboard
     protected function getOnboardingSteps(): array
     {
         return [
-            Step::make('Group')
-                ->description('Create your first organizational group')
-                ->icon(Heroicon::OutlinedRectangleGroup)
+            Step::make('Describe')
+                ->label('Describe Your Organization')
+                ->description('Build your structure in seconds')
+                ->icon(Heroicon::OutlinedSparkles)
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
                     Actions::make([
@@ -195,6 +214,76 @@ class Dashboard extends BaseDashboard
                             })
                             ->cancelParentActions(),
                     ])->key('onboardingDismiss')->alignEnd(),
+                    Section::make('Describe Your Organization')
+                        ->description('Tell us about your organization and we will build its ranks, groups, units, positions, awards and more. You can review and edit everything before it is created. Prefer to set things up yourself? Skip ahead to the manual steps.')
+                        ->schema([
+                            Select::make('builder.preset')
+                                ->label('Start From')
+                                ->options(fn (): array => ['blank' => 'Start Blank', ...OrganizationBlueprintData::presets()])
+                                ->selectablePlaceholder(false)
+                                ->live()
+                                ->helperText('Choose a preset to start from a ready-made structure.'),
+                            Textarea::make('builder.description')
+                                ->label('Description')
+                                ->rows(4)
+                                ->maxLength(2000)
+                                ->placeholder('e.g., A WWII 101st Airborne milsim unit with three rifle platoons, US Army enlisted and officer ranks, and awards from the Bronze Star to the Medal of Honor.')
+                                ->helperText('Describe your organization in a few sentences.')
+                                ->visible(fn (): bool => AiUsageService::isAvailable()),
+                            Text::make('builder_unavailable')
+                                ->content('AI generation is not available for your organization right now. You can still start from a preset or set things up manually.')
+                                ->visible(fn (): bool => ! AiUsageService::isAvailable()),
+                            Actions::make([
+                                Action::make('generateBlueprint')
+                                    ->label('Generate Structure')
+                                    ->icon(Heroicon::OutlinedSparkles)
+                                    ->visible(fn (): bool => AiUsageService::isAvailable())
+                                    ->action(function (Get $schemaGet, Set $schemaSet): void {
+                                        $this->generateOnboardingBlueprint($schemaGet, $schemaSet);
+                                    }),
+                                Action::make('loadPreset')
+                                    ->label('Use Preset')
+                                    ->icon(Heroicon::OutlinedDocumentDuplicate)
+                                    ->color('gray')
+                                    ->action(function (Get $schemaGet, Set $schemaSet): void {
+                                        $preset = (string) $schemaGet('builder.preset');
+
+                                        if (! array_key_exists($preset, OrganizationBlueprintData::presets())) {
+                                            Notification::make()
+                                                ->warning()
+                                                ->title('Preset Required')
+                                                ->body('Choose a preset to start from first.')
+                                                ->send();
+
+                                            return;
+                                        }
+
+                                        $schemaSet('blueprint', OrganizationBlueprint::toState(OrganizationBlueprintData::fromPreset($preset)));
+
+                                        Notification::make()
+                                            ->success()
+                                            ->title('Preset Loaded')
+                                            ->body('Review the structure in the next step.')
+                                            ->send();
+                                    }),
+                            ])->key('onboardingBuilderActions'),
+                        ]),
+                ]),
+            Step::make('Review')
+                ->label('Review Structure')
+                ->description('Edit your generated structure')
+                ->icon(Heroicon::OutlinedClipboardDocumentCheck)
+                ->completedIcon(Heroicon::CheckCircle)
+                ->schema([
+                    Text::make('review_info')
+                        ->content('Everything below will be created when you complete setup. Leave it empty to set things up manually in the following steps.'),
+                    OrganizationBlueprint::make('blueprint'),
+                ]),
+            Step::make('Group')
+                ->description('Create your first organizational group')
+                ->icon(Heroicon::OutlinedRectangleGroup)
+                ->completedIcon(Heroicon::CheckCircle)
+                ->schema([
                     Section::make('Create a Group')
                         ->description('Groups are top-level divisions in your organization hierarchy (e.g., departments, divisions, or branches). Units are organized within groups.')
                         ->schema([
@@ -404,6 +493,8 @@ class Dashboard extends BaseDashboard
      */
     protected function completeOnboarding(array $data): void
     {
+        $this->applyBlueprintIfNeeded($data);
+
         $group = $this->createGroupIfNeeded($data);
         $unit = $this->createUnitIfNeeded($data, $group);
         $position = $this->createPositionIfNeeded($data);
@@ -425,6 +516,66 @@ class Dashboard extends BaseDashboard
             ->title('Setup complete!')
             ->body('Your organization has been configured successfully.')
             ->send();
+    }
+
+    protected function generateOnboardingBlueprint(Get $get, Set $set): void
+    {
+        $description = (string) $get('builder.description');
+
+        if (blank($description)) {
+            Notification::make()
+                ->warning()
+                ->title('Description Required')
+                ->body('Describe your organization before generating a structure.')
+                ->send();
+
+            return;
+        }
+
+        $preset = $get('builder.preset');
+
+        $blueprint = $this->generateBlueprint(fn (): OrganizationBlueprintData => OrganizationBlueprintService::generate(
+            $description,
+            filled($preset) && $preset !== 'blank' ? $preset : null,
+        ));
+
+        if (! $blueprint instanceof OrganizationBlueprintData) {
+            return;
+        }
+
+        $set('blueprint', OrganizationBlueprint::toState($blueprint));
+
+        Notification::make()
+            ->success()
+            ->title('Structure Generated')
+            ->body('Review your new structure in the next step.')
+            ->send();
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     *
+     * @throws Halt
+     */
+    protected function applyBlueprintIfNeeded(array $data): void
+    {
+        $state = data_get($data, 'blueprint');
+
+        if (! OrganizationBlueprint::isFilled($state)) {
+            return;
+        }
+
+        try {
+            ApplyOrganizationBlueprint::handle(OrganizationBlueprint::fromState($state));
+        } catch (ValidationException $exception) {
+            Notification::make()
+                ->danger()
+                ->title('Unable to Create Your Structure')
+                ->body($exception->getMessage())
+                ->send();
+
+            throw new Halt;
+        }
     }
 
     /**

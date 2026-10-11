@@ -17,6 +17,8 @@ use App\Data\Organization\SlotData;
 use App\Data\Organization\SpecialtyData;
 use App\Data\Organization\StatusData;
 use App\Data\Organization\UnitData;
+use App\Models\Position;
+use App\Models\Specialty;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -90,8 +92,8 @@ class ApplyOrganizationBlueprint
                     collect($unitData->slots)->each(fn (SlotData $slot): Model => $track('slots', CreateSlot::handle([
                         'name' => $slot->name,
                         'description' => $slot->description,
-                        'position_id' => filled($slot->position) ? $positions->get(Str::lower($slot->position))?->getKey() : null,
-                        'specialty_id' => filled($slot->specialty) ? $specialties->get(Str::lower($slot->specialty))?->getKey() : null,
+                        'position_id' => filled($slot->position) ? ($positions->get(Str::lower($slot->position)) ?? Position::query()->whereRaw('LOWER(name) = ?', [Str::lower($slot->position)])->first())?->getKey() : null,
+                        'specialty_id' => filled($slot->specialty) ? ($specialties->get(Str::lower($slot->specialty)) ?? Specialty::query()->whereRaw('LOWER(name) = ?', [Str::lower($slot->specialty)])->first())?->getKey() : null,
                     ], $unit)));
                 });
             });
