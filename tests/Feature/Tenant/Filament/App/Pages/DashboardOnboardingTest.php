@@ -142,6 +142,60 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->assertTrue(resolve(OnboardingSettings::class)->completed);
     }
 
+    public function test_manual_structure_steps_are_hidden_once_a_preset_is_loaded(): void
+    {
+        config(['ai.providers.anthropic.key' => null]);
+
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Dashboard::class)
+            ->mountAction('onboarding')
+            ->assertMountedActionModalSee('Create a Group')
+            ->fillForm(['builder' => ['preset' => 'military']])
+            ->callAction(TestAction::make('loadPreset')->schemaComponent('onboardingBuilderActions'))
+            ->assertMountedActionModalDontSee('Create a Group')
+            ->assertMountedActionModalDontSee('Create a Unit')
+            ->assertMountedActionModalDontSee('Create a Position')
+            ->assertMountedActionModalDontSee('Create a Rank')
+            ->assertMountedActionModalDontSee('Create a Status')
+            ->assertMountedActionModalSee('Create Personnel');
+    }
+
+    public function test_personnel_can_be_assigned_from_a_loaded_preset(): void
+    {
+        config(['ai.providers.anthropic.key' => null]);
+
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        $preset = OrganizationBlueprintData::fromPreset('law-enforcement');
+        $unitName = $preset->groups[0]->units[0]->name;
+        $rankName = $preset->ranks[0]->name;
+
+        Livewire::test(Dashboard::class)
+            ->mountAction('onboarding')
+            ->fillForm(['builder' => ['preset' => 'law-enforcement']])
+            ->callAction(TestAction::make('loadPreset')->schemaComponent('onboardingBuilderActions'))
+            ->fillForm([
+                'personnel' => [
+                    'name' => 'Jane Doe',
+                    'email' => 'jane.doe@example.com',
+                    'assign_unit' => $unitName,
+                    'assign_rank' => $rankName,
+                ],
+            ])
+            ->callMountedAction()
+            ->assertHasNoActionErrors();
+
+        $user = User::query()->where('email', 'jane.doe@example.com')->firstOrFail();
+
+        $this->assertSame($unitName, $user->unit?->name);
+        $this->assertSame($rankName, $user->rank?->name);
+    }
+
     public function test_onboarding_generates_and_applies_an_ai_blueprint(): void
     {
         config([
