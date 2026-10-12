@@ -57,6 +57,31 @@ final class DiscordEmbed
         return new self;
     }
 
+    /**
+     * Discord rejects the whole message when an embed URL is not absolute, so storage paths such as
+     * "/storage/ranks/sergeant.png" are made absolute and anything else unusable is dropped.
+     */
+    public static function absoluteUrl(?string $url): ?string
+    {
+        if (blank($url)) {
+            return null;
+        }
+
+        $url = Str::startsWith($url, '/') ? url($url) : $url;
+
+        return Str::startsWith($url, ['https://', 'http://']) ? $url : null;
+    }
+
+    /**
+     * Discord cannot display SVG images, so they are left out rather than shown broken.
+     */
+    public static function imageUrl(?string $url): ?string
+    {
+        $url = DiscordEmbed::absoluteUrl($url);
+
+        return filled($url) && ! Str::endsWith(Str::lower((string) parse_url($url, PHP_URL_PATH)), '.svg') ? $url : null;
+    }
+
     public function title(?string $title): static
     {
         $this->title = $title;
@@ -73,7 +98,7 @@ final class DiscordEmbed
 
     public function url(?string $url): static
     {
-        $this->url = $url;
+        $this->url = DiscordEmbed::absoluteUrl($url);
 
         return $this;
     }
@@ -101,14 +126,14 @@ final class DiscordEmbed
 
     public function thumbnail(?string $url): static
     {
-        $this->thumbnail = $url;
+        $this->thumbnail = DiscordEmbed::imageUrl($url);
 
         return $this;
     }
 
     public function image(?string $url): static
     {
-        $this->image = $url;
+        $this->image = DiscordEmbed::imageUrl($url);
 
         return $this;
     }
@@ -117,8 +142,8 @@ final class DiscordEmbed
     {
         $this->author = blank($name) ? null : array_filter([
             'name' => Str::limit($name, self::AUTHOR_NAME_LIMIT - 3),
-            'url' => $url,
-            'icon_url' => $iconUrl,
+            'url' => DiscordEmbed::absoluteUrl($url),
+            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
         ], filled(...));
 
         return $this;
@@ -128,7 +153,7 @@ final class DiscordEmbed
     {
         $this->footer = blank($text) ? null : array_filter([
             'text' => Str::limit($text, self::FOOTER_TEXT_LIMIT - 3),
-            'icon_url' => $iconUrl,
+            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
         ], filled(...));
 
         return $this;

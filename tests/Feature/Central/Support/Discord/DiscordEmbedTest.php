@@ -91,4 +91,29 @@ class DiscordEmbedTest extends CentralTestCase
 
         $this->assertCount(DiscordEmbed::FIELD_COUNT_LIMIT, $embed->toArray()['fields']);
     }
+
+    public function test_relative_storage_urls_are_made_absolute(): void
+    {
+        $embed = DiscordEmbed::make()
+            ->url('/rank-records/92')
+            ->thumbnail('/storage/ranks/sergeant.png')
+            ->toArray();
+
+        $this->assertSame(url('/rank-records/92'), $embed['url']);
+        $this->assertSame(url('/storage/ranks/sergeant.png'), $embed['thumbnail']['url']);
+    }
+
+    public function test_images_discord_cannot_display_are_left_out(): void
+    {
+        $embed = DiscordEmbed::make()
+            ->title('New Rank Record')
+            ->thumbnail('/storage/ranks/sergeant.svg')
+            ->image('ftp://example.com/card.png')
+            ->author('Jane Doe', iconUrl: 'https://example.com/avatar.SVG?v=1')
+            ->toArray();
+
+        $this->assertArrayNotHasKey('thumbnail', $embed);
+        $this->assertArrayNotHasKey('image', $embed);
+        $this->assertSame(['name' => 'Jane Doe'], $embed['author']);
+    }
 }
