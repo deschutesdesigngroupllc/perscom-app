@@ -116,4 +116,15 @@ class DiscordEmbedTest extends CentralTestCase
         $this->assertArrayNotHasKey('image', $embed);
         $this->assertSame(['name' => 'Jane Doe'], $embed['author']);
     }
+
+    public function test_unsafe_url_characters_are_encoded(): void
+    {
+        $embed = DiscordEmbed::make()
+            ->thumbnail('https://example.com/storage/awards/Silver Star.png')
+            ->url('https://example.com/records/1?name=a%20b')
+            ->toArray();
+
+        $this->assertSame('https://example.com/storage/awards/Silver%20Star.png', $embed['thumbnail']['url']);
+        $this->assertSame('https://example.com/records/1?name=a%20b', $embed['url']);
+    }
 }

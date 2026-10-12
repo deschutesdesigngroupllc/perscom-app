@@ -58,8 +58,9 @@ final class DiscordEmbed
     }
 
     /**
-     * Discord rejects the whole message when an embed URL is not absolute, so storage paths such as
-     * "/storage/ranks/sergeant.png" are made absolute and anything else unusable is dropped.
+     * Discord rejects the whole message when an embed URL is not absolute or contains characters such
+     * as spaces, so storage paths are made absolute, unsafe characters are encoded, and anything else
+     * unusable is dropped.
      */
     public static function absoluteUrl(?string $url): ?string
     {
@@ -69,7 +70,15 @@ final class DiscordEmbed
 
         $url = Str::startsWith($url, '/') ? url($url) : $url;
 
-        return Str::startsWith($url, ['https://', 'http://']) ? $url : null;
+        if (! Str::startsWith($url, ['https://', 'http://'])) {
+            return null;
+        }
+
+        return (string) preg_replace_callback(
+            "/[^A-Za-z0-9\\-._~:\\/?#\\[\\]@!$&'()*+,;=%]/",
+            fn (array $matches): string => rawurlencode($matches[0]),
+            $url,
+        );
     }
 
     /**
