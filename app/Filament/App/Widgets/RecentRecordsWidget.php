@@ -20,7 +20,7 @@ class RecentRecordsWidget extends Widget
 {
     use HasWidgetShield;
 
-    protected static ?int $sort = -4;
+    protected static ?int $sort = -3;
 
     protected static bool $isLazy = false;
 

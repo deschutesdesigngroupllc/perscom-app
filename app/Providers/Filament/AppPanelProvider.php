@@ -18,6 +18,7 @@ use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
+use App\Filament\App\Widgets\UpcomingEventsWidget;
 use App\Filament\App\Widgets\UserProfileWidget;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
@@ -100,6 +101,7 @@ class AppPanelProvider extends PanelProvider
                 OrganizationInfoWidget::class,
                 AccountWidget::class,
                 UserProfileWidget::class,
+                UpcomingEventsWidget::class,
                 RecentRecordsWidget::class,
                 UsersOverview::class,
                 RecentAnnouncements::class,

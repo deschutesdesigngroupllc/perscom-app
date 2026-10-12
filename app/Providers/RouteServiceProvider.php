@@ -44,6 +44,8 @@ class RouteServiceProvider extends ServiceProvider
 
         RateLimiter::for('service-profiles', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
 
+        RateLimiter::for('calendar-feeds', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
+
         RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
             if (blank($tenant)) {
                 return false;

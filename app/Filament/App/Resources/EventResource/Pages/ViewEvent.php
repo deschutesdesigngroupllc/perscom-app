@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\EventResource\Pages;
 
 use App\Filament\App\Resources\EventResource;
+use App\Filament\App\Resources\EventResource\Actions\AddToCalendarAction;
 use App\Filament\App\Resources\EventResource\Actions\CheckInLinkAction;
 use App\Filament\App\Resources\EventResource\Actions\RsvpAction;
 use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
@@ -42,6 +43,7 @@ class ViewEvent extends ViewRecord
                 ->color('gray')
                 ->label('Open'),
             RsvpAction::make(),
+            AddToCalendarAction::make(),
             TakeAttendanceAction::make(),
             CheckInLinkAction::make(),
             EditAction::make(),

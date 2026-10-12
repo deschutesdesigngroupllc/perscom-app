@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
-use App\Data\Events\OccurrenceData;
 use App\Data\Promotions\PromotionEvaluationData;
-use App\Filament\App\Resources\EventResource;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\RankRecordsRelationManager;
 use App\Models\AwardRecord;
-use App\Models\Enums\EventRegistrationStatus;
-use App\Models\Event;
 use App\Models\Rank;
 use App\Models\User;
-use App\Services\EventAttendanceService;
-use App\Services\EventOccurrenceService;
 use App\Services\PromotionEligibilityService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\CarbonInterval;
@@ -27,8 +21,8 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * The signed-in member's service record: rank, assignment, upcoming events, awards and progress
- * toward their next promotion.
+ * The signed-in member's service record: rank, assignment, awards and progress toward their next
+ * promotion.
  */
 class UserProfileWidget extends Widget
 {
@@ -94,40 +88,6 @@ class UserProfileWidget extends Widget
             ->get();
     }
 
-    /**
-     * Upcoming and in-progress events with the member's registration status and check-in availability.
-     *
-     * @return array<int, array{event: Event, status: ?EventRegistrationStatus, canCheckIn: bool, checkInUrl: ?string}>
-     */
-    public function upcomingEvents(): array
-    {
-        $user = $this->user();
-
-        return Event::query()
-            ->where(fn ($query) => $query->where('ends', '>=', now())->orWhere('repeats', true))
-            ->orderBy('starts')
-            ->limit(4)
-            ->with(['image', 'schedule'])
-            ->get()
-            ->map(function (Event $event) use ($user): array {
-                $occurrence = EventOccurrenceService::nearest($event);
-                $status = $occurrence instanceof OccurrenceData ? EventAttendanceService::statusFor($occurrence, $user) : null;
-
-                $canCheckIn = $status !== EventRegistrationStatus::ATTENDED
-                    && ($status instanceof EventRegistrationStatus || $event->registration_enabled)
-                    && EventAttendanceService::isWithinCheckInWindow($event);
-
-                return [
-                    'event' => $event,
-                    'status' => $status,
-                    'canCheckIn' => $canCheckIn,
-                    'checkInUrl' => $canCheckIn ? EventAttendanceService::checkInUrl($event) : null,
-                ];
-            })
-            ->values()
-            ->all();
-    }
-
     public function showsAwards(): bool
     {
         return $this->relationIndex(AwardRecordsRelationManager::class) !== null;
@@ -151,16 +111,6 @@ class UserProfileWidget extends Widget
     public function getAwardRecordsUrl(): ?string
     {
         return $this->relationUrl(AwardRecordsRelationManager::class);
-    }
-
-    public function getEventUrl(Event $event): string
-    {
-        return EventResource::getUrl('view', ['record' => $event]);
-    }
-
-    public function getEventsListUrl(): string
-    {
-        return EventResource::getUrl('index');
     }
 
     /**
