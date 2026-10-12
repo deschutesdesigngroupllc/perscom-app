@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -34,7 +35,8 @@ class AutomationRun extends Model
         return $this->morphTo();
     }
 
-    protected function scopeForSubject(Builder $query, Model $subject): Builder
+    #[Scope]
+    protected function forSubject(Builder $query, Model $subject): Builder
     {
         return $query
             ->where('subject_type', $subject::class)

@@ -69,13 +69,13 @@ class SearchResourceTool extends Tool
                     'direction' => $sort['direction'] ?? 'asc',
                 ])
                 ->all(),
-        ], fn (mixed $value): bool => filled($value));
+        ], filled(...));
 
         $query = array_filter([
             'include' => filled($validated['include'] ?? null) ? implode(',', $validated['include']) : null,
             'page' => $validated['page'] ?? null,
             'limit' => $validated['limit'] ?? 25,
-        ], fn (mixed $value): bool => filled($value));
+        ], filled(...));
 
         return $this->respondWithApiResult(
             InternalApiService::post($resource['endpoint'].'/search', $body, $query),
@@ -103,7 +103,7 @@ class SearchResourceTool extends Tool
                     'type' => $schema->string()->enum(['and', 'or'])->description('How this filter combines with the previous one. Defaults to "and".'),
                 ]))
                 ->description('Conditions every returned record must match.'),
-            'search' => $schema->string()->description('Free-text search across the resource\'s searchable fields.'),
+            'search' => $schema->string()->description("Free-text search across the resource's searchable fields."),
             'sort' => $schema->array()
                 ->items($schema->object([
                     'field' => $schema->string()->description('A sortable field.')->required(),

@@ -53,6 +53,8 @@ class OrganizationBlueprintAgent implements Agent, HasStructuredOutput
 
     /**
      * Get the agent's structured output schema definition.
+     *
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {

@@ -101,6 +101,7 @@ class ApplyChangeSetTest extends TenantTestCase
     {
         $actor = User::factory()->withoutRoles()->createQuietly();
         $actor->givePermissionTo(Permission::findOrCreate('create_award_record'));
+
         $member = User::factory()->createQuietly();
         $award = Award::factory()->createQuietly();
         $rank = Rank::factory()->createQuietly();

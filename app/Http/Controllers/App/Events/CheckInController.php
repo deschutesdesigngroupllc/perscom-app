@@ -28,11 +28,11 @@ class CheckInController
                 ->title(__('You have been checked in.'))
                 ->body(__('Your attendance for :event has been recorded.', ['event' => $event->name]))
                 ->send();
-        } catch (EventCheckInException $exception) {
+        } catch (EventCheckInException $eventCheckInException) {
             Notification::make()
                 ->danger()
                 ->title(__('Unable to check in.'))
-                ->body($exception->getMessage())
+                ->body($eventCheckInException->getMessage())
                 ->send();
         }
 

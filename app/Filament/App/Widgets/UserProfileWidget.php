@@ -14,6 +14,7 @@ use App\Filament\App\Resources\UserResource\RelationManagers\RankRecordsRelation
 use App\Models\AwardRecord;
 use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Event;
+use App\Models\Rank;
 use App\Models\User;
 use App\Services\EventAttendanceService;
 use App\Services\PromotionEligibilityService;
@@ -76,7 +77,7 @@ class UserProfileWidget extends Widget
 
     public function hasPromotionRequirements(): bool
     {
-        return $this->promotion()->nextRank !== null && filled($this->promotion()->requirements);
+        return $this->promotion()->nextRank instanceof Rank && filled($this->promotion()->requirements);
     }
 
     /**
@@ -111,7 +112,7 @@ class UserProfileWidget extends Widget
                 $status = $registration?->status instanceof EventRegistrationStatus ? $registration->status : null;
 
                 $canCheckIn = $status !== EventRegistrationStatus::ATTENDED
-                    && ($status !== null || $event->registration_enabled)
+                    && ($status instanceof EventRegistrationStatus || $event->registration_enabled)
                     && EventAttendanceService::isWithinCheckInWindow($event);
 
                 return [

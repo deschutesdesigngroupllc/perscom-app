@@ -122,7 +122,7 @@ return [
 
         'set_inactive_after_thirty_days_unseen' => [
             'name' => 'Set Inactive After 30 Days Unseen',
-            'description' => 'Runs during the daily user review and changes a user\'s status to Inactive when they have not been seen for 30 days.',
+            'description' => "Runs during the daily user review and changes a user's status to Inactive when they have not been seen for 30 days.",
             'category' => 'User Management',
             'prerequisites' => [
                 'Replace the status ID in the condition and field mapping with the ID of your Inactive status.',

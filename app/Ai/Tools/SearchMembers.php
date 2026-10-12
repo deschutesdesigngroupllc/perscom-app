@@ -71,7 +71,7 @@ class SearchMembers implements Tool
 
     public function description(): Stringable|string
     {
-        return 'Search the organization\'s members. All filters are optional and combined with AND. Returns at most '.static::LIMIT.' members with their id, rank, unit, position, status, days in grade and when they were last seen.';
+        return "Search the organization's members. All filters are optional and combined with AND. Returns at most ".static::LIMIT.' members with their id, rank, unit, position, status, days in grade and when they were last seen.';
     }
 
     public function handle(Request $request): Stringable|string
@@ -91,10 +91,13 @@ class SearchMembers implements Tool
         ]);
     }
 
+    /**
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
+     */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'name' => $schema->string()->description('Part of the member\'s name.'),
+            'name' => $schema->string()->description("Part of the member's name."),
             'unit_id' => $schema->integer()->description('Only members assigned to this unit.'),
             'rank_id' => $schema->integer()->description('Only members holding this rank.'),
             'position_id' => $schema->integer()->description('Only members in this position.'),

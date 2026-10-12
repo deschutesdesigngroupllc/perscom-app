@@ -574,14 +574,14 @@ class Dashboard extends BaseDashboard
 
         try {
             ApplyOrganizationBlueprint::handle(OrganizationBlueprint::fromState($state));
-        } catch (ValidationException $exception) {
+        } catch (ValidationException $validationException) {
             Notification::make()
                 ->danger()
                 ->title('Unable to Create Your Structure')
-                ->body($exception->getMessage())
+                ->body($validationException->getMessage())
                 ->send();
 
-            throw new Halt;
+            throw new Halt($validationException->getMessage(), $validationException->getCode(), $validationException);
         }
     }
 

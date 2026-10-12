@@ -18,7 +18,7 @@ use Laravel\Mcp\Server\Resource;
 #[Title('Organization Structure')]
 #[Uri('perscom://organization/structure')]
 #[MimeType('application/json')]
-#[Description('The organization\'s ranks (most senior first), units and positions. Sections the connection is not allowed to view are omitted.')]
+#[Description("The organization's ranks (most senior first), units and positions. Sections the connection is not allowed to view are omitted.")]
 class OrganizationStructureResource extends Resource
 {
     /**
@@ -51,7 +51,7 @@ class OrganizationStructureResource extends Resource
                         'abbreviation' => $item['abbreviation'] ?? null,
                         'paygrade' => $item['paygrade'] ?? null,
                         'description' => $item['description'] ?? null,
-                    ], fn (mixed $value): bool => filled($value)))
+                    ], filled(...)))
                     ->values()
                     ->all();
             })

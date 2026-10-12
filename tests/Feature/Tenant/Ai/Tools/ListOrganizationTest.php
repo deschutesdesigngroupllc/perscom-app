@@ -17,6 +17,7 @@ class ListOrganizationTest extends TenantTestCase
     {
         $actor = User::factory()->createQuietly();
         $actor->assignRole(Utils::getSuperAdminName());
+
         $rank = Rank::factory()->createQuietly(['name' => 'Sergeant', 'abbreviation' => 'SGT']);
 
         $result = collect(json_decode((string) new ListOrganization($actor)->handle(new Request(['type' => 'ranks'])), true));

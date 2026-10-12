@@ -75,7 +75,7 @@ class AssignUsersBulkAction extends BulkAction
                         'type' => $type->value,
                         'position_id' => $data['position_id'] ?? null,
                         'specialty_id' => $data['specialty_id'] ?? null,
-                    ], fn (mixed $value): bool => filled($value)),
+                    ], filled(...)),
                     summary: sprintf('Assign %d user(s) to %s', $records->count(), Unit::query()->find($data['unit_id'])?->name),
                 ));
             });

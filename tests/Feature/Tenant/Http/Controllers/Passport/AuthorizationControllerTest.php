@@ -107,7 +107,9 @@ class AuthorizationControllerTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         /** @var PassportClient $client */
-        $client = ClientFactory::new()->create();
+        $client = ClientFactory::new()->create([
+            'redirect_uris' => ['http://localhost:60971/callback'],
+        ]);
 
         $this->actingAs($user)
             ->get($this->tenant->route('passport.authorizations.authorize', [

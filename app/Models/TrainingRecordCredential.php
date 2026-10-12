@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Observers\TrainingRecordCredentialObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -47,12 +48,14 @@ class TrainingRecordCredential extends Pivot
         return $this->belongsTo(Credential::class);
     }
 
-    protected function scopeExpiringWithin(Builder $query, int $days): Builder
+    #[Scope]
+    protected function expiringWithin(Builder $query, int $days): Builder
     {
         return $query->whereBetween('expires_at', [now(), now()->addDays($days)]);
     }
 
-    protected function scopeExpired(Builder $query): Builder
+    #[Scope]
+    protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());
     }

@@ -91,7 +91,8 @@ class CreateForm
 
     protected static function uniqueSlug(string $name): string
     {
-        $slug = $base = Str::slug($name);
+        $slug = Str::slug($name);
+        $base = $slug;
         $suffix = 2;
 
         while (Form::query()->where('slug', $slug)->exists()) {

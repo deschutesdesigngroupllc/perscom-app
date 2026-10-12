@@ -18,6 +18,7 @@ class GetMemberTest extends TenantTestCase
     {
         $actor = User::factory()->createQuietly();
         $actor->assignRole(Utils::getSuperAdminName());
+
         $member = User::factory()->createQuietly();
         $award = Award::factory()->createQuietly(['name' => 'Bronze Star']);
         AwardRecord::factory()->for($member)->createQuietly(['award_id' => $award->getKey()]);

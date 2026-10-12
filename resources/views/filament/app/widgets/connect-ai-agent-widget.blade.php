@@ -1,9 +1,14 @@
 <x-filament-widgets::widget class="fi-connect-ai-agent-widget">
   <div
     class="relative overflow-hidden rounded-xl bg-linear-to-br from-primary-600 via-primary-700 to-gray-900 p-6 text-white shadow-sm ring-1 ring-gray-950/5 sm:p-8 dark:ring-white/10"
-    x-data="{ copied: null, copy(text, key) { navigator.clipboard.writeText(text);
+    x-data="{
+        copied: null,
+        copy(text, key) {
+            navigator.clipboard.writeText(text);
             this.copied = key;
-            setTimeout(() => this.copied = null, 2000) } }">
+            setTimeout(() => this.copied = null, 2000)
+        }
+    }">
     <div class="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-white/10 blur-3xl"></div>
 
     <button type="button" wire:click="dismiss" title="Dismiss"

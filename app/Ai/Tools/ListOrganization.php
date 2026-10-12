@@ -37,7 +37,7 @@ class ListOrganization implements Tool
 
     public function description(): Stringable|string
     {
-        return 'List the organization\'s ranks, units, positions, specialties, awards, qualifications or statuses with their ids. Use this to find the id of something the user mentions by name.';
+        return "List the organization's ranks, units, positions, specialties, awards, qualifications or statuses with their ids. Use this to find the id of something the user mentions by name.";
     }
 
     public function handle(Request $request): Stringable|string
@@ -62,10 +62,13 @@ class ListOrganization implements Tool
                 'abbreviation' => $item->getAttribute('abbreviation'),
                 'paygrade' => $item->getAttribute('paygrade'),
                 'order' => $item->getAttribute('order'),
-            ], fn (mixed $value): bool => filled($value)))
+            ], filled(...)))
             ->all());
     }
 
+    /**
+     * @return \Illuminate\JsonSchema\Types\StringType[]
+     */
     public function schema(JsonSchema $schema): array
     {
         return [

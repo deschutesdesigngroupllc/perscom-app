@@ -160,6 +160,6 @@ final class DiscordEmbed
             'author' => $this->author,
             'footer' => $this->footer,
             'fields' => $this->fields,
-        ], fn (mixed $value): bool => filled($value));
+        ], filled(...));
     }
 }

@@ -169,7 +169,7 @@ class RosterService
             return false;
         }
 
-        return ! (($filters['online'] ?? false) && ! $user->online);
+        return ! ($filters['online'] ?? false) || $user->online;
     }
 
     /**

@@ -155,7 +155,7 @@ class OrganizationBlueprintService
     public static function withoutExisting(OrganizationBlueprintData $proposed, OrganizationBlueprintData $existing): OrganizationBlueprintData
     {
         $existingNames = fn (array $items): Collection => collect($items)->map(fn (object $item): string => Str::lower($item->name));
-        $isNew = fn (array $existingItems): callable => fn (object $item): bool => ! $existingNames($existingItems)->contains(Str::lower($item->name));
+        $isNew = fn (array $existingItems): callable => fn (object $item): bool => $existingNames($existingItems)->doesntContain(Str::lower($item->name));
 
         $sections = collect(self::NAMED_SECTIONS)
             ->mapWithKeys(fn (string $section): array => [
@@ -173,7 +173,7 @@ class OrganizationBlueprintService
                 icon: $group->icon,
                 units: collect($group->units)->filter($isNew($existingUnits))->values()->all(),
             ))
-            ->filter(fn (GroupData $group): bool => filled($group->units) || ! $existingGroups->contains(Str::lower($group->name)))
+            ->filter(fn (GroupData $group): bool => filled($group->units) || $existingGroups->doesntContain(Str::lower($group->name)))
             ->values()
             ->all();
 

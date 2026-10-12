@@ -213,11 +213,11 @@ class OrganizationBuilder extends Page
 
         try {
             $summary = ApplyOrganizationBlueprint::handle(OrganizationBlueprint::fromState($state));
-        } catch (ValidationException $exception) {
+        } catch (ValidationException $validationException) {
             Notification::make()
                 ->danger()
                 ->title('Unable to Apply Proposal')
-                ->body($exception->getMessage())
+                ->body($validationException->getMessage())
                 ->send();
 
             return;

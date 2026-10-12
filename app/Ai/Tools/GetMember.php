@@ -22,7 +22,7 @@ class GetMember implements Tool
 
     public function description(): Stringable|string
     {
-        return 'Get one member\'s profile, including their recent rank records, awards and qualifications.';
+        return "Get one member's profile, including their recent rank records, awards and qualifications.";
     }
 
     public function handle(Request $request): Stringable|string
@@ -57,6 +57,9 @@ class GetMember implements Tool
         ]);
     }
 
+    /**
+     * @return \Illuminate\JsonSchema\Types\IntegerType[]
+     */
     public function schema(JsonSchema $schema): array
     {
         return [

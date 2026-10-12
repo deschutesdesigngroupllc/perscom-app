@@ -21,6 +21,7 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -131,12 +132,14 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
         return $this->user;
     }
 
-    protected function scopeExpiringWithin(Builder $query, int $days): Builder
+    #[Scope]
+    protected function expiringWithin(Builder $query, int $days): Builder
     {
         return $query->whereBetween('expires_at', [now(), now()->addDays($days)]);
     }
 
-    protected function scopeExpired(Builder $query): Builder
+    #[Scope]
+    protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());
     }

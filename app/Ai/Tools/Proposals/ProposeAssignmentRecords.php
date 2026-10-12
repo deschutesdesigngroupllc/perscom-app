@@ -57,7 +57,7 @@ class ProposeAssignmentRecords extends ProposalTool
                 'type' => $type->value,
                 'position_id' => $validated['position_id'] ?? null,
                 'specialty_id' => $validated['specialty_id'] ?? null,
-            ], fn (mixed $value): bool => filled($value)),
+            ], filled(...)),
             summary: sprintf(
                 'Assign %s to %s%s (%s)',
                 $this->describeMembers($validated['user_ids']),

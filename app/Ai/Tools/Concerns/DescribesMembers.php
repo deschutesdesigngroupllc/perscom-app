@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Ai\Tools\Concerns;
 
 use App\Models\User;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 trait DescribesMembers
 {
@@ -28,7 +28,7 @@ trait DescribesMembers
             'specialty' => $user->specialty?->name,
             'status' => $user->status?->name,
             'status_id' => $user->status_id,
-            'days_in_grade' => filled($lastRankChange) ? (int) Carbon::parse($lastRankChange)->diffInDays(now()) : null,
+            'days_in_grade' => filled($lastRankChange) ? (int) Date::parse($lastRankChange)->diffInDays(now()) : null,
             'last_seen_at' => $user->last_seen_at?->toDateTimeString(),
         ];
     }
