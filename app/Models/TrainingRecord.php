@@ -36,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $author_id
  * @property int|null $document_id
  * @property int|null $event_id
+ * @property int|null $event_occurrence_id
  * @property string|null $text
  * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
@@ -54,12 +55,16 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $credentials_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
- * @property-read \Illuminate\Support\Facades\Event|null $event
+ * @property-read Event|null $event
+ * @property-read EventOccurrence|null $eventOccurrence
  * @property-read User|null $instructor
+ * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  * @property-read User|null $user
  *
  * @method static Builder<static>|TrainingRecord author(\App\Models\User $user)
@@ -75,13 +80,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|TrainingRecord whereData($value)
  * @method static Builder<static>|TrainingRecord whereDocumentId($value)
  * @method static Builder<static>|TrainingRecord whereEventId($value)
+ * @method static Builder<static>|TrainingRecord whereEventOccurrenceId($value)
  * @method static Builder<static>|TrainingRecord whereId($value)
  * @method static Builder<static>|TrainingRecord whereInstructorId($value)
  * @method static Builder<static>|TrainingRecord whereText($value)
  * @method static Builder<static>|TrainingRecord whereUpdatedAt($value)
  * @method static Builder<static>|TrainingRecord whereUserId($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(TrainingRecordObserver::class)]
 class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems

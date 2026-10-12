@@ -71,9 +71,9 @@ class RunDailyUserReview implements RunsPerTenant, ShouldQueue
 
     protected static function countRecentRegistrations(User $user, EventRegistrationStatus $status): int
     {
-        return $user->events()
-            ->wherePivot('status', $status->value)
-            ->wherePivot('updated_at', '>=', now()->subDays(30))
+        return $user->eventRegistrations()
+            ->where('status', $status->value)
+            ->where('updated_at', '>=', now()->subDays(30))
             ->count();
     }
 }

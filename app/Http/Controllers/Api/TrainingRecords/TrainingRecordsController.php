@@ -46,7 +46,7 @@ class TrainingRecordsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'event_occurrence_id', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
     }
 
     /**
@@ -54,7 +54,7 @@ class TrainingRecordsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'user_id', 'instructor_id', 'event_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'instructor_id', 'event_id', 'event_occurrence_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
     }
 
     /**
@@ -62,6 +62,6 @@ class TrainingRecordsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'instructor_id', 'instructor.*', 'event_id', 'event.*', 'event_occurrence_id', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
     }
 }

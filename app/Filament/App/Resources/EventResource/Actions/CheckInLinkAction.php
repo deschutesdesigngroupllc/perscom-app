@@ -30,7 +30,7 @@ class CheckInLinkAction extends Action
 
         $this->modalContent(function (Event $record): View {
             $url = EventAttendanceService::checkInUrl($record);
-            [$opens, $closes] = EventAttendanceService::checkInWindow($record);
+            [$opens, $closes] = EventAttendanceService::checkInWindow($record) ?? [null, null];
 
             return view('filament.app.events.check-in-link', [
                 'url' => $url,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
+use App\Data\Events\OccurrenceData;
 use App\Data\Promotions\PromotionEvaluationData;
 use App\Filament\App\Resources\EventResource;
 use App\Filament\App\Resources\UserResource;
@@ -17,6 +18,7 @@ use App\Models\Event;
 use App\Models\Rank;
 use App\Models\User;
 use App\Services\EventAttendanceService;
+use App\Services\EventOccurrenceService;
 use App\Services\PromotionEligibilityService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\CarbonInterval;
@@ -105,11 +107,11 @@ class UserProfileWidget extends Widget
             ->where(fn ($query) => $query->where('ends', '>=', now())->orWhere('repeats', true))
             ->orderBy('starts')
             ->limit(4)
-            ->with(['image', 'schedule', 'registrations' => fn ($query) => $query->whereKey($user->getKey())])
+            ->with(['image', 'schedule'])
             ->get()
-            ->map(function (Event $event): array {
-                $registration = $event->registrations->first()?->getRelation('registration');
-                $status = $registration?->status instanceof EventRegistrationStatus ? $registration->status : null;
+            ->map(function (Event $event) use ($user): array {
+                $occurrence = EventOccurrenceService::nearest($event);
+                $status = $occurrence instanceof OccurrenceData ? EventAttendanceService::statusFor($occurrence, $user) : null;
 
                 $canCheckIn = $status !== EventRegistrationStatus::ATTENDED
                     && ($status instanceof EventRegistrationStatus || $event->registration_enabled)

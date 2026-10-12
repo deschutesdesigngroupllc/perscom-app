@@ -10,6 +10,7 @@ use App\Models\Schedule;
 use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
 use DateTime;
+use DateTimeInterface;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
@@ -19,12 +20,15 @@ use RRule\RRule;
 class ScheduleService
 {
     /**
+     * The rule is expanded in the organization's timezone so that occurrences keep the same
+     * local time and weekday across daylight saving changes.
+     *
      * @return RRule<DateTime>|null
      */
     public static function generateRecurringRule(Schedule $repeatable): ?RRule
     {
         $payload = [
-            'DTSTART' => $repeatable->start->toDateTime(),
+            'DTSTART' => $repeatable->start->copy()->setTimezone(static::timezone())->toDateTime(),
             'FREQ' => $repeatable->frequency->value,
             'INTERVAL' => max(1, $repeatable->interval),
         ];
@@ -93,7 +97,7 @@ class ScheduleService
             return null;
         }
 
-        return Date::parse($lastOccurrence);
+        return static::toApplicationTime($lastOccurrence);
     }
 
     public static function nextOccurrence(Schedule $repeatable): ?Carbon
@@ -112,7 +116,27 @@ class ScheduleService
             return null;
         }
 
-        return Date::parse($nextOccurrence);
+        return static::toApplicationTime($nextOccurrence);
+    }
+
+    /**
+     * The latest occurrence that starts at or before the given time.
+     */
+    public static function previousOccurrence(Schedule $schedule, CarbonInterface $at): ?Carbon
+    {
+        $occurrence = collect(ScheduleService::generateRecurringRule($schedule)?->getOccurrencesBefore($at, true, 1) ?? [])->last();
+
+        return $occurrence instanceof DateTimeInterface ? static::toApplicationTime($occurrence) : null;
+    }
+
+    /**
+     * The earliest occurrence that starts after the given time.
+     */
+    public static function followingOccurrence(Schedule $schedule, CarbonInterface $at): ?Carbon
+    {
+        $occurrence = collect(ScheduleService::generateRecurringRule($schedule)?->getOccurrencesAfter($at, false, 1) ?? [])->first();
+
+        return $occurrence instanceof DateTimeInterface ? static::toApplicationTime($occurrence) : null;
     }
 
     /**
@@ -126,7 +150,7 @@ class ScheduleService
             return null;
         }
 
-        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => Date::parse($dateTime))->toArray();
+        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => static::toApplicationTime($dateTime))->toArray();
     }
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
@@ -157,5 +181,23 @@ class ScheduleService
             },
 
         ]));
+    }
+
+    /**
+     * The timezone schedules are expanded in.
+     */
+    public static function timezone(): string
+    {
+        return rescue(function (): string {
+            /** @var OrganizationSettings $settings */
+            $settings = resolve(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        }, config('app.timezone'), report: false);
+    }
+
+    protected static function toApplicationTime(DateTimeInterface $dateTime): Carbon
+    {
+        return Date::instance($dateTime)->setTimezone(config('app.timezone'));
     }
 }

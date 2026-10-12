@@ -4,19 +4,32 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\EventResource\Actions;
 
+use App\Data\Events\OccurrenceData;
 use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\User;
 use App\Services\EventAttendanceService;
+use App\Services\EventOccurrenceService;
+use App\Services\ScheduleService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Date;
 
 class TakeAttendanceAction extends Action
 {
+    /**
+     * How far back past occurrences of a repeating event can have attendance taken.
+     */
+    public const int OCCURRENCE_LOOKBACK_DAYS = 90;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -32,21 +45,35 @@ class TakeAttendanceAction extends Action
         $this->successNotificationTitle('Attendance has been saved.');
         $this->authorize('update');
 
-        $this->fillForm(fn (Event $record): array => [
-            'attended' => $record->registrations
-                ->filter(fn (User $user): bool => $user->registration?->status === EventRegistrationStatus::ATTENDED)
-                ->modelKeys(),
-            'mark_no_show' => true,
-        ]);
+        $this->fillForm(function (Event $record): array {
+            $occurrence = EventOccurrenceService::nearest($record);
+
+            return [
+                'occurrence' => $occurrence?->starts->toIso8601String(),
+                'attended' => static::attendedUserIds($occurrence),
+                'mark_no_show' => true,
+            ];
+        });
 
         $this->schema([
+            Select::make('occurrence')
+                ->label('Occurrence')
+                ->helperText('Select the date you are taking attendance for.')
+                ->options(fn (Event $record): array => static::occurrenceOptions($record))
+                ->visible(fn (Event $record): bool => $record->repeats)
+                ->required(fn (Event $record): bool => $record->repeats)
+                ->selectablePlaceholder(false)
+                ->live()
+                ->afterStateUpdated(fn (Event $record, Set $set, ?string $state) => $set('attended', static::attendedUserIds(static::occurrenceFor($record, $state)))),
             CheckboxList::make('attended')
                 ->label('Registered members')
                 ->helperText('Select the registered members who attended.')
-                ->options(fn (Event $record): array => $record->registrations
-                    ->mapWithKeys(fn (User $user): array => [$user->getKey() => $user->name])
+                ->options(fn (Event $record, Get $get): array => User::query()
+                    ->whereKey(static::registrants(static::occurrenceFor($record, $get('occurrence')))->keys()->all())
+                    ->orderBy('name')
+                    ->pluck('name', 'id')
                     ->all())
-                ->visible(fn (Event $record): bool => $record->registrations->isNotEmpty())
+                ->visible(fn (Event $record, Get $get): bool => static::registrants(static::occurrenceFor($record, $get('occurrence')))->isNotEmpty())
                 ->bulkToggleable()
                 ->searchable()
                 ->columns(2),
@@ -56,17 +83,19 @@ class TakeAttendanceAction extends Action
                 ->multiple()
                 ->searchable()
                 ->preload()
-                ->options(fn (Event $record): array => User::query()
-                    ->whereKeyNot($record->registrations->modelKeys())
+                ->options(fn (Event $record, Get $get): array => User::query()
+                    ->whereKeyNot(static::registrants(static::occurrenceFor($record, $get('occurrence')))->keys()->all())
                     ->orderBy('name')
                     ->pluck('name', 'id')
                     ->all()),
             Toggle::make('mark_no_show')
                 ->label('Mark unchecked registrants as no-show')
-                ->visible(fn (Event $record): bool => $record->registrations->isNotEmpty()),
+                ->visible(fn (Event $record, Get $get): bool => static::registrants(static::occurrenceFor($record, $get('occurrence')))->isNotEmpty()),
         ]);
 
         $this->action(function (Event $record, Action $action, array $data): void {
+            $occurrence = static::occurrenceFor($record, data_get($data, 'occurrence'));
+
             $attended = collect(data_get($data, 'attended', []))
                 ->merge(data_get($data, 'additional', []))
                 ->map(fn (mixed $id): int => (int) $id)
@@ -75,10 +104,10 @@ class TakeAttendanceAction extends Action
                 ->all();
 
             $noShow = data_get($data, 'mark_no_show', false)
-                ? collect($record->registrations->modelKeys())->diff($attended)->values()->all()
+                ? static::registrants($occurrence)->keys()->diff($attended)->values()->all()
                 : [];
 
-            EventAttendanceService::recordAttendance($record, $attended, $noShow);
+            EventAttendanceService::recordAttendance($record, $attended, $noShow, $occurrence);
 
             $this->dispatchTo(ViewEvent::class, 'refreshRegistrations');
             $action->success();
@@ -88,5 +117,51 @@ class TakeAttendanceAction extends Action
     public static function getDefaultName(): ?string
     {
         return 'takeAttendance';
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected static function occurrenceOptions(Event $record): array
+    {
+        if (! $record->repeats) {
+            return [];
+        }
+
+        return EventOccurrenceService::forEvent($record, now()->subDays(static::OCCURRENCE_LOOKBACK_DAYS), now()->addDay())
+            ->reject(fn (OccurrenceData $occurrence): bool => $occurrence->isCancelled())
+            ->sortByDesc(fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp())
+            ->mapWithKeys(fn (OccurrenceData $occurrence): array => [
+                $occurrence->starts->toIso8601String() => $occurrence->starts->copy()->setTimezone(ScheduleService::timezone())->toDayDateTimeString(),
+            ])
+            ->all();
+    }
+
+    protected static function occurrenceFor(Event $record, ?string $starts): ?OccurrenceData
+    {
+        if (! $record->repeats || blank($starts)) {
+            return EventOccurrenceService::nearest($record);
+        }
+
+        return EventOccurrenceService::find($record, Date::parse($starts)->setTimezone(config('app.timezone')));
+    }
+
+    /**
+     * @return Collection<int, EventRegistration>
+     */
+    protected static function registrants(?OccurrenceData $occurrence): Collection
+    {
+        return $occurrence instanceof OccurrenceData ? EventAttendanceService::registrationsFor($occurrence) : collect();
+    }
+
+    /**
+     * @return array<int, int>
+     */
+    protected static function attendedUserIds(?OccurrenceData $occurrence): array
+    {
+        return static::registrants($occurrence)
+            ->filter(fn (EventRegistration $registration): bool => $registration->status === EventRegistrationStatus::ATTENDED)
+            ->keys()
+            ->all();
     }
 }
