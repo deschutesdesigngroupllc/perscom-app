@@ -47,8 +47,5 @@
       </x-filament::badge>
     @endif
     <x-roster.member-badges :insight="$insight" />
-    @if ($insight?->daysInGrade !== null && !in_array('rank_id', $hiddenFields))
-      <span class="ms-auto text-xs text-gray-500 dark:text-gray-400">{{ $insight->daysInGrade }}d in grade</span>
-    @endif
   </div>
 </a>

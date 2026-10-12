@@ -10,9 +10,6 @@
           !in_array('specialty_id', $hiddenFields) && $specialty
               ? trim(data_get($specialty, 'abbreviation') . ' ' . data_get($specialty, 'name'))
               : null,
-          $insight?->daysInGrade !== null && !in_array('rank_id', $hiddenFields)
-              ? number_format($insight->daysInGrade) . ' ' . Str::plural('day', $insight->daysInGrade) . ' in grade'
-              : null,
       ]),
   );
 @endphp
@@ -42,15 +39,14 @@
         @if (!in_array('name', $hiddenFields))
           <span class="truncate font-semibold text-gray-950 dark:text-white">
             @if (!in_array('rank_id', $hiddenFields) && $user->rank?->abbreviation)
-              <span class="text-gray-500 dark:text-gray-400">{{ $user->rank->abbreviation }}</span>
+              <span class="me-1 text-gray-500 dark:text-gray-400">{{ $user->rank->abbreviation }}</span>
             @endif
             {{ $user->display_name }}
           </span>
         @endif
       </div>
       @if ($details !== [])
-        <div
-          class="mt-0.5 flex flex-col text-gray-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2 dark:text-gray-400">
+        <div class="mt-0.5 flex flex-col text-gray-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-2 dark:text-gray-400">
           @foreach ($details as $detail)
             @unless ($loop->first)
               <span class="hidden text-gray-400 sm:inline dark:text-gray-500">&middot;</span>
