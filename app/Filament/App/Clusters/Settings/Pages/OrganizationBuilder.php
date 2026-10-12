@@ -83,7 +83,6 @@ class OrganizationBuilder extends Page
             ->components([
                 Section::make('Describe What You Need')
                     ->description('Describe the additions you want and we will propose them. Nothing is created until you apply the proposal.')
-                    ->icon(Heroicon::OutlinedSparkles)
                     ->visible(fn (): bool => AiUsageService::isAvailable())
                     ->schema([
                         Textarea::make('instruction')
@@ -104,7 +103,6 @@ class OrganizationBuilder extends Page
                     ->visible(fn (): bool => ! AiUsageService::isAvailable()),
                 Section::make('Import a Preset')
                     ->description('Load a ready-made structure into the proposal. Anything that already exists is skipped when applied.')
-                    ->icon(Heroicon::OutlinedDocumentDuplicate)
                     ->collapsible()
                     ->schema([
                         Select::make('preset')
@@ -120,7 +118,6 @@ class OrganizationBuilder extends Page
                     ]),
                 Section::make('Proposal')
                     ->description('Review and edit the proposed structure, then apply it to create everything at once.')
-                    ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                     ->schema([
                         OrganizationBlueprint::make('blueprint'),
                         Actions::make([
