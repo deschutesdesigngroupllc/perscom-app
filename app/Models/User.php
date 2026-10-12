@@ -314,6 +314,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'discord_private_channel_id',
         'has_email_authentication',
         'public_profile_key',
+        'calendar_feed_token',
     ];
 
     protected $appends = [
@@ -342,6 +343,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'app_authentication_recovery_codes',
             'has_email_authentication',
             'public_profile_key',
+            'calendar_feed_token',
         ];
     }
 

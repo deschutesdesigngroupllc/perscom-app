@@ -1,14 +1,13 @@
 @php
   $user = $this->user();
   $promotion = $this->promotion();
-  $events = $this->upcomingEvents();
   $showsAwards = $this->showsAwards();
   $showsPromotion = $this->hasPromotionRequirements();
 @endphp
 
 <x-filament-widgets::widget>
   <div class="flex flex-col gap-6">
-    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
       <x-filament::section icon="heroicon-o-chevron-double-up" icon-color="warning">
         <x-slot name="heading">Current Rank</x-slot>
         <x-slot name="description">{{ $this->timeInGrade() ? 'In grade for ' . $this->timeInGrade() : 'Your current rank' }}</x-slot>
@@ -101,62 +100,6 @@
               <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'In service for ' . $this->timeInService() }}</span>
             @endif
           </div>
-        </x-slot>
-      </x-filament::section>
-
-      <x-filament::section icon="heroicon-o-calendar-days" icon-color="success">
-        <x-slot name="heading">Upcoming Events</x-slot>
-        <x-slot name="description">Your next scheduled events</x-slot>
-
-        <div class="-mx-2 space-y-1">
-          @forelse ($events as $item)
-            <div class="flex items-center gap-x-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-50 dark:hover:bg-white/5">
-              <a href="{{ $this->getEventUrl($item['event']) }}" class="group flex min-w-0 flex-1 items-center gap-x-3">
-                @if ($item['event']->image?->image_url)
-                  <img src="{{ $item['event']->image->image_url }}" alt="{{ $item['event']->name }}"
-                    class="h-9 w-9 shrink-0 rounded-md object-cover ring-1 ring-gray-200 dark:ring-gray-700" />
-                @else
-                  <div
-                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-gray-50 ring-1 ring-gray-200 dark:bg-gray-800/60 dark:ring-gray-700">
-                    <x-heroicon-o-calendar class="h-4 w-4 text-gray-400 dark:text-gray-500" />
-                  </div>
-                @endif
-
-                <div class="min-w-0 flex-1">
-                  <p
-                    class="truncate text-sm font-medium text-gray-950 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400">
-                    {{ $item['event']->name }}
-                  </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400">
-                    {{ $item['event']->all_day ? $item['event']->starts?->format('M j, Y') : $item['event']->starts?->format('M j, Y · g:i A') }}
-                  </p>
-                </div>
-              </a>
-
-              @if ($item['canCheckIn'])
-                <x-filament::button tag="a" :href="$item['checkInUrl']" size="xs" icon="heroicon-m-check-circle">
-                  Check In
-                </x-filament::button>
-              @elseif ($item['status'])
-                <x-filament::badge :color="$item['status']->getColor()" size="sm">{{ $item['status']->getLabel() }}</x-filament::badge>
-              @endif
-            </div>
-          @empty
-            <div class="px-2 py-4 text-center">
-              <div
-                class="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 ring-1 ring-gray-200 dark:bg-gray-800/60 dark:ring-gray-700">
-                <x-heroicon-o-calendar class="h-5 w-5 text-gray-400 dark:text-gray-500" />
-              </div>
-              <p class="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">No upcoming events</p>
-              <p class="text-xs text-gray-400 dark:text-gray-500">Check back later</p>
-            </div>
-          @endforelse
-        </div>
-
-        <x-slot name="footer">
-          <x-filament::link :href="$this->getEventsListUrl()" color="gray" icon="heroicon-m-calendar-days" icon-position="before" size="sm">
-            View All Events
-          </x-filament::link>
         </x-slot>
       </x-filament::section>
     </div>

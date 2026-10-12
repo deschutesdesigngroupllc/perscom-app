@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\EventResource\Pages;
 
 use App\Data\Events\OccurrenceData;
 use App\Filament\App\Resources\EventResource;
+use App\Filament\App\Resources\EventResource\Actions\AddToCalendarAction;
 use App\Filament\App\Resources\EventResource\Actions\CheckInLinkAction;
 use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
 use App\Livewire\Concerns\RespondsToEvents;
@@ -285,6 +286,8 @@ class ViewEvent extends ViewRecord
                 ->url(fn (): ?string => $this->getExternalUrl())
                 ->openUrlInNewTab()
                 ->visible(fn (): bool => filled($this->getExternalUrl())),
+            AddToCalendarAction::make()
+                ->occurrence(fn (): ?OccurrenceData => $this->getSelectedOccurrence()),
             TakeAttendanceAction::make(),
             CheckInLinkAction::make(),
             EditAction::make(),
