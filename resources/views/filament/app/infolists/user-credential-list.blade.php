@@ -5,13 +5,13 @@
 @php
   /** @var \Illuminate\Support\Collection $items */
   $iconFor = fn(?CredentialType $type): string => match ($type) {
-      CredentialType::Certification => 'heroicon-o-academic-cap',
-      CredentialType::License => 'heroicon-o-identification',
+      CredentialType::CERTIFICATION => 'heroicon-o-academic-cap',
+      CredentialType::LICENSE => 'heroicon-o-identification',
       default => 'heroicon-o-document-check',
   };
   $colorFor = fn(?CredentialType $type): string => match ($type) {
-      CredentialType::Certification => 'warning',
-      CredentialType::License => 'info',
+      CredentialType::CERTIFICATION => 'warning',
+      CredentialType::LICENSE => 'info',
       default => 'gray',
   };
 @endphp
