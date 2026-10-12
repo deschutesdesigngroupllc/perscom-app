@@ -94,6 +94,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $cover_photo
  * @property bool $hide_public_profile
  * @property string|null $public_profile_key
+ * @property string|null $calendar_feed_token
  * @property Carbon|null $last_seen_at
  * @property string|null $facebook_user_id
  * @property string|null $github_user_id
@@ -201,6 +202,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User whereAppAuthenticationRecoveryCodes($value)
  * @method static Builder<static>|User whereAppAuthenticationSecret($value)
  * @method static Builder<static>|User whereApproved($value)
+ * @method static Builder<static>|User whereCalendarFeedToken($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)
  * @method static Builder<static>|User whereData($value)
