@@ -143,6 +143,19 @@ class OrganizationBlueprintServiceTest extends TenantTestCase
         }
     }
 
+    public function test_to_blueprint_keeps_unit_parents(): void
+    {
+        $blueprint = OrganizationBlueprintService::toBlueprint([
+            'groups' => [['name' => 'Airborne', 'units' => [
+                ['name' => 'Easy Company'],
+                ['name' => '1st Platoon', 'parent' => 'Easy Company'],
+            ]]],
+        ]);
+
+        $this->assertNull($blueprint->groups[0]->units[0]->parent);
+        $this->assertSame('Easy Company', $blueprint->groups[0]->units[1]->parent);
+    }
+
     public function test_to_blueprint_discards_entries_without_a_name(): void
     {
         $blueprint = OrganizationBlueprintService::toBlueprint([

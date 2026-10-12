@@ -156,6 +156,7 @@
                 },
                 {
                     "name": "Patrol Division - A Squad",
+                    "parent": "Office of the Chief",
                     "slots": [
                         {
                             "name": "Patrol Officer",
@@ -169,6 +170,7 @@
                 },
                 {
                     "name": "Patrol Division - B Squad",
+                    "parent": "Office of the Chief",
                     "slots": [
                         {
                             "name": "Patrol Sergeant",
@@ -182,6 +184,7 @@
                 },
                 {
                     "name": "Patrol Division - C Squad",
+                    "parent": "Office of the Chief",
                     "slots": [
                         {
                             "name": "Field Training Officer",
@@ -195,6 +198,7 @@
                 },
                 {
                     "name": "Criminal Investigations Division",
+                    "parent": "Office of the Chief",
                     "slots": [
                         {
                             "name": "Patrol Officer",
@@ -208,6 +212,7 @@
                 },
                 {
                     "name": "Special Operations Division",
+                    "parent": "Office of the Chief",
                     "slots": [
                         {
                             "name": "Patrol Sergeant",

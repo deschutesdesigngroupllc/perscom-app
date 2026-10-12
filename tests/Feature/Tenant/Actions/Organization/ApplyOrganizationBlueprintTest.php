@@ -100,6 +100,60 @@ class ApplyOrganizationBlueprintTest extends TenantTestCase
         $this->assertSame('Infantry', $slot->specialty?->name);
     }
 
+    public function test_it_nests_units_under_their_parents_across_groups_and_in_any_order(): void
+    {
+        ApplyOrganizationBlueprint::handle(new OrganizationBlueprintData(groups: [
+            new GroupData(name: 'Operations', units: [
+                new UnitData(name: '1st Platoon', parent: 'Alpha Company'),
+                new UnitData(name: 'Alpha Company', parent: 'Battalion Headquarters'),
+            ]),
+            new GroupData(name: 'Command', units: [
+                new UnitData(name: 'Battalion Headquarters'),
+            ]),
+        ]));
+
+        $this->assertSame('Alpha Company', $this->unit('1st Platoon')->parent?->name);
+        $this->assertSame('Battalion Headquarters', $this->unit('Alpha Company')->parent?->name);
+        $this->assertNull($this->unit('Battalion Headquarters')->parent_id);
+    }
+
+    public function test_a_parent_can_be_an_existing_unit(): void
+    {
+        $existing = Unit::factory()->createQuietly(['name' => 'Battalion Headquarters']);
+
+        ApplyOrganizationBlueprint::handle(new OrganizationBlueprintData(groups: [
+            new GroupData(name: 'Operations', units: [new UnitData(name: 'Alpha Company', parent: 'battalion headquarters')]),
+        ]));
+
+        $this->assertSame($existing->getKey(), $this->unit('Alpha Company')->parent_id);
+    }
+
+    public function test_missing_self_and_circular_parents_are_skipped(): void
+    {
+        ApplyOrganizationBlueprint::handle(new OrganizationBlueprintData(groups: [
+            new GroupData(name: 'Operations', units: [
+                new UnitData(name: 'Alpha Company', parent: 'Bravo Company'),
+                new UnitData(name: 'Bravo Company', parent: 'Alpha Company'),
+                new UnitData(name: 'Charlie Company', parent: 'Charlie Company'),
+                new UnitData(name: 'Delta Company', parent: 'Nonexistent Battalion'),
+            ]),
+        ]));
+
+        $this->assertSame('Bravo Company', $this->unit('Alpha Company')->parent?->name);
+        $this->assertNull($this->unit('Bravo Company')->parent_id);
+        $this->assertNull($this->unit('Charlie Company')->parent_id);
+        $this->assertNull($this->unit('Delta Company')->parent_id);
+    }
+
+    public function test_presets_include_their_unit_hierarchy(): void
+    {
+        ApplyOrganizationBlueprint::handle(OrganizationBlueprintData::fromPreset('fire-service'));
+
+        $this->assertSame('Battalion 1', $this->unit('Station 1 - Engine 1, Truck 1, Medic 1')->parent?->name);
+        $this->assertSame('District 1 Headquarters', $this->unit('Battalion 1')->parent?->name);
+        $this->assertNull($this->unit('District 1 Headquarters')->parent_id);
+    }
+
     public function test_it_rolls_back_when_an_entity_is_invalid(): void
     {
         $blueprint = OrganizationBlueprintData::from([
@@ -121,5 +175,10 @@ class ApplyOrganizationBlueprintTest extends TenantTestCase
     protected function units(OrganizationBlueprintData $blueprint): Collection
     {
         return collect($blueprint->groups)->flatMap(fn (GroupData $group): array => $group->units);
+    }
+
+    protected function unit(string $name): Unit
+    {
+        return Unit::query()->withoutGlobalScopes()->with('parent')->where('name', $name)->firstOrFail();
     }
 }

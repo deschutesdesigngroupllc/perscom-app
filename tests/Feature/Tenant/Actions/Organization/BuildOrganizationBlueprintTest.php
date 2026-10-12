@@ -6,7 +6,9 @@ namespace Tests\Feature\Tenant\Actions\Organization;
 
 use App\Actions\Organization\ApplyOrganizationBlueprint;
 use App\Actions\Organization\BuildOrganizationBlueprint;
+use App\Data\Organization\GroupData;
 use App\Data\Organization\OrganizationBlueprintData;
+use App\Data\Organization\UnitData;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class BuildOrganizationBlueprintTest extends TenantTestCase
@@ -36,5 +38,17 @@ class BuildOrganizationBlueprintTest extends TenantTestCase
         $summary = ApplyOrganizationBlueprint::handle($exported);
 
         collect($summary)->each(fn (array $counts, string $section) => $this->assertSame(0, $counts['created'], sprintf('Section [%s] created new records.', $section)));
+    }
+
+    public function test_exported_units_include_their_parent(): void
+    {
+        ApplyOrganizationBlueprint::handle(OrganizationBlueprintData::fromPreset('law-enforcement'));
+
+        $parents = collect(BuildOrganizationBlueprint::handle()->groups)
+            ->flatMap(fn (GroupData $group): array => $group->units)
+            ->mapWithKeys(fn (UnitData $unit): array => [$unit->name => $unit->parent]);
+
+        $this->assertSame('Office of the Chief', $parents['Patrol Division - A Squad']);
+        $this->assertNull($parents['Office of the Chief']);
     }
 }

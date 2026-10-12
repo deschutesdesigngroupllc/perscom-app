@@ -134,6 +134,7 @@
                 },
                 {
                     "name": "Battalion 1",
+                    "parent": "District 1 Headquarters",
                     "slots": [
                         {
                             "name": "Firefighter / Irons",
@@ -147,6 +148,7 @@
                 },
                 {
                     "name": "Station 1 - Engine 1, Truck 1, Medic 1",
+                    "parent": "Battalion 1",
                     "slots": [
                         {
                             "name": "Captain",
@@ -160,6 +162,7 @@
                 },
                 {
                     "name": "Station 2 - Engine 2, Medic 2",
+                    "parent": "Battalion 1",
                     "slots": [
                         {
                             "name": "Engineer",
@@ -173,6 +176,7 @@
                 },
                 {
                     "name": "Station 3 - Engine 3, Brush 3",
+                    "parent": "Battalion 1",
                     "slots": [
                         {
                             "name": "Firefighter / Nozzle",
@@ -186,6 +190,7 @@
                 },
                 {
                     "name": "Battalion 2",
+                    "parent": "District 1 Headquarters",
                     "slots": [
                         {
                             "name": "Captain",
@@ -199,6 +204,7 @@
                 },
                 {
                     "name": "Station 4 - Engine 4, Tower 4",
+                    "parent": "Battalion 2",
                     "slots": [
                         {
                             "name": "Firefighter / Irons",
@@ -212,6 +218,7 @@
                 },
                 {
                     "name": "Station 5 - Engine 5, Hazmat 5",
+                    "parent": "Battalion 2",
                     "slots": [
                         {
                             "name": "Captain",

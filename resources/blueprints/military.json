@@ -143,6 +143,7 @@
                 },
                 {
                     "name": "Alpha Company, 1st Btn, 5th SFG",
+                    "parent": "Headquarters and Headquarters Company, 5th Special Forces Group",
                     "slots": [
                         {
                             "name": "Company Commander",
@@ -159,6 +160,7 @@
                 },
                 {
                     "name": "ODB 5110, A Co, 1st Btn, 5th SFG",
+                    "parent": "Alpha Company, 1st Btn, 5th SFG",
                     "slots": [
                         {
                             "name": "Detachment Commander",
@@ -179,6 +181,7 @@
                 },
                 {
                     "name": "ODA 5111, A Co, 1st Btn, 5th SFG",
+                    "parent": "Alpha Company, 1st Btn, 5th SFG",
                     "slots": [
                         {
                             "name": "Detachment Commander",
@@ -199,6 +202,7 @@
                 },
                 {
                     "name": "ODA 5112, A Co, 1st Btn, 5th SFG",
+                    "parent": "Alpha Company, 1st Btn, 5th SFG",
                     "slots": [
                         {
                             "name": "Detachment Commander",

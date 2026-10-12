@@ -36,7 +36,7 @@ class OrganizationBlueprintAgent implements Agent, HasStructuredOutput
             - specialties: occupational specialties or skills with an optional short abbreviation, such as 11B Infantryman.
             - ranks: seniority levels with an abbreviation and an optional paygrade. List them from the MOST SENIOR to the MOST JUNIOR. Use category to group them, such as Enlisted, Non-Commissioned Officers or Officers.
             - statuses: the state of a member, such as Active, On Leave, Reserve or Discharged, each with a hex color like #22c55e.
-            - groups: the top-level divisions of the organization. Each group contains units. Units contain slots, which are named billets that reference a position and optionally a specialty by their exact names from this blueprint.
+            - groups: the top-level divisions of the organization. Each group contains units. Units can nest: set a unit's parent to the exact name of the unit it sits under, such as a platoon under its company, and leave it empty for top-level units. Units contain slots, which are named billets that reference a position and optionally a specialty by their exact names from this blueprint.
             - awards: medals, ribbons and commendations, optionally grouped by category. List them from most to least prestigious.
             - qualifications: skills or badges a member can earn, optionally grouped by category.
             - credentials: certifications or licenses issued by an issuer, with a type of certification, license or other.
@@ -87,6 +87,7 @@ class OrganizationBlueprintAgent implements Agent, HasStructuredOutput
                 'units' => $schema->array()->items($schema->object(fn (JsonSchema $schema): array => [
                     'name' => $schema->string()->required(),
                     'description' => $schema->string()->nullable(),
+                    'parent' => $schema->string()->nullable()->description('The exact name of the unit this unit sits under, from any group in this blueprint. Empty for top-level units.'),
                     'slots' => $schema->array()->items($schema->object(fn (JsonSchema $schema): array => [
                         'name' => $schema->string()->required(),
                         'position' => $schema->string()->nullable(),

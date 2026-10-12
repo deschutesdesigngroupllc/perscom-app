@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Forms\Components;
 
 use App\Data\Organization\OrganizationBlueprintData;
+use App\Models\Unit;
 use App\Services\Ai\OrganizationBlueprintService;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Tabs;
@@ -70,9 +72,16 @@ class OrganizationBlueprint
                                         self::repeater('units', 'Add Unit')
                                             ->label('Units')
                                             ->hiddenLabel(false)
-                                            ->columns(2)
+                                            ->columns(3)
                                             ->schema([
-                                                self::name('The name of the unit.'),
+                                                self::name('The name of the unit.')
+                                                    ->live(onBlur: true),
+                                                Select::make('parent')
+                                                    ->label('Parent Unit')
+                                                    ->placeholder('None (top level)')
+                                                    ->searchable()
+                                                    ->options(fn (Get $get): array => self::parentUnitOptions($get('../../../../groups'), $get('name')))
+                                                    ->helperText('The unit this unit sits under, from any group.'),
                                                 TextInput::make('description')
                                                     ->maxLength(65535)
                                                     ->helperText('A short description of the unit.'),
@@ -200,6 +209,25 @@ class OrganizationBlueprint
             ->cloneable()
             ->addActionLabel($addActionLabel)
             ->itemLabel(fn (array $state): ?string => $state['name'] ?? null);
+    }
+
+    /**
+     * Any unit in the blueprint, from any group, or one that already exists can be a parent. Options
+     * are keyed by name because nothing in the blueprint exists until it is applied.
+     *
+     * @param  array<string, mixed>|null  $groups
+     * @return array<string, string>
+     */
+    protected static function parentUnitOptions(?array $groups, ?string $currentName): array
+    {
+        return collect($groups ?? [])
+            ->flatMap(fn (mixed $group): array => is_array($group) ? (array) ($group['units'] ?? []) : [])
+            ->pluck('name')
+            ->merge(Unit::query()->withoutGlobalScopes()->orderBy('name')->pluck('name'))
+            ->filter(fn (mixed $name): bool => filled($name) && mb_strtolower((string) $name) !== mb_strtolower((string) $currentName))
+            ->unique(fn (string $name): string => mb_strtolower($name))
+            ->mapWithKeys(fn (string $name): array => [$name => $name])
+            ->all();
     }
 
     protected static function name(string $helperText): TextInput

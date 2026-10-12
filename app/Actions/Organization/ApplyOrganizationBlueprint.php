@@ -19,7 +19,9 @@ use App\Data\Organization\StatusData;
 use App\Data\Organization\UnitData;
 use App\Models\Position;
 use App\Models\Specialty;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -63,6 +65,8 @@ class ApplyOrganizationBlueprint
         };
 
         DB::transaction(function () use ($blueprint, $track): void {
+            $units = collect();
+
             $positions = collect($blueprint->positions)
                 ->mapWithKeys(fn (PositionData $position): array => [
                     Str::lower($position->name) => $track('positions', CreatePosition::handle($position->toArray())),
@@ -76,18 +80,20 @@ class ApplyOrganizationBlueprint
             collect($blueprint->ranks)->each(fn (RankData $rank): Model => $track('ranks', CreateRank::handle($rank->toArray())));
             collect($blueprint->statuses)->each(fn (StatusData $status): Model => $track('statuses', CreateStatus::handle($status->toArray())));
 
-            collect($blueprint->groups)->each(function (GroupData $groupData) use ($track, $positions, $specialties): void {
+            collect($blueprint->groups)->each(function (GroupData $groupData) use ($track, $positions, $specialties, $units): void {
                 $group = $track('groups', CreateGroup::handle([
                     'name' => $groupData->name,
                     'description' => $groupData->description,
                     'icon' => $groupData->icon,
                 ]));
 
-                collect($groupData->units)->each(function (UnitData $unitData) use ($track, $group, $positions, $specialties): void {
+                collect($groupData->units)->each(function (UnitData $unitData) use ($track, $group, $positions, $specialties, $units): void {
                     $unit = $track('units', CreateUnit::handle([
                         'name' => $unitData->name,
                         'description' => $unitData->description,
                     ], $group));
+
+                    $units->put(Str::lower($unitData->name), $unit);
 
                     collect($unitData->slots)->each(fn (SlotData $slot): Model => $track('slots', CreateSlot::handle([
                         'name' => $slot->name,
@@ -97,6 +103,11 @@ class ApplyOrganizationBlueprint
                     ], $unit)));
                 });
             });
+
+            collect($blueprint->groups)
+                ->flatMap(fn (GroupData $groupData): array => $groupData->units)
+                ->filter(fn (UnitData $unitData): bool => filled($unitData->parent))
+                ->each(fn (UnitData $unitData) => self::nestUnit($units->get(Str::lower($unitData->name)), (string) $unitData->parent, $units));
 
             collect($blueprint->awards)->each(fn (AwardData $award): Model => $track('awards', CreateAward::handle($award->toArray())));
             collect($blueprint->qualifications)->each(fn (QualificationData $qualification): Model => $track('qualifications', CreateQualification::handle($qualification->toArray())));
@@ -113,5 +124,35 @@ class ApplyOrganizationBlueprint
         });
 
         return $summary;
+    }
+
+    /**
+     * Units are created before they are nested so a parent can appear anywhere in the blueprint. A
+     * parent that is missing, the unit itself, or one of its own descendants is skipped.
+     *
+     * @param  Collection<string, Unit>  $units
+     */
+    protected static function nestUnit(?Unit $unit, string $parentName, Collection $units): void
+    {
+        $parent = $units->get(Str::lower($parentName))
+            ?? Unit::query()->withoutGlobalScopes()->whereRaw('LOWER(name) = ?', [Str::lower($parentName)])->first();
+
+        if (! $unit instanceof Unit || ! $parent instanceof Unit || $parent->is($unit) || $unit->parent_id === $parent->getKey()) {
+            return;
+        }
+
+        $ancestorId = $parent->parent_id;
+        $visited = [$parent->getKey()];
+
+        while ($ancestorId !== null && ! in_array($ancestorId, $visited, true)) {
+            if ($ancestorId === $unit->getKey()) {
+                return;
+            }
+
+            $visited[] = $ancestorId;
+            $ancestorId = Unit::query()->withoutGlobalScopes()->whereKey($ancestorId)->value('parent_id');
+        }
+
+        $unit->forceFill(['parent_id' => $parent->getKey()])->save();
     }
 }

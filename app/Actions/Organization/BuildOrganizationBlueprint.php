@@ -69,7 +69,7 @@ class BuildOrganizationBlueprint
                     name: $status->name,
                     color: $status->color,
                 ))->all(),
-            groups: Group::query()->reorder()->with('units.slots.position', 'units.slots.specialty')->orderBy('order')->orderBy('id')->get()
+            groups: Group::query()->reorder()->with('units.parent', 'units.slots.position', 'units.slots.specialty')->orderBy('order')->orderBy('id')->get()
                 ->map(fn (Group $group): GroupData => new GroupData(
                     name: $group->name,
                     description: $group->description,
@@ -77,6 +77,7 @@ class BuildOrganizationBlueprint
                     units: $group->units->map(fn (Unit $unit): UnitData => new UnitData(
                         name: $unit->name,
                         description: $unit->description,
+                        parent: $unit->parent?->name,
                         slots: $unit->slots->map(fn (Slot $slot): SlotData => new SlotData(
                             name: $slot->name,
                             description: $slot->description,
