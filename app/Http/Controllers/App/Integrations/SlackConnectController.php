@@ -36,11 +36,11 @@ class SlackConnectController
                 ->title('Slack connected')
                 ->body(sprintf('PERSCOM is now connected to %s. Choose a channel for notifications.', $workspace['team_name']))
                 ->send();
-        } catch (IntegrationConnectionException $exception) {
+        } catch (IntegrationConnectionException $integrationConnectionException) {
             Notification::make()
                 ->danger()
                 ->title('Slack was not connected')
-                ->body($exception->getMessage())
+                ->body($integrationConnectionException->getMessage())
                 ->send();
         }
 

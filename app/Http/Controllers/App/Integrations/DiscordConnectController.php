@@ -36,11 +36,11 @@ class DiscordConnectController
                 ->title('Discord connected')
                 ->body(sprintf('PERSCOM is now connected to %s. Choose a channel for notifications.', $guild['name']))
                 ->send();
-        } catch (IntegrationConnectionException $exception) {
+        } catch (IntegrationConnectionException $integrationConnectionException) {
             Notification::make()
                 ->danger()
                 ->title('Discord was not connected')
-                ->body($exception->getMessage())
+                ->body($integrationConnectionException->getMessage())
                 ->send();
         }
 

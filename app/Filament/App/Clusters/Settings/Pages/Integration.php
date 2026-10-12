@@ -28,6 +28,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -261,7 +262,7 @@ class Integration extends SettingsPage
             User::query()
                 ->whereNotNull('discord_user_id')
                 ->pluck('id')
-                ->each(fn (int $id) => SyncDiscordMember::dispatch($id));
+                ->each(fn (int $id): PendingDispatch => dispatch(new SyncDiscordMember($id)));
         }
     }
 

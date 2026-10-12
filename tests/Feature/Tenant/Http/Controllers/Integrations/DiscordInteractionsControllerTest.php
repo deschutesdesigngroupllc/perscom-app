@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -41,7 +42,7 @@ class DiscordInteractionsControllerTest extends TenantTestCase
 
         $this->call('POST', route('integrations.discord.interactions'), server: [
             'HTTP_X_SIGNATURE_ED25519' => str_repeat('a', 128),
-            'HTTP_X_SIGNATURE_TIMESTAMP' => (string) time(),
+            'HTTP_X_SIGNATURE_TIMESTAMP' => (string) Date::now()->getTimestamp(),
         ], content: $body)->assertUnauthorized();
     }
 
@@ -175,7 +176,7 @@ class DiscordInteractionsControllerTest extends TenantTestCase
     protected function interact(array $payload): TestResponse
     {
         $body = (string) json_encode($payload);
-        $timestamp = (string) time();
+        $timestamp = (string) Date::now()->getTimestamp();
 
         return $this->call('POST', route('integrations.discord.interactions'), server: [
             'CONTENT_TYPE' => 'application/json',

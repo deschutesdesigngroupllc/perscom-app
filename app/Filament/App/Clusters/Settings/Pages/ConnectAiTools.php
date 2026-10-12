@@ -118,7 +118,7 @@ class ConnectAiTools extends Page
                             ]),
                         Tab::make('Other Tools')
                             ->schema([
-                                $this->note('other_note', 'Any tool that supports remote MCP servers over Streamable HTTP can connect with the server URL. Tools that sign in with OAuth discover PERSCOM\'s sign-in automatically.'),
+                                $this->note('other_note', "Any tool that supports remote MCP servers over Streamable HTTP can connect with the server URL. Tools that sign in with OAuth discover PERSCOM's sign-in automatically."),
                                 $this->note('other_api_key', 'For tools that cannot sign in, create an API key with the view scopes you want to share and send it as a bearer token in the Authorization header.'),
                                 TextEntry::make('api_keys')
                                     ->hiddenLabel()

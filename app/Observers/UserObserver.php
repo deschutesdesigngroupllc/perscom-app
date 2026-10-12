@@ -79,7 +79,7 @@ class UserObserver
         }
 
         if ($user->isDirty(['rank_id', 'unit_id', 'name', 'discord_user_id']) && filled($user->discord_user_id) && DiscordRoleSyncService::isEnabled()) {
-            SyncDiscordMember::dispatch($user->getKey());
+            dispatch(new SyncDiscordMember($user->getKey()));
         }
 
         if ($user->isDirty('phone_number') && filled($user->phone_number)) {

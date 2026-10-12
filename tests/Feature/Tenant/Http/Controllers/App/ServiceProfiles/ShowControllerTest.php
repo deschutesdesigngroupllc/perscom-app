@@ -42,10 +42,7 @@ class ShowControllerTest extends TenantTestCase
             ->assertOk()
             ->assertSee('Jabari Willms')
             ->assertSee('Command Sergeant Major')
-            ->assertSee('Bronze Star Medal')
-            ->assertSee('For meritorious service during Exercise Robin Sage.')
-            ->assertSee('<meta property="og:title" content="CSM Jabari Willms" />', false)
-            ->assertSee('<meta name="twitter:card" content="summary_large_image" />', false)
+            ->assertSee('Bronze Star Medal')->assertSee('For meritorious service during Exercise Robin Sage.')->assertSeeHtml('<meta property="og:title" content="CSM Jabari Willms" />')->assertSeeHtml('<meta name="twitter:card" content="summary_large_image" />')
             ->assertSee('Start your unit')
             ->assertDontSee($member->email);
     }
