@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Data\Events\OccurrenceData;
 use App\Exceptions\EventCheckInException;
 use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Event;
+use App\Models\EventOccurrence;
 use App\Models\EventRegistration;
 use App\Models\TrainingRecord;
 use App\Models\User;
 use Carbon\CarbonInterface;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -26,29 +28,37 @@ class EventAttendanceService
     /**
      * Resolve the check-in window for the occurrence of the event that is closest to the given time.
      *
+     * @return array{0: CarbonInterface, 1: CarbonInterface}|null
+     */
+    public static function checkInWindow(Event $event, ?CarbonInterface $at = null): ?array
+    {
+        $occurrence = EventOccurrenceService::nearest($event, $at ?? now());
+
+        return $occurrence instanceof OccurrenceData ? static::windowFor($occurrence) : null;
+    }
+
+    /**
      * @return array{0: CarbonInterface, 1: CarbonInterface}
      */
-    public static function checkInWindow(Event $event, ?CarbonInterface $at = null): array
+    public static function windowFor(OccurrenceData $occurrence): array
     {
-        $at ??= now();
-
-        return static::occurrences($event)
-            ->map(fn (array $occurrence): array => [
-                $occurrence[0]->copy()->subMinutes(static::CHECK_IN_GRACE_MINUTES),
-                $occurrence[1]->copy()->addMinutes(static::CHECK_IN_GRACE_MINUTES),
-            ])
-            ->sortBy(fn (array $window): float => match (true) {
-                $at->between($window[0], $window[1]) => 0,
-                default => min(abs($at->diffInSeconds($window[0])), abs($at->diffInSeconds($window[1]))),
-            })
-            ->first();
+        return [
+            $occurrence->starts->copy()->subMinutes(static::CHECK_IN_GRACE_MINUTES),
+            $occurrence->ends->copy()->addMinutes(static::CHECK_IN_GRACE_MINUTES),
+        ];
     }
 
     public static function isWithinCheckInWindow(Event $event, ?CarbonInterface $at = null): bool
     {
         $at ??= now();
 
-        [$opens, $closes] = static::checkInWindow($event, $at);
+        $occurrence = EventOccurrenceService::nearest($event, $at);
+
+        if (! $occurrence instanceof OccurrenceData || $occurrence->isCancelled()) {
+            return false;
+        }
+
+        [$opens, $closes] = static::windowFor($occurrence);
 
         return $at->between($opens, $closes);
     }
@@ -59,36 +69,75 @@ class EventAttendanceService
     }
 
     /**
+     * Check the user in to the occurrence that is currently open for check-in.
+     *
      * @throws EventCheckInException
      */
     public static function checkIn(Event $event, User $user): EventRegistration
     {
-        throw_unless(static::isWithinCheckInWindow($event), EventCheckInException::outsideWindow());
+        $occurrence = EventOccurrenceService::nearest($event, now());
 
-        $isRegistered = $event->registrations()->whereKey($user->getKey())->exists();
+        throw_if($occurrence?->isCancelled(), EventCheckInException::cancelled());
+        throw_unless($occurrence instanceof OccurrenceData && static::isWithinCheckInWindow($event), EventCheckInException::outsideWindow());
+
+        $isRegistered = EventRegistration::query()
+            ->where('event_id', $event->getKey())
+            ->where('user_id', $user->getKey())
+            ->exists();
 
         throw_if(! $isRegistered && ! $event->registration_enabled, EventCheckInException::registrationDisabled());
 
-        static::markAttendance($event, $user, EventRegistrationStatus::ATTENDED, now());
-
-        return static::registrationFor($event, $user);
+        return static::markAttendance($occurrence, $user->getKey(), EventRegistrationStatus::ATTENDED, now());
     }
 
     /**
+     * Record attendance for an occurrence. Defaults to the occurrence closest to now.
+     *
      * @param  array<int, int>  $attendedUserIds
      * @param  array<int, int>  $noShowUserIds
      */
-    public static function recordAttendance(Event $event, array $attendedUserIds, array $noShowUserIds = []): void
+    public static function recordAttendance(Event $event, array $attendedUserIds, array $noShowUserIds = [], ?OccurrenceData $occurrence = null): void
     {
-        DB::transaction(function () use ($event, $attendedUserIds, $noShowUserIds): void {
-            User::query()->whereKey($attendedUserIds)->get()->each(fn (User $user) => static::markAttendance($event, $user, EventRegistrationStatus::ATTENDED));
-            User::query()->whereKey(array_diff($noShowUserIds, $attendedUserIds))->get()->each(fn (User $user) => static::markAttendance($event, $user, EventRegistrationStatus::NO_SHOW));
+        $occurrence ??= EventOccurrenceService::nearest($event, now());
+
+        if (! $occurrence instanceof OccurrenceData) {
+            return;
+        }
+
+        DB::transaction(function () use ($occurrence, $attendedUserIds, $noShowUserIds): void {
+            User::query()->whereKey($attendedUserIds)->pluck('id')->each(fn (int $userId): EventRegistration => static::markAttendance($occurrence, $userId, EventRegistrationStatus::ATTENDED));
+            User::query()->whereKey(array_diff($noShowUserIds, $attendedUserIds))->pluck('id')->each(fn (int $userId): EventRegistration => static::markAttendance($occurrence, $userId, EventRegistrationStatus::NO_SHOW));
         });
     }
 
     /**
+     * The registrations that apply to an occurrence, keyed by user id. A registration made for the
+     * occurrence itself takes precedence over the member's series-wide registration.
+     *
+     * @return Collection<int, EventRegistration>
+     */
+    public static function registrationsFor(OccurrenceData $occurrence): Collection
+    {
+        $occurrenceId = $occurrence->event->repeats ? $occurrence->occurrence?->getKey() : null;
+
+        return EventRegistration::query()
+            ->where('event_id', $occurrence->event->getKey())
+            ->where(fn (Builder $query): Builder => $query
+                ->whereNull('event_occurrence_id')
+                ->when($occurrenceId, fn (Builder $query, int $id): Builder => $query->orWhere('event_occurrence_id', $id)))
+            ->get()
+            ->sortBy(fn (EventRegistration $registration): int => $registration->event_occurrence_id === null ? 0 : 1)
+            ->keyBy('user_id');
+    }
+
+    public static function statusFor(OccurrenceData $occurrence, User $user): ?EventRegistrationStatus
+    {
+        return static::registrationsFor($occurrence)->get($user->getKey())?->status;
+    }
+
+    /**
      * Create a training record for an attended registration when the event is configured to do so.
-     * Returns null when no record is needed or one already exists for the user and event.
+     * Returns null when no record is needed or one already exists for the user and occurrence.
      */
     public static function createTrainingRecord(EventRegistration $registration): ?TrainingRecord
     {
@@ -101,60 +150,40 @@ class EventAttendanceService
         $exists = TrainingRecord::query()
             ->where('user_id', $registration->user_id)
             ->where('event_id', $event->getKey())
+            ->where('event_occurrence_id', $registration->event_occurrence_id)
             ->exists();
 
         if ($exists) {
             return null;
         }
 
+        $occurrence = $registration->occurrence;
+
         return TrainingRecord::query()->create([
             'user_id' => $registration->user_id,
             'event_id' => $event->getKey(),
-            'text' => sprintf('Attended %s.', $event->name),
+            'event_occurrence_id' => $occurrence?->getKey(),
+            'text' => $occurrence instanceof EventOccurrence
+                ? sprintf('Attended %s on %s.', $event->name, $occurrence->starts->copy()->setTimezone(ScheduleService::timezone())->toFormattedDayDateString())
+                : sprintf('Attended %s.', $event->name),
         ]);
     }
 
-    protected static function markAttendance(Event $event, User $user, EventRegistrationStatus $status, ?CarbonInterface $checkedInAt = null): void
+    protected static function markAttendance(OccurrenceData $occurrence, int $userId, EventRegistrationStatus $status, ?CarbonInterface $checkedInAt = null): EventRegistration
     {
-        $attributes = collect(['status' => $status, 'checked_in_at' => $checkedInAt])
+        /** @var EventRegistration $registration */
+        $registration = EventRegistration::query()->firstOrNew([
+            'event_id' => $occurrence->event->getKey(),
+            'user_id' => $userId,
+            'event_occurrence_id' => EventOccurrenceService::registrationOccurrenceId($occurrence),
+        ]);
+
+        $registration->fill(collect(['status' => $status, 'checked_in_at' => $checkedInAt])
             ->filter(fn (mixed $value): bool => filled($value))
-            ->all();
+            ->all());
 
-        if ($event->registrations()->whereKey($user->getKey())->exists()) {
-            $event->registrations()->updateExistingPivot($user->getKey(), $attributes);
+        $registration->save();
 
-            return;
-        }
-
-        $event->registrations()->attach($user->getKey(), $attributes);
-    }
-
-    protected static function registrationFor(Event $event, User $user): EventRegistration
-    {
-        /** @var EventRegistration */
-        return EventRegistration::query()
-            ->where('event_id', $event->getKey())
-            ->where('user_id', $user->getKey())
-            ->firstOrFail();
-    }
-
-    /**
-     * @return Collection<int, array{0: Carbon, 1: Carbon}>
-     */
-    protected static function occurrences(Event $event): Collection
-    {
-        $schedule = $event->schedule;
-
-        if (blank($schedule)) {
-            $ends = $event->ends ?? $event->starts;
-
-            return collect([[$event->starts, $event->all_day ? $ends->copy()->endOfDay() : $ends]]);
-        }
-
-        return collect([$schedule->last_occurrence, $schedule->next_occurrence])
-            ->filter()
-            ->whenEmpty(fn (Collection $collection): Collection => $collection->push($schedule->start))
-            ->map(fn (Carbon $start): array => [$start, $start->copy()->addHours($schedule->duration)])
-            ->values();
+        return $registration;
     }
 }

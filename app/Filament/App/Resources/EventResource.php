@@ -14,14 +14,17 @@ use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationMa
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
+use App\Models\Calendar;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
+use App\Models\Schedule as ScheduleModel;
 use App\Models\User;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Carbon\Month;
 use Carbon\WeekDay;
 use DateTimeInterface;
@@ -39,14 +42,9 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Pages\PageRegistration;
-use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\View;
@@ -79,38 +77,40 @@ class EventResource extends BaseResource
 
     public static function form(Schema $schema): Schema
     {
+        $timezone = fn (): string => UserSettingsService::get('timezone', function (): string {
+            /** @var OrganizationSettings $settings */
+            $settings = resolve(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        });
+
         return $schema
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
-                Tabs::make()
-                    ->persistTabInQueryString()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Event')
-                            ->icon('heroicon-o-calendar-days')
+                Group::make()
+                    ->columnSpan(['default' => 1, 'lg' => 2])
+                    ->schema([
+                        Section::make('Basics')
+                            ->description('What the event is and where it appears.')
+                            ->icon(Heroicon::OutlinedCalendarDays)
                             ->columns()
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the event.')
                                     ->required()
                                     ->maxLength(255)
+                                    ->live(onBlur: true)
                                     ->columnSpanFull(),
                                 Select::make('calendar_id')
+                                    ->label('Calendar')
                                     ->preload()
                                     ->helperText('The calendar the event belongs to.')
                                     ->required()
+                                    ->live()
                                     ->relationship(name: 'calendar', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => CalendarResource::form($form)),
-                                Select::make('author_id')
-                                    ->default(Auth::user()->getAuthIdentifier())
-                                    ->preload()
-                                    ->helperText('The author of the event.')
-                                    ->required()
-                                    ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
                                 Select::make('categories')
-                                    ->columnSpanFull()
                                     ->label('Category')
                                     ->createOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
                                     ->editOptionForm(fn (Schema $schema): Schema => CategoryForm::configure($schema))
@@ -121,14 +121,55 @@ class EventResource extends BaseResource
                                     ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                                Select::make('author_id')
+                                    ->label('Host')
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->preload()
+                                    ->helperText('The member hosting the event.')
+                                    ->required()
+                                    ->relationship(name: 'author', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form))
+                                    ->columnSpanFull(),
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 6rem;'])
+                                    ->helperText('A short summary of the event, shown in lists and search results.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                RichEditor::make('content')
+                                    ->label('Briefing')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                                    ->helperText('The full briefing shown on the event page.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Section::make()
+                                    ->contained(false)
+                                    ->visibleOn('edit')
+                                    ->columnSpanFull()
+                                    ->relationship('image', fn ($state): bool => filled(data_get($state, 'path')))
+                                    ->schema([
+                                        FileUpload::make('path')
+                                            ->label('Image')
+                                            ->image()
+                                            ->imageEditor()
+                                            ->previewable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->visibility('public')
+                                            ->storeFileNamesIn('filename')
+                                            ->helperText('Add an optional image for the event.'),
+                                    ]),
+                            ]),
+                        Section::make('When & Where')
+                            ->description('When the event happens, whether it repeats and where to go.')
+                            ->icon(Heroicon::OutlinedMapPin)
+                            ->columns()
+                            ->schema(fn (Get $get): array => [
                                 DateTimePicker::make('starts')
                                     ->helperText('The date and time the event starts.')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
+                                    ->timezone($timezone())
                                     ->default(now()->addHour()->startOfHour())
                                     ->live(onBlur: true)
                                     ->required()
@@ -151,12 +192,7 @@ class EventResource extends BaseResource
                                     ->time(fn (Get $get): bool => ! $get('all_day')),
                                 DateTimePicker::make('ends')
                                     ->helperText('The date and time the event ends.')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
+                                    ->timezone($timezone())
                                     ->default(now()->addHours(2)->startOfHour())
                                     ->afterOrEqual('starts')
                                     ->live(onBlur: true)
@@ -175,19 +211,21 @@ class EventResource extends BaseResource
                                     ->time(fn (Get $get): bool => ! $get('all_day')),
                                 Toggle::make('all_day')
                                     ->helperText('Check if the event does not have a start and end time.')
-                                    ->columnSpanFull()
                                     ->live()
                                     ->required(),
-                                RichEditor::make('description')
-                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('The description of the event.')
-                                    ->nullable()
-                                    ->maxLength(65535)
-                                    ->columnSpanFull(),
+                                Toggle::make('repeats')
+                                    ->helperText('Check if the event repeats.')
+                                    ->default(false)
+                                    ->live(),
+                                Schedule::make(
+                                    startHidden: true,
+                                    allDay: $get('all_day') ?? false
+                                )->visible($get('repeats') ?? false),
                                 Textarea::make('location')
                                     ->helperText('The location of the event.')
                                     ->nullable()
                                     ->maxLength(65535)
+                                    ->live(onBlur: true)
                                     ->columnSpanFull(),
                                 TextInput::make('url')
                                     ->label('URL')
@@ -197,47 +235,34 @@ class EventResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                        Section::make('Registration & Reminders')
+                            ->description('How members RSVP and when they are reminded.')
+                            ->icon(Heroicon::OutlinedUserPlus)
+                            ->columns()
                             ->schema([
-                                RichEditor::make('content')
-                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->hiddenLabel()
-                                    ->helperText('The informational content of the event.')
+                                Toggle::make('registration_enabled')
+                                    ->live()
+                                    ->label('Registration enabled')
+                                    ->helperText('Whether members can RSVP to the event.')
+                                    ->default(false),
+                                DateTimePicker::make('registration_deadline')
+                                    ->visible(fn (Get $get): mixed => $get('registration_enabled'))
+                                    ->timezone($timezone())
+                                    ->label('Deadline')
                                     ->nullable()
-                                    ->maxLength(65535)
+                                    ->helperText('The deadline for registration. Leave blank for no deadline.'),
+                                Toggle::make('creates_training_record')
+                                    ->label('Create training records')
+                                    ->helperText('Automatically create a training record for each member marked as attended.')
+                                    ->default(false)
                                     ->columnSpanFull(),
-                            ]),
-                        Tab::make('Image')
-                            ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
-                            ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->hiddenLabel()
-                                    ->relationship('image', fn ($state): bool => filled(data_get($state, 'path')))
-                                    ->schema([
-                                        FileUpload::make('path')
-                                            ->hiddenLabel()
-                                            ->image()
-                                            ->imageEditor()
-                                            ->previewable()
-                                            ->openable()
-                                            ->downloadable()
-                                            ->visibility('public')
-                                            ->storeFileNamesIn('filename')
-                                            ->helperText('Add an optional image for the event.'),
-                                    ]),
-                            ]),
-                        Tab::make('Notifications')
-                            ->icon('heroicon-o-bell')
-                            ->schema([
                                 Toggle::make('notifications_enabled')
                                     ->live()
-                                    ->label('Enabled')
+                                    ->label('Reminders enabled')
                                     ->validationAttribute('enabled notifications')
                                     ->default(false)
-                                    ->helperText('Send reminder notifications to all registered users.'),
+                                    ->helperText('Send reminder notifications to all registered users.')
+                                    ->columnSpanFull(),
                                 Select::make('notifications_interval')
                                     ->visible(fn (Get $get): mixed => $get('notifications_enabled'))
                                     ->label('Alert')
@@ -248,201 +273,19 @@ class EventResource extends BaseResource
                                 CheckboxList::make('notifications_channels')
                                     ->visible(fn (Get $get): mixed => $get('notifications_enabled'))
                                     ->label('Channels')
+                                    ->helperText('How the notifications should be delivered.')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
                                     ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
                                     ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
                             ]),
-                        Tab::make('Schedule')
-                            ->icon('heroicon-o-arrow-path')
-                            ->columns()
-                            ->schema(fn (Get $get): array => [
-                                Toggle::make('repeats')
-                                    ->helperText('Check if the event repeats.')
-                                    ->columnSpanFull()
-                                    ->default(false)
-                                    ->live(),
-                                Schedule::make(
-                                    startHidden: true,
-                                    allDay: $get('all_day') ?? false
-                                )->visible($get('repeats') ?? false),
-                            ]),
-                        Tab::make('Registration')
-                            ->icon('heroicon-o-user-plus')
-                            ->schema([
-                                Toggle::make('registration_enabled')
-                                    ->live()
-                                    ->label('Enabled')
-                                    ->helperText('Whether registration is enabled for the event.')
-                                    ->default(false),
-                                DateTimePicker::make('registration_deadline')
-                                    ->visible(fn (Get $get): mixed => $get('registration_enabled'))
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = resolve(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->label('Deadline')
-                                    ->nullable()
-                                    ->helperText('The deadline for registration. Leave blank for no deadline.'),
-                                Toggle::make('creates_training_record')
-                                    ->label('Create training records')
-                                    ->helperText('Automatically create a training record for each member marked as attended.')
-                                    ->default(false),
-                            ]),
                     ]),
-            ]);
-    }
-
-    public static function infolist(Schema $schema): Schema
-    {
-        $timezone = fn (): string => UserSettingsService::get('timezone', function (): string {
-            /** @var OrganizationSettings $settings */
-            $settings = resolve(OrganizationSettings::class);
-
-            return $settings->timezone ?? config('app.timezone');
-        });
-
-        return $schema
-            ->components([
-                Tabs::make()
-                    ->persistTabInQueryString()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Overview')
-                            ->icon('heroicon-o-calendar-days')
-                            ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->schema([
-                                        ImageEntry::make('image.image_url')
-                                            ->hiddenLabel()
-                                            ->visible(fn (?Event $record): bool => filled($record?->image?->image_url))
-                                            ->extraImgAttributes(['class' => 'w-full rounded-lg object-cover max-h-72'])
-                                            ->columnSpanFull(),
-                                        Grid::make()
-                                            ->columns(['default' => 1, 'sm' => 2, 'md' => 4])
-                                            ->schema([
-                                                TextEntry::make('calendar.name')
-                                                    ->label('Calendar')
-                                                    ->placeholder('—')
-                                                    ->badge()
-                                                    ->color(fn (?Event $record): array => Color::generateV3Palette($record?->calendar?->color ?? '#2563eb')),
-                                                TextEntry::make('categories.name')
-                                                    ->label('Category')
-                                                    ->placeholder('Uncategorized')
-                                                    ->badge()
-                                                    ->color('gray'),
-                                                TextEntry::make('all_day')
-                                                    ->label('All Day')
-                                                    ->badge()
-                                                    ->state(fn (?Event $record): string => $record?->all_day ? 'Yes' : 'No')
-                                                    ->color(fn (?Event $record): string => $record?->all_day ? 'success' : 'gray'),
-                                                TextEntry::make('has_passed')
-                                                    ->label('Status')
-                                                    ->badge()
-                                                    ->state(fn (?Event $record): string => $record?->has_passed ? 'Past' : 'Upcoming')
-                                                    ->color(fn (?Event $record): string => $record?->has_passed ? 'gray' : 'success'),
-                                            ]),
-                                        TextEntry::make('description')
-                                            ->hiddenLabel()
-                                            ->visible(fn ($state): bool => filled($state))
-                                            ->html()
-                                            ->columnSpanFull(),
-                                    ]),
-                                Fieldset::make('When')
-                                    ->columns(['default' => 1, 'md' => 2])
-                                    ->schema([
-                                        TextEntry::make('starts')
-                                            ->label('Begins')
-                                            ->visible(fn (?Event $record): bool => ! $record?->repeats)
-                                            ->dateTime(timezone: $timezone()),
-                                        TextEntry::make('ends')
-                                            ->label('Ends')
-                                            ->visible(fn (?Event $record): bool => ! $record?->repeats && filled($record?->ends))
-                                            ->dateTime(timezone: $timezone()),
-                                        TextEntry::make('length')
-                                            ->label('Duration')
-                                            ->visible(fn (?Event $record): bool => filled($record?->length) && $record->length->total('seconds') > 0)
-                                            ->formatStateUsing(fn ($state): string => $state->forHumans(['parts' => 2])),
-                                        TextEntry::make('schedule.next_occurrence')
-                                            ->label('Next Occurrence')
-                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule?->next_occurrence))
-                                            ->dateTime(timezone: $timezone()),
-                                        TextEntry::make('schedule.last_occurrence')
-                                            ->label('Last Occurrence')
-                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule?->last_occurrence))
-                                            ->dateTime(timezone: $timezone()),
-                                        TextEntry::make('rule_readable')
-                                            ->label('Repeats')
-                                            ->visible(fn (?Event $record): bool => (bool) $record?->repeats && filled($record?->schedule))
-                                            ->columnSpanFull()
-                                            ->getStateUsing(fn (?Event $record): ?string => ScheduleService::getSchedulePattern($record->schedule, $record->all_day)),
-                                    ]),
-                                Fieldset::make('Where')
-                                    ->visible(fn (?Event $record): bool => filled($record?->location) || filled($record?->url))
-                                    ->schema([
-                                        TextEntry::make('location')
-                                            ->visible(fn ($state): bool => filled($state))
-                                            ->columnSpanFull(),
-                                        View::make('filament.app.infolists.event-map')
-                                            ->visible(fn (?Event $record): bool => filled($record?->location))
-                                            ->viewData(fn (?Event $record): array => ['location' => $record?->location])
-                                            ->columnSpanFull(),
-                                        TextEntry::make('url')
-                                            ->label('Link')
-                                            ->visible(fn ($state): bool => filled($state))
-                                            ->url(fn (?Event $record): ?string => $record?->url, shouldOpenInNewTab: true)
-                                            ->columnSpanFull(),
-                                    ]),
-                                Fieldset::make('Organizer')
-                                    ->visible(fn (?Event $record): bool => filled($record?->author))
-                                    ->columns(['default' => 1, 'md' => 2])
-                                    ->schema([
-                                        TextEntry::make('author.display_name')
-                                            ->label('Hosted By'),
-                                    ]),
-                            ]),
-                        Tab::make('About')
-                            ->icon('heroicon-o-information-circle')
-                            ->visible(fn (?Event $record): bool => filled($record?->content))
-                            ->schema([
-                                TextEntry::make('content')
-                                    ->hiddenLabel()
-                                    ->html()
-                                    ->columnSpanFull(),
-                            ]),
-                        Tab::make('Registration')
-                            ->icon('heroicon-o-user-plus')
-                            ->badge(fn (?Event $record): ?int => $record?->registrations_count ?: $record?->registrations?->count())
-                            ->badgeColor('primary')
-                            ->visible(fn (?Event $record): bool => (bool) $record?->registration_enabled)
-                            ->schema([
-                                Section::make()
-                                    ->contained(false)
-                                    ->columns(['default' => 1, 'md' => 3])
-                                    ->schema([
-                                        TextEntry::make('registrations_count')
-                                            ->label('Registered')
-                                            ->icon('heroicon-o-users')
-                                            ->state(fn (?Event $record): int => $record?->registrations?->count() ?? 0),
-                                        TextEntry::make('registration_deadline')
-                                            ->label('Deadline')
-                                            ->icon('heroicon-o-calendar')
-                                            ->placeholder('No deadline')
-                                            ->dateTime(timezone: $timezone()),
-                                        TextEntry::make('registration_status')
-                                            ->label('Status')
-                                            ->badge()
-                                            ->state(fn (?Event $record): string => match (true) {
-                                                ! $record?->registration_enabled => 'Closed',
-                                                filled($record?->registration_deadline) && $record->registration_deadline->isPast() => 'Closed',
-                                                default => 'Open',
-                                            })
-                                            ->color(fn (string $state): string => $state === 'Open' ? 'success' : 'danger'),
-                                    ]),
-                            ]),
+                Group::make()
+                    ->columnSpan(['default' => 1, 'lg' => 1])
+                    ->extraAttributes(['class' => 'hidden lg:sticky lg:top-24 lg:block'])
+                    ->schema([
+                        View::make('filament.app.events.form-summary')
+                            ->viewData(fn (Get $get): array => static::formSummary($get)),
                     ]),
             ]);
     }
@@ -513,8 +356,8 @@ class EventResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            AttachmentsRelationManager::class,
             CommentsRelationManager::class,
+            AttachmentsRelationManager::class,
             RegistrationsRelationManager::class,
         ];
     }
@@ -561,5 +404,41 @@ class EventResource extends BaseResource
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'description', 'content'];
+    }
+
+    /**
+     * The values shown in the live summary beside the event form.
+     *
+     * @return array{name: ?string, calendar: ?Calendar, starts: ?CarbonInterface, ends: ?CarbonInterface, allDay: bool, repeatRule: ?string, location: ?string, registrationEnabled: bool, remindersEnabled: bool}
+     */
+    protected static function formSummary(Get $get): array
+    {
+        $parse = fn (mixed $value): ?CarbonInterface => filled($value) && is_string($value) ? rescue(fn (): CarbonInterface => Date::parse($value), report: false) : null;
+        $allDay = (bool) $get('all_day');
+        $starts = $parse($get('starts'));
+
+        return [
+            'name' => $get('name'),
+            'calendar' => filled($get('calendar_id')) ? Calendar::query()->find($get('calendar_id')) : null,
+            'starts' => $starts,
+            'ends' => $parse($get('ends')),
+            'allDay' => $allDay,
+            'repeatRule' => $get('repeats') && $starts instanceof CarbonInterface
+                ? rescue(fn (): ?string => ScheduleService::getSchedulePattern(new ScheduleModel([
+                    'start' => $starts->copy()->shiftTimezone(UserSettingsService::timezone())->setTimezone(config('app.timezone')),
+                    'frequency' => $get('schedule.frequency'),
+                    'interval' => $get('schedule.interval'),
+                    'end_type' => $get('schedule.end_type'),
+                    'count' => $get('schedule.count'),
+                    'until' => $get('schedule.until'),
+                    'by_day' => $get('schedule.by_day'),
+                    'by_month_day' => $get('schedule.by_month_day'),
+                    'by_month' => $get('schedule.by_month'),
+                ]), $allDay), report: false)
+                : null,
+            'location' => $get('location'),
+            'registrationEnabled' => (bool) $get('registration_enabled'),
+            'remindersEnabled' => (bool) $get('notifications_enabled'),
+        ];
     }
 }

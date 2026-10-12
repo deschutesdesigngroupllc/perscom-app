@@ -59,10 +59,10 @@ class SearchMembers implements Tool
             ->when($filters->get('last_seen_before'), fn (Builder $query, string $date) => $query->where(fn (Builder $query) => $query->whereNull('last_seen_at')->orWhere('last_seen_at', '<', $date)))
             ->when($filters->get('last_seen_after'), fn (Builder $query, string $date) => $query->where('last_seen_at', '>', $date))
             ->when($filters->has('min_events_attended'), fn (Builder $query) => $query->whereHas(
-                'events',
+                'eventRegistrations',
                 fn (Builder $query) => $query
-                    ->where('events_registrations.status', EventRegistrationStatus::ATTENDED->value)
-                    ->where('events.starts', '>=', now()->subDays((int) $filters->get('attended_within_days', 30))),
+                    ->where('status', EventRegistrationStatus::ATTENDED->value)
+                    ->whereRaw('COALESCE(checked_in_at, updated_at) >= ?', [now()->subDays((int) $filters->get('attended_within_days', 30))]),
                 '>=',
                 (int) $filters->get('min_events_attended'),
             ))

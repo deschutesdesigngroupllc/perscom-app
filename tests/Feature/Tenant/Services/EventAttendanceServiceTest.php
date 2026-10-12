@@ -6,10 +6,17 @@ namespace Tests\Feature\Tenant\Services;
 
 use App\Exceptions\EventCheckInException;
 use App\Models\Enums\EventRegistrationStatus;
+use App\Models\Enums\ScheduleEndType;
+use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
+use App\Models\EventOccurrence;
+use App\Models\EventRegistration;
+use App\Models\Schedule;
 use App\Models\TrainingRecord;
 use App\Models\User;
 use App\Services\EventAttendanceService;
+use App\Services\EventOccurrenceService;
+use Illuminate\Support\Facades\Date;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class EventAttendanceServiceTest extends TenantTestCase
@@ -122,6 +129,100 @@ class EventAttendanceServiceTest extends TenantTestCase
         EventAttendanceService::recordAttendance($event, [$user->getKey()]);
 
         $this->assertDatabaseMissing('records_trainings', ['user_id' => $user->getKey(), 'event_id' => $event->getKey()]);
+    }
+
+    public function test_check_in_to_a_repeating_event_records_each_occurrence_separately(): void
+    {
+        $this->travelTo(Date::parse('2026-06-04 20:30:00'));
+        $event = $this->makeWeeklyEvent(Date::parse('2026-06-04 20:00:00'), createsTrainingRecord: true);
+        $user = User::factory()->createQuietly();
+
+        EventAttendanceService::checkIn($event, $user);
+
+        $this->travelTo(Date::parse('2026-06-11 20:30:00'));
+        EventAttendanceService::checkIn($event, $user);
+
+        $registrations = EventRegistration::query()->where('event_id', $event->getKey())->where('user_id', $user->getKey())->with('occurrence')->get();
+
+        $this->assertSame(['2026-06-04 20:00', '2026-06-11 20:00'], $registrations->map(fn (EventRegistration $registration): string => $registration->occurrence->starts->format('Y-m-d H:i'))->sort()->values()->all());
+        $this->assertTrue($registrations->every(fn (EventRegistration $registration): bool => $registration->status === EventRegistrationStatus::ATTENDED));
+        $this->assertSame(2, TrainingRecord::query()->where('user_id', $user->getKey())->where('event_id', $event->getKey())->whereNotNull('event_occurrence_id')->count());
+        $this->assertFalse($event->registrations()->exists());
+    }
+
+    public function test_check_in_fails_when_the_occurrence_is_cancelled(): void
+    {
+        $this->travelTo(Date::parse('2026-06-11 20:30:00'));
+        $event = $this->makeWeeklyEvent(Date::parse('2026-06-04 20:00:00'));
+        EventOccurrence::factory()->for($event)->cancelled()->createQuietly([
+            'starts' => Date::parse('2026-06-11 20:00:00'),
+            'ends' => Date::parse('2026-06-11 21:00:00'),
+        ]);
+
+        $this->assertFalse(EventAttendanceService::isWithinCheckInWindow($event));
+        $this->expectException(EventCheckInException::class);
+
+        EventAttendanceService::checkIn($event, User::factory()->createQuietly());
+    }
+
+    public function test_an_occurrence_registration_overrides_the_series_registration(): void
+    {
+        $event = $this->makeWeeklyEvent(Date::parse('2026-06-04 20:00:00'));
+        $user = User::factory()->createQuietly();
+        $event->registrations()->attach($user, ['status' => EventRegistrationStatus::GOING]);
+
+        $skipped = EventOccurrenceService::find($event, Date::parse('2026-06-11 20:00:00'));
+        $attending = EventOccurrenceService::find($event, Date::parse('2026-06-18 20:00:00'));
+
+        EventRegistration::query()->create([
+            'event_id' => $event->getKey(),
+            'user_id' => $user->getKey(),
+            'event_occurrence_id' => EventOccurrenceService::persist($skipped)->getKey(),
+            'status' => EventRegistrationStatus::NOT_GOING,
+        ]);
+
+        $this->assertSame(EventRegistrationStatus::NOT_GOING, EventAttendanceService::statusFor($skipped, $user));
+        $this->assertSame(EventRegistrationStatus::GOING, EventAttendanceService::statusFor($attending, $user));
+        $this->assertCount(1, $event->registrations()->get());
+    }
+
+    public function test_record_attendance_targets_the_given_occurrence(): void
+    {
+        $event = $this->makeWeeklyEvent(Date::parse('2026-06-04 20:00:00'));
+        $user = User::factory()->createQuietly();
+        $occurrence = EventOccurrenceService::find($event, Date::parse('2026-06-11 20:00:00'));
+
+        EventAttendanceService::recordAttendance($event, [], [$user->getKey()], $occurrence);
+
+        $this->assertDatabaseHas('events_registrations', [
+            'event_id' => $event->getKey(),
+            'user_id' => $user->getKey(),
+            'event_occurrence_id' => $occurrence->occurrence?->getKey(),
+            'status' => EventRegistrationStatus::NO_SHOW->value,
+        ]);
+    }
+
+    private function makeWeeklyEvent(mixed $start, bool $createsTrainingRecord = false): Event
+    {
+        $event = Event::factory()->createQuietly([
+            'all_day' => false,
+            'repeats' => true,
+            'starts' => $start,
+            'ends' => $start->copy()->addHour(),
+            'registration_enabled' => true,
+            'registration_deadline' => null,
+            'creates_training_record' => $createsTrainingRecord,
+        ]);
+
+        Schedule::factory()->for($event, 'repeatable')->createQuietly([
+            'start' => $start,
+            'duration' => 1,
+            'frequency' => ScheduleFrequency::WEEKLY,
+            'interval' => 1,
+            'end_type' => ScheduleEndType::NEVER,
+        ]);
+
+        return $event->refresh();
     }
 
     private function makeEvent(int $startsInMinutes, int $durationMinutes, bool $registrationEnabled = true, bool $createsTrainingRecord = false): Event

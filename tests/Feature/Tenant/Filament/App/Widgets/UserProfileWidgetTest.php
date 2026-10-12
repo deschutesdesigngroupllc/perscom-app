@@ -7,7 +7,6 @@ namespace Tests\Feature\Tenant\Filament\App\Widgets;
 use App\Filament\App\Widgets\UserProfileWidget;
 use App\Models\Award;
 use App\Models\AwardRecord;
-use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Event;
 use App\Models\Rank;
 use App\Models\RankRequirement;
@@ -47,44 +46,6 @@ class UserProfileWidgetTest extends TenantTestCase
             ->assertSee('Bronze Star');
     }
 
-    public function test_it_offers_check_in_for_events_whose_window_is_open(): void
-    {
-        $user = User::factory()->createQuietly();
-        $this->actingAs($user);
-
-        $event = Event::factory()->createQuietly([
-            'name' => 'Weekly Drill',
-            'all_day' => false,
-            'repeats' => false,
-            'registration_enabled' => true,
-            'starts' => now()->subMinutes(10),
-            'ends' => now()->addHour(),
-        ]);
-        $event->registrations()->attach($user, ['status' => EventRegistrationStatus::GOING->value]);
-
-        Livewire::test(UserProfileWidget::class)
-            ->assertSee('Weekly Drill')
-            ->assertSee('Check In');
-    }
-
-    public function test_it_does_not_offer_check_in_before_the_window_opens(): void
-    {
-        $user = User::factory()->createQuietly();
-        $this->actingAs($user);
-
-        Event::factory()->createQuietly([
-            'name' => 'Next Month Exercise',
-            'all_day' => false,
-            'repeats' => false,
-            'starts' => now()->addDays(10),
-            'ends' => now()->addDays(10)->addHour(),
-        ]);
-
-        Livewire::test(UserProfileWidget::class)
-            ->assertSee('Next Month Exercise')
-            ->assertDontSee('Check In');
-    }
-
     public function test_it_shows_progress_toward_the_next_promotion(): void
     {
         $senior = Rank::factory()->createQuietly(['name' => 'Sergeant', 'order' => 1]);
@@ -101,23 +62,21 @@ class UserProfileWidgetTest extends TenantTestCase
             ->assertSee('0 of 1 met');
     }
 
-    public function test_it_shows_the_registration_status_when_check_in_is_not_open(): void
+    public function test_upcoming_events_are_left_to_the_upcoming_events_widget(): void
     {
-        $user = User::factory()->createQuietly();
-        $this->actingAs($user);
+        $this->actingAs(User::factory()->createQuietly());
 
-        $event = Event::factory()->createQuietly([
+        Event::factory()->createQuietly([
             'name' => 'Field Exercise',
             'all_day' => false,
             'repeats' => false,
             'starts' => now()->addDays(3),
             'ends' => now()->addDays(3)->addHours(2),
         ]);
-        $event->registrations()->attach($user, ['status' => EventRegistrationStatus::GOING->value]);
 
         Livewire::test(UserProfileWidget::class)
-            ->assertSee('Field Exercise')
-            ->assertSee(EventRegistrationStatus::GOING->getLabel());
+            ->assertDontSee('Upcoming Events')
+            ->assertDontSee('Field Exercise');
     }
 
     public function test_record_links_follow_the_profile_tabs_the_organization_shows(): void

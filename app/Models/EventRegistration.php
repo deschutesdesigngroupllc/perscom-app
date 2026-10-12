@@ -23,10 +23,13 @@ use Illuminate\Support\Facades\Date;
  * @property int $id
  * @property int $user_id
  * @property int $event_id
+ * @property int|null $event_occurrence_id
  * @property EventRegistrationStatus|null $status
+ * @property Carbon|null $checked_in_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
+ * @property-read EventOccurrence|null $occurrence
  * @property-read User $user
  *
  * @method static Builder<static>|EventRegistration future()
@@ -34,14 +37,16 @@ use Illuminate\Support\Facades\Date;
  * @method static Builder<static>|EventRegistration newQuery()
  * @method static Builder<static>|EventRegistration query()
  * @method static Builder<static>|EventRegistration user(\App\Models\User $user)
+ * @method static Builder<static>|EventRegistration whereCheckedInAt($value)
  * @method static Builder<static>|EventRegistration whereCreatedAt($value)
  * @method static Builder<static>|EventRegistration whereEventId($value)
+ * @method static Builder<static>|EventRegistration whereEventOccurrenceId($value)
  * @method static Builder<static>|EventRegistration whereId($value)
  * @method static Builder<static>|EventRegistration whereStatus($value)
  * @method static Builder<static>|EventRegistration whereUpdatedAt($value)
  * @method static Builder<static>|EventRegistration whereUserId($value)
  *
- * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin \Eloquent
  */
 #[ObservedBy(EventRegistrationObserver::class)]
 class EventRegistration extends Pivot
@@ -56,6 +61,7 @@ class EventRegistration extends Pivot
 
     protected $fillable = [
         'event_id',
+        'event_occurrence_id',
         'status',
         'checked_in_at',
     ];
@@ -63,6 +69,11 @@ class EventRegistration extends Pivot
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function occurrence(): BelongsTo
+    {
+        return $this->belongsTo(EventOccurrence::class, 'event_occurrence_id');
     }
 
     /**

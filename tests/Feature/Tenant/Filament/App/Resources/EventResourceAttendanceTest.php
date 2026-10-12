@@ -6,10 +6,15 @@ namespace Tests\Feature\Tenant\Filament\App\Resources;
 
 use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Models\Enums\EventRegistrationStatus;
+use App\Models\Enums\ScheduleEndType;
+use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
+use App\Models\EventOccurrence;
 use App\Models\Permission;
+use App\Models\Schedule;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -37,6 +42,34 @@ class EventResourceAttendanceTest extends TenantTestCase
         $this->assertDatabaseHas('events_registrations', ['user_id' => $attendee->getKey(), 'status' => EventRegistrationStatus::ATTENDED->value]);
         $this->assertDatabaseHas('events_registrations', ['user_id' => $walkIn->getKey(), 'status' => EventRegistrationStatus::ATTENDED->value]);
         $this->assertDatabaseHas('events_registrations', ['user_id' => $absentee->getKey(), 'status' => EventRegistrationStatus::NO_SHOW->value]);
+    }
+
+    public function test_take_attendance_records_the_selected_occurrence_of_a_repeating_event(): void
+    {
+        $this->travelTo(Date::parse('2026-06-20 12:00:00'));
+        $this->actingAsSuperAdmin();
+
+        $start = Date::parse('2026-06-04 20:00:00');
+        $event = Event::factory()->createQuietly(['repeats' => true, 'all_day' => false, 'starts' => $start, 'ends' => $start->copy()->addHour(), 'registration_enabled' => true, 'registration_deadline' => null]);
+        Schedule::factory()->for($event, 'repeatable')->createQuietly(['start' => $start, 'duration' => 1, 'frequency' => ScheduleFrequency::WEEKLY, 'interval' => 1, 'end_type' => ScheduleEndType::NEVER]);
+        $attendee = User::factory()->createQuietly();
+        $absentee = User::factory()->createQuietly();
+        $event->registrations()->attach([$attendee->getKey(), $absentee->getKey()], ['status' => EventRegistrationStatus::GOING]);
+
+        Livewire::test(ViewEvent::class, ['record' => $event->getKey()])
+            ->callAction('takeAttendance', [
+                'occurrence' => Date::parse('2026-06-11 20:00:00')->toIso8601String(),
+                'attended' => [$attendee->getKey()],
+                'mark_no_show' => true,
+            ])
+            ->assertHasNoActionErrors();
+
+        $occurrence = EventOccurrence::query()->where('event_id', $event->getKey())->sole();
+
+        $this->assertSame('2026-06-11 20:00', $occurrence->starts->format('Y-m-d H:i'));
+        $this->assertDatabaseHas('events_registrations', ['user_id' => $attendee->getKey(), 'event_occurrence_id' => $occurrence->getKey(), 'status' => EventRegistrationStatus::ATTENDED->value]);
+        $this->assertDatabaseHas('events_registrations', ['user_id' => $absentee->getKey(), 'event_occurrence_id' => $occurrence->getKey(), 'status' => EventRegistrationStatus::NO_SHOW->value]);
+        $this->assertDatabaseHas('events_registrations', ['user_id' => $attendee->getKey(), 'event_occurrence_id' => null, 'status' => EventRegistrationStatus::GOING->value]);
     }
 
     public function test_take_attendance_leaves_unchecked_registrants_when_no_show_is_disabled(): void

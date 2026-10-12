@@ -72,8 +72,8 @@ class SearchMembersTest extends TenantTestCase
         $absentee = User::factory()->createQuietly();
         $recentEvent = Event::factory()->createQuietly(['starts' => now()->subDays(3), 'ends' => now()->subDays(3)->addHour()]);
         $oldEvent = Event::factory()->createQuietly(['starts' => now()->subDays(90), 'ends' => now()->subDays(90)->addHour()]);
-        $attendee->events()->attach($recentEvent, ['status' => EventRegistrationStatus::ATTENDED->value]);
-        $absentee->events()->attach($oldEvent, ['status' => EventRegistrationStatus::ATTENDED->value]);
+        $attendee->events()->attach($recentEvent, ['status' => EventRegistrationStatus::ATTENDED->value, 'checked_in_at' => now()->subDays(3)]);
+        $absentee->events()->attach($oldEvent, ['status' => EventRegistrationStatus::ATTENDED->value, 'checked_in_at' => now()->subDays(90)]);
         $absentee->events()->attach($recentEvent, ['status' => EventRegistrationStatus::NO_SHOW->value]);
 
         $this->assertSame([$attendee->getKey()], $this->search(['min_events_attended' => 1, 'attended_within_days' => 30]));
