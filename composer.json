@@ -9,6 +9,7 @@
   ],
   "require": {
     "php": "^8.4",
+    "ext-gd": "*",
     "ext-pdo": "*",
     "ext-zip": "*",
     "aws/aws-sdk-php": "^3.393.4",
