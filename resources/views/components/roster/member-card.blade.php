@@ -25,7 +25,7 @@
       @if (!in_array('rank_id', $hiddenFields) && $user->rank)
         <div class="mt-0.5 flex items-center gap-1.5 text-gray-600 dark:text-gray-300">
           @if ($user->rank->image)
-            <img src="{{ $user->rank->image->image_url }}" alt="" class="h-4 w-auto" loading="lazy">
+            <img src="{{ $user->rank->image->image_url }}" alt="" class="h-4 w-auto shrink-0 object-contain" loading="lazy">
           @endif
           <span class="truncate">{{ $user->rank->name }}</span>
         </div>

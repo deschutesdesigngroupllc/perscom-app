@@ -171,6 +171,20 @@ class RosterTest extends TenantTestCase
             ->assertSee('Expired');
     }
 
+    public function test_member_rows_list_formatted_time_in_grade(): void
+    {
+        User::factory()->createQuietly([
+            'name' => 'Veteran Member',
+            'unit_id' => $this->company->getKey(),
+            'rank_id' => Rank::factory()->createQuietly()->getKey(),
+            'created_at' => now()->subDays(1232),
+        ]);
+
+        Livewire::test(Roster::class)
+            ->assertSee('Veteran Member')
+            ->assertSee('1,232 days in grade');
+    }
+
     public function test_query_count_does_not_grow_with_the_number_of_members(): void
     {
         User::factory()->count(3)->createQuietly(['unit_id' => $this->company->getKey()]);
