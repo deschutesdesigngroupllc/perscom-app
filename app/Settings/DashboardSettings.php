@@ -30,6 +30,8 @@ class DashboardSettings extends Settings
 
     public string $display_name_format = '{name}';
 
+    public bool $public_profiles_enabled = false;
+
     public static function group(): string
     {
         return 'dashboard';

@@ -7,6 +7,8 @@ use App\Filament\App\Pages\Auth\AcceptInvite;
 use App\Http\Controllers\App\Events\CheckInController;
 use App\Http\Controllers\App\Pages\EditorController;
 use App\Http\Controllers\App\Pages\PreviewController;
+use App\Http\Controllers\App\ServiceProfiles\ImageController;
+use App\Http\Controllers\App\ServiceProfiles\ShowController;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Illuminate\Http\RedirectResponse;
@@ -19,6 +21,11 @@ Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], fun
     Route::get('invitation/{token}', AcceptInvite::class)
         ->middleware('throttle:invites')
         ->name('invites.accept');
+
+    Route::group(['prefix' => 'u', 'as' => 'service-profiles.', 'middleware' => ['throttle:service-profiles']], function (): void {
+        Route::get('{handle}', ShowController::class)->where('handle', '[a-z0-9-]+')->name('show');
+        Route::get('{handle}/card.png', ImageController::class)->where('handle', '[a-z0-9-]+')->name('image');
+    });
 
     Route::group(['middleware' => ['auth:web']], function (): void {
         Route::get('approval-required', AccountRequiresApproval::class)

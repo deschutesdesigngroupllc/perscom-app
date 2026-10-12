@@ -14,6 +14,7 @@ use App\Filament\App\Resources\UserResource\RelationManagers\RankRecordsRelation
 use App\Filament\App\Resources\UserResource\RelationManagers\ServiceRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\TrainingRecordsRelationManager;
 use App\Models\User;
+use App\Services\ServiceProfileService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use Filament\Actions\Action;
@@ -70,6 +71,13 @@ class ViewUser extends ViewRecord
         return [
             ClaimInviteAction::make()
                 ->color('gray'),
+            Action::make('publicProfile')
+                ->label('Public Profile')
+                ->icon('heroicon-o-globe-alt')
+                ->color('gray')
+                ->visible(fn (?User $record): bool => $record instanceof User && ServiceProfileService::isPublic($record))
+                ->url(fn (User $record): string => ServiceProfileService::url($record))
+                ->openUrlInNewTab(),
             Action::make('email')
                 ->hidden(fn (): bool => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
                 ->color('gray')

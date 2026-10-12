@@ -281,6 +281,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'notes_updated_at',
         'profile_photo',
         'cover_photo',
+        'hide_public_profile',
         'last_seen_at',
         'facebook_user_id',
         'github_user_id',
@@ -296,6 +297,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         'remember_token',
         'discord_private_channel_id',
         'has_email_authentication',
+        'public_profile_key',
     ];
 
     protected $appends = [
@@ -323,6 +325,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             'app_authentication_secret',
             'app_authentication_recovery_codes',
             'has_email_authentication',
+            'public_profile_key',
         ];
     }
 
@@ -545,6 +548,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
         return [
             'approved' => 'boolean',
             'email_verified_at' => 'datetime',
+            'hide_public_profile' => 'boolean',
             'last_seen_at' => 'datetime',
             'notes_updated_at' => 'datetime',
             'password' => 'hashed',
