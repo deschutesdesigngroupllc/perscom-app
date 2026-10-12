@@ -133,6 +133,33 @@ class EventOccurrenceServiceTest extends TenantTestCase
         $this->assertNotNull(EventOccurrenceService::registrationOccurrenceId(EventOccurrenceService::nearest($weekly)));
     }
 
+    public function test_around_lists_dates_before_and_after_the_given_time(): void
+    {
+        $event = $this->makeWeeklyEvent(Date::parse('2026-06-04 20:00:00'));
+        EventOccurrence::factory()->for($event)->cancelled()->createQuietly([
+            'starts' => Date::parse('2026-06-25 20:00:00'),
+            'ends' => Date::parse('2026-06-25 21:00:00'),
+        ]);
+
+        $occurrences = EventOccurrenceService::around($event, Date::parse('2026-06-18 20:00:00'), 2, 2);
+
+        $this->assertSame(
+            ['2026-06-11 20:00', '2026-06-18 20:00', '2026-06-25 20:00', '2026-07-02 20:00'],
+            $occurrences->map(fn (OccurrenceData $occurrence): string => $occurrence->starts->format('Y-m-d H:i'))->all(),
+        );
+        $this->assertSame([false, false, true, false], $occurrences->map(fn (OccurrenceData $occurrence): bool => $occurrence->isCancelled())->all());
+    }
+
+    public function test_around_returns_the_single_occurrence_of_a_one_time_event(): void
+    {
+        $event = $this->makeOneTimeEvent(Date::parse('2026-06-10 18:00:00'));
+
+        $occurrences = EventOccurrenceService::around($event, Date::parse('2027-01-01'));
+
+        $this->assertCount(1, $occurrences);
+        $this->assertTrue($occurrences->first()?->starts->equalTo($event->starts));
+    }
+
     /**
      * @param  array<string, mixed>  $schedule
      */
