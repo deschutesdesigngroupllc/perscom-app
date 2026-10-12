@@ -140,6 +140,27 @@ class ScheduleService
     }
 
     /**
+     * Up to $before occurrences starting at or before the given time, followed by up to $after
+     * occurrences starting after it.
+     *
+     * @return array<int, Carbon>
+     */
+    public static function occurrencesAround(Schedule $schedule, CarbonInterface $at, int $before, int $after): array
+    {
+        $rule = ScheduleService::generateRecurringRule($schedule);
+
+        if (is_null($rule)) {
+            return [];
+        }
+
+        return collect($before > 0 ? $rule->getOccurrencesBefore($at, true, $before) : [])
+            ->merge($after > 0 ? $rule->getOccurrencesAfter($at, false, $after) : [])
+            ->map(fn (DateTimeInterface $dateTime): Carbon => static::toApplicationTime($dateTime))
+            ->values()
+            ->all();
+    }
+
+    /**
      * @return array<Carbon>|null
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array

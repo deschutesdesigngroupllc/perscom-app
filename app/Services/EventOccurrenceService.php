@@ -81,6 +81,22 @@ class EventOccurrenceService
     }
 
     /**
+     * The occurrences surrounding the given time: up to $before occurrences starting at or before
+     * it followed by up to $after starting after it. One-time events return their only occurrence.
+     *
+     * @return Collection<int, OccurrenceData>
+     */
+    public static function around(Event $event, CarbonInterface $at, int $before = 4, int $after = 8): Collection
+    {
+        if (! $event->repeats || blank($event->schedule)) {
+            return static::attachPersisted($event, collect([static::oneTime($event)]));
+        }
+
+        return static::attachPersisted($event, collect(ScheduleService::occurrencesAround($event->schedule, $at, $before, $after))
+            ->map(fn (Carbon $starts): OccurrenceData => static::repeating($event, $starts)));
+    }
+
+    /**
      * The occurrence of the event that starts exactly at the given time.
      */
     public static function find(Event $event, CarbonInterface $starts): ?OccurrenceData
