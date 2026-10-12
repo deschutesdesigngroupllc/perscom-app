@@ -48,11 +48,11 @@ class OrganizationBuilder extends Page
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
 
     protected static ?string $navigationLabel = 'Organization Builder';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $slug = 'dashboard/organization-builder';
 

@@ -22,7 +22,7 @@ class Notifications extends SettingsPage
 {
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'General';
 
     protected static string $settings = NotificationSettings::class;
 
@@ -30,7 +30,7 @@ class Notifications extends SettingsPage
 
     protected ?string $subheading = 'Manage your default notification settings.';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $slug = 'dashboard/notifications';
 

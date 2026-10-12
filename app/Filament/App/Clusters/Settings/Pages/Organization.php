@@ -17,6 +17,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class Organization extends SettingsPage
 {
@@ -24,9 +25,11 @@ class Organization extends SettingsPage
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office';
 
+    protected static string|UnitEnum|null $navigationGroup = 'General';
+
     protected static ?string $navigationLabel = 'Organization';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 1;
 
     protected static string $settings = OrganizationSettings::class;
 

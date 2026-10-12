@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
 use Throwable;
+use UnitEnum;
 
 class Dashboard extends SettingsPage
 {
@@ -38,9 +39,11 @@ class Dashboard extends SettingsPage
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
+    protected static string|UnitEnum|null $navigationGroup = 'General';
+
     protected static ?string $navigationLabel = 'Dashboard';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static string $settings = DashboardSettings::class;
 

@@ -140,7 +140,7 @@ class AppPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
-                    ->navigationSort(3)
+                    ->navigationSort(22)
                     ->navigationIcon('heroicon-o-shield-check')
                     ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()

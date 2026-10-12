@@ -13,20 +13,22 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Phiki\Grammar\Grammar;
+use UnitEnum;
 
 class ConnectAiTools extends Page
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cpu-chip';
+
+    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
 
     protected static ?string $navigationLabel = 'Connect AI Tools';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 11;
 
     protected static ?string $title = 'Connect AI Tools';
 

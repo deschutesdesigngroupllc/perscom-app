@@ -55,11 +55,13 @@ class FieldResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+
+    protected static ?string $navigationLabel = 'Custom Fields';
 
     protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 30;
 
     protected static ?string $slug = 'resources/fields';
 

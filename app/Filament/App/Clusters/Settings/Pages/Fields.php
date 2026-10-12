@@ -25,9 +25,11 @@ use UnitEnum;
 
 class Fields extends SettingsPage
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+    protected static ?string $navigationLabel = 'Field Defaults';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
     protected static string $settings = FieldSettings::class;
 
@@ -37,7 +39,7 @@ class Fields extends SettingsPage
 
     protected static ?string $slug = 'dashboard/fields';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 31;
 
     public static function canAccess(): bool
     {

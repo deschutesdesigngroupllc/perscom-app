@@ -32,16 +32,19 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class Integration extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
+
+    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
 
     protected static ?string $navigationLabel = 'Integrations';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 12;
 
     protected static string $settings = IntegrationSettings::class;
 
