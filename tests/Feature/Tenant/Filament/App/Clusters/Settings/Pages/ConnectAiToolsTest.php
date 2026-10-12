@@ -23,7 +23,11 @@ class ConnectAiToolsTest extends TenantTestCase
             ->assertSuccessful()
             ->assertSee(route('mcp.server'))
             ->assertSee('claude mcp add --transport http perscom')
-            ->assertSee('read-only');
+            ->assertSee('read-only')
+            ->assertSeeInOrder(['Claude', 'Claude Code', 'ChatGPT', 'Gemini', 'Grok', 'Cursor', 'VS Code', 'Other Tools'])
+            ->assertSee('Developer Mode')
+            ->assertSee('httpUrl')
+            ->assertSee('grok.com/connectors');
     }
 
     public function test_members_without_the_super_admin_role_cannot_access_the_page(): void
