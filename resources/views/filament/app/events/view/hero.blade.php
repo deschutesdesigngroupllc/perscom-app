@@ -28,7 +28,7 @@
 
     <div class="flex flex-col gap-4 px-4 pb-5 sm:flex-row sm:items-start sm:gap-5 sm:px-6">
       @if ($occurrence)
-        <x-events.date-badge :occurrence="$occurrence" size="lg" class="-mt-10 shadow-md ring-4! ring-white! dark:ring-gray-900!" />
+        <x-events.date-badge :occurrence="$occurrence" size="lg" class="relative z-10 -mt-10 shadow-md ring-4! ring-white! dark:ring-gray-900!" />
       @endif
 
       <div class="flex min-w-0 flex-1 flex-col gap-2 sm:pt-3">

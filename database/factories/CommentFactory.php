@@ -16,7 +16,11 @@ class CommentFactory extends Factory
 {
     public function configure(): static
     {
-        return $this->afterMaking(fn (Comment $comment) => $comment->commentable()->associate(ServiceRecord::factory()->create()));
+        return $this->afterMaking(function (Comment $comment): void {
+            if (blank($comment->model_type)) {
+                $comment->commentable()->associate(ServiceRecord::factory()->create());
+            }
+        });
     }
 
     public function definition(): array

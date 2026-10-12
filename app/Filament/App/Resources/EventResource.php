@@ -10,7 +10,6 @@ use App\Filament\App\Resources\EventResource\Pages\EditEvent;
 use App\Filament\App\Resources\EventResource\Pages\ListEvents;
 use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
-use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
@@ -356,7 +355,6 @@ class EventResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            CommentsRelationManager::class,
             AttachmentsRelationManager::class,
             RegistrationsRelationManager::class,
         ];

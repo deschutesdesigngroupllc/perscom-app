@@ -10,6 +10,7 @@ use App\Filament\App\Resources\EventResource\Actions\AddToCalendarAction;
 use App\Filament\App\Resources\EventResource\Actions\CheckInLinkAction;
 use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
 use App\Livewire\Concerns\RespondsToEvents;
+use App\Livewire\Filament\App\EventDiscussion;
 use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Event;
 use App\Models\EventRegistration;
@@ -22,6 +23,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
 use Filament\Support\Components\ViewComponent;
@@ -86,13 +88,16 @@ class ViewEvent extends ViewRecord
                     ->extraAttributes([
                         // Let the sidebar span the briefing and discussion rows on wide screens while it
                         // still sits between them when the columns stack on small screens.
-                        'class' => 'lg:[&>.fi-grid]:grid-rows-[auto_1fr] lg:[&>.fi-grid>.fi-grid-col:nth-child(2)]:row-span-2',
+                        'class' => 'lg:[&>.fi-grid]:grid-rows-[auto_auto_1fr] lg:[&>.fi-grid>.fi-grid-col:nth-child(2)]:row-span-3',
                     ])
                     ->schema([
                         View::make('filament.app.events.view.briefing')
                             ->columnSpan(['default' => 1, 'lg' => 2]),
                         View::make('filament.app.events.view.sidebar')
                             ->columnSpan(['default' => 1, 'lg' => 1]),
+                        Livewire::make(EventDiscussion::class, fn (): array => ['event' => $this->getEvent()])
+                            ->key('event-discussion')
+                            ->columnSpan(['default' => 1, 'lg' => 2]),
                         $this->getRelationManagersContentComponent()
                             ->columnSpan(['default' => 1, 'lg' => 2]),
                     ]),
