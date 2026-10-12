@@ -42,7 +42,7 @@ class SlackService
 
     public static function installRedirectUri(): string
     {
-        return route('integrations.install.callback', ['provider' => 'slack']);
+        return config('services.slack.install_redirect') ?: route('integrations.install.callback', ['provider' => 'slack']);
     }
 
     /**

@@ -54,7 +54,7 @@ class DiscordService
 
     public static function installRedirectUri(): string
     {
-        return route('integrations.install.callback', ['provider' => 'discord']);
+        return config('services.discord.install_redirect') ?: route('integrations.install.callback', ['provider' => 'discord']);
     }
 
     /**
