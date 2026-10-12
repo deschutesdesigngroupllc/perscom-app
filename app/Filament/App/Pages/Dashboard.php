@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages;
 
 use App\Actions\Organization\ApplyOrganizationBlueprint;
-use App\Actions\Organization\CreateGroup;
-use App\Actions\Organization\CreatePosition;
-use App\Actions\Organization\CreateRank;
-use App\Actions\Organization\CreateStatus;
-use App\Actions\Organization\CreateUnit;
 use App\Data\Organization\OrganizationBlueprintData;
 use App\Filament\Actions\CopyAction;
 use App\Filament\Concerns\GeneratesOrganizationBlueprints;
 use App\Forms\Components\OrganizationBlueprint;
-use App\Models\Group;
 use App\Models\Position;
 use App\Models\Rank;
 use App\Models\Status;
@@ -28,7 +22,6 @@ use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -140,46 +133,19 @@ class Dashboard extends BaseDashboard
      */
     protected function getOnboardingFormData(): array
     {
-        $existingGroup = Group::query()->first();
-        $existingUnit = Unit::query()->first();
-        $existingPosition = Position::query()->first();
-        $existingRank = Rank::query()->first();
-        $existingStatus = Status::query()->first();
-
         return [
             'builder' => [
                 'preset' => 'blank',
                 'description' => null,
             ],
             'blueprint' => OrganizationBlueprint::toState(),
-            'group' => [
-                'name' => $existingGroup?->name,
-                'description' => $existingGroup?->description,
-            ],
-            'unit' => [
-                'name' => $existingUnit?->name,
-                'description' => $existingUnit?->description,
-            ],
-            'position' => [
-                'name' => $existingPosition?->name,
-                'description' => $existingPosition?->description,
-            ],
-            'rank' => [
-                'name' => $existingRank?->name,
-                'abbreviation' => $existingRank?->abbreviation,
-                'paygrade' => $existingRank?->paygrade,
-            ],
-            'status' => [
-                'name' => $existingStatus?->name,
-                'color' => $existingStatus?->color,
-            ],
             'personnel' => [
                 'name' => null,
                 'email' => null,
-                'assign_unit' => $existingUnit?->id,
-                'assign_position' => $existingPosition?->id,
-                'assign_rank' => $existingRank?->id,
-                'assign_status' => $existingStatus?->id,
+                'assign_unit' => null,
+                'assign_position' => null,
+                'assign_rank' => null,
+                'assign_status' => null,
             ],
             'finish' => [
                 'dont_show_again' => true,
@@ -215,14 +181,14 @@ class Dashboard extends BaseDashboard
                             ->cancelParentActions(),
                     ])->key('onboardingDismiss')->alignEnd(),
                     Section::make('Describe Your Organization')
-                        ->description('Tell us about your organization and we will build its ranks, groups, units, positions, awards and more. You can review and edit everything before it is created. Prefer to set things up yourself? Skip ahead to the manual steps.')
+                        ->description('Tell us about your organization and we will draft its ranks, groups, units, positions, awards and more, or start from a preset. Prefer to build it yourself? Skip ahead and add everything in the next step.')
                         ->schema([
                             Select::make('builder.preset')
                                 ->label('Start From')
                                 ->options(fn (): array => ['blank' => 'Start Blank', ...OrganizationBlueprintData::presets()])
                                 ->selectablePlaceholder(false)
                                 ->live()
-                                ->helperText('Choose a preset to start from a ready-made structure.'),
+                                ->helperText('Choose a preset to start from a ready-made structure, or start blank and build it yourself.'),
                             Textarea::make('builder.description')
                                 ->label('Description')
                                 ->rows(4)
@@ -264,136 +230,27 @@ class Dashboard extends BaseDashboard
                                         Notification::make()
                                             ->success()
                                             ->title('Preset Loaded')
-                                            ->body('Review the structure in the next step.')
+                                            ->body('Review and edit it in the next step.')
                                             ->send();
                                     }),
                             ])->key('onboardingBuilderActions'),
                         ]),
                 ]),
-            Step::make('Review')
-                ->label('Review Structure')
-                ->description('Edit your generated structure')
-                ->icon(Heroicon::OutlinedClipboardDocumentCheck)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Text::make('review_info')
-                        ->content('Everything below will be created when you complete setup. Leave it empty to set things up manually in the following steps.'),
-                    OrganizationBlueprint::make('blueprint'),
-                ]),
-            Step::make('Group')
-                ->hidden(fn (Get $get): bool => OrganizationBlueprint::isFilled($get('blueprint')))
-                ->description('Create your first organizational group')
+            Step::make('Structure')
+                ->label('Build Your Structure')
+                ->description('Ranks, units, positions and more')
                 ->icon(Heroicon::OutlinedRectangleGroup)
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
-                    Section::make('Create a Group')
-                        ->description('Groups are top-level divisions in your organization hierarchy (e.g., departments, divisions, or branches). Units are organized within groups.')
-                        ->schema([
-                            Text::make('group_info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->content(new HtmlString('<div class="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"><strong>Organization Hierarchy:</strong> Groups → Units → Personnel<br>Groups contain units, and personnel are assigned to units. A single unit can belong to multiple groups if needed.</div>')),
-                            TextInput::make('group.name')
-                                ->label('Group Name')
-                                ->placeholder('e.g., Infantry Division, Administrative Branch')
-                                ->maxLength(255),
-                            TextInput::make('group.description')
-                                ->label('Description')
-                                ->placeholder('A brief description of this group')
-                                ->maxLength(65535),
-                        ]),
-                ]),
-            Step::make('Unit')
-                ->hidden(fn (Get $get): bool => OrganizationBlueprint::isFilled($get('blueprint')))
-                ->description('Create your first unit')
-                ->icon(Heroicon::OutlinedHome)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Section::make('Create a Unit')
-                        ->description('Units are subdivisions within groups where personnel are assigned (e.g., teams, squads, platoons, or stations).')
-                        ->schema([
-                            Text::make('unit_info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->content(new HtmlString('<div class="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">Units belong to groups and contain your personnel. Personnel are assigned to a unit, and the roster displays them organized by their unit assignment.</div>')),
-                            TextInput::make('unit.name')
-                                ->label('Unit Name')
-                                ->placeholder('e.g., Alpha Company, Support Team, HQ Staff')
-                                ->maxLength(255),
-                            TextInput::make('unit.description')
-                                ->label('Description')
-                                ->placeholder('A brief description of this unit')
-                                ->maxLength(65535),
-                        ]),
-                ]),
-            Step::make('Position')
-                ->hidden(fn (Get $get): bool => OrganizationBlueprint::isFilled($get('blueprint')))
-                ->description('Create your first position')
-                ->icon(Heroicon::OutlinedIdentification)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Section::make('Create a Position')
-                        ->description('Positions represent roles or job titles that are assigned directly to personnel, independent of their unit.')
-                        ->schema([
-                            Text::make('position_info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->content(new HtmlString('<div class="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">Positions are assigned directly to users and can be used across any unit. They affect roster sorting and help define what role each person holds (e.g., Commander, Team Leader, Medic).</div>')),
-                            TextInput::make('position.name')
-                                ->label('Position Name')
-                                ->placeholder('e.g., Commander, Team Leader, Rifleman')
-                                ->maxLength(255),
-                            TextInput::make('position.description')
-                                ->label('Description')
-                                ->placeholder('A brief description of this position')
-                                ->maxLength(65535),
-                        ]),
-                ]),
-            Step::make('Rank')
-                ->hidden(fn (Get $get): bool => OrganizationBlueprint::isFilled($get('blueprint')))
-                ->description('Create your first rank')
-                ->icon(Heroicon::OutlinedChevronDoubleUp)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Section::make('Create a Rank')
-                        ->description('Ranks represent seniority levels and are used for roster sorting and hierarchy display.')
-                        ->schema([
-                            Text::make('rank_info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->content(new HtmlString('<div class="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">Ranks are assigned directly to users and determine their seniority. They include an order value for sorting (lower = higher rank), and can have images, abbreviations, and paygrades.</div>')),
-                            TextInput::make('rank.name')
-                                ->label('Rank Name')
-                                ->placeholder('e.g., Private, Sergeant, Captain')
-                                ->maxLength(255),
-                            TextInput::make('rank.abbreviation')
-                                ->label('Abbreviation')
-                                ->placeholder('e.g., PVT, SGT, CPT')
-                                ->maxLength(255),
-                            TextInput::make('rank.paygrade')
-                                ->label('Paygrade')
-                                ->placeholder('e.g., E-1, E-5, O-3')
-                                ->maxLength(255),
-                        ]),
-                ]),
-            Step::make('Status')
-                ->hidden(fn (Get $get): bool => OrganizationBlueprint::isFilled($get('blueprint')))
-                ->description('Create your first status')
-                ->icon(Heroicon::OutlinedScale)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Section::make('Create a Status')
-                        ->description('Statuses indicate the current state or availability of personnel (e.g., Active, On Leave, Retired).')
-                        ->schema([
-                            Text::make('status_info')
-                                ->extraAttributes(['class' => 'w-full'])
-                                ->content(new HtmlString('<div class="text-sm text-gray-500 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">Statuses are assigned to personnel to indicate their current state. They can be used to filter the roster, track availability, and manage personnel lifecycle (e.g., Active Duty, Reserve, Discharged).</div>')),
-                            TextInput::make('status.name')
-                                ->label('Status Name')
-                                ->placeholder('e.g., Active, On Leave, Retired')
-                                ->maxLength(255),
-                            ColorPicker::make('status.color')
-                                ->label('Color'),
-                        ]),
+                    Text::make('structure_info')
+                        ->content(fn (Get $get): string => OrganizationBlueprint::isFilled($get('blueprint'))
+                            ? 'Review and edit your structure. Everything below is created when you complete setup, and anything that already exists is reused.'
+                            : 'Add the ranks, groups and units, positions and statuses your organization uses. You can add the rest any time from the Organization Builder in settings.'),
+                    OrganizationBlueprint::make('blueprint'),
                 ]),
             Step::make('Personnel')
-                ->description('Create your first personnel record')
+                ->label('Add Your First Member')
+                ->description('Create a personnel record')
                 ->icon(Heroicon::OutlinedUser)
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
@@ -414,41 +271,41 @@ class Dashboard extends BaseDashboard
                                 ->maxLength(255),
                             Select::make('personnel.assign_unit')
                                 ->label('Assign to Unit')
-                                ->helperText(fn (Get $get): string => OrganizationBlueprint::isFilled($get('blueprint')) ? 'Choose from the structure you reviewed earlier.' : 'Leave empty to assign the unit you created in the previous step.')
+                                ->helperText('Choose from your structure. Leave empty to use the first unit in it.')
                                 ->options(fn (Get $get): array => $this->personnelOptions($get, 'units', Unit::class))
                                 ->placeholder('Select a unit or leave empty')
                                 ->searchable()
                                 ->preload(),
                             Select::make('personnel.assign_position')
                                 ->label('Assign Position')
-                                ->helperText(fn (Get $get): string => OrganizationBlueprint::isFilled($get('blueprint')) ? 'Choose from the structure you reviewed earlier.' : 'Leave empty to assign the position you created in the previous step.')
+                                ->helperText('Choose from your structure. Leave empty to use the first position in it.')
                                 ->options(fn (Get $get): array => $this->personnelOptions($get, 'positions', Position::class))
                                 ->placeholder('Select a position or leave empty')
                                 ->searchable()
                                 ->preload(),
                             Select::make('personnel.assign_rank')
                                 ->label('Assign Rank')
-                                ->helperText(fn (Get $get): string => OrganizationBlueprint::isFilled($get('blueprint')) ? 'Choose from the structure you reviewed earlier.' : 'Leave empty to assign the rank you created in the previous step.')
+                                ->helperText('Choose from your structure. Leave empty to use the first rank in it.')
                                 ->options(fn (Get $get): array => $this->personnelOptions($get, 'ranks', Rank::class))
                                 ->placeholder('Select a rank or leave empty')
                                 ->searchable()
                                 ->preload(),
                             Select::make('personnel.assign_status')
                                 ->label('Assign Status')
-                                ->helperText(fn (Get $get): string => OrganizationBlueprint::isFilled($get('blueprint')) ? 'Choose from the structure you reviewed earlier.' : 'Leave empty to assign the status you created in the previous step.')
+                                ->helperText('Choose from your structure. Leave empty to use the first status in it.')
                                 ->options(fn (Get $get): array => $this->personnelOptions($get, 'statuses', Status::class))
                                 ->placeholder('Select a status or leave empty')
                                 ->searchable()
                                 ->preload(),
                         ]),
                 ]),
-            Step::make('Documentation')
-                ->description('Resources to help you get started')
-                ->icon(Heroicon::OutlinedBookOpen)
+            Step::make('Finish')
+                ->description('Helpful resources')
+                ->icon(Heroicon::OutlinedCheckCircle)
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
-                    Section::make('Helpful Resources')
-                        ->description('Here are some resources to help you make the most of PERSCOM.')
+                    Section::make("You're all set!")
+                        ->description('Click "Complete Setup" to create your organization and start using PERSCOM.')
                         ->schema([
                             Text::make('documentation_links')
                                 ->content(new HtmlString('
@@ -476,16 +333,6 @@ class Dashboard extends BaseDashboard
                                         </div>
                                     </div>
                                 ')),
-                        ]),
-                ]),
-            Step::make('Finish')
-                ->description('Complete your setup')
-                ->icon(Heroicon::OutlinedCheckCircle)
-                ->completedIcon(Heroicon::CheckCircle)
-                ->schema([
-                    Section::make("You're all set!")
-                        ->description('Click "Complete Setup" to finish and start using PERSCOM.')
-                        ->schema([
                             Checkbox::make('finish.dont_show_again')
                                 ->label("Don't show this setup wizard again")
                                 ->helperText('You can always access organization settings from the settings menu.'),
@@ -500,13 +347,7 @@ class Dashboard extends BaseDashboard
     protected function completeOnboarding(array $data): void
     {
         $this->applyBlueprintIfNeeded($data);
-
-        $group = $this->createGroupIfNeeded($data);
-        $unit = $this->createUnitIfNeeded($data, $group);
-        $position = $this->createPositionIfNeeded($data);
-        $rank = $this->createRankIfNeeded($data);
-        $status = $this->createStatusIfNeeded($data);
-        $this->createPersonnelIfNeeded($data, $unit, $position, $rank, $status);
+        $this->createPersonnelIfNeeded($data);
 
         /** @var OnboardingSettings $settings */
         $settings = resolve(OnboardingSettings::class);
@@ -555,7 +396,7 @@ class Dashboard extends BaseDashboard
         Notification::make()
             ->success()
             ->title('Structure Generated')
-            ->body('Review your new structure in the next step.')
+            ->body('Review and edit it in the next step.')
             ->send();
     }
 
@@ -588,93 +429,7 @@ class Dashboard extends BaseDashboard
     /**
      * @param  array<string, mixed>  $data
      */
-    protected function createGroupIfNeeded(array $data): ?Group
-    {
-        $name = data_get($data, 'group.name');
-
-        if (blank($name)) {
-            return Group::query()->first();
-        }
-
-        return CreateGroup::handle([
-            'name' => $name,
-            'description' => data_get($data, 'group.description'),
-        ]);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function createUnitIfNeeded(array $data, ?Group $group): ?Unit
-    {
-        $name = data_get($data, 'unit.name');
-
-        if (blank($name)) {
-            return Unit::query()->first();
-        }
-
-        return CreateUnit::handle([
-            'name' => $name,
-            'description' => data_get($data, 'unit.description'),
-        ], $group);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function createPositionIfNeeded(array $data): ?Position
-    {
-        $name = data_get($data, 'position.name');
-
-        if (blank($name)) {
-            return Position::query()->first();
-        }
-
-        return CreatePosition::handle([
-            'name' => $name,
-            'description' => data_get($data, 'position.description'),
-        ]);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function createRankIfNeeded(array $data): ?Rank
-    {
-        $name = data_get($data, 'rank.name');
-
-        if (blank($name)) {
-            return Rank::query()->first();
-        }
-
-        return CreateRank::handle([
-            'name' => $name,
-            'abbreviation' => data_get($data, 'rank.abbreviation'),
-            'paygrade' => data_get($data, 'rank.paygrade'),
-        ]);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function createStatusIfNeeded(array $data): ?Status
-    {
-        $name = data_get($data, 'status.name');
-
-        if (blank($name)) {
-            return Status::query()->first();
-        }
-
-        return CreateStatus::handle([
-            'name' => $name,
-            'color' => data_get($data, 'status.color'),
-        ]);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     */
-    protected function createPersonnelIfNeeded(array $data, ?Unit $unit, ?Position $position, ?Rank $rank, ?Status $status): ?User
+    protected function createPersonnelIfNeeded(array $data): ?User
     {
         $name = data_get($data, 'personnel.name');
         $email = data_get($data, 'personnel.email');
@@ -689,65 +444,55 @@ class Dashboard extends BaseDashboard
             return $existingUser;
         }
 
-        $usesBlueprint = OrganizationBlueprint::isFilled(data_get($data, 'blueprint'));
-
-        $assignUnitId = $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_unit'), Unit::class, $usesBlueprint) ?? $unit?->id;
-        $assignPositionId = $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_position'), Position::class, $usesBlueprint) ?? $position?->id;
-        $assignRankId = $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_rank'), Rank::class, $usesBlueprint) ?? $rank?->id;
-        $assignStatusId = $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_status'), Status::class, $usesBlueprint) ?? $status?->id;
-
         return User::create([
             'name' => $name,
             'email' => $email,
             'approved' => true,
-            'unit_id' => $assignUnitId,
-            'position_id' => $assignPositionId,
-            'rank_id' => $assignRankId,
-            'status_id' => $assignStatusId,
+            'unit_id' => $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_unit'), Unit::class),
+            'position_id' => $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_position'), Position::class),
+            'rank_id' => $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_rank'), Rank::class),
+            'status_id' => $this->resolvePersonnelAssignment(data_get($data, 'personnel.assign_status'), Status::class),
         ]);
     }
 
     /**
-     * Personnel assignment options come from the reviewed blueprint (keyed by name, since nothing is
-     * created until setup completes) or from existing records when the structure is set up manually.
+     * Personnel can be assigned anything in the structure being built or anything that already exists.
+     * Options are keyed by name because nothing in the structure is created until setup completes.
      *
      * @param  class-string<Unit|Position|Rank|Status>  $model
-     * @return array<int|string, string>
+     * @return array<string, string>
      */
     protected function personnelOptions(Get $get, string $section, string $model): array
     {
-        $blueprint = $get('blueprint');
+        $blueprint = $get('blueprint') ?? [];
 
-        if (! OrganizationBlueprint::isFilled($blueprint)) {
-            return $model::query()->pluck('name', 'id')->all();
-        }
-
-        $items = $section === 'units'
+        $planned = $section === 'units'
             ? collect($blueprint['groups'] ?? [])->flatMap(fn (array $group): array => $group['units'] ?? [])
             : collect($blueprint[$section] ?? []);
 
-        return $items
+        return $planned
             ->pluck('name')
+            ->merge($model::query()->pluck('name'))
             ->filter()
-            ->unique()
+            ->unique(fn (string $name): string => mb_strtolower($name))
             ->mapWithKeys(fn (string $name): array => [$name => $name])
             ->all();
     }
 
     /**
+     * Names are matched without case, the same way the structure reuses existing records. Leaving a
+     * selection empty assigns the first record of that kind.
+     *
      * @param  class-string<Unit|Position|Rank|Status>  $model
      */
-    protected function resolvePersonnelAssignment(mixed $value, string $model, bool $usesBlueprint): ?int
+    protected function resolvePersonnelAssignment(mixed $value, string $model): ?int
     {
         if (blank($value)) {
-            return null;
+            return $model::query()->value('id');
         }
 
-        if ($usesBlueprint) {
-            return $model::query()->where('name', $value)->value('id');
-        }
-
-        return (int) $value;
+        return $model::query()->whereRaw('LOWER(name) = ?', [mb_strtolower((string) $value)])->value('id')
+            ?? $model::query()->value('id');
     }
 
     /**

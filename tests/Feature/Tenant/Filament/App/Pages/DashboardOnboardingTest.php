@@ -63,7 +63,7 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->assertFalse($settings->isAccessible());
     }
 
-    public function test_completing_onboarding_creates_the_organization_structure(): void
+    public function test_completing_onboarding_creates_the_structure_built_by_hand(): void
     {
         $this->fakeAccessibleOnboarding();
 
@@ -71,11 +71,12 @@ class DashboardOnboardingTest extends TenantTestCase
 
         Livewire::test(Dashboard::class)
             ->callAction('onboarding', data: [
-                'group' => ['name' => 'Operations', 'description' => 'Operational units.'],
-                'unit' => ['name' => 'Alpha Company', 'description' => 'First company.'],
-                'position' => ['name' => 'Platoon Leader'],
-                'rank' => ['name' => 'Sergeant', 'abbreviation' => 'SGT', 'paygrade' => 'E-5'],
-                'status' => ['name' => 'Active Duty', 'color' => '#16a34a'],
+                'blueprint' => [
+                    'groups' => [['name' => 'Operations', 'description' => 'Operational units.', 'units' => [['name' => 'Alpha Company', 'description' => 'First company.']]]],
+                    'positions' => [['name' => 'Platoon Leader']],
+                    'ranks' => [['name' => 'Sergeant', 'abbreviation' => 'SGT', 'paygrade' => 'E-5']],
+                    'statuses' => [['name' => 'Active Duty', 'color' => '#16a34a']],
+                ],
                 'finish' => ['dont_show_again' => true],
             ])
             ->assertHasNoActionErrors();
@@ -102,9 +103,10 @@ class DashboardOnboardingTest extends TenantTestCase
 
         Livewire::test(Dashboard::class)
             ->callAction('onboarding', data: [
-                'group' => ['name' => 'operations'],
-                'unit' => ['name' => 'alpha company'],
-                'rank' => ['name' => 'SERGEANT'],
+                'blueprint' => [
+                    'groups' => [['name' => 'operations', 'units' => [['name' => 'alpha company']]]],
+                    'ranks' => [['name' => 'SERGEANT']],
+                ],
                 'finish' => ['dont_show_again' => false],
             ])
             ->assertHasNoActionErrors();
@@ -142,7 +144,7 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->assertTrue(resolve(OnboardingSettings::class)->completed);
     }
 
-    public function test_manual_structure_steps_are_hidden_once_a_preset_is_loaded(): void
+    public function test_the_structure_is_built_in_one_step_without_separate_manual_steps(): void
     {
         config(['ai.providers.anthropic.key' => null]);
 
@@ -152,15 +154,30 @@ class DashboardOnboardingTest extends TenantTestCase
 
         Livewire::test(Dashboard::class)
             ->mountAction('onboarding')
-            ->assertMountedActionModalSee('Create a Group')
-            ->fillForm(['builder' => ['preset' => 'military']])
-            ->callAction(TestAction::make('loadPreset')->schemaComponent('onboardingBuilderActions'))
+            ->assertMountedActionModalSee('Build Your Structure')
+            ->assertMountedActionModalSee('Add Rank')
+            ->assertMountedActionModalSee('Add Your First Member')
             ->assertMountedActionModalDontSee('Create a Group')
             ->assertMountedActionModalDontSee('Create a Unit')
-            ->assertMountedActionModalDontSee('Create a Position')
-            ->assertMountedActionModalDontSee('Create a Rank')
-            ->assertMountedActionModalDontSee('Create a Status')
-            ->assertMountedActionModalSee('Create Personnel');
+            ->assertMountedActionModalDontSee('Create a Rank');
+    }
+
+    public function test_the_first_member_can_be_assigned_existing_records_by_name(): void
+    {
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        Unit::factory()->createQuietly(['name' => 'Headquarters']);
+        $unit = Unit::factory()->createQuietly(['name' => 'Alpha Company']);
+
+        Livewire::test(Dashboard::class)
+            ->callAction('onboarding', data: [
+                'personnel' => ['name' => 'Jane Doe', 'email' => 'jane.doe@example.com', 'assign_unit' => 'Alpha Company'],
+            ])
+            ->assertHasNoActionErrors();
+
+        $this->assertSame($unit->getKey(), User::query()->where('email', 'jane.doe@example.com')->value('unit_id'));
     }
 
     public function test_personnel_can_be_assigned_from_a_loaded_preset(): void
