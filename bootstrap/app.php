@@ -71,6 +71,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('auth.')
                 ->group(base_path('routes/auth.php'));
 
+            Route::domain(config('app.auth_url'))
+                ->name('integrations.')
+                ->prefix('integrations')
+                ->group(base_path('routes/integrations.php'));
+
             Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
                 ->name('oidc.')
                 ->group(base_path('routes/oidc.php'));

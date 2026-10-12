@@ -7,7 +7,6 @@ namespace App\Jobs\Tenant;
 use App\Models\Enums\NotificationChannel;
 use App\Models\ModelNotification;
 use App\Models\User;
-use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\NewModelNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
@@ -58,10 +57,11 @@ class SendModelNotifications implements ShouldQueue
             $user->notify(new NewModelNotification($modelNotification));
         });
 
-        $hasDiscordPublic = $modelNotifications->contains(fn (ModelNotification $notification) => Collection::wrap($notification->channels)->contains(NotificationChannel::DISCORD_PUBLIC));
-
-        if ($hasDiscordPublic && filled($recipients) && filled($modelNotifications)) {
-            Notification::sendNow($recipients->first(), new NewModelNotification($modelNotifications->first()), [DiscordPublicChannel::class]);
+        if (blank($recipients) || blank($modelNotifications)) {
+            return;
         }
+
+        NotificationChannel::organizationWide($modelNotifications->flatMap(fn (ModelNotification $notification) => Collection::wrap($notification->channels)))
+            ->each(fn (NotificationChannel $channel) => Notification::sendNow($recipients->first(), new NewModelNotification($modelNotifications->first()), [$channel->getChannel()]));
     }
 }

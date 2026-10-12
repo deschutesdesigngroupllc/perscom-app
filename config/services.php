@@ -54,6 +54,8 @@ return [
     ],
 
     'slack' => [
+        'client_id' => env('SLACK_CLIENT_ID'),
+        'client_secret' => env('SLACK_CLIENT_SECRET'),
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
@@ -80,6 +82,7 @@ return [
         'allow_gif_avatars' => true,
         'avatar_default_extension' => 'jpg',
         'token' => env('DISCORD_BOT_TOKEN'),
+        'public_key' => env('DISCORD_PUBLIC_KEY'),
     ],
 
     'twilio' => [

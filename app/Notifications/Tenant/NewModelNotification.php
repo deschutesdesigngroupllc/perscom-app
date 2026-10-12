@@ -79,7 +79,7 @@ class NewModelNotification extends Notification implements ShouldQueue
         $channels = $this->modelNotification->channels;
 
         return $channels
-            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->reject(fn (NotificationChannel $channel): bool => $channel->isOrganizationWide())
             ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()

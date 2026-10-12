@@ -35,6 +35,8 @@ final class DiscordEmbed
 
     private ?string $thumbnail = null;
 
+    private ?string $image = null;
+
     /**
      * @var array{name: string, url?: string, icon_url?: string}|null
      */
@@ -104,6 +106,13 @@ final class DiscordEmbed
         return $this;
     }
 
+    public function image(?string $url): static
+    {
+        $this->image = $url;
+
+        return $this;
+    }
+
     public function author(?string $name, ?string $url = null, ?string $iconUrl = null): static
     {
         $this->author = blank($name) ? null : array_filter([
@@ -157,6 +166,7 @@ final class DiscordEmbed
             'color' => $this->color,
             'timestamp' => $this->timestamp,
             'thumbnail' => filled($this->thumbnail) ? ['url' => $this->thumbnail] : null,
+            'image' => filled($this->image) ? ['url' => $this->image] : null,
             'author' => $this->author,
             'footer' => $this->footer,
             'fields' => $this->fields,

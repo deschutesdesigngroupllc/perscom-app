@@ -8,10 +8,8 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Models\User;
-use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\UpcomingEvent;
 use Carbon\CarbonInterface;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
@@ -28,9 +26,7 @@ class SendUpcomingEventNotification
 
         Notification::send($event->registrations, new UpcomingEvent($event, $interval, $sendAt));
 
-        if (Collection::wrap($event->notifications_channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
-            Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [DiscordPublicChannel::class]);
-        }
+        NotificationChannel::organizationWide($event->notifications_channels)->each(fn (NotificationChannel $channel) => Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [$channel->getChannel()]));
     }
 
     public static function canSendNotification(Event $event): bool

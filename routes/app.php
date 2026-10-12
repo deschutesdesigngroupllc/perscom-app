@@ -5,6 +5,9 @@ declare(strict_types=1);
 use App\Filament\App\Pages\AccountRequiresApproval;
 use App\Filament\App\Pages\Auth\AcceptInvite;
 use App\Http\Controllers\App\Events\CheckInController;
+use App\Http\Controllers\App\Integrations\DiscordConnectController;
+use App\Http\Controllers\App\Integrations\InstallController;
+use App\Http\Controllers\App\Integrations\SlackConnectController;
 use App\Http\Controllers\App\Pages\EditorController;
 use App\Http\Controllers\App\Pages\PreviewController;
 use App\Http\Controllers\App\ServiceProfiles\ImageController;
@@ -30,6 +33,12 @@ Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], fun
     Route::group(['middleware' => ['auth:web']], function (): void {
         Route::get('approval-required', AccountRequiresApproval::class)
             ->name('approval-required');
+
+        Route::group(['prefix' => 'integrations', 'as' => 'integrations.'], function (): void {
+            Route::get('{provider}/install', InstallController::class)->whereIn('provider', ['discord', 'slack'])->name('install');
+            Route::get('discord/connect', DiscordConnectController::class)->name('discord.connect');
+            Route::get('slack/connect', SlackConnectController::class)->name('slack.connect');
+        });
 
         Route::get('events/{event}/check-in', CheckInController::class)
             ->middleware('signed:relative')

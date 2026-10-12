@@ -143,6 +143,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'name',
             'email',
             'website',
+            'discord_guild_id',
             'stripe_id',
             'pm_type',
             'pm_last_four',

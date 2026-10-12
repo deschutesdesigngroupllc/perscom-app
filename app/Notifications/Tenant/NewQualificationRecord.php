@@ -71,7 +71,7 @@ HTML;
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->reject(fn (NotificationChannel $channel): bool => $channel->isOrganizationWide())
             ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()

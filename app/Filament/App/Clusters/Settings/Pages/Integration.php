@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
+use App\Actions\Integrations\DisconnectDiscordServer;
+use App\Actions\Integrations\DisconnectSlackWorkspace;
 use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\PassportClientResource;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Filament\App\Resources\WebhookResource;
+use App\Jobs\Tenant\SyncDiscordMember;
+use App\Models\User;
 use App\Services\DiscordService;
+use App\Services\SlackService;
 use App\Services\TwilioService;
 use App\Settings\IntegrationSettings;
 use BackedEnum;
@@ -23,6 +28,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -40,6 +46,8 @@ class Integration extends SettingsPage
     protected static string $settings = IntegrationSettings::class;
 
     protected ?string $subheading = 'Adjust settings related to integrating PERSCOM with third-party services.';
+
+    protected bool $shouldSyncDiscordMembers = false;
 
     public static function canAccess(): bool
     {
@@ -60,30 +68,45 @@ class Integration extends SettingsPage
                             ->icon('fab-discord')
                             ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
                             ->schema([
+                                TextEntry::make('discord_connection')
+                                    ->label('Server')
+                                    ->state(fn (): string => $this->discordServerName() ?? 'Not connected')
+                                    ->badge()
+                                    ->color(fn (): string => filled($this->discordServerName()) ? 'success' : 'gray')
+                                    ->icon(fn (): string => filled($this->discordServerName()) ? 'heroicon-m-check-circle' : 'heroicon-m-minus-circle')
+                                    ->helperText('Connecting adds the PERSCOM bot to your community server. You will need the Manage Server permission in Discord.')
+                                    ->afterContent([
+                                        Action::make('connectDiscord')
+                                            ->label(fn (): string => filled($this->discordServerName()) ? 'Change Server' : 'Connect Server')
+                                            ->icon('fab-discord')
+                                            ->color(fn (): string => filled($this->discordServerName()) ? 'gray' : 'primary')
+                                            ->url(fn (): string => route('app.integrations.install', ['provider' => 'discord'])),
+                                        Action::make('disconnectDiscord')
+                                            ->label('Disconnect')
+                                            ->color('danger')
+                                            ->link()
+                                            ->visible(fn (): bool => filled($this->discordServerName()))
+                                            ->requiresConfirmation()
+                                            ->modalHeading('Disconnect Discord')
+                                            ->modalDescription('The PERSCOM bot will leave your server and Discord notifications, commands and role sync will stop.')
+                                            ->action(function (): void {
+                                                DisconnectDiscordServer::handle();
+
+                                                $this->fillForm();
+                                            }),
+                                    ]),
                                 Toggle::make('discord_settings.discord_enabled')
                                     ->live()
+                                    ->visible(fn (): bool => filled($this->discordServerName()))
                                     ->helperText('Enable Discord notifications system wide.')
-                                    ->label('Enabled'),
-                                Select::make('discord_settings.discord_server')
-                                    ->visible(fn (Get $get): bool => $get('discord_settings.discord_enabled'))
-                                    ->suffixAction(fn (): Action => Action::make('add_to_server')
-                                        ->openUrlInNewTab()
-                                        ->url(DiscordService::addBotToServerLink())
-                                        ->icon('heroicon-o-plus-circle')
-                                        ->label('Add To Server'))
-                                    ->searchable()
-                                    ->preload()
-                                    ->live(onBlur: true)
-                                    ->label('Server')
-                                    ->options(fn () => collect(DiscordService::getGuilds())->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]))
-                                    ->helperText(fn (): string => 'Use the button to the right to add the PERSCOM bot to your community Discord server to send automated notifications for everyone to see.'),
+                                    ->label('Notifications'),
                                 Select::make('discord_settings.discord_channel')
-                                    ->visible(fn (Get $get): bool => $get('discord_settings.discord_enabled'))
+                                    ->visible(fn (Get $get): bool => filled($this->discordServerName()) && $get('discord_settings.discord_enabled'))
                                     ->label('Channel')
                                     ->searchable()
                                     ->preload()
-                                    ->options(function (Get $get) {
-                                        $guildId = $get('discord_settings.discord_server');
+                                    ->options(function () {
+                                        $guildId = data_get(resolve(IntegrationSettings::class)->discord_settings, 'discord_server');
 
                                         if (blank($guildId)) {
                                             return [];
@@ -94,6 +117,64 @@ class Integration extends SettingsPage
                                             ->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]);
                                     })
                                     ->helperText('Select the channel the notifications will be posted to.'),
+                                Toggle::make('discord_settings.sync_roles')
+                                    ->label('Sync Rank & Unit Roles')
+                                    ->visible(fn (): bool => filled($this->discordServerName()))
+                                    ->helperText('Give linked members a Discord role for their rank and unit, and swap it automatically when they are promoted or reassigned. PERSCOM only changes the roles it creates.'),
+                                Toggle::make('discord_settings.sync_nicknames')
+                                    ->label('Sync Nicknames')
+                                    ->visible(fn (): bool => filled($this->discordServerName()))
+                                    ->helperText('Set linked members\' server nicknames to their rank and name, such as "SGT Jane Doe". Discord does not allow bots to rename the server owner.'),
+                                TextEntry::make('discord_commands')
+                                    ->label('Slash Commands')
+                                    ->visible(fn (): bool => filled($this->discordServerName()))
+                                    ->state('/profile · /roster · /events · /rsvp')
+                                    ->fontFamily('mono')
+                                    ->helperText('Members who link Discord from their profile can use these commands in your server with their PERSCOM permissions.'),
+                            ]),
+                        Tab::make('Slack')
+                            ->icon('fab-slack')
+                            ->visible(fn (): bool => SlackService::isConfigured())
+                            ->schema([
+                                TextEntry::make('slack_connection')
+                                    ->label('Workspace')
+                                    ->state(fn (): string => $this->slackWorkspaceName() ?? 'Not connected')
+                                    ->badge()
+                                    ->color(fn (): string => filled($this->slackWorkspaceName()) ? 'success' : 'gray')
+                                    ->icon(fn (): string => filled($this->slackWorkspaceName()) ? 'heroicon-m-check-circle' : 'heroicon-m-minus-circle')
+                                    ->helperText('Connect your Slack workspace to post organization-wide notifications, messages and event reminders to a channel.')
+                                    ->afterContent([
+                                        Action::make('connectSlack')
+                                            ->label(fn (): string => filled($this->slackWorkspaceName()) ? 'Reconnect' : 'Connect Workspace')
+                                            ->icon('fab-slack')
+                                            ->color(fn (): string => filled($this->slackWorkspaceName()) ? 'gray' : 'primary')
+                                            ->url(fn (): string => route('app.integrations.install', ['provider' => 'slack'])),
+                                        Action::make('disconnectSlack')
+                                            ->label('Disconnect')
+                                            ->color('danger')
+                                            ->link()
+                                            ->visible(fn (): bool => filled($this->slackWorkspaceName()))
+                                            ->requiresConfirmation()
+                                            ->modalHeading('Disconnect Slack')
+                                            ->modalDescription('PERSCOM will stop posting to Slack and its access to your workspace will be revoked.')
+                                            ->action(function (): void {
+                                                DisconnectSlackWorkspace::handle();
+
+                                                $this->fillForm();
+                                            }),
+                                    ]),
+                                Toggle::make('slack_settings.slack_enabled')
+                                    ->live()
+                                    ->visible(fn (): bool => filled($this->slackWorkspaceName()))
+                                    ->helperText('Enable Slack notifications system wide.')
+                                    ->label('Notifications'),
+                                Select::make('slack_settings.slack_channel')
+                                    ->visible(fn (Get $get): bool => filled($this->slackWorkspaceName()) && $get('slack_settings.slack_enabled'))
+                                    ->label('Channel')
+                                    ->searchable()
+                                    ->preload()
+                                    ->options(fn (): array => SlackService::channels())
+                                    ->helperText('Select the channel the notifications will be posted to. Then choose Slack as a channel on messages, events and record notifications.'),
                             ]),
                         Tab::make('Single Sign-On (SSO)')
                             ->icon('heroicon-o-key')
@@ -141,6 +222,60 @@ class Integration extends SettingsPage
                             ]),
                     ]),
             ]);
+    }
+
+    /**
+     * Connection details are written by the install flow, not the form, so keep them when the form
+     * is saved.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        /** @var IntegrationSettings $settings */
+        $settings = resolve(IntegrationSettings::class);
+
+        $this->shouldSyncDiscordMembers = collect(['sync_roles', 'sync_nicknames'])->contains(fn (string $key): bool => filled(data_get($data, 'discord_settings.'.$key))
+            && blank(data_get($settings->discord_settings, $key)));
+
+        $data['discord_settings'] = [
+            ...(array) data_get($data, 'discord_settings', []),
+            ...Arr::only($settings->discord_settings ?? [], ['discord_server', 'discord_server_name', 'managed_roles']),
+        ];
+
+        $data['slack_settings'] = [
+            ...(array) data_get($data, 'slack_settings', []),
+            ...Arr::only($settings->slack_settings ?? [], ['team_id', 'team_name', 'bot_token']),
+        ];
+
+        return $data;
+    }
+
+    protected function afterSave(): void
+    {
+        if ($this->shouldSyncDiscordMembers) {
+            User::query()
+                ->whereNotNull('discord_user_id')
+                ->pluck('id')
+                ->each(fn (int $id) => SyncDiscordMember::dispatch($id));
+        }
+    }
+
+    protected function slackWorkspaceName(): ?string
+    {
+        $settings = resolve(IntegrationSettings::class)->slack_settings ?? [];
+
+        return filled(data_get($settings, 'bot_token')) ? (string) (data_get($settings, 'team_name') ?: 'Slack') : null;
+    }
+
+    protected function discordServerName(): ?string
+    {
+        $settings = resolve(IntegrationSettings::class)->discord_settings ?? [];
+
+        return filled(data_get($settings, 'discord_server'))
+            ? (string) (data_get($settings, 'discord_server_name') ?: data_get($settings, 'discord_server'))
+            : null;
     }
 
     /**

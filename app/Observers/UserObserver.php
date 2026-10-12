@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Actions\Notifications\SendSms;
+use App\Jobs\Tenant\SyncDiscordMember;
 use App\Metrics\Metric;
 use App\Metrics\UserCreationMetric;
 use App\Models\Enums\AutomationTrigger;
@@ -15,6 +16,7 @@ use App\Notifications\User\AccountApproved;
 use App\Notifications\User\AdminApprovalRequired;
 use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
+use App\Services\DiscordRoleSyncService;
 use App\Services\WebhookService;
 use App\Settings\FieldSettings;
 use App\Settings\PermissionSettings;
@@ -74,6 +76,10 @@ class UserObserver
                     'discord_private_channel_id' => $privateChannelId,
                 ])->save();
             }
+        }
+
+        if ($user->isDirty(['rank_id', 'unit_id', 'name', 'discord_user_id']) && filled($user->discord_user_id) && DiscordRoleSyncService::isEnabled()) {
+            SyncDiscordMember::dispatch($user->getKey());
         }
 
         if ($user->isDirty('phone_number') && filled($user->phone_number)) {
