@@ -7,10 +7,8 @@ namespace App\Actions\Messages;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
-use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\NewMessage;
 use Carbon\CarbonInterface;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
@@ -31,9 +29,7 @@ class SendMessage
 
         Notification::send($recipients, new NewMessage($message, $sendAt));
 
-        if (Collection::wrap($message->channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
-            Notification::sendNow(User::first(), new NewMessage($message, $sendAt), [DiscordPublicChannel::class]);
-        }
+        NotificationChannel::organizationWide($message->channels)->each(fn (NotificationChannel $channel) => Notification::sendNow(User::first(), new NewMessage($message, $sendAt), [$channel->getChannel()]));
     }
 
     public static function canSendNotification(Message $message): bool

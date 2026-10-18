@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource;
+use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Models\TrainingRecord;
 use App\Models\User;
 use BackedEnum;
@@ -34,9 +35,8 @@ class TrainingRecordsRelationManager extends RelationManager
                 TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
-                TextColumn::make('credentials.name')
-                    ->placeholder(new HtmlString('&ndash;'))
-                    ->listWithLineBreaks(),
+                ExpiresAtColumn::makeForCredentials()
+                    ->placeholder(new HtmlString('&ndash;')),
                 TextColumn::make('competencies.name')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->listWithLineBreaks(),

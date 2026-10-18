@@ -9,9 +9,8 @@ use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
-
-use function Pest\Livewire\livewire;
 
 class OrganizationInfoWidgetTest extends TenantTestCase
 {
@@ -25,7 +24,7 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         $this->actingAsSuperAdmin();
 
-        livewire(OrganizationInfoWidget::class)
+        Livewire::test(OrganizationInfoWidget::class)
             ->assertSee('Resume Setup Wizard');
     }
 
@@ -39,7 +38,7 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         $this->actingAsSuperAdmin();
 
-        livewire(OrganizationInfoWidget::class)
+        Livewire::test(OrganizationInfoWidget::class)
             ->assertSuccessful()
             ->assertDontSee('Resume Setup Wizard');
     }
@@ -54,7 +53,7 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         $this->actingAsSuperAdmin();
 
-        livewire(OrganizationInfoWidget::class)
+        Livewire::test(OrganizationInfoWidget::class)
             ->assertOk()
             ->assertDontSee('Resume Setup Wizard');
     }
@@ -69,7 +68,7 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         $this->actingAs(User::factory()->createQuietly());
 
-        livewire(OrganizationInfoWidget::class)
+        Livewire::test(OrganizationInfoWidget::class)
             ->assertDontSee('Resume Setup Wizard');
     }
 
@@ -83,7 +82,7 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         $this->actingAsSuperAdmin();
 
-        livewire(OrganizationInfoWidget::class)
+        Livewire::test(OrganizationInfoWidget::class)
             ->call('resumeOnboarding')
             ->assertRedirect(Dashboard::getUrl());
     }

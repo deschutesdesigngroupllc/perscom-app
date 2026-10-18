@@ -31,7 +31,7 @@ class Registration extends SettingsPage
 
     protected ?string $subheading = 'Configure user registration settings.';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 20;
 
     protected static ?string $slug = 'users/registration';
 

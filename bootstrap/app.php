@@ -71,9 +71,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('auth.')
                 ->group(base_path('routes/auth.php'));
 
+            Route::domain(config('app.auth_url'))
+                ->name('integrations.')
+                ->prefix('integrations')
+                ->group(base_path('routes/integrations.php'));
+
             Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
                 ->name('oidc.')
                 ->group(base_path('routes/oidc.php'));
+
+            Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
+                ->group(base_path('routes/mcp.php'));
 
             Route::domain(config('tenancy.enabled') ? '' : config('app.url'))
                 ->name('passport.')
@@ -222,6 +230,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('10:00'); // 2 AM
         $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('10:00'); // 2 AM
         $schedule->command('perscom:recurring-messages')->environments('production')->dailyAt('10:00'); // 2 AM
+        $schedule->command('perscom:scheduled-automations')->environments('production')->dailyAt('14:00'); // 7 AM
         $schedule->command('perscom:api-expiration-reminders')->environments('production')->dailyAt('15:00'); // 8 AM
 
         $schedule->command(RunHealthChecksCommand::class)->environments('production')->everyMinute();

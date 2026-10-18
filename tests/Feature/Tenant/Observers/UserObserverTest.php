@@ -115,6 +115,38 @@ class UserObserverTest extends TenantTestCase
         });
     }
 
+    public function test_user_created_as_approved_skips_approval_notifications(): void
+    {
+        Notification::fake();
+
+        RegistrationSettings::fake([
+            'admin_approval_required' => true,
+        ]);
+
+        $user = User::factory()->create([
+            'approved' => true,
+        ]);
+
+        $this->assertTrue($user->refresh()->approved);
+
+        Notification::assertNotSentTo($user, ApprovalRequired::class);
+    }
+
+    public function test_password_changed_notification_not_sent_when_password_first_set(): void
+    {
+        Notification::fake();
+
+        $user = User::factory()->createQuietly([
+            'password' => null,
+        ]);
+
+        $user->update([
+            'password' => Str::password(),
+        ]);
+
+        Notification::assertNotSentTo($user, PasswordChanged::class);
+    }
+
     public function test_account_approved_notification_sent(): void
     {
         Notification::fake();

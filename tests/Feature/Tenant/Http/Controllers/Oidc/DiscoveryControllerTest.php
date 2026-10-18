@@ -14,9 +14,10 @@ class DiscoveryControllerTest extends TenantTestCase
             ->assertSuccessful()
             ->assertExactJson([
                 'issuer' => $this->tenant->url,
-                'authorization_endpoint' => $this->tenant->route('passport.authorizations.authorize'),
-                'token_endpoint' => $this->tenant->route('passport.token'),
-                'userinfo_endpoint' => $this->tenant->route('oidc.userinfo'),
+                'authorization_endpoint' => $this->tenant->url.'/oauth/authorize',
+                'token_endpoint' => $this->tenant->url.'/oauth/token',
+                'userinfo_endpoint' => $this->tenant->url.'/oauth/userinfo',
+                'jwks_uri' => $this->tenant->url.'/.well-known/jwks.json',
                 'grant_types_supported' => [
                     'authorization_code',
                     'implicit',
@@ -36,7 +37,7 @@ class DiscoveryControllerTest extends TenantTestCase
                     'fragment',
                 ],
                 'id_token_signing_alg_values_supported' => [
-                    'HS256',
+                    'RS256',
                 ],
                 'scopes_supported' => [
                     'openid',
@@ -49,6 +50,8 @@ class DiscoveryControllerTest extends TenantTestCase
                     'iat',
                     'exp',
                     'sub',
+                    'auth_time',
+                    'nonce',
                     'name',
                     'preferred_username',
                     'profile',
@@ -62,7 +65,7 @@ class DiscoveryControllerTest extends TenantTestCase
                     'zoneinfo',
                     'updated_at',
                 ],
-                'end_session_endpoint' => $this->tenant->route('oidc.logout'),
+                'end_session_endpoint' => $this->tenant->url.'/oauth/logout',
             ]);
     }
 }

@@ -26,6 +26,7 @@ class UserRequest extends Request
             'notes_updated_at' => 'nullable|date',
             'profile_photo' => 'nullable|image|min:1|max:10000',
             'cover_photo' => 'nullable|image|min:1|max:10000',
+            'hide_public_profile' => 'boolean',
             'last_seen_at' => 'nullable|date',
             'facebook_user_id' => 'nullable|string',
             'github_user_id' => 'nullable|string',

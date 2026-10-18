@@ -23,6 +23,8 @@ use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
+use App\Support\Passport\AuthCodeRepository;
+use App\Support\Passport\IdTokenResponse;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\ExportAction;
@@ -51,6 +53,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
+use Laravel\Passport\Bridge\AuthCodeRepository as PassportAuthCodeRepository;
 use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
@@ -82,6 +85,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::ignoreRoutes();
         Passport::tokensCan(ApiPermissionService::scopes());
         Passport::useAccessTokenEntity(AccessToken::class);
+        Passport::useAuthorizationServerResponseType(new IdTokenResponse);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(fn (array $parameters) => Inertia::render('passport/Authorize', [
@@ -93,8 +97,13 @@ class AppServiceProvider extends ServiceProvider
             'state' => $parameters['request']->state,
             'authToken' => $parameters['authToken'],
             'csrfToken' => csrf_token(),
-            'tenant' => tenant('slug'),
         ]));
+
+        /**
+         * Authorization codes are persisted through a custom repository that binds the OpenID Connect
+         * nonce and authentication time of each authorization request to the code issued for it.
+         */
+        $this->app->bind(PassportAuthCodeRepository::class, AuthCodeRepository::class);
 
         /**
          * A custom event dispatcher that allows events to be dispatched, or stopped based on some

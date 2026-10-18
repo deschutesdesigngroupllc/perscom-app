@@ -74,4 +74,28 @@ class EventTest extends ApiResourceTestCase
             'description' => $this->faker->paragraph,
         ];
     }
+
+    public function test_can_update_event_dates_and_registration_settings(): void
+    {
+        $this->withToken($this->apiKey($this->scopes()['update']))
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), [
+                'starts' => now()->addDay()->toDateTimeString(),
+                'ends' => now()->addDays(2)->toDateTimeString(),
+                'registration_enabled' => false,
+            ])
+            ->assertSuccessful();
+
+        $this->assertFalse(Event::query()->findOrFail($this->factory->getKey())->registration_enabled);
+    }
+
+    public function test_cannot_update_event_to_end_before_it_starts(): void
+    {
+        $this->withToken($this->apiKey($this->scopes()['update']))
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), [
+                'starts' => now()->addDays(2)->toDateTimeString(),
+                'ends' => now()->addDay()->toDateTimeString(),
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('ends', 'error.errors');
+    }
 }

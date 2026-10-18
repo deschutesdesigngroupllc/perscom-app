@@ -49,7 +49,7 @@ class ImageResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 33;
 
     protected static ?string $slug = 'resources/images';
 

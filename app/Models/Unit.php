@@ -24,7 +24,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -32,6 +34,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * @property int $id
+ * @property int|null $parent_id
  * @property string $name
  * @property string|null $description
  * @property string|null $empty
@@ -42,6 +45,8 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property Carbon|null $updated_at
  * @property-read Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read Collection<int, Unit> $children
+ * @property-read int|null $children_count
  * @property-read Collection<int, Group> $groups
  * @property-read int|null $groups_count
  * @property-read Image|null $image
@@ -51,6 +56,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read UnitSlot|ModelNotification|null $pivot
  * @property-read Collection<int, Unit> $modelNotifications
  * @property-read int|null $model_notifications_count
+ * @property-read Unit|null $parent
  * @property-read Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
  * @property-read string|null $relative_url
@@ -79,6 +85,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder<static>|Unit whereId($value)
  * @method static Builder<static>|Unit whereName($value)
  * @method static Builder<static>|Unit whereOrder($value)
+ * @method static Builder<static>|Unit whereParentId($value)
  * @method static Builder<static>|Unit whereUpdatedAt($value)
  *
  * @mixin \Illuminate\Database\Eloquent\Model
@@ -105,6 +112,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     ];
 
     protected $fillable = [
+        'parent_id',
         'name',
         'description',
         'empty',
@@ -112,6 +120,47 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return BelongsTo<Unit, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'parent_id');
+    }
+
+    /**
+     * @return HasMany<Unit, $this>
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(Unit::class, 'parent_id');
+    }
+
+    /**
+     * The IDs of every unit nested beneath this unit, at any depth.
+     *
+     * @return array<int, int>
+     */
+    public function descendantIds(): array
+    {
+        $descendants = [];
+        $frontier = [(int) $this->getKey()];
+
+        while (filled($frontier)) {
+            $frontier = Unit::query()
+                ->withoutGlobalScopes()
+                ->whereIn('parent_id', $frontier)
+                ->whereNotIn('id', [...$descendants, (int) $this->getKey()])
+                ->pluck('id')
+                ->map(fn (mixed $id): int => (int) $id)
+                ->all();
+
+            $descendants = [...$descendants, ...$frontier];
+        }
+
+        return $descendants;
+    }
 
     public function groups(): BelongsToMany
     {

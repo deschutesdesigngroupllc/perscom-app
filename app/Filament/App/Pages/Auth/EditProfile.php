@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages\Auth;
 
+use App\Services\ServiceProfileService;
 use App\Services\UserSettingsService;
 use DateTimeZone;
 use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
@@ -11,6 +12,7 @@ use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -51,6 +53,10 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->nullable()
                                     ->tel()
                                     ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply. Remove your phone number to disable SMS text messages.'),
+                                Toggle::make('hide_public_profile')
+                                    ->label('Hide My Public Service Profile')
+                                    ->visible(fn (): bool => ServiceProfileService::isEnabled())
+                                    ->helperText('Your organization shares a public page with your rank, assignment, awards and qualifications. Turn this on to keep yours private.'),
                             ]),
                         Tab::make('Social')
                             ->columnSpanFull()

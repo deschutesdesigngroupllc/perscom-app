@@ -13,6 +13,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Services\TwilioService;
 use App\Services\UserSettingsService;
+use App\Support\Discord\DiscordEmbed;
 use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -61,7 +62,7 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
         $channels = $this->event->notifications_channels;
 
         return $channels
-            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->reject(fn (NotificationChannel $channel): bool => $channel->isOrganizationWide())
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
             ->all();
@@ -100,7 +101,19 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
             'remove_nodes' => true,
         ]);
 
-        return DiscordMessage::create($converter->convert($this->getMessage($notifiable)));
+        $embed = DiscordEmbed::make()
+            ->title('Upcoming Event - '.$this->event->name)
+            ->description($converter->convert($this->getMessage($notifiable)))
+            ->url($this->event->resource_url)
+            ->color('#8b5cf6')
+            ->thumbnail($this->event->image?->image_url)
+            ->field('Starts', sprintf('<t:%d:F>', $this->event->starts->getTimestamp()))
+            ->field('Ends', $this->event->ends ? sprintf('<t:%d:F>', $this->event->ends->getTimestamp()) : null)
+            ->field('Location', $this->event->location)
+            ->field('Calendar', $this->event->calendar?->name)
+            ->timestamp($this->event->starts);
+
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage|null

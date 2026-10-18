@@ -15,13 +15,16 @@ use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
+use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
+use App\Filament\App\Widgets\UpcomingEventsWidget;
 use App\Filament\App\Widgets\UserProfileWidget;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
+use App\Http\Middleware\EnsureMultiFactorAuthenticationIsRequired;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
@@ -32,6 +35,8 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Actions\Action;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -41,6 +46,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -69,6 +75,15 @@ class AppPanelProvider extends PanelProvider
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->emailVerification(EmailVerificationPrompt::class))
             ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
             ->profile(EditProfile::class, isSimple: false)
+            ->unless($isDemo, fn (Panel $panel): Panel => $panel
+                ->multiFactorAuthentication([
+                    AppAuthentication::make()
+                        ->recoverable()
+                        ->regenerableRecoveryCodes(),
+                    EmailAuthentication::make(),
+                ], isRequired: true)
+                ->multiFactorAuthenticationRequiredMiddlewareName(EnsureMultiFactorAuthenticationIsRequired::class))
+            ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): Factory|View => view('filament.render-hooks.user-menu-before.copilot'))
             ->colors([
                 'primary' => Color::Blue,
             ])
@@ -82,9 +97,11 @@ class AppPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->discoverClusters(in: app_path('Filament/App/Clusters'), for: 'App\\Filament\\App\\Clusters')
             ->widgets([
+                ConnectAiAgentWidget::class,
                 OrganizationInfoWidget::class,
                 AccountWidget::class,
                 UserProfileWidget::class,
+                UpcomingEventsWidget::class,
                 RecentRecordsWidget::class,
                 UsersOverview::class,
                 RecentAnnouncements::class,
@@ -125,7 +142,7 @@ class AppPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
-                    ->navigationSort(3)
+                    ->navigationSort(22)
                     ->navigationIcon('heroicon-o-shield-check')
                     ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()

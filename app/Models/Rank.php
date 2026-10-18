@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
@@ -42,6 +43,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
  * @property-read string|null $relative_url
+ * @property-read RankRequirement|null $requirement
  * @property-read string|null $url
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
@@ -85,4 +87,12 @@ class Rank extends Model implements HasLabel, Sortable
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return HasOne<RankRequirement, $this>
+     */
+    public function requirement(): HasOne
+    {
+        return $this->hasOne(RankRequirement::class);
+    }
 }

@@ -69,4 +69,12 @@ class UserSettingsService
 
         return Cache::forget($cacheKey);
     }
+
+    /**
+     * The timezone dates are displayed in for the user, falling back to the organization's.
+     */
+    public static function timezone(?User $user = null): string
+    {
+        return UserSettingsService::get('timezone', fn (): string => ScheduleService::timezone(), user: $user) ?? ScheduleService::timezone();
+    }
 }

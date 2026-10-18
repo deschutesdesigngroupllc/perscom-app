@@ -67,4 +67,24 @@ class UnitTest extends ApiResourceTestCase
             'name' => $this->faker->name,
         ];
     }
+
+    public function test_can_nest_a_unit_beneath_a_parent(): void
+    {
+        $parent = Unit::factory()->createQuietly();
+
+        $this->withToken($this->apiKey($this->scopes()['update']))
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), ['parent_id' => $parent->getKey()])
+            ->assertSuccessful()
+            ->assertJsonPath('data.parent_id', $parent->getKey());
+    }
+
+    public function test_cannot_nest_a_unit_beneath_its_own_descendant(): void
+    {
+        $child = Unit::factory()->createQuietly(['parent_id' => $this->factory->getKey()]);
+
+        $this->withToken($this->apiKey($this->scopes()['update']))
+            ->patchJson(sprintf('/%s/%s', $this->endpoint(), $this->factory->getKey()), ['parent_id' => $child->getKey()])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('parent_id', 'error.errors');
+    }
 }

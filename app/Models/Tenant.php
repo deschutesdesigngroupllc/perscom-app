@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
@@ -37,6 +38,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @property string $name
  * @property string $email
  * @property string|null $website
+ * @property string|null $discord_guild_id
  * @property string|null $stripe_id
  * @property string|null $pm_type
  * @property string|null $pm_last_four
@@ -92,6 +94,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @method static Builder<static>|Tenant whereBillingState($value)
  * @method static Builder<static>|Tenant whereCreatedAt($value)
  * @method static Builder<static>|Tenant whereData($value)
+ * @method static Builder<static>|Tenant whereDiscordGuildId($value)
  * @method static Builder<static>|Tenant whereEmail($value)
  * @method static Builder<static>|Tenant whereExtraBillingInformation($value)
  * @method static Builder<static>|Tenant whereId($value)
@@ -143,6 +146,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'name',
             'email',
             'website',
+            'discord_guild_id',
             'stripe_id',
             'pm_type',
             'pm_last_four',
@@ -179,11 +183,16 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return (string) $this->getTenantKey();
     }
 
+    /**
+     * @param  array<string, mixed>  $parameters
+     */
     public function route(string $name, array $parameters = []): string
     {
-        return $this->url.route($name, array_merge($parameters, [
-            'tenant' => $this,
-        ]), false);
+        if (in_array('tenant', Route::getRoutes()->getByName($name)?->parameterNames() ?? [], true)) {
+            $parameters['tenant'] = $this;
+        }
+
+        return $this->url.route($name, $parameters, false);
     }
 
     public function resolveRouteBinding($value, $field = null): Tenant|Model|null

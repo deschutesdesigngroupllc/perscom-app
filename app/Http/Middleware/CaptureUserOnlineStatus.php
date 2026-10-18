@@ -23,10 +23,9 @@ class CaptureUserOnlineStatus
                     Cache::tags('users_online')->put('user_online_'.$user->getAuthIdentifier(), true, now()->addMinutes(2));
                 }
 
-                $user->timestamps = false;
-                $user->updateQuietly([
+                User::withoutTimestamps(fn (): bool => $user->updateQuietly([
                     'last_seen_at' => now(),
-                ]);
+                ]));
             });
         }
 

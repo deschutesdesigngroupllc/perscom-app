@@ -49,7 +49,7 @@ class EventsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'creates_training_record', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
     }
 
     /**
@@ -57,7 +57,7 @@ class EventsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'creates_training_record', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
     }
 
     /**
@@ -65,6 +65,6 @@ class EventsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'creates_training_record', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at'];
     }
 }

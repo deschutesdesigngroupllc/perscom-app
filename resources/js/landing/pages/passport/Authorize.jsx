@@ -4,7 +4,7 @@ import { Button } from '../../components/Button'
 import { ValidationErrors } from '../../components/ValidationErrors'
 import { AuthLayout } from '../../layouts/Auth'
 
-export function Authorize({ client, description, image, name, scopes, state, authToken, tenant }) {
+export function Authorize({ client, description, image, name, scopes, state, authToken }) {
   const { post, processing, errors } = useForm({
     state: state,
     client_id: client,
@@ -14,11 +14,7 @@ export function Authorize({ client, description, image, name, scopes, state, aut
   const approve = (e) => {
     e.preventDefault()
 
-    post(
-      route('passport.authorizations.approve', {
-        tenant: tenant
-      })
-    )
+    post(route('passport.authorizations.approve'))
   }
 
   const deny = (e) => {
@@ -26,8 +22,7 @@ export function Authorize({ client, description, image, name, scopes, state, aut
 
     post(
       route('passport.authorizations.deny', {
-        _method: 'delete',
-        tenant: tenant
+        _method: 'delete'
       })
     )
   }

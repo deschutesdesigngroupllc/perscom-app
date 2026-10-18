@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\CaptureOidcAuthorization;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Middleware\RedirectInertiaRequestsToOAuthClients;
+use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -24,7 +27,7 @@ Route::group([
     Route::get('/authorize', [
         'uses' => 'AuthorizationController@authorize',
         'as' => 'authorizations.authorize',
-        'middleware' => ['web', 'landing'],
+        'middleware' => ['web', SentryContext::class, HandleInertiaRequests::class, 'cache.headers:no_store;private', CaptureOidcAuthorization::class],
     ]);
 
     $guard = config('passport.guard');
@@ -38,13 +41,13 @@ Route::group([
         Route::post('/authorize', [
             'uses' => 'ApproveAuthorizationController@approve',
             'as' => 'authorizations.approve',
-            'middleware' => HandleInertiaRequests::class,
+            'middleware' => [HandleInertiaRequests::class, RedirectInertiaRequestsToOAuthClients::class],
         ]);
 
         Route::delete('/authorize', [
             'uses' => 'DenyAuthorizationController@deny',
             'as' => 'authorizations.deny',
-            'middleware' => HandleInertiaRequests::class,
+            'middleware' => [HandleInertiaRequests::class, RedirectInertiaRequestsToOAuthClients::class],
         ]);
 
         Route::get('/tokens', [

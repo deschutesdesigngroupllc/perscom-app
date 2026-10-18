@@ -26,6 +26,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property int|null $validity_days
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -50,10 +51,13 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Qualification query()
  * @method static Builder<static>|Qualification whereCreatedAt($value)
  * @method static Builder<static>|Qualification whereDescription($value)
+ * @method static Builder<static>|Qualification whereHasExpiredQualifications()
+ * @method static Builder<static>|Qualification whereHasExpiringQualifications(int $days = 30)
  * @method static Builder<static>|Qualification whereId($value)
  * @method static Builder<static>|Qualification whereName($value)
  * @method static Builder<static>|Qualification whereOrder($value)
  * @method static Builder<static>|Qualification whereUpdatedAt($value)
+ * @method static Builder<static>|Qualification whereValidityDays($value)
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
@@ -73,8 +77,19 @@ class Qualification extends Model implements HasLabel, Sortable
     protected $fillable = [
         'name',
         'description',
+        'validity_days',
         'order',
         'created_at',
         'updated_at',
     ];
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'validity_days' => 'integer',
+        ];
+    }
 }

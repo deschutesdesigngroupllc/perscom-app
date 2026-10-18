@@ -25,13 +25,13 @@ class Backups extends Page implements HasTable
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'General';
 
     protected string $view = 'filament.app.clusters.settings.pages.backups';
 
     protected static ?string $cluster = Settings::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 5;
 
     protected ?string $subheading = 'Your most recent account backups.';
 

@@ -33,7 +33,12 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Carbon\CarbonInterval;
-use Exception;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\Email\Concerns\InteractsWithEmailAuthentication;
+use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -79,11 +84,17 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $unit_slot_id
  * @property bool $approved
  * @property string|null $password
+ * @property string|null $app_authentication_secret
+ * @property array<array-key, mixed>|null $app_authentication_recovery_codes
+ * @property bool $has_email_authentication
  * @property string|null $remember_token
  * @property string|null $notes
  * @property Carbon|null $notes_updated_at
  * @property string|null $profile_photo
  * @property string|null $cover_photo
+ * @property bool $hide_public_profile
+ * @property string|null $public_profile_key
+ * @property string|null $calendar_feed_token
  * @property Carbon|null $last_seen_at
  * @property string|null $facebook_user_id
  * @property string|null $github_user_id
@@ -109,6 +120,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read bool $discord_connected
  * @property-read SocialiteUser|null $discordUser
  * @property-read string $display_name
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EventRegistration> $eventRegistrations
+ * @property-read int|null $event_registrations_count
  * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
  * @property-read int|null $events_count
@@ -186,7 +199,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
  * @method static Builder<static>|User status(\App\Models\Status $status)
  * @method static Builder<static>|User unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|User whereAppAuthenticationRecoveryCodes($value)
+ * @method static Builder<static>|User whereAppAuthenticationSecret($value)
  * @method static Builder<static>|User whereApproved($value)
+ * @method static Builder<static>|User whereCalendarFeedToken($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)
  * @method static Builder<static>|User whereData($value)
@@ -197,6 +213,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User whereFacebookUserId($value)
  * @method static Builder<static>|User whereGithubUserId($value)
  * @method static Builder<static>|User whereGoogleUserId($value)
+ * @method static Builder<static>|User whereHasEmailAuthentication($value)
+ * @method static Builder<static>|User whereHasExpiredCredentials()
+ * @method static Builder<static>|User whereHasExpiredQualifications()
+ * @method static Builder<static>|User whereHasExpiringCredentials(int $days = 30)
+ * @method static Builder<static>|User whereHasExpiringQualifications(int $days = 30)
+ * @method static Builder<static>|User whereHidePublicProfile($value)
  * @method static Builder<static>|User whereId($value)
  * @method static Builder<static>|User whereLastSeenAt($value)
  * @method static Builder<static>|User whereName($value)
@@ -206,6 +228,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User wherePhoneNumber($value)
  * @method static Builder<static>|User wherePositionId($value)
  * @method static Builder<static>|User whereProfilePhoto($value)
+ * @method static Builder<static>|User wherePublicProfileKey($value)
  * @method static Builder<static>|User whereRankId($value)
  * @method static Builder<static>|User whereRememberToken($value)
  * @method static Builder<static>|User whereSpecialtyId($value)
@@ -219,7 +242,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
+class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasAvatar, HasEmailAuthentication, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
 {
     use CanReceiveNotifications;
     use ClearsApiCache;
@@ -250,6 +273,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasTrainingRecords;
     use HasUnit;
     use HasViews;
+    use InteractsWithAppAuthentication;
+    use InteractsWithAppAuthenticationRecovery;
+    use InteractsWithEmailAuthentication;
     use JwtClaims;
     use Notifiable;
     use SocialRelationships;
@@ -273,6 +299,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'notes_updated_at',
         'profile_photo',
         'cover_photo',
+        'hide_public_profile',
         'last_seen_at',
         'facebook_user_id',
         'github_user_id',
@@ -287,6 +314,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'password',
         'remember_token',
         'discord_private_channel_id',
+        'has_email_authentication',
+        'public_profile_key',
+        'calendar_feed_token',
     ];
 
     protected $appends = [
@@ -297,6 +327,27 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'profile_photo_url',
         'cover_photo_url',
     ];
+
+    /**
+     * @throws Exception
+     */
+    /**
+     * Columns stored on the users table rather than in the custom field data column. Multi-factor
+     * authentication secrets live in their own encrypted columns but must never be mass assignable.
+     *
+     * @return string[]
+     */
+    public static function getCustomColumns(): array
+    {
+        return [
+            ...(new self)->getFillable(),
+            'app_authentication_secret',
+            'app_authentication_recovery_codes',
+            'has_email_authentication',
+            'public_profile_key',
+            'calendar_feed_token',
+        ];
+    }
 
     /**
      * @return array<int, Tenant>|Collection<int, Tenant>
@@ -311,9 +362,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return true;
     }
 
-    /**
-     * @throws Exception
-     */
     public function canAccessPanel(Panel $panel): bool
     {
         return $panel->getId() === 'app';
@@ -344,13 +392,26 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return $this->phone_number;
     }
 
+    /**
+     * Events the user registered for as a whole. Attendance at individual occurrences of a
+     * repeating event is reached through eventRegistrations().
+     */
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
-            ->withPivot(['id', 'status'])
+            ->withPivot(['id', 'event_occurrence_id', 'status', 'checked_in_at'])
+            ->wherePivotNull('event_occurrence_id')
             ->withTimestamps()
             ->as('registration')
             ->using(EventRegistration::class);
+    }
+
+    /**
+     * Every registration row for the user, both series-wide and per occurrence.
+     */
+    public function eventRegistrations(): HasMany
+    {
+        return $this->hasMany(EventRegistration::class);
     }
 
     public function submissions(): HasMany
@@ -520,6 +581,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return [
             'approved' => 'boolean',
             'email_verified_at' => 'datetime',
+            'hide_public_profile' => 'boolean',
             'last_seen_at' => 'datetime',
             'notes_updated_at' => 'datetime',
             'password' => 'hashed',

@@ -9,11 +9,14 @@ use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\Message;
 use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Submission;
+use App\Models\TrainingRecord;
+use App\Models\TrainingRecordCredential;
 use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
@@ -37,6 +40,8 @@ enum AutomationTrigger: string implements HasLabel
     case EVENT_CREATED = 'event.created';
     case EVENT_UPDATED = 'event.updated';
     case EVENT_DELETED = 'event.deleted';
+    case EVENT_REGISTRATION_ATTENDED = 'eventregistration.attended';
+    case EVENT_REGISTRATION_NO_SHOW = 'eventregistration.no_show';
     case MESSAGE_CREATED = 'message.created';
     case MESSAGE_UPDATED = 'message.updated';
     case MESSAGE_DELETED = 'message.deleted';
@@ -52,9 +57,17 @@ enum AutomationTrigger: string implements HasLabel
     case SUBMISSION_CREATED = 'submission.created';
     case SUBMISSION_UPDATED = 'submission.updated';
     case SUBMISSION_DELETED = 'submission.deleted';
+    case TRAINING_RECORD_CREATED = 'trainingrecord.created';
+    case TRAINING_RECORD_UPDATED = 'trainingrecord.updated';
+    case TRAINING_RECORD_DELETED = 'trainingrecord.deleted';
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';
+    case USER_DAILY_REVIEW = 'user.daily_review';
+    case CREDENTIAL_EXPIRING = 'credential.expiring';
+    case CREDENTIAL_EXPIRED = 'credential.expired';
+    case QUALIFICATION_RECORD_EXPIRING = 'qualificationrecord.expiring';
+    case QUALIFICATION_RECORD_EXPIRED = 'qualificationrecord.expired';
 
     /**
      * @return array<string, array<string, string|null>>
@@ -97,6 +110,11 @@ enum AutomationTrigger: string implements HasLabel
                 self::SERVICE_RECORD_UPDATED->value => self::SERVICE_RECORD_UPDATED->getLabel(),
                 self::SERVICE_RECORD_DELETED->value => self::SERVICE_RECORD_DELETED->getLabel(),
             ],
+            'Training Record' => [
+                self::TRAINING_RECORD_CREATED->value => self::TRAINING_RECORD_CREATED->getLabel(),
+                self::TRAINING_RECORD_UPDATED->value => self::TRAINING_RECORD_UPDATED->getLabel(),
+                self::TRAINING_RECORD_DELETED->value => self::TRAINING_RECORD_DELETED->getLabel(),
+            ],
             'Calendar' => [
                 self::CALENDAR_CREATED->value => self::CALENDAR_CREATED->getLabel(),
                 self::CALENDAR_UPDATED->value => self::CALENDAR_UPDATED->getLabel(),
@@ -107,6 +125,10 @@ enum AutomationTrigger: string implements HasLabel
                 self::EVENT_UPDATED->value => self::EVENT_UPDATED->getLabel(),
                 self::EVENT_DELETED->value => self::EVENT_DELETED->getLabel(),
             ],
+            'Event Registration' => [
+                self::EVENT_REGISTRATION_ATTENDED->value => self::EVENT_REGISTRATION_ATTENDED->getLabel(),
+                self::EVENT_REGISTRATION_NO_SHOW->value => self::EVENT_REGISTRATION_NO_SHOW->getLabel(),
+            ],
             'Message' => [
                 self::MESSAGE_CREATED->value => self::MESSAGE_CREATED->getLabel(),
                 self::MESSAGE_UPDATED->value => self::MESSAGE_UPDATED->getLabel(),
@@ -116,6 +138,13 @@ enum AutomationTrigger: string implements HasLabel
                 self::SUBMISSION_CREATED->value => self::SUBMISSION_CREATED->getLabel(),
                 self::SUBMISSION_UPDATED->value => self::SUBMISSION_UPDATED->getLabel(),
                 self::SUBMISSION_DELETED->value => self::SUBMISSION_DELETED->getLabel(),
+            ],
+            'Scheduled' => [
+                self::USER_DAILY_REVIEW->value => self::USER_DAILY_REVIEW->getLabel(),
+                self::CREDENTIAL_EXPIRING->value => self::CREDENTIAL_EXPIRING->getLabel(),
+                self::CREDENTIAL_EXPIRED->value => self::CREDENTIAL_EXPIRED->getLabel(),
+                self::QUALIFICATION_RECORD_EXPIRING->value => self::QUALIFICATION_RECORD_EXPIRING->getLabel(),
+                self::QUALIFICATION_RECORD_EXPIRED->value => self::QUALIFICATION_RECORD_EXPIRED->getLabel(),
             ],
         ];
     }
@@ -138,6 +167,8 @@ enum AutomationTrigger: string implements HasLabel
             self::EVENT_CREATED => 'Event Created',
             self::EVENT_UPDATED => 'Event Updated',
             self::EVENT_DELETED => 'Event Deleted',
+            self::EVENT_REGISTRATION_ATTENDED => 'Event Registration Attended',
+            self::EVENT_REGISTRATION_NO_SHOW => 'Event Registration No Show',
             self::MESSAGE_CREATED => 'Message Created',
             self::MESSAGE_UPDATED => 'Message Updated',
             self::MESSAGE_DELETED => 'Message Deleted',
@@ -153,9 +184,17 @@ enum AutomationTrigger: string implements HasLabel
             self::SUBMISSION_CREATED => 'Submission Created',
             self::SUBMISSION_UPDATED => 'Submission Updated',
             self::SUBMISSION_DELETED => 'Submission Deleted',
+            self::TRAINING_RECORD_CREATED => 'Training Record Created',
+            self::TRAINING_RECORD_UPDATED => 'Training Record Updated',
+            self::TRAINING_RECORD_DELETED => 'Training Record Deleted',
             self::USER_CREATED => 'User Created',
             self::USER_UPDATED => 'User Updated',
             self::USER_DELETED => 'User Deleted',
+            self::USER_DAILY_REVIEW => 'User Daily Review',
+            self::CREDENTIAL_EXPIRING => 'Credential Expiring',
+            self::CREDENTIAL_EXPIRED => 'Credential Expired',
+            self::QUALIFICATION_RECORD_EXPIRING => 'Qualification Expiring',
+            self::QUALIFICATION_RECORD_EXPIRED => 'Qualification Expired',
         };
     }
 
@@ -182,13 +221,21 @@ enum AutomationTrigger: string implements HasLabel
             self::EVENT_UPDATED,
             self::EVENT_DELETED => Event::class,
 
+            self::EVENT_REGISTRATION_ATTENDED,
+            self::EVENT_REGISTRATION_NO_SHOW => EventRegistration::class,
+
             self::MESSAGE_CREATED,
             self::MESSAGE_UPDATED,
             self::MESSAGE_DELETED => Message::class,
 
             self::QUALIFICATION_RECORD_CREATED,
             self::QUALIFICATION_RECORD_UPDATED,
-            self::QUALIFICATION_RECORD_DELETED => QualificationRecord::class,
+            self::QUALIFICATION_RECORD_DELETED,
+            self::QUALIFICATION_RECORD_EXPIRING,
+            self::QUALIFICATION_RECORD_EXPIRED => QualificationRecord::class,
+
+            self::CREDENTIAL_EXPIRING,
+            self::CREDENTIAL_EXPIRED => TrainingRecordCredential::class,
 
             self::RANK_RECORD_CREATED,
             self::RANK_RECORD_UPDATED,
@@ -202,9 +249,57 @@ enum AutomationTrigger: string implements HasLabel
             self::SUBMISSION_UPDATED,
             self::SUBMISSION_DELETED => Submission::class,
 
+            self::TRAINING_RECORD_CREATED,
+            self::TRAINING_RECORD_UPDATED,
+            self::TRAINING_RECORD_DELETED => TrainingRecord::class,
+
             self::USER_CREATED,
             self::USER_UPDATED,
-            self::USER_DELETED => User::class,
+            self::USER_DELETED,
+            self::USER_DAILY_REVIEW => User::class,
+        };
+    }
+
+    public function isScheduled(): bool
+    {
+        return in_array($this, [
+            self::USER_DAILY_REVIEW,
+            self::CREDENTIAL_EXPIRING,
+            self::CREDENTIAL_EXPIRED,
+            self::QUALIFICATION_RECORD_EXPIRING,
+            self::QUALIFICATION_RECORD_EXPIRED,
+        ], true);
+    }
+
+    /**
+     * The additional model keys provided to scheduled triggers.
+     *
+     * @return array<string, mixed>
+     */
+    public function getScheduledContextExample(): array
+    {
+        return match ($this) {
+            self::USER_DAILY_REVIEW => [
+                'time_in_grade_days' => 45,
+                'time_in_service_days' => 365,
+                'days_since_last_seen' => 3,
+                'events_attended_30d' => 4,
+                'events_missed_30d' => 1,
+                'qualification_ids' => [1, 2],
+            ],
+            self::CREDENTIAL_EXPIRING,
+            self::CREDENTIAL_EXPIRED => [
+                'user_id' => 1,
+                'credential_id' => 1,
+                'credential_name' => 'Example Credential',
+                'days_until_expiry' => 14,
+            ],
+            self::QUALIFICATION_RECORD_EXPIRING,
+            self::QUALIFICATION_RECORD_EXPIRED => [
+                'qualification_name' => 'Example Qualification',
+                'days_until_expiry' => 14,
+            ],
+            default => [],
         };
     }
 
@@ -214,7 +309,7 @@ enum AutomationTrigger: string implements HasLabel
     public function getExampleContext(): array
     {
         $modelClass = $this->getModelClass();
-        $modelFields = $this->getModelFields($modelClass);
+        $modelFields = [...$this->getModelFields($modelClass), ...$this->getScheduledContextExample()];
         ksort($modelFields);
 
         $causer = [

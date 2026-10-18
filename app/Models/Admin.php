@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Exception;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\Email\Concerns\InteractsWithEmailAuthentication;
+use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -23,6 +29,9 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $email
  * @property Carbon|null $email_verified_at
  * @property string $password
+ * @property string|null $app_authentication_secret
+ * @property array<array-key, mixed>|null $app_authentication_recovery_codes
+ * @property bool $has_email_authentication
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -33,9 +42,12 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Admin newModelQuery()
  * @method static Builder<static>|Admin newQuery()
  * @method static Builder<static>|Admin query()
+ * @method static Builder<static>|Admin whereAppAuthenticationRecoveryCodes($value)
+ * @method static Builder<static>|Admin whereAppAuthenticationSecret($value)
  * @method static Builder<static>|Admin whereCreatedAt($value)
  * @method static Builder<static>|Admin whereEmail($value)
  * @method static Builder<static>|Admin whereEmailVerifiedAt($value)
+ * @method static Builder<static>|Admin whereHasEmailAuthentication($value)
  * @method static Builder<static>|Admin whereId($value)
  * @method static Builder<static>|Admin whereName($value)
  * @method static Builder<static>|Admin wherePassword($value)
@@ -44,10 +56,13 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-class Admin extends Authenticatable implements FilamentUser, MustVerifyEmail
+class Admin extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasEmailAuthentication, MustVerifyEmail
 {
     use CentralConnection;
     use HasFactory;
+    use InteractsWithAppAuthentication;
+    use InteractsWithAppAuthenticationRecovery;
+    use InteractsWithEmailAuthentication;
     use Notifiable;
 
     protected $fillable = [

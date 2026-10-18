@@ -30,6 +30,9 @@ class DiscoveryController extends Controller
             'userinfo_endpoint' => $this->tenant instanceof Tenant
                 ? $this->tenant->route('oidc.userinfo')
                 : route('oidc.userinfo'),
+            'jwks_uri' => $this->tenant instanceof Tenant
+                ? $this->tenant->route('oidc.jwks')
+                : route('oidc.jwks'),
             'grant_types_supported' => [
                 'authorization_code',
                 'implicit',
@@ -49,7 +52,7 @@ class DiscoveryController extends Controller
                 'fragment',
             ],
             'id_token_signing_alg_values_supported' => [
-                'HS256',
+                'RS256',
             ],
             'scopes_supported' => [
                 'openid',
@@ -62,6 +65,8 @@ class DiscoveryController extends Controller
                 'iat',
                 'exp',
                 'sub',
+                'auth_time',
+                'nonce',
                 'name',
                 'preferred_username',
                 'profile',

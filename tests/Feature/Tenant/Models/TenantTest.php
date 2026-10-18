@@ -96,4 +96,18 @@ class TenantTest extends TenantTestCase
 
         $this->assertEquals(sprintf('%s://%s%s', $scheme, $tenant->domain->domain, $base), $tenant->url);
     }
+
+    public function test_route_does_not_add_a_tenant_query_parameter(): void
+    {
+        $this->assertSame($this->tenant->url.'/oauth/authorize', $this->tenant->route('passport.authorizations.authorize'));
+        $this->assertSame($this->tenant->url.'/oauth/token?foo=bar', $this->tenant->route('passport.token', ['foo' => 'bar']));
+    }
+
+    public function test_route_fills_the_tenant_parameter_when_the_route_has_one(): void
+    {
+        $url = $this->tenant->route('auth.social.redirect', ['panel' => 'app', 'provider' => 'discord']);
+
+        $this->assertStringStartsWith($this->tenant->url.'/app/oauth/discord/', $url);
+        $this->assertStringNotContainsString('?tenant=', $url);
+    }
 }

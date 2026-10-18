@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Oidc\DiscoveryController;
+use App\Http\Controllers\Oidc\JwksController;
 use App\Http\Controllers\Oidc\LogoutController;
 use App\Http\Controllers\Oidc\UserInfoController;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
@@ -18,6 +19,9 @@ Route::group([
     Route::group(['middleware' => 'web'], static function (): void {
         Route::get('.well-known/openid-configuration', [DiscoveryController::class, 'index'])
             ->name('discovery');
+
+        Route::get('.well-known/jwks.json', JwksController::class)
+            ->name('jwks');
 
         Route::group(['prefix' => 'oauth', 'middleware' => ['auth:web,api', 'subscribed']], static function (): void {
             Route::get('logout', [LogoutController::class, 'index'])

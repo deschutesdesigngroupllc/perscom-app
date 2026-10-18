@@ -19,6 +19,7 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
 use Throwable;
+use UnitEnum;
 
 class Dashboard extends SettingsPage
 {
@@ -37,9 +39,11 @@ class Dashboard extends SettingsPage
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
+    protected static string|UnitEnum|null $navigationGroup = 'General';
+
     protected static ?string $navigationLabel = 'Dashboard';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static string $settings = DashboardSettings::class;
 
@@ -105,6 +109,9 @@ class Dashboard extends SettingsPage
                         Tab::make('User Profile')
                             ->icon('heroicon-o-user')
                             ->schema([
+                                Toggle::make('public_profiles_enabled')
+                                    ->label('Public Service Profiles')
+                                    ->helperText('Give every approved member a shareable public page with their rank, assignment, ribbon rack, awards and qualifications. Hidden fields below stay hidden, and members can hide their own page.'),
                                 TextInput::make('display_name_format')
                                     ->label('Display Name Format')
                                     ->maxLength(255)

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Actions\Notifications\SendSms;
+use App\Jobs\Tenant\SyncDiscordMember;
 use App\Metrics\Metric;
 use App\Metrics\UserCreationMetric;
 use App\Models\Enums\AutomationTrigger;
@@ -15,6 +16,7 @@ use App\Notifications\User\AccountApproved;
 use App\Notifications\User\AdminApprovalRequired;
 use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
+use App\Services\DiscordRoleSyncService;
 use App\Services\WebhookService;
 use App\Settings\FieldSettings;
 use App\Settings\PermissionSettings;
@@ -46,7 +48,7 @@ class UserObserver
 
         /** @var RegistrationSettings $registrationSettings */
         $registrationSettings = resolve(RegistrationSettings::class);
-        if ($registrationSettings->admin_approval_required) {
+        if ($registrationSettings->admin_approval_required && ! $user->approved) {
             $user->updateQuietly([
                 'approved' => false,
             ]);
@@ -76,6 +78,10 @@ class UserObserver
             }
         }
 
+        if ($user->isDirty(['rank_id', 'unit_id', 'name', 'discord_user_id']) && filled($user->discord_user_id) && DiscordRoleSyncService::isEnabled()) {
+            dispatch(new SyncDiscordMember($user->getKey()));
+        }
+
         if ($user->isDirty('phone_number') && filled($user->phone_number)) {
             SendSms::handle(
                 user: $user,
@@ -87,7 +93,7 @@ class UserObserver
             Notification::send($user, new AccountApproved);
         }
 
-        if ($user->isDirty('password')) {
+        if ($user->isDirty('password') && filled($user->getOriginal('password'))) {
             Notification::send($user, new PasswordChanged);
         }
 

@@ -7,6 +7,7 @@ namespace App\Traits;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
@@ -24,5 +25,17 @@ trait HasQualificationRecords
     {
         return $this->hasManyThrough(Qualification::class, QualificationRecord::class, 'user_id', 'id', 'id', 'qualification_id')
             ->distinct();
+    }
+
+    protected function scopeWhereHasExpiringQualifications(Builder $query, int $days = 30): Builder
+    {
+        return $query->whereHas('qualification_records', fn (Builder $query): Builder => $query
+            ->whereBetween('expires_at', [now(), now()->addDays($days)]));
+    }
+
+    protected function scopeWhereHasExpiredQualifications(Builder $query): Builder
+    {
+        return $query->whereHas('qualification_records', fn (Builder $query): Builder => $query
+            ->where('expires_at', '<=', now()));
     }
 }

@@ -6,9 +6,11 @@ namespace App\Models\Enums;
 
 use App\Models\User;
 use App\Notifications\Channels\DiscordPublicChannel;
+use App\Notifications\Channels\SlackPublicChannel;
 use App\Settings\IntegrationSettings;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Support\Collection;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Twilio\TwilioChannel;
 
@@ -20,6 +22,20 @@ enum NotificationChannel: string implements HasDescription, HasLabel
     case DISCORD_PUBLIC = 'discord_public';
     case MAIL = 'mail';
     case SMS = 'sms';
+    case SLACK = 'slack';
+
+    /**
+     * @param  iterable<int, NotificationChannel|string>|NotificationChannel|string|null  $channels
+     * @return Collection<int, NotificationChannel>
+     */
+    public static function organizationWide(mixed $channels): Collection
+    {
+        return Collection::wrap($channels)
+            ->map(fn (NotificationChannel|string $channel): ?NotificationChannel => $channel instanceof NotificationChannel ? $channel : NotificationChannel::tryFrom($channel))
+            ->filter(fn (?NotificationChannel $channel): bool => $channel?->isOrganizationWide() ?? false)
+            ->unique()
+            ->values();
+    }
 
     public function getLabel(): ?string
     {
@@ -30,6 +46,7 @@ enum NotificationChannel: string implements HasDescription, HasLabel
             NotificationChannel::DISCORD_PUBLIC => 'Discord (Public)',
             NotificationChannel::MAIL => 'Email',
             NotificationChannel::SMS => 'SMS',
+            NotificationChannel::SLACK => 'Slack',
         };
     }
 
@@ -42,7 +59,17 @@ enum NotificationChannel: string implements HasDescription, HasLabel
             NotificationChannel::DISCORD_PUBLIC => 'Send the notification to your public Discord server. This will only send one notification regardless of the amount of recipients selected.',
             NotificationChannel::MAIL => 'Send the notification as an email.',
             NotificationChannel::SMS => "Send the notification straight to the user's cell phone.",
+            NotificationChannel::SLACK => 'Send the notification to your connected Slack channel. This will only send one notification regardless of the amount of recipients selected.',
         };
+    }
+
+    /**
+     * Organization-wide channels post one message to a shared Discord or Slack channel rather than
+     * one message per recipient.
+     */
+    public function isOrganizationWide(): bool
+    {
+        return in_array($this, [NotificationChannel::DISCORD_PUBLIC, NotificationChannel::SLACK], true);
     }
 
     public function getChannel(): string
@@ -51,6 +78,7 @@ enum NotificationChannel: string implements HasDescription, HasLabel
             NotificationChannel::DISCORD_PRIVATE => DiscordChannel::class,
             NotificationChannel::DISCORD_PUBLIC => DiscordPublicChannel::class,
             NotificationChannel::SMS => TwilioChannel::class,
+            NotificationChannel::SLACK => SlackPublicChannel::class,
             default => $this->value
         };
     }
@@ -74,6 +102,9 @@ enum NotificationChannel: string implements HasDescription, HasLabel
                 && filled(data_get($settings->discord_settings, 'discord_server'))
                 && filled(data_get($settings->discord_settings, 'discord_channel')),
             NotificationChannel::SMS => filled(data_get($settings->sms_settings, 'sms_enabled')),
+            NotificationChannel::SLACK => filled(data_get($settings->slack_settings, 'slack_enabled'))
+                && filled(data_get($settings->slack_settings, 'bot_token'))
+                && filled(data_get($settings->slack_settings, 'slack_channel')),
             default => true
         };
     }

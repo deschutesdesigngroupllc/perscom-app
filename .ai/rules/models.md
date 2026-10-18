@@ -22,3 +22,9 @@ Extract reusable model behavior into App\Traits concern traits (Has*/CanBe*/Clea
 
 ## Enums as string columns with PHP-enum casts
 Store enums as string() columns and cast to an App\Models\Enums backed enum on the model. Do not use DB enum() columns.
+
+## Content models clear caches
+Models exposed through the API or dashboard use the ClearsResponseCache and ClearsApiCache traits so writes invalidate cached responses.
+
+## Models shown in Filament implement HasLabel
+Models displayed in Filament implement Filament\Support\Contracts\HasLabel via the HasResourceLabel trait, and add HasResourceUrl when they link to a resource page.
