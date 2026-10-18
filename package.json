@@ -20,14 +20,14 @@
     "@monaco-editor/react": "^4.7.0",
     "@radix-ui/react-select": "^2.2.4",
     "@radix-ui/react-slot": "^1.2.3",
-    "@shufo/prettier-plugin-blade": "^1.16.0",
+    "@shufo/prettier-plugin-blade": "1.5.7",
     "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "0.5.4",
     "@tailwindcss/vite": "^4.3.0",
     "@vercel/ncc": "^0.38.2",
     "@vitejs/plugin-react": "^5.2.0",
     "autoprefixer": "^10.4.21",
-    "axios": "^1.13.2",
+    "axios": "^1.20.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "concurrently": "^9.2.0",
@@ -41,7 +41,7 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "prop-types": "^15.8.1",
     "pusher-js": "^8.5.0",
-    "sharp": "0.35.3",
+    "sharp": "0.35.5",
     "sonner": "^2.0.7",
     "svgo": "^4.0.1",
     "tailwind-merge": "^3.4.0",
@@ -58,7 +58,8 @@
     "react-dom": "^19.2.0"
   },
   "overrides": {
-    "dompurify": "^3.4.3"
+    "dompurify": "^3.4.3",
+    "postcss-selector-parser": "^7.1.6"
   },
   "allowScripts": {
     "core-js-pure@3.44.0": true,

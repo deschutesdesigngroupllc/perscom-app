@@ -13,6 +13,7 @@ enum AutomationLogStatus: string implements HasColor, HasLabel
     case CONDITION_FAILED = 'condition_failed';
     case EXECUTED = 'executed';
     case FAILED = 'failed';
+    case SKIPPED = 'skipped';
 
     public function getLabel(): ?string
     {
@@ -21,6 +22,7 @@ enum AutomationLogStatus: string implements HasColor, HasLabel
             self::CONDITION_FAILED => 'Condition Failed',
             self::EXECUTED => 'Executed',
             self::FAILED => 'Failed',
+            self::SKIPPED => 'Skipped',
         };
     }
 
@@ -31,6 +33,7 @@ enum AutomationLogStatus: string implements HasColor, HasLabel
             self::CONDITION_FAILED => 'warning',
             self::EXECUTED => 'success',
             self::FAILED => 'danger',
+            self::SKIPPED => 'gray',
         };
     }
 }

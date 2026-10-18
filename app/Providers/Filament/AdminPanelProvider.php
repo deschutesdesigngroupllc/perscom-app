@@ -8,6 +8,8 @@ use App\Filament\Admin\Pages\Auth\Login;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\SentryContext;
 use App\Http\Middleware\SetAuthGuard;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
+use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -52,6 +54,13 @@ class AdminPanelProvider extends PanelProvider
             ->domain(str(config('app.url'))->after('://')->toString())
             ->login(Login::class)
             ->emailVerification()
+            ->profile()
+            ->multiFactorAuthentication([
+                AppAuthentication::make()
+                    ->recoverable()
+                    ->regenerableRecoveryCodes(),
+                EmailAuthentication::make(),
+            ])
             ->colors([
                 'primary' => Color::Blue,
             ])

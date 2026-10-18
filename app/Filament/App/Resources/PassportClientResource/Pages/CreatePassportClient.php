@@ -37,13 +37,22 @@ class CreatePassportClient extends CreateRecord
             ? ['*']
             : data_get($data, 'scopes', []);
 
+        $secret = Str::random(40);
+
         $client->update([
             'type' => data_get($data, 'type'),
             'description' => data_get($data, 'description'),
             'scopes' => $scopes,
-            'secret' => Str::random(40),
+            'secret' => $secret,
         ]);
 
+        session()->flash(ViewPassportClient::PLAIN_SECRET_SESSION_KEY, $secret);
+
         return $client;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('view', ['record' => $this->getRecord()]);
     }
 }

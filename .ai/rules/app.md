@@ -8,8 +8,8 @@ paths:
 ## No repository layer
 Query models directly through Eloquent. Do not introduce repository or query-object classes (the sole app/Repositories class is tenancy infrastructure, not a domain repository).
 
-## Localize with English string keys
-Localize with full English sentences/labels as the key inside __(). Do not introduce short dot-notation keys or per-group PHP lang files.
+## Plain English string literals
+Write UI strings (labels, helper text, notifications) as plain English literals. Do not wrap them in __() or introduce lang files.
 
 ## Date construction via now()/today() helpers
 Construct current-time values with now()/today() helpers rather than Carbon:: static constructors.
@@ -19,3 +19,9 @@ Transform data with collect()/->map()/->filter()/->each() chains rather than for
 
 ## Use filled()/blank() for emptiness checks
 Check emptiness with the filled()/blank() helpers, not === '' / !== '' comparisons or empty(). Applies to strings, arrays, and nullable values.
+
+## Use resolve() for service location
+When a dependency can't be injected (static Filament methods, closures, notifications, settings classes), obtain it with resolve(Foo::class). Do not use app(), app()->make(), or App::make().
+
+## Facades for Auth/Cache/Session/Log; helpers for config/request/event/redirect
+Use the Auth::, Cache::, Session::, and Log:: facades, never auth(), cache(), session(), or logger(). Use the config(), request(), event(), and redirect() helpers rather than their facades.

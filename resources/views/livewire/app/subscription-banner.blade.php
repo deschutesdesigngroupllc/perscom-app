@@ -1,4 +1,4 @@
-<div>
+<div class="print:hidden">
   @if ($show)
     <div class="flex items-center justify-between dark:bg-gray-800 bg-gray-900 py-2.5 px-4 md:px-6 lg:px-8">
       <div class="flex-1"></div>

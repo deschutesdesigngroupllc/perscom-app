@@ -14,6 +14,8 @@ class IntegrationSettings extends Settings
 
     public ?array $sms_settings = null;
 
+    public ?array $slack_settings = null;
+
     public static function group(): string
     {
         return 'integration';

@@ -109,8 +109,8 @@
     @apply border-gray-700;
   }
 
-  /* Grid layout */
-  .ec-grid {
+  /* Grid layout (month view only — time grid views rely on the vendor subgrid layout) */
+  .ec-day-grid .ec-grid {
     display: grid;
     grid-template-columns: repeat(var(--ec-grid-cols, 7), minmax(0, 1fr));
   }
@@ -142,19 +142,21 @@
     @apply bg-gray-900;
   }
 
-  .ec-body .ec-grid {
+  .ec-day-grid .ec-body .ec-grid {
     grid-auto-rows: minmax(10rem, 1fr);
   }
 
-  .ec-body .ec-grid .ec-day {
+  .ec-day-grid .ec-body .ec-grid .ec-day {
     aspect-ratio: 1 / 1;
   }
 
   /* Day cells */
   .ec-day {
-    @apply relative flex flex-col gap-1 px-1 pt-0.5 pb-1
-    border-r border-b border-gray-200
-    bg-white;
+    @apply border-r border-b border-gray-200 bg-white;
+  }
+
+  .ec-day-grid .ec-day {
+    @apply relative flex flex-col gap-1 px-1 pt-0.5 pb-1;
   }
 
   :where(.dark) .ec-day {
@@ -220,7 +222,7 @@
 
   /* Events overlay — events become direct grid items of .ec-grid via
      display: contents so their inline grid-area lands in the matching day cell. */
-  .ec-events {
+  .ec-day-grid .ec-events {
     display: contents;
   }
 
@@ -231,14 +233,17 @@
     shadow-sm transition
     hover:brightness-110 hover:shadow
     focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500;
-    margin-inline: 4px;
-    align-self: start;
-    justify-self: stretch;
     min-height: 1.25rem;
     min-width: 0;
     max-width: calc(100% - 8px);
     overflow: hidden;
     z-index: 1;
+  }
+
+  .ec-day-grid .ec-event {
+    margin-inline: 4px;
+    align-self: start;
+    justify-self: stretch;
   }
 
   :where(.dark) .ec-event:focus {

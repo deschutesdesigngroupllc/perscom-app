@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
+use App\Observers\TrainingRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
@@ -14,7 +16,11 @@ use App\Traits\HasDocument;
 use App\Traits\HasEvent;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +36,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $author_id
  * @property int|null $document_id
  * @property int|null $event_id
+ * @property int|null $event_occurrence_id
  * @property string|null $text
  * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
@@ -49,11 +56,15 @@ use Illuminate\Support\Carbon;
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
  * @property-read \Illuminate\Support\Facades\Event|null $event
+ * @property-read EventOccurrence|null $eventOccurrence
  * @property-read User|null $instructor
+ * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  * @property-read User|null $user
  *
  * @method static Builder<static>|TrainingRecord author(\App\Models\User $user)
@@ -69,6 +80,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|TrainingRecord whereData($value)
  * @method static Builder<static>|TrainingRecord whereDocumentId($value)
  * @method static Builder<static>|TrainingRecord whereEventId($value)
+ * @method static Builder<static>|TrainingRecord whereEventOccurrenceId($value)
  * @method static Builder<static>|TrainingRecord whereId($value)
  * @method static Builder<static>|TrainingRecord whereInstructorId($value)
  * @method static Builder<static>|TrainingRecord whereText($value)
@@ -77,7 +89,8 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-class TrainingRecord extends Model
+#[ObservedBy(TrainingRecordObserver::class)]
+class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -90,6 +103,8 @@ class TrainingRecord extends Model
     use HasFactory;
     use HasLogs;
     use HasModelNotifications;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasUser;
 
     protected $table = 'records_trainings';
@@ -111,11 +126,32 @@ class TrainingRecord extends Model
     public function credentials(): BelongsToMany
     {
         return $this->belongsToMany(Credential::class, 'records_trainings_credentials')
-            ->using(TrainingRecordCredential::class);
+            ->using(TrainingRecordCredential::class)
+            ->withPivot(['id', 'issued_at', 'expires_at']);
     }
 
     public function instructor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'instructor_id');
+    }
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return 'A training record has been added for '.$this->user->name;
+    }
+
+    public function textForNewsfeedItem(): ?string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return optional($this->event, fn (Event $event): string => 'Event: '.$event->name);
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
     }
 }

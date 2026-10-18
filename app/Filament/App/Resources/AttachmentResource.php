@@ -52,7 +52,7 @@ class AttachmentResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Resources';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 32;
 
     protected static ?string $slug = 'resources/attachments';
 

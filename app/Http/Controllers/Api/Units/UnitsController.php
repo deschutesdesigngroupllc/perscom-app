@@ -30,7 +30,7 @@ class UnitsController extends Controller
      */
     public function includes(): array
     {
-        return ['assignment_records', 'assignment_records.*', 'image', 'groups', 'groups.*', 'users', 'users.*'];
+        return ['assignment_records', 'assignment_records.*', 'children', 'children.*', 'image', 'groups', 'groups.*', 'parent', 'parent.*', 'users', 'users.*'];
     }
 
     /**
@@ -38,7 +38,7 @@ class UnitsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
+        return ['id', 'parent_id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
     }
 
     /**
@@ -46,7 +46,7 @@ class UnitsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
+        return ['id', 'parent_id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
     }
 
     /**
@@ -54,6 +54,6 @@ class UnitsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
+        return ['id', 'parent_id', 'name', 'description', 'empty', 'order', 'hidden', 'icon', 'created_at', 'updated_at'];
     }
 }

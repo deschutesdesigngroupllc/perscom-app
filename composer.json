@@ -9,6 +9,7 @@
   ],
   "require": {
     "php": "^8.4",
+    "ext-gd": "*",
     "ext-pdo": "*",
     "ext-zip": "*",
     "aws/aws-sdk-php": "^3.393.4",
@@ -16,7 +17,7 @@
     "calebporzio/sushi": "^2.5.4",
     "dutchcodingcompany/filament-socialite": "^3.2.1",
     "fakerphp/faker": "^1.24.1",
-    "filament/filament": "^5.7.6",
+    "filament/filament": "^5.8.2",
     "filament/spatie-laravel-google-fonts-plugin": "^5.7.6",
     "filament/spatie-laravel-settings-plugin": "^5.7.6",
     "flowframe/laravel-trend": "^0.5.0",
@@ -25,9 +26,10 @@
     "inertiajs/inertia-laravel": "^3.3.1",
     "laravel-notification-channels/discord": "^1.8",
     "laravel-notification-channels/twilio": "^4.2",
-    "laravel/boost": "^2.5.5",
+    "laravel/ai": "^1.2",
+    "laravel/boost": "^2.10",
     "laravel/cashier": "^16.7.0",
-    "laravel/framework": "^13.26.1",
+    "laravel/framework": "^13.35.0",
     "laravel/horizon": "^5.48.3",
     "laravel/nightwatch": "^1.30",
     "laravel/passport": "^13.7.6",
@@ -136,7 +138,9 @@
   },
   "extra": {
     "laravel": {
-      "dont-discover": []
+      "dont-discover": [
+        "zoha/laravel-meta"
+      ]
     }
   },
   "scripts": {

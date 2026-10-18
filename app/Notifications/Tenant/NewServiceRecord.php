@@ -12,6 +12,7 @@ use App\Models\Enums\NotificationGroup;
 use App\Models\ServiceRecord;
 use App\Models\User;
 use App\Services\TwilioService;
+use App\Support\Discord\DiscordEmbed;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -20,7 +21,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
-use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
@@ -70,7 +70,7 @@ HTML;
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->reject(fn (NotificationChannel $channel): bool => $channel->isOrganizationWide())
             ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
@@ -112,14 +112,16 @@ HTML;
 
     public function toDiscord(): DiscordMessage
     {
-        $converter = new HtmlConverter([
-            'strip_tags' => true,
-            'remove_nodes' => true,
-        ]);
+        $embed = DiscordEmbed::make()
+            ->title('New Service Record')
+            ->description(Str::limit(strip_tags((string) $this->serviceRecord->text), 500))
+            ->url($this->url)
+            ->color('#6366f1')
+            ->field('Member', $this->serviceRecord->user?->name)
+            ->field('Author', $this->serviceRecord->author?->name)
+            ->timestamp($this->serviceRecord->created_at);
 
-        return DiscordMessage::create(
-            body: $converter->convert($this->message)
-        );
+        return DiscordMessage::create(body: '', embed: $embed->toArray());
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null

@@ -11,6 +11,7 @@ use App\Filament\App\Resources\AutomationResource\Pages\ViewAutomation;
 use App\Filament\App\Resources\AutomationResource\RelationManagers\LogsRelationManager;
 use App\Models\Automation;
 use App\Models\Enums\AutomationActionType;
+use App\Models\Enums\AutomationRunLimit;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Webhook;
@@ -85,6 +86,12 @@ class AutomationResource extends BaseResource
                                     ->helperText('Lower numbers run first. Default is 0.')
                                     ->numeric()
                                     ->default(0)
+                                    ->required(),
+                                Select::make('run_limit')
+                                    ->label('Run Limit')
+                                    ->helperText('Limit how often this automation can run for the same resource. Useful for scheduled triggers that fire daily.')
+                                    ->options(AutomationRunLimit::class)
+                                    ->default(AutomationRunLimit::ALWAYS)
                                     ->required(),
                                 Toggle::make('enabled')
                                     ->helperText('Enable or disable this automation.')
@@ -482,6 +489,10 @@ class AutomationResource extends BaseResource
                                     ->visible(fn ($state): bool => filled($state))
                                     ->html(),
                                 TextEntry::make('priority'),
+                                TextEntry::make('run_limit')
+                                    ->label('Run Limit')
+                                    ->badge()
+                                    ->color('gray'),
                                 IconEntry::make('enabled')
                                     ->boolean(),
                             ]),

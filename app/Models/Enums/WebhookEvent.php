@@ -23,6 +23,8 @@ enum WebhookEvent: string implements HasLabel
     case EVENT_CREATED = 'event.created';
     case EVENT_UPDATED = 'event.updated';
     case EVENT_DELETED = 'event.deleted';
+    case EVENT_REGISTRATION_ATTENDED = 'eventregistration.attended';
+    case EVENT_REGISTRATION_NO_SHOW = 'eventregistration.no_show';
     case MESSAGE_CREATED = 'message.created';
     case MESSAGE_UPDATED = 'message.updated';
     case MESSAGE_DELETED = 'message.deleted';
@@ -39,6 +41,9 @@ enum WebhookEvent: string implements HasLabel
     case SUBMISSION_UPDATED = 'submission.updated';
     case SUBMISSION_DELETED = 'submission.deleted';
     case TEST_WEBHOOK = 'webhook.test';
+    case TRAINING_RECORD_CREATED = 'trainingrecord.created';
+    case TRAINING_RECORD_UPDATED = 'trainingrecord.updated';
+    case TRAINING_RECORD_DELETED = 'trainingrecord.deleted';
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';

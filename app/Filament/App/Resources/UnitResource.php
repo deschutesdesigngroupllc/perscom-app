@@ -12,6 +12,7 @@ use App\Filament\Exports\UnitExporter;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Unit;
+use App\Rules\UnitParentRule;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -20,6 +21,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\PageRegistration;
@@ -66,6 +68,21 @@ class UnitResource extends BaseResource
                                     ->helperText('The name of the unit.')
                                     ->required()
                                     ->maxLength(255),
+                                Select::make('parent_id')
+                                    ->label('Parent Unit')
+                                    ->helperText('Nest this unit beneath another unit on the roster, such as a platoon within a company.')
+                                    ->relationship(
+                                        name: 'parent',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn (Builder $query, ?Unit $record): Builder => $query->when(
+                                            $record instanceof Unit && $record->exists,
+                                            fn (Builder $query): Builder => $query->whereKeyNot([$record->getKey(), ...$record->descendantIds()]),
+                                        ),
+                                    )
+                                    ->rule(fn (?Unit $record): UnitParentRule => new UnitParentRule($record))
+                                    ->searchable()
+                                    ->preload()
+                                    ->nullable(),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the unit.')
@@ -123,6 +140,10 @@ class UnitResource extends BaseResource
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('parent.name')
+                    ->label('Parent Unit')
+                    ->placeholder('Top Level')
+                    ->sortable(),
                 ImageColumn::make('image.path')
                     ->placeholder('No Image')
                     ->label('Image'),

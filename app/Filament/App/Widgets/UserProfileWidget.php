@@ -4,18 +4,26 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
-use App\Filament\App\Resources\EventResource;
+use App\Data\Promotions\PromotionEvaluationData;
 use App\Filament\App\Resources\UserResource;
-use App\Models\Event;
-use App\Models\Position;
+use App\Filament\App\Resources\UserResource\Pages\ViewUser;
+use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\RankRecordsRelationManager;
+use App\Models\AwardRecord;
 use App\Models\Rank;
-use App\Models\Unit;
 use App\Models\User;
+use App\Services\PromotionEligibilityService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
+use Carbon\CarbonInterval;
 use Filament\Widgets\Widget;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * The signed-in member's service record: rank, assignment, awards and progress toward their next
+ * promotion.
+ */
 class UserProfileWidget extends Widget
 {
     use HasWidgetShield;
@@ -28,85 +36,110 @@ class UserProfileWidget extends Widget
 
     protected string $view = 'filament.app.widgets.user-profile-widget';
 
-    protected ?User $user = null;
+    /**
+     * @var array<int, class-string>|null
+     */
+    protected ?array $relationManagers = null;
 
-    protected ?Rank $rank = null;
+    protected ?PromotionEvaluationData $promotion = null;
 
-    protected ?Position $position = null;
-
-    protected ?Unit $unit = null;
-
-    protected Collection $upcomingEvents;
-
-    public function mount(): void
+    public function user(): User
     {
         /** @var User $user */
         $user = Auth::user();
-        $this->user = $user;
 
-        $this->rank = $user->rank;
-        $this->position = $user->position;
-        $this->unit = $user->unit;
+        return $user;
+    }
 
-        $this->upcomingEvents = Event::query()
-            ->where('starts', '>=', now())
-            ->orderBy('starts')
-            ->limit(3)
+    public function timeInService(): ?string
+    {
+        return $this->humanize($this->user()->time_in_service);
+    }
+
+    public function timeInGrade(): ?string
+    {
+        return $this->humanize($this->user()->time_in_grade);
+    }
+
+    public function timeInAssignment(): ?string
+    {
+        return $this->humanize($this->user()->time_in_assignment);
+    }
+
+    public function promotion(): PromotionEvaluationData
+    {
+        return $this->promotion ??= PromotionEligibilityService::evaluate($this->user());
+    }
+
+    public function hasPromotionRequirements(): bool
+    {
+        return $this->promotion()->nextRank instanceof Rank && filled($this->promotion()->requirements);
+    }
+
+    /**
+     * @return EloquentCollection<int, AwardRecord>
+     */
+    public function awardRecords(): EloquentCollection
+    {
+        return AwardRecord::query()
+            ->where('user_id', $this->user()->getKey())
+            ->whereHas('award')
+            ->with(['award.image'])
             ->get();
     }
 
-    public function getRank(): ?Rank
+    public function showsAwards(): bool
     {
-        return $this->rank;
-    }
-
-    public function getRankImageUrl(): ?string
-    {
-        return $this->rank?->image?->image_url;
-    }
-
-    public function getPosition(): ?Position
-    {
-        return $this->position;
-    }
-
-    public function getUnit(): ?Unit
-    {
-        return $this->unit;
-    }
-
-    public function getUnitImageUrl(): ?string
-    {
-        return $this->unit?->image?->image_url;
+        return $this->relationIndex(AwardRecordsRelationManager::class) !== null;
     }
 
     public function getUserUrl(): string
     {
-        return UserResource::getUrl('view', ['record' => $this->user]);
+        return UserResource::getUrl('view', ['record' => $this->user()]);
     }
 
-    public function getRankRecordsUrl(): string
+    public function getRankRecordsUrl(): ?string
     {
-        return UserResource::getUrl('view', ['record' => $this->user, 'relation' => '4']);
+        return $this->relationUrl(RankRecordsRelationManager::class);
     }
 
-    public function getAssignmentRecordsUrl(): string
+    public function getAssignmentRecordsUrl(): ?string
     {
-        return UserResource::getUrl('view', ['record' => $this->user, 'relation' => '0']);
+        return $this->relationUrl(AssignmentRecordsRelationManager::class);
     }
 
-    public function getUpcomingEvents(): Collection
+    public function getAwardRecordsUrl(): ?string
     {
-        return $this->upcomingEvents;
+        return $this->relationUrl(AwardRecordsRelationManager::class);
     }
 
-    public function getEventUrl(Event $event): string
+    /**
+     * Profile record tabs depend on which record types the organization hides, so link to a tab by
+     * looking up its position rather than assuming one.
+     *
+     * @param  class-string  $relationManager
+     */
+    protected function relationUrl(string $relationManager): ?string
     {
-        return EventResource::getUrl('view', ['record' => $event]);
+        $index = $this->relationIndex($relationManager);
+
+        return $index === null ? null : UserResource::getUrl('view', ['record' => $this->user(), 'relation' => (string) $index]);
     }
 
-    public function getEventsListUrl(): string
+    /**
+     * @param  class-string  $relationManager
+     */
+    protected function relationIndex(string $relationManager): ?int
     {
-        return EventResource::getUrl('index');
+        $this->relationManagers ??= new ViewUser()->getRelationManagers();
+
+        $index = array_search($relationManager, $this->relationManagers, true);
+
+        return $index === false ? null : (int) $index;
+    }
+
+    protected function humanize(?CarbonInterval $interval): ?string
+    {
+        return $interval?->forHumans(['parts' => 2]);
     }
 }

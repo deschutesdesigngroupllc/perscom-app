@@ -26,6 +26,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $description
  * @property CredentialType $type
  * @property int|null $issuer_id
+ * @property int|null $validity_days
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -50,6 +51,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Credential whereOrder($value)
  * @method static Builder<static>|Credential whereType($value)
  * @method static Builder<static>|Credential whereUpdatedAt($value)
+ * @method static Builder<static>|Credential whereValidityDays($value)
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
@@ -67,6 +69,7 @@ class Credential extends Model implements HasLabel, Sortable
         'description',
         'type',
         'issuer_id',
+        'validity_days',
     ];
 
     public function issuer(): BelongsTo
@@ -77,13 +80,15 @@ class Credential extends Model implements HasLabel, Sortable
     public function training_records(): BelongsToMany
     {
         return $this->belongsToMany(TrainingRecord::class, 'records_trainings_credentials')
-            ->using(TrainingRecordCredential::class);
+            ->using(TrainingRecordCredential::class)
+            ->withPivot(['id', 'issued_at', 'expires_at']);
     }
 
     protected function casts(): array
     {
         return [
             'type' => CredentialType::class,
+            'validity_days' => 'integer',
         ];
     }
 }

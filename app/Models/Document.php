@@ -73,6 +73,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|Document whereContent($value)
  * @method static Builder<static>|Document whereCreatedAt($value)
  * @method static Builder<static>|Document whereDescription($value)
+ * @method static Builder<static>|Document whereHasExpiredQualifications()
+ * @method static Builder<static>|Document whereHasExpiringQualifications(int $days = 30)
  * @method static Builder<static>|Document whereId($value)
  * @method static Builder<static>|Document whereName($value)
  * @method static Builder<static>|Document whereUpdatedAt($value)

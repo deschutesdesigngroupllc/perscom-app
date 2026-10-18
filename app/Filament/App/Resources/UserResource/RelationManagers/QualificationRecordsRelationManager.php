@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\QualificationRecordResource;
+use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Models\QualificationRecord;
 use App\Models\User;
 use BackedEnum;
@@ -36,6 +37,8 @@ class QualificationRecordsRelationManager extends RelationManager
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('qualification.name')
+                    ->sortable(),
+                ExpiresAtColumn::make()
                     ->sortable(),
                 ImageColumn::make('qualification.image.path')
                     ->placeholder('No Image')

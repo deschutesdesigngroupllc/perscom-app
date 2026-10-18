@@ -19,6 +19,7 @@ class QualificationRecordRequest extends Request
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'integer|exists:users,id',
             'text' => 'nullable|string|max:65535',
+            'expires_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
         ];

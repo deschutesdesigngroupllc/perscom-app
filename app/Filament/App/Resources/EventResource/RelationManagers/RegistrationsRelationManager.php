@@ -10,6 +10,8 @@ use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationsRelationManager extends RelationManager
 {
@@ -18,6 +20,15 @@ class RegistrationsRelationManager extends RelationManager
     protected static string|BackedEnum|null $icon = 'heroicon-o-user-plus';
 
     protected $listeners = ['refreshRegistrations' => '$refresh'];
+
+    /**
+     * Members see who is going on the event page itself, so the series registration list is only
+     * shown to those who can manage the event.
+     */
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        return parent::canViewForRecord($ownerRecord, $pageClass) && Auth::user()?->can('update', $ownerRecord) === true;
+    }
 
     public function hasCombinedRelationManagerTabsWithContent(): bool
     {
@@ -44,6 +55,16 @@ class RegistrationsRelationManager extends RelationManager
                     ->badge(),
                 TextColumn::make('registration.created_at')
                     ->label('Registered')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = resolve(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
+                    ->dateTime(),
+                TextColumn::make('registration.checked_in_at')
+                    ->label('Checked In')
+                    ->placeholder('Not checked in')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);

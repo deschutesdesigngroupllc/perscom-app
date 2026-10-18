@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\Pages;
 
+use App\Filament\Actions\InviteAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\Concerns\AdvancedTables;
 use App\Models\Status;
 use Archilex\AdvancedTables\Components\PresetView;
+use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,11 +38,13 @@ class ListUsers extends ListRecords
     }
 
     /**
-     * @return CreateAction[]
+     * @return Action[]
      */
     protected function getHeaderActions(): array
     {
         return [
+            InviteAction::make()
+                ->color('gray'),
             CreateAction::make(),
         ];
     }

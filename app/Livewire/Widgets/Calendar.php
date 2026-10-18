@@ -13,6 +13,10 @@ class Calendar extends CalendarWidget
 
     protected bool $eventClickEnabled = false;
 
+    protected bool $showCancelled = false;
+
+    protected bool $highlightResponses = false;
+
     /**
      * @return array{}
      */

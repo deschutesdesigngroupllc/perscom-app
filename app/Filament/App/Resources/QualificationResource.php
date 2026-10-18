@@ -71,6 +71,13 @@ class QualificationResource extends BaseResource
                                     ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
+                                TextInput::make('validity_days')
+                                    ->label('Validity Period')
+                                    ->helperText('The number of days the qualification remains valid after it is awarded. Leave blank if it never expires.')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->suffix('days')
+                                    ->nullable(),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the qualification.')
@@ -126,6 +133,11 @@ class QualificationResource extends BaseResource
                     ->sortable()
                     ->color('gray')
                     ->badge(),
+                TextColumn::make('validity_days')
+                    ->label('Validity')
+                    ->formatStateUsing(fn (?int $state): string => filled($state) ? trans_choice(':count day|:count days', $state) : 'Never expires')
+                    ->placeholder('Never expires')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')

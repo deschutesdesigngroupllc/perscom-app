@@ -73,7 +73,7 @@ class Schedule
                             ->required()
                             ->options(ScheduleFrequency::class)
                             ->default('WEEKLY')
-                            ->columnSpan(fn ($state): int => $state === 'DAILY' ? 2 : 1),
+                            ->columnSpan(fn ($state): int => static::frequency($state) === ScheduleFrequency::DAILY ? 2 : 1),
                         Select::make('by_day')
                             ->live()
                             ->helperText('The day(s) of the week the schedule will repeat.')
@@ -91,7 +91,7 @@ class Schedule
                                 'FR' => 'Friday',
                                 'SA' => 'Saturday',
                             ])
-                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'MONTHLY', 'YEARLY'], true)),
+                            ->hidden(fn (Get $get): bool => in_array(static::frequency($get('frequency')), [ScheduleFrequency::DAILY, ScheduleFrequency::MONTHLY, ScheduleFrequency::YEARLY], true)),
                         Select::make('by_month_day')
                             ->live()
                             ->helperText('The day of the month the schedule will repeat.')
@@ -107,7 +107,7 @@ class Schedule
 
                                 return $period->mapWithKeys(fn ($value): array => [$value->format('j') => $value->format('jS')]);
                             })
-                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'WEEKLY', 'YEARLY'], true)),
+                            ->hidden(fn (Get $get): bool => in_array(static::frequency($get('frequency')), [ScheduleFrequency::DAILY, ScheduleFrequency::WEEKLY, ScheduleFrequency::YEARLY], true)),
                         Select::make('by_month')
                             ->live()
                             ->helperText('The month of the year the schedule will repeat.')
@@ -128,7 +128,7 @@ class Schedule
                                 '11' => 'November',
                                 '12' => 'December',
                             ])
-                            ->hidden(fn (Get $get): bool => in_array($get('frequency'), ['DAILY', 'WEEKLY', 'MONTHLY'], true)),
+                            ->hidden(fn (Get $get): bool => in_array(static::frequency($get('frequency')), [ScheduleFrequency::DAILY, ScheduleFrequency::WEEKLY, ScheduleFrequency::MONTHLY], true)),
                     ]),
                 Select::make('end_type')
                     ->live()
@@ -136,15 +136,15 @@ class Schedule
                     ->label('Ends')
                     ->default('never')
                     ->options(ScheduleEndType::class)
-                    ->columnSpan(fn ($state): int => $state !== 'never' ? 1 : 3),
+                    ->columnSpan(fn ($state): int => static::endType($state) !== ScheduleEndType::NEVER ? 1 : 3),
                 TextInput::make('count')
                     ->live()
                     ->columnSpan(2)
                     ->default(1)
                     ->label('Occurrences')
                     ->helperText('The number of occurrences before the recurring schedule ends.')
-                    ->hidden(fn (Get $get): bool => $get('end_type') !== 'after')
-                    ->required(fn (Get $get): bool => $get('end_type') === 'after')
+                    ->hidden(fn (Get $get): bool => static::endType($get('end_type')) !== ScheduleEndType::AFTER)
+                    ->required(fn (Get $get): bool => static::endType($get('end_type')) === ScheduleEndType::AFTER)
                     ->numeric(),
                 DatePicker::make('until')
                     ->live()
@@ -152,8 +152,8 @@ class Schedule
                     ->default(today()->addMonth())
                     ->label('End Date')
                     ->helperText('The date the recurring schedule will end.')
-                    ->hidden(fn (Get $get): bool => $get('end_type') !== ScheduleEndType::ON)
-                    ->required(fn (Get $get): bool => $get('end_type') === ScheduleEndType::ON)
+                    ->hidden(fn (Get $get): bool => static::endType($get('end_type')) !== ScheduleEndType::ON)
+                    ->required(fn (Get $get): bool => static::endType($get('end_type')) === ScheduleEndType::ON)
                     ->dehydrateStateUsing(function (DateTimeInterface|WeekDay|Month|string|int|float|null $state, Get $get): Carbon {
                         $start = Date::parse($get('start'));
                         $until = Date::parse($state);
@@ -191,5 +191,18 @@ class Schedule
                         return ScheduleService::getSchedulePattern($schedule, $allDay) ?? '---';
                     }),
             ]);
+    }
+
+    /**
+     * Select state holds the enum case once cast, or the raw value before it is, so normalize both.
+     */
+    protected static function frequency(mixed $state): ?ScheduleFrequency
+    {
+        return $state instanceof ScheduleFrequency ? $state : (is_string($state) ? ScheduleFrequency::tryFrom($state) : null);
+    }
+
+    protected static function endType(mixed $state): ?ScheduleEndType
+    {
+        return $state instanceof ScheduleEndType ? $state : (is_string($state) ? ScheduleEndType::tryFrom($state) : null);
     }
 }

@@ -7,6 +7,7 @@ namespace App\Traits;
 use App\Models\Credential;
 use App\Models\TrainingRecord;
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
@@ -29,5 +30,17 @@ trait HasTrainingRecords
             Credential::class,
             [TrainingRecord::class, 'records_trainings_credentials'],
         );
+    }
+
+    protected function scopeWhereHasExpiringCredentials(Builder $query, int $days = 30): Builder
+    {
+        return $query->whereHas('training_records.credentials', fn (Builder $query): Builder => $query
+            ->whereBetween('records_trainings_credentials.expires_at', [now(), now()->addDays($days)]));
+    }
+
+    protected function scopeWhereHasExpiredCredentials(Builder $query): Builder
+    {
+        return $query->whereHas('training_records.credentials', fn (Builder $query): Builder => $query
+            ->where('records_trainings_credentials.expires_at', '<=', now()));
     }
 }

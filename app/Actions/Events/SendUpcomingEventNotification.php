@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace App\Actions\Events;
 
+use App\Data\Events\OccurrenceData;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\User;
-use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\UpcomingEvent;
+use App\Services\EventAttendanceService;
+use App\Services\EventCalendarService;
+use App\Services\EventOccurrenceService;
 use Carbon\CarbonInterface;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
@@ -26,16 +30,14 @@ class SendUpcomingEventNotification
             return;
         }
 
-        Notification::send($event->registrations, new UpcomingEvent($event, $interval, $sendAt));
+        Notification::send(SendUpcomingEventNotification::recipients($event), new UpcomingEvent($event, $interval, $sendAt));
 
-        if (Collection::wrap($event->notifications_channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
-            Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [DiscordPublicChannel::class]);
-        }
+        NotificationChannel::organizationWide($event->notifications_channels)->each(fn (NotificationChannel $channel) => Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [$channel->getChannel()]));
     }
 
     public static function canSendNotification(Event $event): bool
     {
-        $event->loadMissing(['schedule', 'registrations']);
+        $event->loadMissing(['schedule']);
 
         if (filled($event->schedule) && $event->schedule->has_passed) {
             return false;
@@ -45,10 +47,32 @@ class SendUpcomingEventNotification
             return false;
         }
 
-        return filled($event->registrations)
-            && filled($event->notifications_channels)
+        return filled($event->notifications_channels)
             && filled($event->notifications_interval)
             && $event->registration_enabled
-            && $event->notifications_enabled;
+            && $event->notifications_enabled
+            && SendUpcomingEventNotification::recipients($event)->isNotEmpty();
+    }
+
+    /**
+     * The members whose effective response for the upcoming occurrence is Going or Maybe. A response
+     * made for the occurrence itself takes precedence over the member's series-wide response.
+     *
+     * @return Collection<int, User>
+     */
+    protected static function recipients(Event $event): Collection
+    {
+        $occurrence = EventOccurrenceService::nearest($event, $event->schedule?->next_occurrence ?? $event->starts);
+
+        if (! $occurrence instanceof OccurrenceData || $occurrence->isCancelled()) {
+            return new Collection;
+        }
+
+        $userIds = EventAttendanceService::registrationsFor($occurrence)
+            ->filter(fn (EventRegistration $registration): bool => in_array($registration->status, EventCalendarService::NOTIFIED_RESPONSES, true))
+            ->keys()
+            ->all();
+
+        return User::query()->whereKey($userIds)->get();
     }
 }

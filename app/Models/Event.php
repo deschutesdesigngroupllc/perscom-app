@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -35,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $description
  * @property string|null $content
  * @property string|null $location
- * @property string $url
+ * @property string|null $url
  * @property int|null $author_id
  * @property bool $all_day
  * @property Carbon $starts
@@ -43,6 +44,7 @@ use Illuminate\Support\Carbon;
  * @property bool $repeats
  * @property bool $registration_enabled
  * @property Carbon|null $registration_deadline
+ * @property bool $creates_training_record
  * @property bool $notifications_enabled
  * @property array<array-key, mixed>|null $notifications_interval
  * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $notifications_channels
@@ -63,6 +65,10 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read mixed $length
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EventRegistration> $occurrenceRegistrations
+ * @property-read int|null $occurrence_registrations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, EventOccurrence> $occurrences
+ * @property-read int|null $occurrences_count
  * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $registrations
  * @property-read int|null $registrations_count
@@ -82,6 +88,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereCalendarId($value)
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereContent($value)
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereCreatedAt($value)
+ * @method static Builder<static>|\Illuminate\Support\Facades\Event whereCreatesTrainingRecord($value)
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereDescription($value)
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereEnds($value)
  * @method static Builder<static>|\Illuminate\Support\Facades\Event whereId($value)
@@ -121,6 +128,7 @@ class Event extends Model implements HasLabel
         'all_day' => false,
         'repeats' => false,
         'registration_enabled' => true,
+        'creates_training_record' => false,
         'notifications_enabled' => true,
     ];
 
@@ -137,6 +145,7 @@ class Event extends Model implements HasLabel
         'repeats',
         'registration_enabled',
         'registration_deadline',
+        'creates_training_record',
         'notifications_enabled',
         'notifications_interval',
         'notifications_channels',
@@ -149,13 +158,31 @@ class Event extends Model implements HasLabel
         return $this->belongsTo(Calendar::class);
     }
 
+    /**
+     * Series-wide registrations. Registrations for a single occurrence of a repeating event are
+     * excluded so each member appears once; use occurrenceRegistrations() to reach those.
+     */
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
-            ->withPivot(['id', 'user_id', 'event_id', 'status'])
+            ->withPivot(['id', 'user_id', 'event_id', 'event_occurrence_id', 'status', 'checked_in_at'])
+            ->wherePivotNull('event_occurrence_id')
             ->as('registration')
             ->using(EventRegistration::class)
             ->withTimestamps();
+    }
+
+    /**
+     * Registrations scoped to a single occurrence of a repeating event.
+     */
+    public function occurrenceRegistrations(): HasMany
+    {
+        return $this->hasMany(EventRegistration::class)->whereNotNull('event_occurrence_id');
+    }
+
+    public function occurrences(): HasMany
+    {
+        return $this->hasMany(EventOccurrence::class);
     }
 
     protected function hasPassed(): Attribute
@@ -182,7 +209,7 @@ class Event extends Model implements HasLabel
 
     protected function url(): Attribute
     {
-        return Attribute::get(function ($value): string {
+        return Attribute::get(function ($value): ?string {
             if (filled($value)) {
                 return $value;
             }
@@ -203,6 +230,7 @@ class Event extends Model implements HasLabel
             'repeats' => 'boolean',
             'registration_enabled' => 'boolean',
             'registration_deadline' => 'datetime',
+            'creates_training_record' => 'boolean',
             'notifications_enabled' => 'boolean',
             'notifications_interval' => 'array',
             'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),

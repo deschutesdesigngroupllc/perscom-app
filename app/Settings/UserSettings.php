@@ -12,6 +12,10 @@ class UserSettings extends Settings
 
     public array $timezone;
 
+    public array $dismissed_widgets;
+
+    public array $calendar_view;
+
     public static function group(): string
     {
         return 'user';

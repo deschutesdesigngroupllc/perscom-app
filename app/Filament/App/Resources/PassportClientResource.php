@@ -10,6 +10,7 @@ use App\Filament\App\Resources\PassportClientResource\Pages\ListPassportClients;
 use App\Filament\App\Resources\PassportClientResource\Pages\ViewPassportClient;
 use App\Models\Enums\PassportClientType;
 use App\Models\PassportClient;
+use App\Models\Tenant;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -124,9 +125,10 @@ class PassportClientResource extends BaseResource
                                     ->copyable(),
                                 TextEntry::make('secret')
                                     ->label('Client Secret')
+                                    ->formatStateUsing(fn (): string => 'Hidden')
                                     ->color('gray')
                                     ->badge()
-                                    ->copyable(),
+                                    ->helperText('Secrets are only shown once, when they are created. Regenerate the secret to get a new one.'),
                                 TextEntry::make('type')
                                     ->badge(),
                                 TextEntry::make('redirect_uris')
@@ -159,24 +161,14 @@ class PassportClientResource extends BaseResource
                                     ->keyLabel('Endpoint')
                                     ->valueLabel('URL')
                                     ->getStateUsing(function (): array {
-                                        $tenant = tenant()?->domain?->domain;
+                                        $url = fn (string $name): string => tenant() instanceof Tenant ? tenant()->route($name) : route($name);
 
                                         return [
-                                            'Discovery Endpoint' => route('oidc.discovery', [
-                                                'tenant' => $tenant,
-                                            ]),
-                                            'Authorization Endpoint' => route('passport.authorizations.authorize', [
-                                                'tenant' => $tenant,
-                                            ]),
-                                            'Token Endpoint' => route('passport.token', [
-                                                'tenant' => $tenant,
-                                            ]),
-                                            'Logout Endpoint' => route('oidc.logout', [
-                                                'tenant' => $tenant,
-                                            ]),
-                                            'User Info Endpoint' => route('oidc.userinfo', [
-                                                'tenant' => $tenant,
-                                            ]),
+                                            'Discovery Endpoint' => $url('oidc.discovery'),
+                                            'Authorization Endpoint' => $url('passport.authorizations.authorize'),
+                                            'Token Endpoint' => $url('passport.token'),
+                                            'Logout Endpoint' => $url('oidc.logout'),
+                                            'User Info Endpoint' => $url('oidc.userinfo'),
                                         ];
                                     }),
                             ]),
@@ -195,12 +187,6 @@ class PassportClientResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('id')
                     ->label('Client ID')
-                    ->sortable()
-                    ->badge()
-                    ->color('gray')
-                    ->copyable(),
-                TextColumn::make('secret')
-                    ->label('Client Secret')
                     ->sortable()
                     ->badge()
                     ->color('gray')

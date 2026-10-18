@@ -21,6 +21,7 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -36,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string|null $text
+ * @property Carbon|null $expires_at
  * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -60,6 +62,8 @@ use Illuminate\Support\Carbon;
  *
  * @method static Builder<static>|QualificationRecord author(\App\Models\User $user)
  * @method static Builder<static>|QualificationRecord document(\App\Models\Document $document)
+ * @method static Builder<static>|QualificationRecord expired()
+ * @method static Builder<static>|QualificationRecord expiringWithin(int $days)
  * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|QualificationRecord newModelQuery()
  * @method static Builder<static>|QualificationRecord newQuery()
@@ -69,6 +73,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|QualificationRecord whereCreatedAt($value)
  * @method static Builder<static>|QualificationRecord whereData($value)
  * @method static Builder<static>|QualificationRecord whereDocumentId($value)
+ * @method static Builder<static>|QualificationRecord whereExpiresAt($value)
  * @method static Builder<static>|QualificationRecord whereId($value)
  * @method static Builder<static>|QualificationRecord whereQualificationId($value)
  * @method static Builder<static>|QualificationRecord whereText($value)
@@ -101,6 +106,7 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
         'id',
         'qualification_id',
         'text',
+        'expires_at',
         'created_at',
         'updated_at',
     ];
@@ -128,5 +134,27 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
     public function recipientForNewsfeedItem(): ?User
     {
         return $this->user;
+    }
+
+    #[Scope]
+    protected function expiringWithin(Builder $query, int $days): Builder
+    {
+        return $query->whereBetween('expires_at', [now(), now()->addDays($days)]);
+    }
+
+    #[Scope]
+    protected function expired(Builder $query): Builder
+    {
+        return $query->where('expires_at', '<=', now());
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'expires_at' => 'datetime',
+        ];
     }
 }
