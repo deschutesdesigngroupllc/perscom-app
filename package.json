@@ -58,7 +58,8 @@
     "react-dom": "^19.2.0"
   },
   "overrides": {
-    "dompurify": "^3.4.3"
+    "dompurify": "^3.4.3",
+    "postcss-selector-parser": "^7.1.6"
   },
   "allowScripts": {
     "core-js-pure@3.44.0": true,
