@@ -54,7 +54,7 @@
     "@inertiajs/vite": "^3.1.1",
     "@radix-ui/react-dropdown-menu": "2.1.16",
     "@radix-ui/react-separator": "1.1.8",
-    "react": "^19.2.0",
+    "react": "^19.3.1",
     "react-dom": "^19.2.0"
   },
   "overrides": {
