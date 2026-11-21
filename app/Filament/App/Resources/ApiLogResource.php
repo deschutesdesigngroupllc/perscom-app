@@ -93,6 +93,7 @@ class ApiLogResource extends BaseResource
                 TextColumn::make('status')
                     ->color(fn ($state): string => match (true) {
                         $state >= 200 && $state < 300 => 'success',
+                        $state >= 100 && $state < 400 => 'warning',
                         default => 'danger',
                     })
                     ->badge()
@@ -317,6 +318,7 @@ class ApiLogResource extends BaseResource
                                 ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state])
                                 ->color(fn ($state): string => match (true) {
                                     $state >= 200 && $state < 300 => 'success',
+                                    $state >= 100 && $state < 400 => 'warning',
                                     default => 'danger',
                                 })
                                 ->badge(),

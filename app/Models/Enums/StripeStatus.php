@@ -25,9 +25,8 @@ enum StripeStatus: string implements HasColor, HasLabel
             self::TRIALING => 'info',
             self::ACTIVE => 'success',
             self::INCOMPLETE => 'warning',
-            self::INCOMPLETE_EXPIRED, self::PAST_DUE, self::CANCELED => 'danger',
-            self::UNPAID => 'red',
-            self::PAUSED => 'gray',
+            self::INCOMPLETE_EXPIRED, self::PAST_DUE, self::UNPAID => 'danger',
+            self::CANCELED, self::PAUSED => 'gray',
         };
     }
 

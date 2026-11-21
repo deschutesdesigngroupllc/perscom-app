@@ -40,9 +40,11 @@ use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
@@ -380,6 +382,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->configureActionConfirmations();
+
+        IconColumn::configureUsing(fn (IconColumn $column): IconColumn => $column->falseColor('gray'));
+        IconEntry::configureUsing(fn (IconEntry $entry): IconEntry => $entry->falseColor('gray'));
 
         URL::forceHttps(App::isProduction() || $this->app->make('config')->get('app.scheme') === 'https');
     }

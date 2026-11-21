@@ -53,7 +53,8 @@
           @unless (in_array('online', $hiddenFields))
             <span
               class="inline-block h-3 w-3 shrink-0 rounded-full ring-2 ring-white dark:ring-gray-900 {{ $online ? 'bg-emerald-500' : 'bg-gray-400' }}"
-              title="{{ $online ? 'Online' : 'Offline' }}"></span>
+              title="{{ $online ? 'Online' : 'Offline' }}" aria-hidden="true"></span>
+            <span class="sr-only">{{ $online ? 'Online' : 'Offline' }}</span>
           @endunless
         </h2>
 

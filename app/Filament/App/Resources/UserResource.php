@@ -445,7 +445,7 @@ class UserResource extends BaseResource
                     ->badge()
                     ->color(fn ($state): string => match ($state) {
                         true => 'success',
-                        default => 'info',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn ($state): string => match ($state) {
                         true => 'Online',

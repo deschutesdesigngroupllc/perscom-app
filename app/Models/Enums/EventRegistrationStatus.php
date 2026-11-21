@@ -66,9 +66,10 @@ enum EventRegistrationStatus: string implements HasColor, HasLabel
     {
         return match ($this) {
             EventRegistrationStatus::GOING, EventRegistrationStatus::ATTENDED => 'success',
-            EventRegistrationStatus::NOT_GOING, EventRegistrationStatus::NO_SHOW, EventRegistrationStatus::CANCELLED, EventRegistrationStatus::DECLINED => 'danger',
-            EventRegistrationStatus::INTERESTED => 'warning',
-            EventRegistrationStatus::WAITLISTED, EventRegistrationStatus::TENTATIVE, EventRegistrationStatus::INVITED, EventRegistrationStatus::UNKNOWN => 'info',
+            EventRegistrationStatus::NOT_GOING, EventRegistrationStatus::NO_SHOW => 'danger',
+            EventRegistrationStatus::INTERESTED, EventRegistrationStatus::TENTATIVE => 'warning',
+            EventRegistrationStatus::WAITLISTED, EventRegistrationStatus::INVITED => 'info',
+            EventRegistrationStatus::CANCELLED, EventRegistrationStatus::DECLINED, EventRegistrationStatus::UNKNOWN => 'gray',
         };
     }
 }

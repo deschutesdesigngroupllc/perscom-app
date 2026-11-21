@@ -86,6 +86,7 @@ class WebhookLogResource extends BaseResource
                     ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                     ->color(fn ($state): string => match (true) {
                         (int) $state >= 200 && (int) $state < 300 => 'success',
+                        (int) $state >= 100 && (int) $state < 400 => 'warning',
                         default => 'danger'
                     }),
                 TextColumn::make('created_at')
@@ -197,6 +198,7 @@ class WebhookLogResource extends BaseResource
                                     ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                                     ->color(fn ($state): string => match (true) {
                                         (int) $state >= 200 && (int) $state < 300 => 'success',
+                                        (int) $state >= 100 && (int) $state < 400 => 'warning',
                                         default => 'danger'
                                     }),
                                 TextEntry::make('created_at')
