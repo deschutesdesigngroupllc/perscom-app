@@ -31,7 +31,7 @@ class QualificationRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Qualification Records')
-            ->description('The qualification records for the user.')
+            ->description('The qualification records for the member.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)

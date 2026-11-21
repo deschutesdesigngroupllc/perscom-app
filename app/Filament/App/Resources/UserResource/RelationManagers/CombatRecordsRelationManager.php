@@ -29,7 +29,7 @@ class CombatRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Combat Records')
-            ->description('The combat records for the user.')
+            ->description('The combat records for the member.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)

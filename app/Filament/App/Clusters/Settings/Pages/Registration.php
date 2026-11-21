@@ -55,11 +55,11 @@ class Registration extends SettingsPage
                             ->schema([
                                 Checkbox::make('enabled')
                                     ->default(true)
-                                    ->helperText('Uncheck to disable user registration.'),
+                                    ->helperText('Uncheck to disable member registration.'),
                                 Checkbox::make('admin_approval_required')
                                     ->label('Admin Approval Required')
                                     ->default(false)
-                                    ->helperText('Check to require admin approval before a user account can login once registered.'),
+                                    ->helperText('Check to require admin approval before a member account can login once registered.'),
                             ]),
                     ]),
             ]);

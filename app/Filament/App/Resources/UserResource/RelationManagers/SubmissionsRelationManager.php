@@ -29,7 +29,7 @@ class SubmissionsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The forms the user has submitted.')
+            ->description('The forms the member has submitted.')
             ->columns([
                 TextColumn::make('created_at')
                     ->sortable(),

@@ -88,7 +88,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
-                                    ->helperText('The user this record is assigned to.')
+                                    ->helperText('The member this record is assigned to.')
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
@@ -128,21 +128,21 @@ class AssignmentRecordResource extends BaseResource
                             ->schema([
                                 Select::make('position_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
-                                    ->helperText('If selected, the user(s) will be assigned the position when the record is created.')
+                                    ->helperText('If selected, the members will be assigned the position when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => PositionResource::form($form)),
                                 Select::make('specialty_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
-                                    ->helperText('If selected, the user(s) will be assigned the specialty when the record is created.')
+                                    ->helperText('If selected, the members will be assigned the specialty when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => SpecialtyResource::form($form)),
                                 Select::make('unit_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
-                                    ->helperText('If selected, the user(s) will be assigned to the unit when the record is created.')
+                                    ->helperText('If selected, the members will be assigned to the unit when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
@@ -150,13 +150,13 @@ class AssignmentRecordResource extends BaseResource
                                 Select::make('unit_slot_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::MANUAL)
                                     ->required(fn (): bool => $rosterMode === RosterMode::MANUAL)
-                                    ->helperText('The slot the user will be assigned to. If the slot has an assigned position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
+                                    ->helperText('The slot the member will be assigned to. If the slot has an assigned position or specialty, the member will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
                                     ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->all()),
                                 Select::make('status_id')
-                                    ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
+                                    ->helperText('If selected, the members will be assigned the status when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
@@ -201,7 +201,7 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('type')
                                     ->badge(),
                                 TextEntry::make('position.name')
@@ -249,7 +249,7 @@ class AssignmentRecordResource extends BaseResource
             ->emptyStateDescription('Create a new assignment record to get started.')
             ->columns([
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('type')

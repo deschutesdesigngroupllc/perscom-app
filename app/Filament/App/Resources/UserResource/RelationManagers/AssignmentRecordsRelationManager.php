@@ -32,7 +32,7 @@ class AssignmentRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Assignment Records')
-            ->description('The assignment records for the user.')
+            ->description('The assignment records for the member.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)

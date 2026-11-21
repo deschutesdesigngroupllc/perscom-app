@@ -74,7 +74,7 @@ class CombatRecordResource extends BaseResource
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
-                                    ->helperText('The user this record is assigned to.')
+                                    ->helperText('The member this record is assigned to.')
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
@@ -144,7 +144,7 @@ class CombatRecordResource extends BaseResource
                             ->icon('heroicon-o-fire')
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -178,7 +178,7 @@ class CombatRecordResource extends BaseResource
             ->emptyStateDescription('Create a new combat record to get started.')
             ->columns([
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('document.name')

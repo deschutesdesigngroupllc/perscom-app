@@ -53,7 +53,7 @@ class ModelNotification
                             ->icon('heroicon-o-users')
                             ->schema([
                                 Select::make('groups')
-                                    ->helperText('Send the notification to a group(s).')
+                                    ->helperText('Send the notification to everyone in the selected groups.')
                                     ->default(data_get($defaults, 'groups'))
                                     ->preload()
                                     ->multiple()
@@ -67,7 +67,7 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('units')
-                                    ->helperText('Send the notification to a unit(s).')
+                                    ->helperText('Send the notification to everyone in the selected units.')
                                     ->default(data_get($defaults, 'units'))
                                     ->preload()
                                     ->multiple()
@@ -81,7 +81,7 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('users')
-                                    ->helperText('Send the notification to a user(s).')
+                                    ->helperText('Send the notification to specific members.')
                                     ->default(data_get($defaults, 'users'))
                                     ->preload()
                                     ->multiple()

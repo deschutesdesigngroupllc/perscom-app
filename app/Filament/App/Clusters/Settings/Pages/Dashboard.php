@@ -116,7 +116,7 @@ class Dashboard extends SettingsPage
                                     ->label('Display Name Format')
                                     ->maxLength(255)
                                     ->required()
-                                    ->helperText('Define how user names are displayed. Available tokens: {name}, {rank.name}, {rank.abbreviation}, {position.name}, {specialty.name}, {specialty.abbreviation}, {unit.name}, {status.name}')
+                                    ->helperText('Define how member names are displayed. Available tokens: {name}, {rank.name}, {rank.abbreviation}, {position.name}, {specialty.name}, {specialty.abbreviation}, {unit.name}, {status.name}')
                                     ->placeholder('{rank.abbreviation} {name} - {position.name}'),
                                 TextInput::make('cover_photo_height')
                                     ->label('Cover Photo Height')
@@ -127,7 +127,7 @@ class Dashboard extends SettingsPage
                                     ->default(250),
                                 Select::make('user_hidden_fields')
                                     ->label('Hidden Fields')
-                                    ->helperText('Choose from a list of user fields that should be hidden from their user profile.')
+                                    ->helperText('Choose from a list of member fields that should be hidden from their member profile.')
                                     ->multiple()
                                     ->options(collect([
                                         'approved' => 'Approval Status',
@@ -176,7 +176,7 @@ class Dashboard extends SettingsPage
                                     ->label('Sort')
                                     ->reorderable()
                                     ->addActionLabel('Add New Field')
-                                    ->helperText('Choose the order in which the users on the roster are sorted under their respective unit or slot. Items on the top will be treated as having the most priority.')
+                                    ->helperText('Choose the order in which the members on the roster are sorted under their respective unit or slot. Items on the top will be treated as having the most priority.')
                                     ->simple(Select::make('roster_sort_order')
                                         ->distinct()
                                         ->options([

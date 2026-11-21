@@ -254,7 +254,7 @@ class EventResource extends BaseResource
                                     ->label('Reminders enabled')
                                     ->validationAttribute('enabled notifications')
                                     ->default(false)
-                                    ->helperText('Send reminder notifications to all registered users.')
+                                    ->helperText('Send reminder notifications to all registered members.')
                                     ->columnSpanFull(),
                                 Select::make('notifications_interval')
                                     ->visible(fn (Get $get): mixed => $get('notifications_enabled'))

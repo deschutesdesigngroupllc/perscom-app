@@ -30,7 +30,7 @@ class RankRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Rank Records')
-            ->description('The rank records for the user.')
+            ->description('The rank records for the member.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)

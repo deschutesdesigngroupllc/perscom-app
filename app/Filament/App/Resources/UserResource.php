@@ -70,6 +70,10 @@ class UserResource extends BaseResource
 
     protected static ?string $model = User::class;
 
+    protected static ?string $modelLabel = 'member';
+
+    protected static ?string $pluralModelLabel = 'members';
+
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     protected static string|UnitEnum|null $navigationGroup = 'Personnel';
@@ -166,11 +170,11 @@ class UserResource extends BaseResource
                                 DateTimePicker::make('created_at')
                                     ->default(now())
                                     ->required()
-                                    ->helperText('The date the user profile was created. Used to calculate time in service.'),
+                                    ->helperText('The date the member profile was created. Used to calculate time in service.'),
                                 DateTimePicker::make('updated_at')
                                     ->default(now())
                                     ->required()
-                                    ->helperText('The date the user profile was last updated.'),
+                                    ->helperText('The date the member profile was last updated.'),
                                 DateTimePicker::make('last_seen_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
@@ -179,7 +183,7 @@ class UserResource extends BaseResource
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
                                     ->label('Last Online')
-                                    ->helperText('The date the user last logged in.'),
+                                    ->helperText('The date the member last logged in.'),
                                 DateTimePicker::make('email_verified_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
@@ -198,7 +202,7 @@ class UserResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull()
-                                    ->helperText('Use this optional area to keep notes on the user.'),
+                                    ->helperText('Use this optional area to keep notes on the member.'),
                             ]),
                         Tab::make('Rank')
                             ->badge(fn (?User $record) => $record?->rank?->name)
@@ -420,7 +424,7 @@ class UserResource extends BaseResource
 
         return $table
             ->emptyStateIcon(Heroicon::OutlinedUser)
-            ->emptyStateDescription('There are no users to view. Create one to get started.')
+            ->emptyStateDescription('There are no members to view. Create one to get started.')
             ->columns([
                 ImageColumn::make('profile_photo')
                     ->placeholder('No Profile Photo')
@@ -522,7 +526,7 @@ class UserResource extends BaseResource
                     ->color('success')
                     ->icon('heroicon-o-check-circle')
                     ->visible(fn (?User $record): bool => ! $record->approved && Auth::user()->can('approve', $record))
-                    ->successNotificationTitle('The user has been successfully approved.')
+                    ->successNotificationTitle('Member Approved')
                     ->action(function (Action $action, User $record): void {
                         $record->forceFill([
                             'approved' => true,

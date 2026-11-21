@@ -142,14 +142,14 @@ class Fields extends SettingsPage
                                     ->searchable()
                                     ->multiple()
                                     ->preload()
-                                    ->helperText('Add the specified custom fields to user profiles.')
+                                    ->helperText('Add the specified custom fields to member profiles.')
                                     ->hintAction(
                                         Action::make('syncUsers')
-                                            ->label('Sync All Users')
+                                            ->label('Sync All Members')
                                             ->icon(Heroicon::OutlinedArrowPath)
                                             ->requiresConfirmation()
-                                            ->modalHeading('Sync Custom Fields to All Users')
-                                            ->modalDescription('This will sync the custom field relationships for all existing users.')
+                                            ->modalHeading('Sync Custom Fields to All Members')
+                                            ->modalDescription('This will sync the custom field relationships for all existing members.')
                                             ->form([
                                                 Radio::make('sync_mode')
                                                     ->label('How should existing fields be handled?')
@@ -195,7 +195,7 @@ class Fields extends SettingsPage
         });
 
         Notification::make()
-            ->title('Users synced successfully')
+            ->title('Members Updated')
             ->body(sprintf('%d users were synced with the custom field configuration.', $usersUpdated))
             ->success()
             ->send();

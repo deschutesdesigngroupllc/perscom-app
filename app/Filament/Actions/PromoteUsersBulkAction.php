@@ -30,14 +30,14 @@ class PromoteUsersBulkAction extends BulkAction
             ->label('Promote')
             ->icon(Heroicon::OutlinedChevronDoubleUp)
             ->modalHeading('Add Rank Record')
-            ->modalDescription('Create a rank record for each selected user. Each user is notified as usual.')
+            ->modalDescription('Create a rank record for each selected member. Each member is notified as usual.')
             ->modalSubmitActionLabel('Create Rank Records')
             ->visible(fn (): bool => Gate::check('create', RankRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema([
                 Select::make('rank_id')
                     ->label('Rank')
-                    ->helperText('The rank to record for each selected user.')
+                    ->helperText('The rank to record for each selected member.')
                     ->options(fn (): array => Rank::query()->orderBy('order')->pluck('name', 'id')->all())
                     ->searchable()
                     ->required(),

@@ -62,7 +62,7 @@ class Permission extends SettingsPage
                                     ->multiple()
                                     ->options(Role::query()->orderBy('name')->pluck('name', 'id')->toArray())
                                     ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->all())
-                                    ->helperText('The default role(s) a new user will be granted when created.'),
+                                    ->helperText('The default role(s) a new member will be granted when created.'),
                                 Select::make('default_permissions')
                                     ->label('Permission(s)')
                                     ->multiple()
@@ -70,14 +70,14 @@ class Permission extends SettingsPage
                                     ->searchable()
                                     ->options(PermissionModel::query()->orderBy('name')->pluck('name', 'id')->toArray())
                                     ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->all())
-                                    ->helperText('The default permission(s) a new user will be granted when created.'),
+                                    ->helperText('The default permission(s) a new member will be granted when created.'),
                             ]),
                         Tab::make('Security')
                             ->icon('heroicon-o-lock-closed')
                             ->schema([
                                 Toggle::make('require_multi_factor_authentication')
                                     ->label('Require multi-factor authentication')
-                                    ->helperText('When enabled, every user must set up an authenticator app or email code before they can access the dashboard.'),
+                                    ->helperText('When enabled, every member must set up an authenticator app or email code before they can access the dashboard.'),
                             ]),
                     ]),
             ]);

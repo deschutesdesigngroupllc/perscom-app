@@ -116,7 +116,7 @@ class SubmissionResource extends BaseResource
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('form.name')
                                     ->label('Form'),
                             ]),
@@ -154,7 +154,7 @@ class SubmissionResource extends BaseResource
                     ->iconPosition(IconPosition::Before)
                     ->searchable(),
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('status.name')
                     ->placeholder('No Status')

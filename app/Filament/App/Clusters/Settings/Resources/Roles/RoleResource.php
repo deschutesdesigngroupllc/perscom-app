@@ -79,7 +79,7 @@ class RoleResource extends Resource
     {
         return $table
             ->heading('Manage Roles')
-            ->description('Roles define a group of permissions that may be applied to a user account to establish what they are allowed to access.')
+            ->description('Roles define a group of permissions that may be applied to a member account to establish what they are allowed to access.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

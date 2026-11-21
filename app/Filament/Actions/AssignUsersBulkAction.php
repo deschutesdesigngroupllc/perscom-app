@@ -32,14 +32,14 @@ class AssignUsersBulkAction extends BulkAction
             ->label('Assign')
             ->icon(Heroicon::OutlinedRectangleGroup)
             ->modalHeading('Add Assignment Record')
-            ->modalDescription('Create an assignment record for each selected user. Each user is notified as usual.')
+            ->modalDescription('Create an assignment record for each selected member. Each member is notified as usual.')
             ->modalSubmitActionLabel('Create Assignment Records')
             ->visible(fn (): bool => Gate::check('create', AssignmentRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema([
                 Select::make('unit_id')
                     ->label('Unit')
-                    ->helperText('The unit to assign each selected user to.')
+                    ->helperText('The unit to assign each selected member to.')
                     ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
                     ->searchable()
                     ->required(),

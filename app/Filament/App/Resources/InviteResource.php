@@ -37,7 +37,7 @@ class InviteResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateDescription('There are no invitations to view. Invite personnel from the users page.')
+            ->emptyStateDescription('There are no invitations to view. Invite members from the Members page.')
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('email')

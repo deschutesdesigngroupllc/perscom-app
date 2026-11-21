@@ -29,14 +29,14 @@ class AwardUsersBulkAction extends BulkAction
             ->label('Award')
             ->icon(Heroicon::OutlinedTrophy)
             ->modalHeading('Add Award Record')
-            ->modalDescription('Create an award record for each selected user. Each user is notified as usual.')
+            ->modalDescription('Create an award record for each selected member. Each member is notified as usual.')
             ->modalSubmitActionLabel('Create Award Records')
             ->visible(fn (): bool => Gate::check('create', AwardRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema([
                 Select::make('award_id')
                     ->label('Award')
-                    ->helperText('The award to give each selected user.')
+                    ->helperText('The award to give each selected member.')
                     ->options(fn (): array => Award::query()->orderBy('order')->pluck('name', 'id')->all())
                     ->searchable()
                     ->required(),

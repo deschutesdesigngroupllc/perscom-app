@@ -23,7 +23,7 @@ class InviteAction extends Action
         $this
             ->label('Invite')
             ->icon(Heroicon::OutlinedEnvelope)
-            ->modalHeading('Invite Personnel')
+            ->modalHeading('Invite Members')
             ->modalDescription('Send an email invitation that allows the recipient to create their own account and profile.')
             ->modalSubmitActionLabel('Send Invite')
             ->authorize('create', Invite::class)

@@ -99,7 +99,7 @@ class FormResource extends BaseResource
                                     ->columnSpanFull(),
                                 RichEditor::make('instructions')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('Any instructions the user filling out the form should follow.')
+                                    ->helperText('Any instructions the member filling out the form should follow.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

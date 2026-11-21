@@ -23,7 +23,7 @@ class EventsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The events the user has attended.')
+            ->description('The events the member has attended.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable(),

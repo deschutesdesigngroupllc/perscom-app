@@ -156,7 +156,7 @@ class AttachmentResource extends BaseResource
     {
         return $table
             ->heading('Manage Attachments')
-            ->description('As files are uploaded to specific resources such as documents, records, users, etc. they will appear here for central management.')
+            ->description('As files are uploaded to specific resources such as documents, records, members, etc. they will appear here for central management.')
             ->recordTitleAttribute('name')
             ->emptyStateIcon(Heroicon::OutlinedPaperClip)
             ->emptyStateDescription('Create an attachment to get started.')

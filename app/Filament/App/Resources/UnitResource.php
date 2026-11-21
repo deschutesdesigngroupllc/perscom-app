@@ -122,7 +122,7 @@ class UnitResource extends BaseResource
                                 RichEditor::make('empty')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
-                                    ->helperText('Display a message when no users or slots occupy the unit.')
+                                    ->helperText('Display a message when no members or slots occupy the unit.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

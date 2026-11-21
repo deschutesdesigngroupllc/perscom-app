@@ -30,7 +30,7 @@ class TrainingRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Training Records')
-            ->description('The training records for the user.')
+            ->description('The training records for the member.')
             ->columns([
                 TextColumn::make('created_at')
                     ->toggleable(false)

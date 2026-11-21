@@ -22,7 +22,7 @@ class RolesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The current roles assigned to the user.')
+            ->description('The current roles assigned to the member.')
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')

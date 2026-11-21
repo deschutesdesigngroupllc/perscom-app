@@ -69,13 +69,13 @@ class SlotResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 Select::make('position_id')
-                                    ->helperText('If selected, a user will be assigned the position when an assignment record is created for the slot.')
+                                    ->helperText('If selected, a member will be assigned the position when an assignment record is created for the slot.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => PositionResource::form($form)),
                                 Select::make('specialty_id')
-                                    ->helperText('If selected, a user will be assigned the specialty when an assignment record is created for the slot.')
+                                    ->helperText('If selected, a member will be assigned the specialty when an assignment record is created for the slot.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
@@ -87,7 +87,7 @@ class SlotResource extends BaseResource
                                 RichEditor::make('empty')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
-                                    ->helperText('Display a message when no users occupy the slot.')
+                                    ->helperText('Display a message when no members occupy the slot.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

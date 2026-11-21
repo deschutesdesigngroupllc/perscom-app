@@ -43,13 +43,12 @@ class RegistrationsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The users that are registered for the event.')
-            ->emptyStateHeading('No registrations')
-            ->emptyStateDescription('There are no users registered.')
-            ->description('The users registered for the event.')
+            ->emptyStateHeading('No RSVPs Yet')
+            ->emptyStateDescription('Share the event to collect responses from members.')
+            ->description('The members registered for the event.')
             ->columns([
                 TextColumn::make('registration.user.display_name')
-                    ->label('User'),
+                    ->label('Member'),
                 TextColumn::make('registration.status')
                     ->label('Status')
                     ->badge(),
