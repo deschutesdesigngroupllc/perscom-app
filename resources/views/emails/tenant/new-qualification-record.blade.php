@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# {{ $qualification ? 'New Qualification: '.$qualification : 'New Qualification' }}
 
-{{ __('A new qualification record has been added to your personnel file.') }}
+A qualification was added to your profile.
 
 @if ($qualification)
   **Qualification**: {{ $qualification }}<br>
@@ -18,6 +18,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

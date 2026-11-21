@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# New Assignment
 
-{{ __('A new assignment record has been added to your personnel file.') }}
+An assignment record was added to your profile.
 
 @if ($status)
   **Status**: {{ $status }}<br>
@@ -27,6 +27,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

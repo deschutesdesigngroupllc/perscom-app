@@ -13,6 +13,5 @@ Verify Email Address
 
 {{ __('If you did not create an account, no further action is required.') }}
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

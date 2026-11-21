@@ -1,5 +1,5 @@
 @component('mail::message')
-# Hello,
+# {{ $daysUntilExpiry <= 0 ? 'A Record Has Expired' : 'A Record Expires Soon' }}
 
 @if ($daysUntilExpiry <= 0)
 {{ __('One of your records has expired and needs to be renewed.') }}
@@ -16,6 +16,5 @@
 @endcomponent
 @endif
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

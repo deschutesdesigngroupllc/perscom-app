@@ -13,6 +13,5 @@ The following event date you planned to attend has been cancelled.
   View Event
 @endcomponent
 
-Thanks,<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

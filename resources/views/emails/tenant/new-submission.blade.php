@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# New Submission: {{ $submission->form?->name ?? 'Form' }}
 
-{{ __("A new {$submission->form?->name} has been submitted.") }}
+A new form submission is ready for review.
 
 {!! $submission->toHtml() !!}
 
@@ -9,6 +9,5 @@
   View Submission
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent
