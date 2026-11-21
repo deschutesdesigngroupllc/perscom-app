@@ -9,6 +9,7 @@ use Closure;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -77,7 +78,12 @@ class DiscordService
             ]);
 
         if (! $response->successful() || blank($response->json('guild.id'))) {
-            Log::debug('Discord install code exchange failed', (array) $response->json());
+            Log::warning('Discord install code exchange failed', [
+                'status' => $response->status(),
+                'error' => $response->json('error'),
+                'error_description' => $response->json('error_description'),
+                'redirect_uri' => DiscordService::installRedirectUri(),
+            ]);
 
             return null;
         }
@@ -188,7 +194,7 @@ class DiscordService
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord get guilds error', $data);
+                Log::warning('Discord get guilds error', ['status' => $response->status(), 'body' => $data]);
 
                 return null;
             }
@@ -216,13 +222,27 @@ class DiscordService
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord get channels error', $data);
+                Log::warning('Discord get channels error', ['guild' => $guildId, 'status' => $response->status(), 'body' => $data]);
 
                 return null;
             }
 
             return $data;
         }));
+    }
+
+    /**
+     * Discord reports retry_after in seconds (as a float). Web requests wait at most two seconds per
+     * attempt so a rate limit never stalls a page; queued work honors the full delay up to a minute.
+     *
+     * @param  array<string, mixed>|null  $data
+     */
+    public static function retryDelayInMilliseconds(?array $data): int
+    {
+        $milliseconds = (int) ceil((float) data_get($data, 'retry_after', 1) * 1000);
+        $maximum = App::runningInConsole() ? 60_000 : 2_000;
+
+        return max(0, min($milliseconds, $maximum));
     }
 
     public function client(): PendingRequest
@@ -249,7 +269,7 @@ class DiscordService
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord API error', ['uri' => $uri, 'status' => $response->status(), 'body' => $response->json()]);
+                Log::warning('Discord API error', ['uri' => $uri, 'status' => $response->status(), 'body' => $response->json()]);
             }
 
             return $response;
@@ -265,9 +285,7 @@ class DiscordService
             } catch (DiscordRateLimitException $exception) {
                 $retryCount++;
 
-                $retryAfter = data_get($exception->getData(), 'retry_after', 10);
-
-                Sleep::until(Date::now()->addMilliseconds($retryAfter));
+                Sleep::until(Date::now()->addMilliseconds(DiscordService::retryDelayInMilliseconds($exception->getData())));
             }
         }
 

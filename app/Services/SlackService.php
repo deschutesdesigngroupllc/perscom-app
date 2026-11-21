@@ -62,7 +62,11 @@ class SlackService
             ]);
 
         if (! $response->successful() || $response->json('ok') !== true || blank($response->json('access_token'))) {
-            Log::debug('Slack install code exchange failed', ['error' => $response->json('error')]);
+            Log::warning('Slack install code exchange failed', [
+                'status' => $response->status(),
+                'error' => $response->json('error'),
+                'redirect_uri' => SlackService::installRedirectUri(),
+            ]);
 
             return null;
         }
@@ -93,6 +97,12 @@ class SlackService
             'limit' => 500,
         ]);
 
+        if ($response->json('ok') !== true) {
+            Log::warning('Slack channel list failed', ['error' => $response->json('error')]);
+
+            return [];
+        }
+
         return collect((array) $response->json('channels'))
             ->mapWithKeys(fn (array $channel): array => [(string) data_get($channel, 'id') => '#'.data_get($channel, 'name')])
             ->sort()
@@ -116,7 +126,7 @@ class SlackService
         $response = SlackService::client($token)->post('chat.postMessage', [...$message, 'channel' => $channel]);
 
         if ($response->json('ok') !== true) {
-            Log::debug('Slack post message failed', ['error' => $response->json('error')]);
+            Log::warning('Slack post message failed', ['error' => $response->json('error')]);
 
             return false;
         }
