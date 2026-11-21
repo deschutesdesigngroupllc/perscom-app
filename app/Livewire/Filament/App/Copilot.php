@@ -22,6 +22,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Throwable;
@@ -136,7 +137,7 @@ class Copilot extends Component implements HasActions, HasSchemas
 
                 $this->reset(['answer', 'changeSet']);
 
-                Notification::make()->success()->title('Changes Applied')->body(sprintf('%d record(s) were created.', $result['created']))->send();
+                Notification::make()->success()->title('Changes Applied')->body(sprintf('Created %d %s.', $result['created'], Str::plural('record', $result['created'])))->send();
             });
     }
 
