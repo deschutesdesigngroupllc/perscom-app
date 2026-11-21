@@ -20,20 +20,24 @@ class NewTenantMail extends Mailable implements ShouldQueue
 
     protected ?string $email;
 
-    public function __construct(Tenant $tenant, User $user, protected string $password)
+    protected ?string $organization;
+
+    public function __construct(Tenant $tenant, User $user, protected string $setPasswordUrl)
     {
         $this->url = $tenant->url;
         $this->email = $user->email;
+        $this->organization = $tenant->name;
     }
 
     public function build(): static
     {
         return $this->markdown('emails.tenant.new')
-            ->subject('Your organization is now ready')
+            ->subject(sprintf('%s is ready on PERSCOM', $this->organization))
             ->with([
                 'url' => $this->url,
                 'email' => $this->email,
-                'password' => $this->password,
+                'organization' => $this->organization,
+                'setPasswordUrl' => $this->setPasswordUrl,
             ]);
     }
 }

@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Actions\Tenant;
 
 use App\Actions\Tenant\SetupTenantAccount;
+use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
+use App\Models\Enums\InviteType;
+use App\Models\Invite;
 use App\Models\Page;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -56,6 +60,44 @@ class SetupTenantAccountTest extends TenantTestCase
             // seeded rows are cleaned up explicitly to keep the suite isolated.
             Page::query()->whereIn('slug', $slugs)->delete();
             Announcement::query()->where('global', true)->delete();
+        }
+    }
+
+    public function test_founder_receives_a_set_password_link_instead_of_a_password(): void
+    {
+        Mail::fake();
+
+        (new SetupTenantAccount)
+            ->shouldSeedSettings(false)
+            ->shouldSetInitialSettings(false)
+            ->shouldCreateNewsItem(false)
+            ->shouldCreateAnnouncement(false)
+            ->shouldCreatePages(false)
+            ->handle($this->tenant);
+
+        try {
+            $this->tenant->run(function (): void {
+                $founder = User::query()->where('email', $this->tenant->email)->firstOrFail();
+
+                $this->assertNotNull($founder->email_verified_at);
+                $this->assertTrue($founder->approved);
+                $this->assertTrue(Invite::query()->pending()->where('user_id', $founder->getKey())->where('type', InviteType::CLAIM)->exists());
+            });
+
+            Mail::assertQueued(NewTenantMail::class, function (NewTenantMail $mail): bool {
+                $html = $mail->render();
+
+                return str_contains($html, '/invitation/')
+                    && str_contains($html, 'Set Your Password')
+                    && ! str_contains($html, 'Password</strong>:');
+            });
+        } finally {
+            // SetupTenantAccount writes inside $tenant->run(), which commits to the shared tenant
+            // database, so the founder and their invite are removed explicitly.
+            $this->tenant->run(function (): void {
+                Invite::query()->where('email', $this->tenant->email)->delete();
+                User::query()->where('email', $this->tenant->email)->get()->each->deleteQuietly();
+            });
         }
     }
 

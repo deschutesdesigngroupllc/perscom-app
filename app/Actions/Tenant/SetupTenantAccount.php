@@ -7,6 +7,8 @@ namespace App\Actions\Tenant;
 use App\Actions\Auth\CreateNewUser;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
+use App\Models\Enums\InviteType;
+use App\Models\Invite;
 use App\Models\Page;
 use App\Models\Tenant;
 use App\Models\User;
@@ -121,11 +123,14 @@ class SetupTenantAccount
     }
 
     /**
+     * Create the founder's account and email them a one-time link to choose their own password. The
+     * random password is never shown to anyone; redeeming the link replaces it and verifies the email.
+     *
      * @throws ValidationException
      */
     protected function createInitialUserAccount(): void
     {
-        $password = Str::password(length: 16, symbols: false);
+        $password = Str::password(length: 32, symbols: false);
 
         $user = CreateNewUser::handle([
             'name' => 'Admin',
@@ -133,9 +138,21 @@ class SetupTenantAccount
             'password' => $password,
             'password_confirmation' => $password,
         ]);
+        $user->forceFill(['email_verified_at' => now(), 'approved' => true])->save();
         $user->assignRole(Utils::getSuperAdminName());
 
-        Mail::to($user)->send(new NewTenantMail($this->tenant->refresh(), $user, $password));
+        $invite = Invite::create([
+            'type' => InviteType::CLAIM,
+            'email' => $user->email,
+            'name' => $user->name,
+            'user_id' => $user->getKey(),
+            'token' => Invite::hashToken(Str::random(64)),
+        ]);
+
+        $tenant = $this->tenant->refresh();
+        $setPasswordUrl = rtrim((string) $tenant->url, '/').route('app.invites.accept', ['token' => $invite->refreshToken()], false);
+
+        Mail::to($user)->send(new NewTenantMail($tenant, $user, $setPasswordUrl));
     }
 
     protected function createFirstNewsfeedItem(): void

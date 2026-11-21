@@ -1,16 +1,16 @@
 @component('mail::message')
-# Your Organization Is Now Ready
+# {{ $organization }} Is Ready
 
-{{ __('Your organization has been successfully set up! Your account details are included below. If you have any questions or need help getting started, please don’t hesitate to reach out.') }}
+Your organization is set up. Choose a password to sign in and start building your roster.
 
-**Dashboard URL**: [{{ $url }}]({{ $url }})<br>
-**Email**: {{ $email }}<br>
-**Password**: {{ $password }}
+**Your PERSCOM URL**: [{{ $url }}]({{ $url }})<br>
+**Email**: {{ $email }}
 
-@component('mail::button', ['url' => $url])
-  Go To Dashboard
+@component('mail::button', ['url' => $setPasswordUrl])
+  Set Your Password
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+This link works once and expires in 7 days. After that, use **Forgot password** on the sign-in page at {{ $url }}.
+
+— The PERSCOM Team
 @endcomponent
