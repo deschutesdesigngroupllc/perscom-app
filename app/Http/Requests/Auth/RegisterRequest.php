@@ -6,6 +6,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Models\Registration;
 use App\Models\Tenant;
+use App\Rules\TurnstileRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
@@ -13,7 +14,7 @@ use Illuminate\Validation\Rules\Unique;
 class RegisterRequest extends FormRequest
 {
     /**
-     * @return array<string, Unique[]|string[]>
+     * @return array<string, array<int, string|Unique|TurnstileRule>>
      */
     public function rules(): array
     {
@@ -24,7 +25,7 @@ class RegisterRequest extends FormRequest
         ];
 
         if (filled(config('services.cloudflare.turnstile.site_key'))) {
-            $rules['token'] = ['required', 'string'];
+            $rules['token'] = ['bail', 'required', 'string', new TurnstileRule];
         }
 
         return $rules;
