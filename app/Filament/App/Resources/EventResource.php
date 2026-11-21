@@ -68,9 +68,11 @@ class EventResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = null;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationParentItem = 'Calendar';
 
     protected static ?string $recordTitleAttribute = 'name';
 

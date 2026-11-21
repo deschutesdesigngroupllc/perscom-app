@@ -42,6 +42,7 @@ use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Enums\Size;
@@ -175,11 +176,18 @@ class AppPanelProvider extends PanelProvider
             ))
             ->when(class_exists(DataLensPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
                 DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
+                    ->navigationGroup('Admin')
                     ->navigationLabel('Custom Reports')
-                    ->navigationSort(10)
+                    ->navigationSort(13)
             ))
             ->databaseNotifications()
+            ->navigationGroups([
+                NavigationGroup::make('People'),
+                NavigationGroup::make('Records'),
+                NavigationGroup::make('Communications'),
+                NavigationGroup::make('Structure')->collapsed(),
+                NavigationGroup::make('Admin')->collapsed(),
+            ])
             ->sidebarCollapsibleOnDesktop()
             ->userMenuItems([
                 Action::make('billing')

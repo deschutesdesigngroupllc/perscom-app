@@ -37,9 +37,9 @@ class StatusResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-scale';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
     {

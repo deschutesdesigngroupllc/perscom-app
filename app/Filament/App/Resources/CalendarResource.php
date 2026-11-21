@@ -37,9 +37,11 @@ class CalendarResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = null;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationParentItem = 'Calendar';
 
     public static function form(Schema $schema): Schema
     {

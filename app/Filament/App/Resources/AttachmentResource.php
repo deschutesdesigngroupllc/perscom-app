@@ -50,7 +50,7 @@ class AttachmentResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-paper-clip';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static ?int $navigationSort = 32;
 

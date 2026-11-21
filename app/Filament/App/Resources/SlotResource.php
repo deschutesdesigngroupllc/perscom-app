@@ -39,9 +39,11 @@ class SlotResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cursor-arrow-rays';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationParentItem = 'Units';
 
     public static function form(Schema $schema): Schema
     {

@@ -47,9 +47,11 @@ class GroupResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationParentItem = 'Units';
 
     public static function form(Schema $schema): Schema
     {

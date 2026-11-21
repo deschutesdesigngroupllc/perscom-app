@@ -29,11 +29,11 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $navigationLabel = 'Forms';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
     protected string $view = 'filament.app.pages.forms.list';
 

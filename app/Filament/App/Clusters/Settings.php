@@ -15,9 +15,9 @@ class Settings extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cog';
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool
     {

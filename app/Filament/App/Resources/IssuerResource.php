@@ -31,9 +31,11 @@ class IssuerResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 12;
+
+    protected static ?string $navigationParentItem = 'Qualifications';
 
     public static function form(Schema $schema): Schema
     {

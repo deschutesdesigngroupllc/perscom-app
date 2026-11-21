@@ -32,9 +32,9 @@ class Widgets extends Page
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-code-bracket';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 4;
 
     protected string $view = 'filament.app.pages.widgets';
 

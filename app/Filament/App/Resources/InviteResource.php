@@ -28,11 +28,11 @@ class InviteResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
-    protected static ?string $navigationParentItem = 'Users';
+    protected static ?string $navigationParentItem = 'Members';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 3;
 
     public static function table(Table $table): Table
     {

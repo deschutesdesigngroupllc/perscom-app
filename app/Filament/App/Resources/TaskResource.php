@@ -36,9 +36,9 @@ class TaskResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 11;
 
     public static function form(Schema $schema): Schema
     {

@@ -59,7 +59,7 @@ class FieldResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Custom Fields';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static ?int $navigationSort = 30;
 

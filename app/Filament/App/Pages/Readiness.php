@@ -26,9 +26,9 @@ class Readiness extends Page implements HasTable
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 5;
 
     protected string $view = 'filament.app.pages.readiness';
 

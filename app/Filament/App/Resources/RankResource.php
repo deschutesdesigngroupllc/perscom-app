@@ -43,7 +43,7 @@ class RankResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chevron-double-up';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
     protected static ?int $navigationSort = 5;
 

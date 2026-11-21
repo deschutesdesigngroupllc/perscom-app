@@ -29,7 +29,7 @@ class Fields extends SettingsPage
 
     protected static ?string $navigationLabel = 'Field Defaults';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static string $settings = FieldSettings::class;
 

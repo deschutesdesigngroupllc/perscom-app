@@ -41,9 +41,9 @@ class WebhookLogResource extends BaseResource
 
     protected static ?string $navigationParentItem = 'Webhooks';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationLabel = 'Logs';
 

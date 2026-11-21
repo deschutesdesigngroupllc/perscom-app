@@ -19,6 +19,7 @@ use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
+use UnitEnum;
 
 class Roster extends Page
 {
@@ -55,7 +56,9 @@ class Roster extends Page
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
+
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
     protected ?string $subheading = "A comprehensive overview of your organization's personnel.";
 

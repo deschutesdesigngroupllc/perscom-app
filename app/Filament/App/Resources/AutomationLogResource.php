@@ -37,9 +37,9 @@ class AutomationLogResource extends BaseResource
 
     protected static ?string $navigationParentItem = 'Automations';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Logs';
 

@@ -41,9 +41,9 @@ class QualificationResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Schema $schema): Schema
     {

@@ -37,9 +37,11 @@ class CompetencyResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-numbered-list';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationParentItem = 'Qualifications';
 
     public static function form(Schema $schema): Schema
     {

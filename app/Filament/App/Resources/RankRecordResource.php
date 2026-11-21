@@ -59,7 +59,7 @@ class RankRecordResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {

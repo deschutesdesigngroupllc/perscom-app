@@ -48,9 +48,9 @@ class AnnouncementResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

@@ -47,9 +47,13 @@ class FormResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 9;
+
+    protected static ?string $navigationParentItem = 'Forms';
+
+    protected static ?string $navigationLabel = 'Form Builder';
 
     public static function form(Schema $schema): Schema
     {

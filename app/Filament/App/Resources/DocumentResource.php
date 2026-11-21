@@ -40,9 +40,9 @@ class DocumentResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
