@@ -12,10 +12,13 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 
 class EditSubmission extends EditRecord
 {
     use SavesAndHydratesCustomFieldData;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = SubmissionResource::class;
 

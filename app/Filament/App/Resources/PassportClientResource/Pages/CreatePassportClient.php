@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\PassportClientResource\Pages;
 use App\Filament\App\Resources\PassportClientResource;
 use App\Models\Enums\PassportClientType;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,6 +16,8 @@ use League\Csv\Exception;
 
 class CreatePassportClient extends CreateRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = PassportClientResource::class;
 
     /**

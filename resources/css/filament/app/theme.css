@@ -216,3 +216,8 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
+
+/* Constrained pages (create and edit forms) sit against the sidebar instead of floating centered. */
+.fi-main {
+  margin-inline: 0;
+}

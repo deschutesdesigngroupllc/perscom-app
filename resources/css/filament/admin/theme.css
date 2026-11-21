@@ -25,3 +25,8 @@
     text-transform: uppercase;
   }
 }
+
+/* Constrained pages (create and edit forms) sit against the sidebar instead of floating centered. */
+.fi-main {
+  margin-inline: 0;
+}

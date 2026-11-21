@@ -8,12 +8,15 @@ use App\Filament\App\Clusters\Settings\Resources\Roles\RoleResource;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class EditRole extends EditRecord
 {
     public Collection $permissions;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = RoleResource::class;
 

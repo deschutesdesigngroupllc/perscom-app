@@ -10,11 +10,14 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Wizard\Step;
+use Filament\Support\Enums\Width;
 use Illuminate\Support\HtmlString;
 
 class CreateMessage extends CreateRecord
 {
     use HasWizard;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = MessageResource::class;
 

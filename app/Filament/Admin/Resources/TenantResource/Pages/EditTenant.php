@@ -11,9 +11,12 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 
 class EditTenant extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = TenantResource::class;
 
     protected function getHeaderActions(): array

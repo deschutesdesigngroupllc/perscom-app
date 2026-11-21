@@ -7,11 +7,14 @@ namespace App\Filament\App\Resources\EventResource\Pages;
 use App\Filament\App\Resources\EventResource;
 use App\Services\UserSettingsService;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Date;
 use Throwable;
 
 class CreateEvent extends CreateRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = EventResource::class;
 
     /**
