@@ -27,7 +27,16 @@ use App\Support\Passport\AuthCodeRepository;
 use App\Support\Passport\IdTokenResponse;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
+use Filament\Actions\DissociateAction;
 use Filament\Actions\ExportAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\ForceDeleteBulkAction;
+use Filament\Actions\RestoreAction;
+use Filament\Actions\RestoreBulkAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
@@ -370,6 +379,67 @@ class AppServiceProvider extends ServiceProvider
             $table->defaultSort('created_at', 'desc');
         });
 
+        $this->configureActionConfirmations();
+
         URL::forceHttps(App::isProduction() || $this->app->make('config')->get('app.scheme') === 'https');
+    }
+
+    /**
+     * Destructive actions name the action and its consequence instead of Filament's generic
+     * "Are you sure you would like to do this?". An action configured explicitly still wins.
+     */
+    protected function configureActionConfirmations(): void
+    {
+        DeleteAction::configureUsing(fn (DeleteAction $action): DeleteAction => $action
+            ->modalHeading(fn (DeleteAction $action): string => 'Delete '.$action->getTitleCaseModelLabel())
+            ->modalDescription('This permanently removes it and its history. This can\'t be undone.')
+            ->modalSubmitActionLabel(fn (DeleteAction $action): string => 'Delete '.$action->getTitleCaseModelLabel())
+            ->modalCancelActionLabel('Keep'));
+
+        DeleteBulkAction::configureUsing(fn (DeleteBulkAction $action): DeleteBulkAction => $action
+            ->modalHeading(fn (DeleteBulkAction $action): string => 'Delete Selected '.$action->getTitleCasePluralModelLabel())
+            ->modalDescription('This permanently removes the selected records and their history. This can\'t be undone.')
+            ->modalSubmitActionLabel(fn (DeleteBulkAction $action): string => 'Delete '.$action->getTitleCasePluralModelLabel())
+            ->modalCancelActionLabel('Keep'));
+
+        ForceDeleteAction::configureUsing(fn (ForceDeleteAction $action): ForceDeleteAction => $action
+            ->modalHeading(fn (ForceDeleteAction $action): string => 'Permanently Delete '.$action->getTitleCaseModelLabel())
+            ->modalDescription('This erases it and its history for good. This can\'t be undone.')
+            ->modalSubmitActionLabel('Delete Permanently')
+            ->modalCancelActionLabel('Keep'));
+
+        ForceDeleteBulkAction::configureUsing(fn (ForceDeleteBulkAction $action): ForceDeleteBulkAction => $action
+            ->modalHeading(fn (ForceDeleteBulkAction $action): string => 'Permanently Delete Selected '.$action->getTitleCasePluralModelLabel())
+            ->modalDescription('This erases the selected records and their history for good. This can\'t be undone.')
+            ->modalSubmitActionLabel('Delete Permanently')
+            ->modalCancelActionLabel('Keep'));
+
+        RestoreAction::configureUsing(fn (RestoreAction $action): RestoreAction => $action
+            ->modalHeading(fn (RestoreAction $action): string => 'Restore '.$action->getTitleCaseModelLabel())
+            ->modalDescription('This brings it back along with its history.')
+            ->modalSubmitActionLabel('Restore'));
+
+        RestoreBulkAction::configureUsing(fn (RestoreBulkAction $action): RestoreBulkAction => $action
+            ->modalHeading(fn (RestoreBulkAction $action): string => 'Restore Selected '.$action->getTitleCasePluralModelLabel())
+            ->modalDescription('This brings the selected records back along with their history.')
+            ->modalSubmitActionLabel('Restore'));
+
+        DetachAction::configureUsing(fn (DetachAction $action): DetachAction => $action
+            ->modalHeading(fn (DetachAction $action): string => 'Remove '.$action->getTitleCaseModelLabel())
+            ->modalDescription('Only this link is removed. The record itself is kept.')
+            ->modalSubmitActionLabel('Remove')
+            ->modalCancelActionLabel('Keep'));
+
+        DetachBulkAction::configureUsing(fn (DetachBulkAction $action): DetachBulkAction => $action
+            ->modalHeading(fn (DetachBulkAction $action): string => 'Remove Selected '.$action->getTitleCasePluralModelLabel())
+            ->modalDescription('Only these links are removed. The records themselves are kept.')
+            ->modalSubmitActionLabel('Remove')
+            ->modalCancelActionLabel('Keep'));
+
+        DissociateAction::configureUsing(fn (DissociateAction $action): DissociateAction => $action
+            ->modalHeading(fn (DissociateAction $action): string => 'Remove '.$action->getTitleCaseModelLabel())
+            ->modalDescription('Only this link is removed. The record itself is kept.')
+            ->modalSubmitActionLabel('Remove')
+            ->modalCancelActionLabel('Keep'));
     }
 }
