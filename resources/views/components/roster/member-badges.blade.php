@@ -2,7 +2,7 @@
 
 @if ($insight)
   @if ($insight->promotionEligible)
-    <x-filament::badge color="success" icon="heroicon-m-chevron-double-up" size="sm" :tooltip="$insight->nextRank ? 'Eligible for promotion to ' . $insight->nextRank : 'Eligible for promotion'">
+    <x-filament::badge color="brass" icon="heroicon-m-chevron-double-up" size="sm" :tooltip="$insight->nextRank ? 'Eligible for promotion to ' . $insight->nextRank : 'Eligible for promotion'">
       Promotion Eligible
     </x-filament::badge>
   @endif

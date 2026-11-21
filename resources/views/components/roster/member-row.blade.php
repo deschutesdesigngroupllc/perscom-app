@@ -21,7 +21,7 @@
       @if ($user->rank?->image)
         <img src="{{ $user->rank->image->image_url }}" alt="{{ $user->rank->name }}" class="max-h-9 max-w-full object-contain" loading="lazy">
       @else
-        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ $user->rank->abbreviation ?? '—' }}</span>
+        <span class="text-xs font-semibold text-brass-700 dark:text-brass-400">{{ $user->rank->abbreviation ?? '—' }}</span>
       @endif
     </div>
   @endif
@@ -39,7 +39,7 @@
         @if (!in_array('name', $hiddenFields))
           <span class="truncate font-semibold text-gray-950 dark:text-white">
             @if (!in_array('rank_id', $hiddenFields) && $user->rank?->abbreviation)
-              <span class="me-1 text-gray-500 dark:text-gray-400">{{ $user->rank->abbreviation }}</span>
+              <span class="me-1 text-brass-700 dark:text-brass-400">{{ $user->rank->abbreviation }}</span>
             @endif
             {{ $user->display_name }}
           </span>

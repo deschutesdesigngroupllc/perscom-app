@@ -465,6 +465,8 @@ class UserResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('rank.name')
                     ->placeholder('No Rank')
+                    ->badge()
+                    ->color('brass')
                     ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('status.name')

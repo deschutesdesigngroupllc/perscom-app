@@ -40,7 +40,7 @@
         <div class="mt-0.5 flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-300">
           @if ($user->rank->abbreviation)
             <span
-              class="shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{{ $user->rank->abbreviation }}</span>
+              class="shrink-0 text-xs font-semibold uppercase tracking-wide text-brass-700 dark:text-brass-400">{{ $user->rank->abbreviation }}</span>
             <span class="text-gray-300 dark:text-gray-600" aria-hidden="true">&middot;</span>
           @endif
           <span class="truncate">{{ $user->rank->name }}</span>
