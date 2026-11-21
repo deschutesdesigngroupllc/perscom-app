@@ -6,17 +6,19 @@ namespace App\Filament\App\Resources\UnitResource\RelationManagers;
 
 use App\Filament\App\Resources\SlotResource;
 use App\Models\Enums\RosterMode;
+use App\Models\Unit;
 use App\Settings\DashboardSettings;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class SlotsRelationManager extends RelationManager
 {
@@ -65,7 +67,16 @@ class SlotsRelationManager extends RelationManager
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DetachBulkAction::make()
+                        ->label('Remove selected slots')
+                        ->action(function (DetachBulkAction $action, Collection $records): void {
+                            /** @var Unit $unit */
+                            $unit = $this->getOwnerRecord();
+
+                            $unit->slots()->detach($records->pluck('id')->unique()->all());
+
+                            $action->success();
+                        }),
                 ]),
             ])
             ->defaultSort('slots.order');

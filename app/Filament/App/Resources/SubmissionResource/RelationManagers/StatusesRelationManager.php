@@ -8,8 +8,8 @@ use App\Models\Status;
 use BackedEnum;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
@@ -24,9 +24,8 @@ class StatusesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The status history for this submission.')
-            ->recordTitleAttribute('name')
             ->description('The status history of this form submission.')
+            ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
                     ->toggleable(false)
@@ -42,11 +41,13 @@ class StatusesRelationManager extends RelationManager
                     ->preloadRecordSelect(),
             ])
             ->recordActions([
-                DeleteAction::make(),
+                DetachAction::make()
+                    ->label('Remove'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DetachBulkAction::make()
+                        ->label('Remove selected'),
                 ]),
             ])
             ->defaultSort('model_has_statuses.created_at', 'desc');
