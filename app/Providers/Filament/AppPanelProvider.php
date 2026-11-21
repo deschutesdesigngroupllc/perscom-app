@@ -86,6 +86,7 @@ class AppPanelProvider extends PanelProvider
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): Factory|View => view('filament.render-hooks.user-menu-before.copilot'))
             ->colors(Brand::colors())
             ->favicon(fn (): string => asset('favicon.svg'))
+            ->sidebarWidth('17rem')
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

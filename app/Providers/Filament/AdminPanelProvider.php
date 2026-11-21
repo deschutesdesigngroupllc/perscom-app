@@ -63,6 +63,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->colors(Brand::colors())
             ->favicon(fn (): string => asset('favicon.svg'))
+            ->sidebarWidth('17rem')
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')

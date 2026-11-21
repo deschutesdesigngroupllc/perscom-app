@@ -30,3 +30,12 @@
 .fi-main {
   margin-inline: 0;
 }
+
+/* The sidebar still scrolls; it just does not show a scrollbar. */
+.fi-sidebar-nav {
+  scrollbar-width: none;
+}
+
+.fi-sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
