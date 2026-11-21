@@ -30,6 +30,7 @@ use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
+use App\Settings\RegistrationSettings;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
@@ -147,7 +148,7 @@ class AppPanelProvider extends PanelProvider
                     ->activeNavigationIcon('heroicon-o-shield-check'),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
-                    ->registration()
+                    ->registration(fn (): bool => RegistrationSettings::isOpen())
                     ->slug('app')
                     ->providers($isDemo ? [] : [
                         Provider::make('google')
