@@ -39,7 +39,7 @@ export default function Register() {
           </a>
         </div>
         <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free</h1>
-        <p className='mt-2 text-sm'>No upfront costs or credit card requirements. Cancel at anytime with no questions asked.</p>
+        <p className='mt-2 text-sm'>No upfront costs or credit card requirements. Cancel anytime, no questions asked.</p>
       </div>
       <div className='mt-5'>
         <ValidationErrors errors={errors} />
@@ -96,7 +96,7 @@ export default function Register() {
           </div>
           {turnstileSiteKey && <Turnstile siteKey={turnstileSiteKey} onSuccess={onTurnstileSuccess} />}
           <Button type='submit' processing={processing} color='blue' className='w-full'>
-            Continue <span aria-hidden='true'>&nbsp;&rarr;</span>
+            Create My Organization <span aria-hidden='true'>&nbsp;&rarr;</span>
           </Button>
         </form>
       </div>
