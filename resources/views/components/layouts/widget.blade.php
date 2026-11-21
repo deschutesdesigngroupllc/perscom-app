@@ -1,10 +1,10 @@
 @php
   $apiKey = request()->input('apikey') ?? request()->bearerToken();
-  $darkMode = request()->input('dark', false);
+  $darkMode = request()->boolean('dark');
 @endphp
 
 <!DOCTYPE html>
-<html lang="en" {{ $attributes->class(['h-full scroll-smooth antialiased', 'dark' => $darkMode || $darkMode === 'true']) }}>
+<html lang="en" {{ $attributes->class(['h-full scroll-smooth antialiased', 'dark' => $darkMode]) }}>
 
 <head>
   <meta charset="utf-8" />
