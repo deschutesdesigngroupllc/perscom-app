@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\Pages;
 
+use App\Filament\Actions\AssignMemberAction;
+use App\Filament\Actions\AwardMemberAction;
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\PromoteMemberAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
@@ -18,10 +21,12 @@ use App\Services\ServiceProfileService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Components\ViewComponent;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
@@ -69,6 +74,14 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            ActionGroup::make([
+                PromoteMemberAction::make(),
+                AwardMemberAction::make(),
+                AssignMemberAction::make(),
+            ])
+                ->label('Add Record')
+                ->icon(Heroicon::OutlinedPlus)
+                ->button(),
             ClaimInviteAction::make()
                 ->color('gray'),
             Action::make('publicProfile')
@@ -84,7 +97,8 @@ class ViewUser extends ViewRecord
                 ->url(fn (?User $record): string => 'mailto:'.$record->email)
                 ->openUrlInNewTab()
                 ->tooltip(fn (?User $record) => $record->email),
-            EditAction::make(),
+            EditAction::make()
+                ->color('gray'),
             DeleteAction::make(),
         ];
     }

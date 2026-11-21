@@ -31,7 +31,7 @@ class UserBulkActionsTest extends TenantTestCase
                 'type' => RankRecordType::PROMOTION->value,
             ])
             ->assertHasNoActionErrors()
-            ->assertNotified('2 record(s) were created.');
+            ->assertNotified('Created 2 Records');
 
         $members->each(fn (User $member) => $this->assertDatabaseHas('records_ranks', [
             'user_id' => $member->getKey(),

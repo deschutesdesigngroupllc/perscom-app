@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\Actions\AssignMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
-use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AssignmentRecord;
-use App\Models\Enums\AssignmentRecordType;
-use App\Models\User;
 use App\Support\Brand;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
@@ -77,19 +74,8 @@ class AssignmentRecordsRelationManager extends RelationManager
                             ->html(fn (AssignmentRecord $record) => $record->text),
                     ),
             ])
-            ->emptyStateActions([
-                Action::make('create')
-                    ->label('New assignment record')
-                    ->url(function (): string {
-                        /** @var User $user */
-                        $user = $this->getOwnerRecord();
-
-                        return AssignmentRecordResource::getUrl('create', [
-                            'user_id' => $user->getKey(),
-                            'type' => AssignmentRecordType::PRIMARY,
-                        ]);
-                    })
-                    ->button(),
+            ->headerActions([
+                AssignMemberAction::make(),
             ]);
     }
 }

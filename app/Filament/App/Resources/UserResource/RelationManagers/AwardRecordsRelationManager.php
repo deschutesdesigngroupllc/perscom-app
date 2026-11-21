@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\Actions\AwardMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
-use App\Filament\App\Resources\AwardRecordResource;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AwardRecord;
-use App\Models\User;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -63,18 +61,8 @@ class AwardRecordsRelationManager extends RelationManager
                             ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
             ])
-            ->emptyStateActions([
-                Action::make('create')
-                    ->label('New award record')
-                    ->url(function (): string {
-                        /** @var User $user */
-                        $user = $this->getOwnerRecord();
-
-                        return AwardRecordResource::getUrl('create', [
-                            'user_id' => $user->getKey(),
-                        ]);
-                    })
-                    ->button(),
+            ->headerActions([
+                AwardMemberAction::make(),
             ]);
     }
 }

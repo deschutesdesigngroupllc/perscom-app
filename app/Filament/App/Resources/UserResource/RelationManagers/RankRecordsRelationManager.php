@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\Actions\PromoteMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
-use App\Filament\App\Resources\RankRecordResource;
 use App\Models\RankRecord;
-use App\Models\User;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -63,18 +61,8 @@ class RankRecordsRelationManager extends RelationManager
                             ->attached(fn (RankRecord $record): RankRecord => $record),
                     ),
             ])
-            ->emptyStateActions([
-                Action::make('create')
-                    ->label('New rank record')
-                    ->url(function (): string {
-                        /** @var User $user */
-                        $user = $this->getOwnerRecord();
-
-                        return RankRecordResource::getUrl('create', [
-                            'user_id' => $user->getKey(),
-                        ]);
-                    })
-                    ->button(),
+            ->headerActions([
+                PromoteMemberAction::make(),
             ]);
     }
 }

@@ -36,49 +36,64 @@ class AssignUsersBulkAction extends BulkAction
             ->modalSubmitActionLabel('Create Assignment Records')
             ->visible(fn (): bool => Gate::check('create', AssignmentRecord::class))
             ->deselectRecordsAfterCompletion()
-            ->schema([
-                Select::make('unit_id')
-                    ->label('Unit')
-                    ->helperText('The unit to assign each selected member to.')
-                    ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
-                    ->searchable()
-                    ->required(),
-                Select::make('position_id')
-                    ->label('Position')
-                    ->helperText('The optional position for the assignment.')
-                    ->options(fn (): array => Position::query()->orderBy('order')->pluck('name', 'id')->all())
-                    ->searchable(),
-                Select::make('specialty_id')
-                    ->label('Specialty')
-                    ->helperText('The optional specialty for the assignment.')
-                    ->options(fn (): array => Specialty::query()->orderBy('order')->pluck('name', 'id')->all())
-                    ->searchable(),
-                Select::make('type')
-                    ->label('Type')
-                    ->helperText('Whether this is a primary or secondary assignment.')
-                    ->options(AssignmentRecordType::class)
-                    ->default(AssignmentRecordType::PRIMARY)
-                    ->required(),
-                RichEditor::make('text')
-                    ->label('Text')
-                    ->helperText('Optional text included with each record.'),
-            ])
-            ->action(function (BulkAction $action, Collection $records, array $data): void {
-                $type = $data['type'] instanceof AssignmentRecordType ? $data['type'] : AssignmentRecordType::from((string) $data['type']);
+            ->schema(static::formSchema())
+            ->action(fn (BulkAction $action, Collection $records, array $data) => $this->applyOperation($action, static::operationFor($records, $data)));
+    }
 
-                $this->applyOperation($action, new ProposedOperationData(
-                    type: CopilotOperationType::ASSIGNMENT_RECORD,
-                    userIds: $records->map(fn (User $user): int => $user->getKey())->values()->all(),
-                    targetId: (int) $data['unit_id'],
-                    text: $data['text'] ?? null,
-                    attributes: array_filter([
-                        'type' => $type->value,
-                        'position_id' => $data['position_id'] ?? null,
-                        'specialty_id' => $data['specialty_id'] ?? null,
-                    ], filled(...)),
-                    summary: sprintf('Assign %d user(s) to %s', $records->count(), Unit::query()->find($data['unit_id'])?->name),
-                ));
-            });
+    /**
+     * @return array<int, \Filament\Schemas\Components\Component|\Filament\Forms\Components\Field>
+     */
+    public static function formSchema(): array
+    {
+        return [
+            Select::make('unit_id')
+                ->label('Unit')
+                ->helperText('The unit to assign them to.')
+                ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
+                ->searchable()
+                ->required(),
+            Select::make('position_id')
+                ->label('Position')
+                ->helperText('The optional position for the assignment.')
+                ->options(fn (): array => Position::query()->orderBy('order')->pluck('name', 'id')->all())
+                ->searchable(),
+            Select::make('specialty_id')
+                ->label('Specialty')
+                ->helperText('The optional specialty for the assignment.')
+                ->options(fn (): array => Specialty::query()->orderBy('order')->pluck('name', 'id')->all())
+                ->searchable(),
+            Select::make('type')
+                ->label('Type')
+                ->helperText('Whether this is a primary or secondary assignment.')
+                ->options(AssignmentRecordType::class)
+                ->default(AssignmentRecordType::PRIMARY)
+                ->required(),
+            RichEditor::make('text')
+                ->label('Text')
+                ->helperText('Optional text included with each record.'),
+        ];
+    }
+
+    /**
+     * @param  Collection<int, User>  $users
+     * @param  array<string, mixed>  $data
+     */
+    public static function operationFor(Collection $users, array $data): ProposedOperationData
+    {
+        $type = $data['type'] instanceof AssignmentRecordType ? $data['type'] : AssignmentRecordType::from((string) $data['type']);
+
+        return new ProposedOperationData(
+            type: CopilotOperationType::ASSIGNMENT_RECORD,
+            userIds: $users->map(fn (User $user): int => $user->getKey())->values()->all(),
+            targetId: (int) $data['unit_id'],
+            text: $data['text'] ?? null,
+            attributes: array_filter([
+                'type' => $type->value,
+                'position_id' => $data['position_id'] ?? null,
+                'specialty_id' => $data['specialty_id'] ?? null,
+            ], filled(...)),
+            summary: sprintf('Assign %d member(s) to %s', $users->count(), Unit::query()->find($data['unit_id'])?->name),
+        );
     }
 
     public static function getDefaultName(): ?string

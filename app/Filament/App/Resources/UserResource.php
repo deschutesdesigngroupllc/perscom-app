@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\Actions\AssignMemberAction;
 use App\Filament\Actions\AssignUsersBulkAction;
+use App\Filament\Actions\AwardMemberAction;
 use App\Filament\Actions\AwardUsersBulkAction;
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\PromoteMemberAction;
 use App\Filament\Actions\PromoteUsersBulkAction;
 use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
 use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
@@ -25,6 +28,7 @@ use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -535,6 +539,14 @@ class UserResource extends BaseResource
                         $action->success();
                     }),
                 ClaimInviteAction::make(),
+                ActionGroup::make([
+                    PromoteMemberAction::make(),
+                    AwardMemberAction::make(),
+                    AssignMemberAction::make(),
+                ])
+                    ->label('Add Record')
+                    ->icon(Heroicon::OutlinedPlusCircle)
+                    ->tooltip('Add Record'),
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
