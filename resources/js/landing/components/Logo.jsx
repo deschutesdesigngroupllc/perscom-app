@@ -2,12 +2,12 @@ const s0Style = {
   fill: 'none'
 }
 const s1Style = {
-  fill: '#646464',
+  fill: 'currentColor',
   stroke: '#ffffff',
   strokeWidth: 0
 }
 const s2Style = {
-  fill: '#d9d9d9'
+  fill: '#C9A24B'
 }
 
 export function Logo(props) {

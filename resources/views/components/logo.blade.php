@@ -6,13 +6,16 @@
     }
 
     .s1 {
-      fill: #646464;
-      stroke: #ffffff;
+      fill: currentColor;
       stroke-width: 0
     }
 
     .s2 {
-      fill: #d9d9d9
+      fill: #C9A24B
+    }
+
+    .dark #logo .s2 {
+      fill: #E4C77F
     }
   </style>
   <g id="background-logo">
