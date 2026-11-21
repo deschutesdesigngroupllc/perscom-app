@@ -1,8 +1,9 @@
 @component('mail::message')
-# Your Account Has Been Deleted
+# {{ $organization }} Has Been Deleted
 
-{{ __('It has been 6 months since you last logged in to your PERSCOM account. We have since removed your account and it can no longer be accessed. If you would like to start using PERSCOM again, please register and sign up for a new account.') }}
+No one signed in to **{{ $organization }}** for two months, so the organization and its records have been removed.
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+You're welcome back any time. You can create a new organization at [perscom.io](https://perscom.io).
+
+@include('emails.partials.sign-off')
 @endcomponent
