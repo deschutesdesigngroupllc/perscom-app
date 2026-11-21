@@ -26,7 +26,7 @@ class SecondaryAssignmentsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
 
-    protected static ?string $title = 'Training Records';
+    protected static ?string $title = 'Secondary Assignments';
 
     public function table(Table $table): Table
     {
