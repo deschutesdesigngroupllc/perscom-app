@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\Pages;
 
+use App\Filament\Actions\ArchiveMemberAction;
 use App\Filament\Actions\AssignMemberAction;
 use App\Filament\Actions\AwardMemberAction;
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\DeleteMemberAction;
 use App\Filament\Actions\PromoteMemberAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
@@ -22,7 +24,6 @@ use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Components\ViewComponent;
@@ -99,7 +100,15 @@ class ViewUser extends ViewRecord
                 ->tooltip(fn (?User $record) => $record->email),
             EditAction::make()
                 ->color('gray'),
-            DeleteAction::make(),
+            ActionGroup::make([
+                ArchiveMemberAction::make(),
+                DeleteMemberAction::make(),
+            ])
+                ->tooltip('More')
+                ->color('gray')
+                ->button()
+                ->label('More')
+                ->icon(Heroicon::OutlinedEllipsisHorizontal),
         ];
     }
 }

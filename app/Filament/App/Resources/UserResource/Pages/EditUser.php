@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Pages;
 
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\DeleteMemberAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\FieldsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\RolesRelationManager;
 use Filament\Actions\Action;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\Width;
@@ -54,7 +54,7 @@ class EditUser extends EditRecord
             ClaimInviteAction::make()
                 ->color('gray'),
             ViewAction::make(),
-            DeleteAction::make(),
+            DeleteMemberAction::make(),
         ];
     }
 }
