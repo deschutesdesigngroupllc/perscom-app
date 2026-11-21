@@ -20,11 +20,21 @@
 
 @theme {
   --font-sans:
-    'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    var(--font-family), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-display: 'Barlow Semi Condensed', var(--font-family), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --color-brass-50: var(--brass-50);
+  --color-brass-100: var(--brass-100);
+  --color-brass-200: var(--brass-200);
+  --color-brass-300: var(--brass-300);
+  --color-brass-400: var(--brass-400);
+  --color-brass-500: var(--brass-500);
+  --color-brass-600: var(--brass-600);
+  --color-brass-700: var(--brass-700);
+  --color-brass-800: var(--brass-800);
+  --color-brass-900: var(--brass-900);
+  --color-brass-950: var(--brass-950);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -92,6 +102,38 @@
     @apply border-border;
   }
 
+  .fi-header-heading,
+  .fi-simple-header-heading {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .fi-section-header-heading,
+  .fi-modal-heading,
+  .fi-wi-stats-overview-stat-value {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .fi-sidebar-group-label {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   .user-cover-photo {
     @apply flex-1 items-center justify-center
   }
@@ -102,14 +144,13 @@
 }
 
 :root {
-  --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
+  --primary: var(--primary-600);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -117,17 +158,17 @@
   --muted-foreground: oklch(0.552 0.016 285.938);
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
-  --success: oklch(0.72 0.19 150);
+  --success: var(--success-700);
   --success-foreground: oklch(0.98 0.02 156);
-  --warning: oklch(0.66 0.18 84);
-  --warning-foreground: oklch(0.99 0.02 95);
+  --warning: var(--warning-400);
+  --warning-foreground: oklch(0.21 0.034 264.665);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.97 0.01 17);
-  --info: oklch(0.42 0.18 245);
+  --info: var(--info-700);
   --info-foreground: oklch(0.97 0.024 244);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  --ring: var(--primary-500);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -150,8 +191,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.21 0.006 285.885);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
+  --primary: var(--primary-400);
+  --primary-foreground: oklch(0.21 0.034 264.665);
   --secondary: oklch(0.274 0.006 286.033);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
@@ -160,7 +201,7 @@
   --accent-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
+  --ring: var(--primary-400);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);

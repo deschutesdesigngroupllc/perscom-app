@@ -2,3 +2,26 @@
 
 @source '../../../../app/Filament/Admin/**/*';
 @source '../../../../resources/views/filament/**/*';
+
+@layer base {
+  .fi-header-heading,
+  .fi-simple-header-heading {
+    font-family: 'Barlow Semi Condensed', var(--font-family), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .fi-section-header-heading,
+  .fi-modal-heading,
+  .fi-wi-stats-overview-stat-value {
+    font-family: 'Barlow Semi Condensed', var(--font-family), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .fi-sidebar-group-label {
+    font-family: 'Barlow Semi Condensed', var(--font-family), ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
