@@ -14,7 +14,6 @@ use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
-use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
@@ -99,7 +98,6 @@ class AppPanelProvider extends PanelProvider
             ->widgets([
                 ConnectAiAgentWidget::class,
                 OrganizationInfoWidget::class,
-                AccountWidget::class,
                 UserProfileWidget::class,
                 UpcomingEventsWidget::class,
                 RecentRecordsWidget::class,

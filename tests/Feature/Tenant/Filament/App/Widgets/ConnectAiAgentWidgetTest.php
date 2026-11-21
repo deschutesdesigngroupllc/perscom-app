@@ -22,9 +22,19 @@ class ConnectAiAgentWidgetTest extends TenantTestCase
         $this->assertTrue(ConnectAiAgentWidget::canView());
 
         Livewire::test(ConnectAiAgentWidget::class)
-            ->assertSee('Ask your AI about your personnel')
+            ->assertSee('Ask Your AI About Your Personnel')
             ->assertSee(route('mcp.server'))
             ->assertSee(ConnectAiTools::getUrl());
+    }
+
+    public function test_copy_buttons_receive_compiled_values(): void
+    {
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(ConnectAiAgentWidget::class)
+            ->assertDontSeeHtml('@js(')
+            ->assertSeeHtml("copy(serverUrl, 'url')")
+            ->assertSeeHtml("copy(claudeCommand, 'claude-code')");
     }
 
     public function test_members_without_access_to_connect_ai_tools_do_not_see_it(): void

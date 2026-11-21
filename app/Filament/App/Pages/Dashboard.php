@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Services\Ai\OrganizationBlueprintService;
 use App\Services\AiUsageService;
 use App\Settings\OnboardingSettings;
+use App\Settings\OrganizationSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
@@ -39,6 +40,7 @@ use Filament\Support\Exceptions\Halt;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class Dashboard extends BaseDashboard
@@ -51,11 +53,22 @@ class Dashboard extends BaseDashboard
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $title = 'PERSCOM Personnel Management System';
-
-    protected ?string $subheading = 'Personnel management made easy for high-performing, results-driven organizations.';
-
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+
+    public function getTitle(): string
+    {
+        /** @var OrganizationSettings $settings */
+        $settings = resolve(OrganizationSettings::class);
+
+        return filled($settings->name) ? $settings->name : 'Dashboard';
+    }
+
+    public function getSubheading(): ?string
+    {
+        $firstName = Str::of((string) Auth::user()?->name)->trim()->before(' ')->toString();
+
+        return filled($firstName) ? sprintf('Welcome back, %s.', $firstName) : null;
+    }
 
     public function onboardingAction(): Action
     {
@@ -252,7 +265,7 @@ class Dashboard extends BaseDashboard
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
                     Section::make('Create Personnel')
-                        ->description('Personnel are the users in your organization. Each person is assigned to a unit, and given a position and rank.')
+                        ->description('Personnel are the members in your organization. Each person is assigned to a unit, and given a position and rank.')
                         ->schema([
                             Text::make('personnel_info')
                                 ->extraAttributes(['class' => 'w-full'])
