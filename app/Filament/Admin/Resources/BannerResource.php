@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\BannerResource\Pages\CreateBanner;
 use App\Filament\Admin\Resources\BannerResource\Pages\EditBanner;
 use App\Filament\Admin\Resources\BannerResource\Pages\ListBanners;
 use App\Models\Banner;
+use App\Support\Brand;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -64,7 +65,7 @@ class BannerResource extends Resource
                                 ColorPicker::make('background_color')
                                     ->label('Background Color')
                                     ->required()
-                                    ->default('#2563eb'),
+                                    ->default(Brand::PRIMARY_HEX),
                             ]),
                         Tab::make('Link')
                             ->icon('heroicon-o-link')

@@ -21,6 +21,7 @@ use App\Services\SettingsService;
 use App\Services\UserSettingsService;
 use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
+use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -214,7 +215,7 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Status')
                             ->badge(fn (?User $record) => $record?->status?->name)
-                            ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                            ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon('heroicon-o-scale')
                             ->schema([
                                 Select::make('status_id')
@@ -327,7 +328,7 @@ class UserResource extends BaseResource
                                             ->label('Status')
                                             ->placeholder('No Status')
                                             ->badge()
-                                            ->color(fn (?User $record): array => Color::generateV3Palette($record?->status?->color ?? '#6b7280'))
+                                            ->color(fn (?User $record): array => Color::generateV3Palette($record?->status?->color ?? Brand::NEUTRAL_HEX))
                                             ->hidden(fn (): bool => in_array('status_id', $hiddenFields)),
                                         TextEntry::make('approved')
                                             ->label('Approved')
@@ -471,7 +472,7 @@ class UserResource extends BaseResource
                     ->icon(fn (User $record): ?string => $record->status?->icon)
                     ->hidden(fn (): bool => in_array('status_id', $hiddenFields))
                     ->badge()
-                    ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->badge()

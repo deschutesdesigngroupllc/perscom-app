@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Services\EventOccurrenceService;
 use App\Services\EventRegistrationService;
 use App\Services\ScheduleService;
+use App\Support\Brand;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -232,7 +233,7 @@ class ViewEvent extends ViewRecord
     {
         $color = $this->getEvent()->calendar?->color;
 
-        return is_string($color) && preg_match('/^#[0-9a-fA-F]{3,8}$/', $color) ? $color : '#2563eb';
+        return is_string($color) && preg_match('/^#[0-9a-fA-F]{3,8}$/', $color) ? $color : Brand::PRIMARY_HEX;
     }
 
     /**

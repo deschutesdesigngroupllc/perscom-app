@@ -8,6 +8,7 @@ use App\Filament\Admin\Pages\Auth\Login;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\SentryContext;
 use App\Http\Middleware\SetAuthGuard;
+use App\Support\Brand;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\FontProviders\SpatieGoogleFontProvider;
@@ -18,7 +19,6 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -61,9 +61,8 @@ class AdminPanelProvider extends PanelProvider
                     ->regenerableRecoveryCodes(),
                 EmailAuthentication::make(),
             ])
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')

@@ -9,12 +9,12 @@ use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\SentryContext;
+use App\Support\Brand;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -33,9 +33,8 @@ class PublicPanelProvider extends PanelProvider
             ->id('public')
             ->path('public')
             ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverPages(in: app_path('Filament/Public/Pages'), for: 'App\\Filament\\Public\\Pages')
             ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([

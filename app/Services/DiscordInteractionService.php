@@ -14,6 +14,7 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Settings\IntegrationSettings;
 use App\Settings\OrganizationSettings;
+use App\Support\Brand;
 use App\Support\Discord\DiscordEmbed;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Builder;
@@ -43,7 +44,7 @@ class DiscordInteractionService
 
     public const int FLAG_EPHEMERAL = 64;
 
-    protected const string BRAND_COLOR = '#2563eb';
+    protected const string BRAND_COLOR = Brand::PRIMARY_HEX;
 
     protected const int UPCOMING_DAYS = 30;
 

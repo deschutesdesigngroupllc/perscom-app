@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use App\Support\Brand;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,7 +25,7 @@ trait HasColorField
      */
     protected function color(): Attribute
     {
-        return Attribute::get(fn ($value): string => $value ?? '#2563eb');
+        return Attribute::get(fn ($value): string => $value ?? Brand::PRIMARY_HEX);
     }
 
     protected function initializeHasColorField(): void

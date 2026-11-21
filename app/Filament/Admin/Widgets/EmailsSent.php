@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Widgets;
 
 use App\Metrics\EmailSentMetric;
+use App\Support\Brand;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
@@ -48,7 +49,7 @@ class EmailsSent extends ChartWidget
                     'label' => 'Emails sent',
                     'data' => $emailsSentData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
-                    'borderColor' => '#2563eb',
+                    'borderColor' => Brand::PRIMARY_HEX,
                 ],
             ],
             'labels' => $emailsSentData->map(fn (TrendValue $value): string => $value->date),

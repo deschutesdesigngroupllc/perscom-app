@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Data\ServiceProfiles\ServiceProfileData;
 use App\Models\AwardRecord;
 use App\Models\Image;
+use App\Support\Brand;
 use GdImage;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -102,7 +103,7 @@ class ServiceProfileImageService
             imageline($canvas, 0, $y, self::WIDTH, $y, $color);
         });
 
-        imagefilledrectangle($canvas, 0, 0, self::WIDTH, 8, ServiceProfileImageService::color($canvas, '#2563eb'));
+        imagefilledrectangle($canvas, 0, 0, self::WIDTH, 8, ServiceProfileImageService::color($canvas, Brand::PRIMARY_HEX));
     }
 
     protected static function ribbons(GdImage $canvas, ServiceProfileData $profile, int $x, int $y): void

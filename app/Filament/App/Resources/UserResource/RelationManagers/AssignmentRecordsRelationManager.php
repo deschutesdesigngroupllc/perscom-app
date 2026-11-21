@@ -10,6 +10,7 @@ use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\User;
+use App\Support\Brand;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -51,7 +52,7 @@ class AssignmentRecordsRelationManager extends RelationManager
                 TextColumn::make('status.name')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))

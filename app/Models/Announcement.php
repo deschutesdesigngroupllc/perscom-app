@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
+use App\Support\Brand;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -99,7 +100,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
                     'success' => '#16a34a',
                     'danger' => '#dc2626',
                     'warning' => '#ca8a04',
-                    default => '#2563eb'
+                    default => Brand::PRIMARY_HEX
                 },
             },
         );

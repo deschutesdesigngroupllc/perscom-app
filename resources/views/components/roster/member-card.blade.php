@@ -3,7 +3,7 @@
 @php
   $position = $user->getAttribute('position');
   $specialty = $user->getAttribute('specialty');
-  $statusColor = $user->status->color ?? '#2563eb';
+  $statusColor = $user->status->color ?? \App\Support\Brand::NEUTRAL_HEX;
   $showsRank = !in_array('rank_id', $hiddenFields) && $user->rank;
   $showsPosition = !in_array('position_id', $hiddenFields) && $position;
   $showsSpecialty = !in_array('specialty_id', $hiddenFields) && $specialty;

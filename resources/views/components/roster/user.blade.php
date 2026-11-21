@@ -49,7 +49,7 @@
       @endif
       @if (!in_array('status_id', $hiddenFields))
         <div class="whitespace-nowrap">
-          <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? '#2563eb')">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
+          <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? \App\Support\Brand::NEUTRAL_HEX)">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
         </div>
       @endif
     </div>

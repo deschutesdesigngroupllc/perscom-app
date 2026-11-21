@@ -31,6 +31,7 @@ use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
 use App\Settings\RegistrationSettings;
+use App\Support\Brand;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
@@ -44,7 +45,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
 use Filament\View\PanelsRenderHook;
@@ -85,9 +85,8 @@ class AppPanelProvider extends PanelProvider
                 ], isRequired: true)
                 ->multiFactorAuthenticationRequiredMiddlewareName(EnsureMultiFactorAuthenticationIsRequired::class))
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): Factory|View => view('filament.render-hooks.user-menu-before.copilot'))
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

@@ -7,7 +7,7 @@
   /** @var User $user */
   /** @var array $hiddenFields */
   $coverUrl = in_array('cover_photo', $hiddenFields) ? null : $user->cover_photo_url;
-  $statusColor = $user->status?->color ?? '#6b7280';
+  $statusColor = $user->status?->color ?? \App\Support\Brand::NEUTRAL_HEX;
   $online = $user->online;
   $coverStyles = sprintf('height: %dpx;', (int) $coverHeight);
 

@@ -13,6 +13,7 @@ use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelat
 use App\Filament\Exports\SubmissionExporter;
 use App\Models\Form;
 use App\Models\Submission;
+use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -73,7 +74,7 @@ class SubmissionResource extends BaseResource
                     ->tabs([
                         Tab::make('Submission')
                             ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('form_id')
@@ -111,7 +112,7 @@ class SubmissionResource extends BaseResource
                     ->tabs([
                         Tab::make('Submission')
                             ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
                                 TextEntry::make('user.display_name')
@@ -158,7 +159,7 @@ class SubmissionResource extends BaseResource
                 TextColumn::make('status.name')
                     ->placeholder('No Status')
                     ->badge()
-                    ->color(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('read_at')
                     ->placeholder('Unread')

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\SubmissionResource\RelationManagers;
 
 use App\Models\Status;
+use App\Support\Brand;
 use BackedEnum;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
@@ -30,7 +31,7 @@ class StatusesRelationManager extends RelationManager
                 TextColumn::make('name')
                     ->toggleable(false)
                     ->badge()
-                    ->color(fn (?Status $record): array => Color::generateV3Palette($record->color ?? '#2563eb')),
+                    ->color(fn (?Status $record): array => Color::generateV3Palette($record->color ?? Brand::NEUTRAL_HEX)),
             ])
             ->headerActions([
                 AttachAction::make()

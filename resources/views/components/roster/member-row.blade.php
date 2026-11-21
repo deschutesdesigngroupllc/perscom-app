@@ -60,7 +60,7 @@
     <div class="flex flex-wrap items-center gap-1.5 sm:shrink-0 sm:justify-end">
       <x-roster.member-badges :insight="$insight" />
       @if (!in_array('status_id', $hiddenFields))
-        <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? '#2563eb')">
+        <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? \App\Support\Brand::NEUTRAL_HEX)">
           {{ $user->status->name ?? 'No Status Set' }}
         </x-filament::badge>
       @endif
