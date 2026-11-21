@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
@@ -141,6 +142,21 @@ class PromotionEligibilityService
      *
      * @return Collection<int, PromotionEvaluationData>
      */
+    /**
+     * How many members meet every requirement for their next rank. Evaluating everyone is expensive, so
+     * the count is cached briefly per organization for badges and the dashboard.
+     */
+    public static function eligibleCount(): int
+    {
+        return Cache::remember(
+            sprintf('promotions:eligible-count:%s', tenant()?->getTenantKey() ?? 'central'),
+            now()->addMinutes(10),
+            fn (): int => static::evaluateAll()
+                ->filter(fn (PromotionEvaluationData $evaluation): bool => $evaluation->eligible && $evaluation->nextRank instanceof Rank)
+                ->count(),
+        );
+    }
+
     public static function evaluateAll(?int $unitId = null): Collection
     {
         $ranks = static::ranks();

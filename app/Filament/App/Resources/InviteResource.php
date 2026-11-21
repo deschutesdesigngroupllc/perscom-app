@@ -34,6 +34,18 @@ class InviteResource extends BaseResource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Invite::query()->pending()->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'gray';
+    }
+
     public static function table(Table $table): Table
     {
         return $table

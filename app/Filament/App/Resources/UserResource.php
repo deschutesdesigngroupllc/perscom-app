@@ -87,6 +87,18 @@ class UserResource extends BaseResource
 
     protected static ?string $recordTitleAttribute = 'display_name';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = User::query()->where('approved', false)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema

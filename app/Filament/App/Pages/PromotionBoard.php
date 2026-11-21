@@ -57,6 +57,18 @@ class PromotionBoard extends Page implements HasTable
      */
     protected ?Collection $evaluations = null;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = PromotionEligibilityService::eligibleCount();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'brass';
+    }
+
     public static function canAccess(): bool
     {
         return Auth::user()?->can('viewAny', RankRecord::class) ?? false;

@@ -34,6 +34,18 @@ class Readiness extends Page implements HasTable
 
     protected ?string $subheading = 'How current each unit is on qualifications, credentials and attendance.';
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = ReadinessService::expiringItems()->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
+
     public static function canAccess(): bool
     {
         $user = Auth::user();
