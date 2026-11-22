@@ -13,6 +13,7 @@ use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelat
 use App\Filament\Exports\SubmissionExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Models\Form;
+use App\Models\Status;
 use App\Models\Submission;
 use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
@@ -179,9 +180,21 @@ class SubmissionResource extends BaseResource
                 TernaryFilter::make('read_at')
                     ->label('Read')
                     ->nullable(),
-                SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                SelectFilter::make('form')
+                    ->relationship('form', 'name')
                     ->preload()
+                    ->multiple(),
+                SelectFilter::make('status')
+                    ->label('Current Status')
+                    ->options(fn (): array => Status::query()->orderBy('order')->pluck('name', 'id')->all())
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data): Builder => blank($data['values'] ?? null) ? $query : $query->whereHas('statuses', fn (Builder $query) => $query
+                        ->whereIn('statuses.id', $data['values'])
+                        ->whereRaw('model_has_statuses.created_at = (select max(latest.created_at) from model_has_statuses as latest where latest.model_type = model_has_statuses.model_type and latest.model_id = model_has_statuses.model_id)'))),
+                SelectFilter::make('user')
+                    ->label('Member')
+                    ->relationship('user', 'name')
+                    ->searchable()
                     ->multiple(),
             ])
             ->recordActions([
