@@ -13,7 +13,7 @@
 <x-filament-panels::page>
   <div class="flex min-w-0 flex-col gap-4" x-data x-init="if (!@js($hasDisplayPreference) && @js($display) !== 'agenda' && window.matchMedia('(max-width: 639px)').matches) { $wire.setDisplay('agenda', false) }">
     <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
-      <div class="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0" role="group"
+      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0" role="group"
         aria-label="Filter events">
         @foreach ($calendars as $calendar)
           @php
