@@ -20,9 +20,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
@@ -100,8 +100,9 @@ class OrganizationBuilder extends Page
                                 ->action(fn () => $this->propose()),
                         ]),
                     ]),
-                Text::make('ai_unavailable')
-                    ->content('AI generation is not available for your organization right now. You can still import a preset or edit the proposal below by hand.')
+                Callout::make('AI Generation Unavailable')
+                    ->description('AI generation is not available for your organization right now. You can still import a preset or edit the proposal below by hand.')
+                    ->warning()
                     ->visible(fn (): bool => ! AiUsageService::isAvailable()),
                 Section::make('Import a Preset')
                     ->description('Load a ready-made structure into the proposal. Anything that already exists is skipped when applied.')

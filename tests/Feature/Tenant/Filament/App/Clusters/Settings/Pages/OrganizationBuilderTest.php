@@ -56,6 +56,7 @@ class OrganizationBuilderTest extends TenantTestCase
 
         Livewire::test(OrganizationBuilder::class)
             ->assertSuccessful()
+            ->assertDontSee('AI Generation Unavailable')
             ->set('data.instruction', 'Add a rifle platoon and an airborne rank structure.')
             ->call('propose')
             ->assertNotified('Proposal Ready')
@@ -109,6 +110,8 @@ class OrganizationBuilderTest extends TenantTestCase
 
         Livewire::test(OrganizationBuilder::class)
             ->assertDontSee('Propose Additions')
+            ->assertSeeHtml('fi-callout')
+            ->assertSee('AI Generation Unavailable')
             ->assertSee('AI generation is not available');
     }
 
