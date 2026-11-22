@@ -100,6 +100,16 @@ class NewsfeedResource extends BaseResource
             ]);
     }
 
+    /**
+     * The headline and text live in the activity log's JSON properties, not in columns.
+     *
+     * @return array<int, string>
+     */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['properties->headline', 'properties->text'];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
