@@ -8,7 +8,7 @@
         Thank You!
       </h2>
       <p class="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
-        {{ $this->submissionForm->success_message ?? 'Your form has been successfully submitted.' }}
+        {{ $this->submissionForm->success_message ?? 'Thanks. Your response was received.' }}
       </p>
     </div>
   @else
@@ -23,7 +23,7 @@
 
       <div class="mt-6">
         <x-filament::button type="submit" wire:loading.attr="disabled">
-          <span wire:loading.remove>Submit</span>
+          <span wire:loading.remove>Submit {{ $this->submissionForm->name }}</span>
           <span wire:loading>Submitting...</span>
         </x-filament::button>
       </div>
