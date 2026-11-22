@@ -70,7 +70,7 @@ class StatusResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedScale)
-            ->emptyStateDescription('There are no statuses to view. Create one to get started.')
+            ->emptyStateDescription('Statuses describe where a member stands, like Active, On Leave or Retired. Add your first status.')
             ->columns([
                 TextColumn::make('name')
                     ->badge()

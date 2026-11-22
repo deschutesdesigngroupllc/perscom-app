@@ -143,7 +143,7 @@ class FormResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedPencilSquare)
-            ->emptyStateDescription('There are no forms to view. Create one to get started.')
+            ->emptyStateDescription('Forms collect applications, requests and reports from members. Build your first form.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

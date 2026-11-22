@@ -109,7 +109,7 @@ class AwardResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedTrophy)
-            ->emptyStateDescription('There are no awards to view. Create one to get started.')
+            ->emptyStateDescription('Awards recognize members for service and achievement. Add your first award.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

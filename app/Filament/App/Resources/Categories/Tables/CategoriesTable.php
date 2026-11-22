@@ -30,7 +30,7 @@ class CategoriesTable
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedTag)
-            ->emptyStateDescription('There are no categories to view. Create one to get started.')
+            ->emptyStateDescription('Categories group awards, ranks, documents and more. Add one to start organizing.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

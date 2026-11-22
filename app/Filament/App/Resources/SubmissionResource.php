@@ -146,7 +146,7 @@ class SubmissionResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedFolderPlus)
-            ->emptyStateDescription('There are no submissions to view. Create one to get started.')
+            ->emptyStateDescription('Form responses from members appear here as they come in.')
             ->columns([
                 TextColumn::make('form.name')
                     ->weight(fn (Submission $record): ?FontWeight => $record->read_at ? null : FontWeight::Bold)

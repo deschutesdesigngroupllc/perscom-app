@@ -291,7 +291,7 @@ class EventResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedCalendarDays)
-            ->emptyStateDescription('There are no events to view. Create one to get started.')
+            ->emptyStateDescription('Events put operations, training and meetings on the calendar. Schedule your first event.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

@@ -163,7 +163,7 @@ class RankResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedChevronDoubleUp)
-            ->emptyStateDescription('There are no ranks to view. Create one to get started.')
+            ->emptyStateDescription('Ranks build your chain of command and drive promotions and time in grade. Add your first rank.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

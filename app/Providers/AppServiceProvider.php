@@ -378,7 +378,9 @@ class AppServiceProvider extends ServiceProvider
             fn ($matches): string => $matches[1].' '.$matches[2], (string) $value)));
 
         Table::configureUsing(function (Table $table): void {
-            $table->defaultSort('created_at', 'desc');
+            $table
+                ->defaultSort('created_at', 'desc')
+                ->emptyStateHeading(fn (Table $table): string => sprintf('No %s Yet', Str::title($table->getPluralModelLabel())));
         });
 
         $this->configureActionConfirmations();

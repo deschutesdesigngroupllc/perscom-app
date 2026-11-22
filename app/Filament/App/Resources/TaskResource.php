@@ -85,7 +85,7 @@ class TaskResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedDocumentCheck)
-            ->emptyStateDescription('There are no tasks to view. Create one to get started.')
+            ->emptyStateDescription('Tasks are assignments with due dates for your members. Create one to start tracking work.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()

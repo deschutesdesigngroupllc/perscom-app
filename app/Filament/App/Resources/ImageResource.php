@@ -148,7 +148,7 @@ class ImageResource extends BaseResource
             ->heading('Manage Images')
             ->description('As images are uploaded to specific resources such as awards, ranks, qualifications, etc. they will appear here for central management.')
             ->emptyStateIcon(Heroicon::OutlinedPhoto)
-            ->emptyStateDescription('There are no images to view. Create one to get started.')
+            ->emptyStateDescription('Images uploaded to records, awards and ranks appear here.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

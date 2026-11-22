@@ -135,7 +135,7 @@ class UnitResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedHome)
-            ->emptyStateDescription('There are no units to view. Create one to get started.')
+            ->emptyStateDescription('Units organize members into your chain of command. Add your first unit to start building the roster.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

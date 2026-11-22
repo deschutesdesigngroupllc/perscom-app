@@ -85,7 +85,7 @@ class CompetencyResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedNumberedList)
-            ->emptyStateDescription('There are no competencies to view. Create one to get started.')
+            ->emptyStateDescription('Competencies are the skills a training covers. Add one to attach it to training records.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()

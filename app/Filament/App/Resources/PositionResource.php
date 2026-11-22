@@ -83,7 +83,7 @@ class PositionResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedIdentification)
-            ->emptyStateDescription('There are no positions to view. Create one to get started.')
+            ->emptyStateDescription('Positions describe the role a member fills in their unit. Add one to assign it.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

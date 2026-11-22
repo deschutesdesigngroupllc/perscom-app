@@ -107,7 +107,7 @@ class AnnouncementResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedMegaphone)
-            ->emptyStateDescription('There are no announcements to view. Create one to get started.')
+            ->emptyStateDescription('Announcements show a banner to members across the dashboard. Post your first one.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()

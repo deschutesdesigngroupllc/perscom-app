@@ -78,7 +78,7 @@ class MessageResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedChatBubbleLeftRight)
-            ->emptyStateDescription('There are no messages to view. Create one to get started.')
+            ->emptyStateDescription('Messages reach members by email, Discord, SMS and more. Write your first one.')
             ->columns([
                 TextColumn::make('message')
                     ->searchable()

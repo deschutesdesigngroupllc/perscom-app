@@ -76,7 +76,7 @@ class CalendarResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedCalendar)
-            ->emptyStateDescription('There are no calendars to view. Create one to get started.')
+            ->emptyStateDescription('Calendars group events by purpose, like Operations or Training. Create one for your first events.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

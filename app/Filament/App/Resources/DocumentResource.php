@@ -111,7 +111,7 @@ class DocumentResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedDocument)
-            ->emptyStateDescription('There are no documents to view. Create one to get started.')
+            ->emptyStateDescription('Documents hold policies, orders and templates for your organization. Add your first document.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

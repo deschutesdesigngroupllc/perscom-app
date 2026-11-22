@@ -88,7 +88,7 @@ class CredentialResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedIdentification)
-            ->emptyStateDescription('There are no credentials to view. Create one to get started.')
+            ->emptyStateDescription('Credentials record licenses and certifications with expiry dates. Add one to start tracking them.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

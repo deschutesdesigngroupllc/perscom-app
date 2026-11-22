@@ -441,7 +441,7 @@ class UserResource extends BaseResource
 
         return $table
             ->emptyStateIcon(Heroicon::OutlinedUser)
-            ->emptyStateDescription('There are no members to view. Create one to get started.')
+            ->emptyStateDescription('Invite members or add them yourself to build your roster.')
             ->columns([
                 ImageColumn::make('profile_photo')
                     ->placeholder('No Profile Photo')

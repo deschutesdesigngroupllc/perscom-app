@@ -62,7 +62,7 @@ class IssuerResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedBriefcase)
-            ->emptyStateDescription('There are no issuers to view. Create one to get started.')
+            ->emptyStateDescription('Issuers are the organizations that grant credentials. Add one before recording credentials.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()

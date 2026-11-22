@@ -206,7 +206,7 @@ class FieldResource extends BaseResource
             ->heading('Manage Fields')
             ->description('Create custom fields to attach to resources such as records, members, forms etc. providing custom data collection.')
             ->emptyStateIcon(Heroicon::OutlinedPencil)
-            ->emptyStateDescription('There are no custom fields to view. Create one to get started.')
+            ->emptyStateDescription('Custom fields capture extra details on members, records and forms. Add one to start collecting it.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

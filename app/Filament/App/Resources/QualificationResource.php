@@ -115,7 +115,7 @@ class QualificationResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedStar)
-            ->emptyStateDescription('There are no qualifications to view. Create one to get started.')
+            ->emptyStateDescription('Qualifications record the skills and certifications members earn. Add one to start tracking them.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),

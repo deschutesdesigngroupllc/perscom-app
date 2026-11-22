@@ -120,7 +120,7 @@ class GroupResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedUserGroup)
-            ->emptyStateDescription('There are no groups to view. Create one to get started.')
+            ->emptyStateDescription('Groups collect units into larger formations on the roster. Create one to organize your units.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

@@ -87,7 +87,7 @@ class SpecialtyResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedBriefcase)
-            ->emptyStateDescription('There are no specialties to view. Create one to get started.')
+            ->emptyStateDescription('Specialties describe each member\'s job or occupational field. Add one to assign it to members.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
