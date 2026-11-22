@@ -48,6 +48,8 @@ class PromotionBoard extends Page implements HasTable
 
     protected static ?int $navigationSort = 4;
 
+    protected static ?string $navigationParentItem = 'Members';
+
     protected static ?string $title = 'Promotion Board';
 
     protected ?string $subheading = 'Members who meet the requirements for their next rank, and what the rest still need.';

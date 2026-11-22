@@ -57,7 +57,9 @@ class ServiceRecordResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
+
+    protected static ?string $navigationParentItem = 'Service Records';
 
     public static function form(Schema $schema): Schema
     {

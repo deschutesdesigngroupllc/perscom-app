@@ -39,7 +39,7 @@ class TaskResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 12;
 
     public static function form(Schema $schema): Schema
     {

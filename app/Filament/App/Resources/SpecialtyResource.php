@@ -42,6 +42,8 @@ class SpecialtyResource extends BaseResource
 
     protected static ?int $navigationSort = 6;
 
+    protected static ?string $navigationParentItem = 'Positions';
+
     public static function form(Schema $schema): Schema
     {
         return $schema

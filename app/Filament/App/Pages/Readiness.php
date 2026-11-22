@@ -30,6 +30,8 @@ class Readiness extends Page implements HasTable
 
     protected static ?int $navigationSort = 5;
 
+    protected static ?string $navigationParentItem = 'Members';
+
     protected string $view = 'filament.app.pages.readiness';
 
     protected ?string $subheading = 'How current each unit is on qualifications, credentials and attendance.';

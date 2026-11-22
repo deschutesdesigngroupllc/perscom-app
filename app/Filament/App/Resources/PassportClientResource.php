@@ -50,6 +50,8 @@ class PassportClientResource extends BaseResource
 
     protected static ?int $navigationSort = 8;
 
+    protected static ?string $navigationParentItem = 'API Keys';
+
     protected static ?string $navigationLabel = 'OAuth Apps';
 
     protected static ?string $pluralModelLabel = 'clients';

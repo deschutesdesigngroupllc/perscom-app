@@ -52,6 +52,8 @@ class NewsfeedResource extends BaseResource
 
     protected static ?int $navigationSort = 3;
 
+    protected static ?string $navigationParentItem = 'Announcements';
+
     protected static ?string $recordTitleAttribute = 'headline';
 
     public static function form(Schema $schema): Schema
