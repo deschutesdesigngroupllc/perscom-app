@@ -24,7 +24,7 @@ class FormPageWidthTest extends CentralTestCase
 
         $pages->each(fn (string $class) => $this->assertSame(
             Width::SevenExtraLarge,
-            (new ReflectionClass($class))->getDefaultProperties()['maxContentWidth'] ?? null,
+            new ReflectionClass($class)->getDefaultProperties()['maxContentWidth'] ?? null,
             "{$class} should set \$maxContentWidth to Width::SevenExtraLarge.",
         ));
     }

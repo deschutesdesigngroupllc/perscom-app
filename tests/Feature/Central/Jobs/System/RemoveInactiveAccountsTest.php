@@ -67,7 +67,7 @@ class RemoveInactiveAccountsTest extends CentralTestCase
         $tenant = Tenant::factory()->createQuietly(['name' => 'Bravo Company']);
         $tenant->forceFill(['created_at' => now()->subMonth(), 'last_login_at' => null])->saveQuietly();
 
-        $html = (new DeleteAccountOneMonthMail($tenant))->render();
+        $html = new DeleteAccountOneMonthMail($tenant)->render();
 
         $this->assertStringContainsString('Bravo Company Will Be Deleted in 30 Days', $html);
         $this->assertStringContainsString('Sign In to Keep Bravo Company', $html);

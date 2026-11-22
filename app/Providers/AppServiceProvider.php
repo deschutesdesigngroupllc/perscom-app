@@ -405,25 +405,25 @@ class AppServiceProvider extends ServiceProvider
     {
         DeleteAction::configureUsing(fn (DeleteAction $action): DeleteAction => $action
             ->modalHeading(fn (DeleteAction $action): string => 'Delete '.$action->getTitleCaseModelLabel())
-            ->modalDescription('This permanently removes it and its history. This can\'t be undone.')
+            ->modalDescription("This permanently removes it and its history. This can't be undone.")
             ->modalSubmitActionLabel(fn (DeleteAction $action): string => 'Delete '.$action->getTitleCaseModelLabel())
             ->modalCancelActionLabel('Keep'));
 
         DeleteBulkAction::configureUsing(fn (DeleteBulkAction $action): DeleteBulkAction => $action
             ->modalHeading(fn (DeleteBulkAction $action): string => 'Delete Selected '.$action->getTitleCasePluralModelLabel())
-            ->modalDescription('This permanently removes the selected records and their history. This can\'t be undone.')
+            ->modalDescription("This permanently removes the selected records and their history. This can't be undone.")
             ->modalSubmitActionLabel(fn (DeleteBulkAction $action): string => 'Delete '.$action->getTitleCasePluralModelLabel())
             ->modalCancelActionLabel('Keep'));
 
         ForceDeleteAction::configureUsing(fn (ForceDeleteAction $action): ForceDeleteAction => $action
             ->modalHeading(fn (ForceDeleteAction $action): string => 'Permanently Delete '.$action->getTitleCaseModelLabel())
-            ->modalDescription('This erases it and its history for good. This can\'t be undone.')
+            ->modalDescription("This erases it and its history for good. This can't be undone.")
             ->modalSubmitActionLabel('Delete Permanently')
             ->modalCancelActionLabel('Keep'));
 
         ForceDeleteBulkAction::configureUsing(fn (ForceDeleteBulkAction $action): ForceDeleteBulkAction => $action
             ->modalHeading(fn (ForceDeleteBulkAction $action): string => 'Permanently Delete Selected '.$action->getTitleCasePluralModelLabel())
-            ->modalDescription('This erases the selected records and their history for good. This can\'t be undone.')
+            ->modalDescription("This erases the selected records and their history for good. This can't be undone.")
             ->modalSubmitActionLabel('Delete Permanently')
             ->modalCancelActionLabel('Keep'));
 

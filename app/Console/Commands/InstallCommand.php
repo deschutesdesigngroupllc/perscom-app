@@ -294,7 +294,7 @@ class InstallCommand extends Command implements Isolatable
 
         if (config('tenancy.enabled')) {
             if (Schema::hasTable('tenants')) {
-                Tenant::all()->each(fn (Tenant $tenant) => static::deleteTenantDatabase($tenant));
+                Tenant::all()->each(fn (Tenant $tenant): bool => static::deleteTenantDatabase($tenant));
             }
 
             $this->call('migrate:fresh', [

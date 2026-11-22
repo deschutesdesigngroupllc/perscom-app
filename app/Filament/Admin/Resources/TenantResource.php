@@ -263,7 +263,7 @@ class TenantResource extends Resource
                     ->modalSubmitActionLabel('Retry Setup')
                     ->successNotificationTitle('Setup Queued')
                     ->action(function (Action $action, Tenant $record): void {
-                        SetupTenantAccount::dispatch($record);
+                        dispatch(new SetupTenantAccount($record));
 
                         $action->success();
                     }),

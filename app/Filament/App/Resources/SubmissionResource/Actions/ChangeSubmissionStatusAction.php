@@ -26,7 +26,7 @@ class ChangeSubmissionStatusAction extends Action
             ->label('Change Status')
             ->icon(Heroicon::OutlinedScale)
             ->modalHeading('Change Status')
-            ->modalDescription('The new status is added to this submission\'s history.')
+            ->modalDescription("The new status is added to this submission's history.")
             ->modalSubmitActionLabel('Update Status')
             ->visible(fn (Submission $record): bool => Gate::check('update', $record) && Status::query()->exists())
             ->fillForm(fn (Submission $record): array => ['status_id' => $record->status?->getKey()])

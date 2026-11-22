@@ -14,6 +14,7 @@ use Carbon\CarbonInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use Laravel\Cashier\Subscription;
 use Throwable;
 
 class RemoveInactiveAccounts implements RequiresTenancy, ShouldQueue
@@ -53,7 +54,7 @@ class RemoveInactiveAccounts implements RequiresTenancy, ShouldQueue
     {
         $subscription = $tenant->subscription();
 
-        return $subscription !== null && $subscription->ends_at === null && $subscription->active();
+        return $subscription instanceof Subscription && $subscription->ends_at === null && $subscription->active();
     }
 
     public function handle(): void

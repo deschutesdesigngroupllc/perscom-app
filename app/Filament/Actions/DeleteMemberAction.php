@@ -25,7 +25,7 @@ class DeleteMemberAction extends DeleteAction
                 $count = static::serviceRecordCount($record);
 
                 return sprintf(
-                    'This permanently deletes their profile and %d %s in their service history. This can\'t be undone. To keep their history, archive them instead.',
+                    "This permanently deletes their profile and %d %s in their service history. This can't be undone. To keep their history, archive them instead.",
                     $count,
                     Str::plural('record', $count),
                 );
@@ -36,7 +36,7 @@ class DeleteMemberAction extends DeleteAction
                     ->label(fn (User $record): string => sprintf('Type "%s" to confirm', $record->name))
                     ->required()
                     ->in(fn (User $record): array => [$record->name])
-                    ->validationMessages(['in' => 'The name you typed doesn\'t match.'])
+                    ->validationMessages(['in' => "The name you typed doesn't match."])
                     ->autocomplete(false),
             ]);
     }

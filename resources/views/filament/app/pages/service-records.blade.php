@@ -9,7 +9,8 @@
           @endif
           <span class="text-sm font-semibold text-gray-950 dark:text-white">{{ $type['label'] }}</span>
         </span>
-        <span class="font-[family-name:var(--font-display)] text-3xl font-bold text-gray-950 tabular-nums dark:text-white">{{ number_format($type['total']) }}</span>
+        <span
+          class="font-[family-name:var(--font-display)] text-3xl font-bold text-gray-950 tabular-nums dark:text-white">{{ number_format($type['total']) }}</span>
         <span class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
           <span>{{ number_format($type['recent']) }} in the last 30 days</span>
           <x-filament::icon :icon="\Filament\Support\Icons\Heroicon::ChevronRight"

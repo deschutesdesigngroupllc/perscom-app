@@ -16,7 +16,8 @@
             Resume Setup Wizard
           </x-filament::link>
         @endif
-        <x-filament::link color="gray" href="https://docs.perscom.io" icon="heroicon-m-book-open" rel="noopener noreferrer" target="_blank">
+        <x-filament::link color="gray" href="https://docs.perscom.io" icon="heroicon-m-book-open" rel="noopener noreferrer"
+          target="_blank">
           Documentation
         </x-filament::link>
       </div>

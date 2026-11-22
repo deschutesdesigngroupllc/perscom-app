@@ -114,7 +114,7 @@ class LaunchPlanWidget extends Widget
             [
                 'key' => 'record',
                 'label' => 'Record a promotion, award or assignment',
-                'description' => 'Records build each member\'s history and drive time in grade and readiness.',
+                'description' => "Records build each member's history and drive time in grade and readiness.",
                 'done' => RankRecord::query()->exists() || AwardRecord::query()->exists() || AssignmentRecord::query()->exists(),
                 'action' => 'Open Members',
                 'url' => UserResource::getUrl('index'),

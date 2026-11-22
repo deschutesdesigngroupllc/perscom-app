@@ -50,8 +50,6 @@ class ErrorPagesTest extends TenantTestCase
 
     public function test_an_unknown_route_renders_the_branded_not_found_page(): void
     {
-        $this->get('/this-page-does-not-exist-'.uniqid())
-            ->assertNotFound()
-            ->assertSee('We Couldn&#039;t Find That Page', false);
+        $this->get('/this-page-does-not-exist-'.uniqid())->assertNotFound()->assertSeeHtml('We Couldn&#039;t Find That Page');
     }
 }

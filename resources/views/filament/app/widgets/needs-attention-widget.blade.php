@@ -8,10 +8,10 @@
       </div>
     @else
       <ul @class([
-        'grid gap-3 sm:grid-cols-2',
-        'xl:grid-cols-3' => count($items) === 3,
-        'xl:grid-cols-4' => count($items) === 4,
-        'xl:grid-cols-5' => count($items) >= 5,
+          'grid gap-3 sm:grid-cols-2',
+          'xl:grid-cols-3' => count($items) === 3,
+          'xl:grid-cols-4' => count($items) === 4,
+          'xl:grid-cols-5' => count($items) >= 5,
       ])>
         @foreach ($items as $item)
           <li>

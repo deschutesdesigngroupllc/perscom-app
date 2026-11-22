@@ -95,7 +95,7 @@ class SetupTenantAccountTest extends TenantTestCase
                 $invite = Invite::query()->pending()->where('user_id', $founder->getKey())->where('type', InviteType::CLAIM)->firstOrFail();
 
                 $this->assertNull($founder->password);
-                $this->assertTrue($invite->isRedeemable(), 'The founder\'s set-password link must be redeemable.');
+                $this->assertTrue($invite->isRedeemable(), "The founder's set-password link must be redeemable.");
 
                 $claimed = AcceptInvite::handle($invite, ['password' => 'Correct-Horse-Battery-9', 'password_confirmation' => 'Correct-Horse-Battery-9']);
 
@@ -130,8 +130,8 @@ class SetupTenantAccountTest extends TenantTestCase
         $this->tenant->setAttribute('organization_type', OrganizationType::MILITARY->value);
 
         $action = new SetupTenantAccount;
-        (new ReflectionProperty($action, 'tenant'))->setValue($action, $this->tenant);
-        (new ReflectionMethod($action, 'applyOrganizationBlueprint'))->invoke($action);
+        new ReflectionProperty($action, 'tenant')->setValue($action, $this->tenant);
+        new ReflectionMethod($action, 'applyOrganizationBlueprint')->invoke($action);
 
         $this->assertTrue(Rank::query()->exists());
         $this->assertFalse(resolve(OnboardingSettings::class)->isAccessible());
@@ -144,8 +144,8 @@ class SetupTenantAccountTest extends TenantTestCase
         $this->tenant->setAttribute('organization_type', OrganizationType::OTHER->value);
 
         $action = new SetupTenantAccount;
-        (new ReflectionProperty($action, 'tenant'))->setValue($action, $this->tenant);
-        (new ReflectionMethod($action, 'applyOrganizationBlueprint'))->invoke($action);
+        new ReflectionProperty($action, 'tenant')->setValue($action, $this->tenant);
+        new ReflectionMethod($action, 'applyOrganizationBlueprint')->invoke($action);
 
         $this->assertTrue(resolve(OnboardingSettings::class)->isAccessible());
     }

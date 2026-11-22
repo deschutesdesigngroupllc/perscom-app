@@ -21,7 +21,7 @@ class StatsWidgetPollingTest extends CentralTestCase
         $this->assertNotEmpty($widgets);
 
         $widgets->each(function (string $class): void {
-            $defaults = (new ReflectionClass($class))->getDefaultProperties();
+            $defaults = new ReflectionClass($class)->getDefaultProperties();
 
             $this->assertArrayHasKey('pollingInterval', $defaults);
             $this->assertNull($defaults['pollingInterval'], "{$class} should not poll.");

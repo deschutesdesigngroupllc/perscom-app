@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Central\Jobs\System;
 
 use App\Actions\Tenant\SetupTenantAccount as SetupTenantAccountAction;
-use App\Jobs\System\SetupTenantAccount;
 use App\Filament\Admin\Resources\TenantResource\Pages\ListTenants;
+use App\Jobs\System\SetupTenantAccount;
 use App\Mail\System\TenantSetupDelayedMail;
 use App\Models\Admin;
 use App\Models\Tenant;
@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
-use RuntimeException;
 use Mockery;
 use Mockery\MockInterface;
+use RuntimeException;
 use Tests\Feature\Central\CentralTestCase;
 
 class SetupTenantAccountTest extends CentralTestCase

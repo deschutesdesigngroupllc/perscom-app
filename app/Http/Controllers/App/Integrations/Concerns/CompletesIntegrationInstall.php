@@ -45,7 +45,7 @@ trait CompletesIntegrationInstall
             Log::warning(sprintf('%s install was not authorized', $label), ['error' => $error, 'error_description' => $request->query('error_description')]);
 
             $this->notifyFailure($label, $error === 'access_denied'
-                ? sprintf('You cancelled the authorization in %s. Click Connect when you\'re ready.', $label)
+                ? sprintf("You cancelled the authorization in %s. Click Connect when you're ready.", $label)
                 : sprintf('%s returned an error: %s', $label, Str::limit(strip_tags((string) ($request->query('error_description') ?: $error)), 200)));
 
             return $back;
@@ -70,7 +70,7 @@ trait CompletesIntegrationInstall
         } catch (IntegrationConnectionException $integrationConnectionException) {
             $this->notifyFailure($label, $integrationConnectionException->getMessage());
         } catch (ConnectionException) {
-            $this->notifyFailure($label, sprintf('%s couldn\'t be reached. Try again in a minute.', $label));
+            $this->notifyFailure($label, sprintf("%s couldn't be reached. Try again in a minute.", $label));
         }
 
         return $back;
