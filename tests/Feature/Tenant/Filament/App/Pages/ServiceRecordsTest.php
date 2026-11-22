@@ -52,6 +52,20 @@ class ServiceRecordsTest extends TenantTestCase
         $this->assertSame('Members', Readiness::getNavigationParentItem());
     }
 
+    public function test_it_is_reachable_at_its_own_url(): void
+    {
+        $this->get(ServiceRecords::getUrl())
+            ->assertOk()
+            ->assertSee('Service Records');
+    }
+
+    public function test_every_app_page_resolves_to_a_route(): void
+    {
+        collect(Filament::getPanel('app')->getPages())
+            ->reject(fn (string $page): bool => str_contains($page::getSlug(), '{'))
+            ->each(fn (string $page) => $this->assertNotEmpty($page::getUrl(), "{$page} has no route."));
+    }
+
     public function test_members_without_record_access_cannot_open_it(): void
     {
         $this->actingAs(User::factory()->withoutRoles()->createQuietly());
