@@ -6,6 +6,7 @@ namespace Tests\Feature\Central\Http\Requests\Auth;
 
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Domain;
+use App\Models\Registration;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
@@ -74,6 +75,18 @@ class RegisterRequestTest extends CentralTestCase
         $validator = Validator::make($this->payload(['subdomain' => 'taken-unit']), (new RegisterRequest)->rules());
 
         $this->assertArrayHasKey('subdomain', $validator->errors()->toArray());
+    }
+
+    public function test_signing_up_again_with_a_pending_email_is_allowed(): void
+    {
+        config(['services.cloudflare.turnstile.site_key' => null]);
+
+        Registration::query()->create(['organization' => 'First Try', 'email' => 'retry@example.test', 'subdomain' => 'retry-unit']);
+
+        $payload = $this->payload(['email' => 'retry@example.test', 'subdomain' => 'retry-unit']);
+        $validator = Validator::make($payload, (new RegisterRequest)->merge($payload)->rules());
+
+        $this->assertFalse($validator->fails(), (string) $validator->errors()->first());
     }
 
     public function test_an_unknown_organization_type_is_rejected(): void

@@ -25,10 +25,12 @@ class RegisterController extends Controller
 
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $registration = Registration::create([
+        $registration = Registration::query()->updateOrCreate([
+            'email' => $request->validated('email'),
+            'verified_at' => null,
+        ], [
             'organization' => $request->validated('organization'),
             'name' => $request->validated('name'),
-            'email' => $request->validated('email'),
             'subdomain' => filled($request->validated('subdomain')) ? strtolower((string) $request->validated('subdomain')) : null,
             'organization_type' => $request->validated('organization_type'),
         ]);

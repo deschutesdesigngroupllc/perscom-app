@@ -22,9 +22,9 @@ class RegisterRequest extends FormRequest
         $rules = [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'name' => ['required', 'string', 'max:255'],
-            'subdomain' => ['nullable', 'string', 'min:3', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/', Rule::unique('mysql.domains', 'domain'), Rule::unique(Registration::class, 'subdomain'), new SubdomainRule],
+            'subdomain' => ['nullable', 'string', 'min:3', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/', Rule::unique('mysql.domains', 'domain'), Rule::unique(Registration::class, 'subdomain')->where(fn ($query) => $query->where('email', '!=', (string) $this->input('email'))), new SubdomainRule],
             'organization_type' => ['nullable', Rule::enum(OrganizationType::class)],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email'), Rule::unique(Registration::class, 'email')],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
             'privacy' => ['required', 'boolean'],
         ];
 

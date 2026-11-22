@@ -32,6 +32,15 @@ class ErrorPagesTest extends TenantTestCase
         $this->assertStringNotContainsString('This action is unauthorized', $html);
     }
 
+    public function test_an_expired_signed_link_explains_how_to_get_a_new_one(): void
+    {
+        $html = view('errors.403', ['exception' => new HttpException(403, 'Invalid signature.')])->render();
+
+        $this->assertStringContainsString('This Link Has Expired', $html);
+        $this->assertStringContainsString('fresh one', $html);
+        $this->assertStringNotContainsString('Invalid signature.', $html);
+    }
+
     public function test_a_custom_forbidden_message_is_shown(): void
     {
         $html = view('errors.403', ['exception' => new HttpException(403, 'We are still setting up your organization.')])->render();
