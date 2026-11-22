@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\AwardResource\Pages\CreateAward;
 use App\Filament\App\Resources\AwardResource\Pages\EditAward;
 use App\Filament\App\Resources\AwardResource\Pages\ListAwards;
+use App\Filament\App\Resources\AwardResource\RelationManagers\HoldersRelationManager;
 use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\Exports\AwardExporter;
 use App\Models\Award;
@@ -152,6 +153,16 @@ class AwardResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**

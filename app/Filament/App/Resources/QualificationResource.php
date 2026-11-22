@@ -8,6 +8,7 @@ use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\QualificationResource\Pages\CreateQualification;
 use App\Filament\App\Resources\QualificationResource\Pages\EditQualification;
 use App\Filament\App\Resources\QualificationResource\Pages\ListQualifications;
+use App\Filament\App\Resources\QualificationResource\RelationManagers\HoldersRelationManager;
 use App\Filament\Exports\QualificationExporter;
 use App\Models\Qualification;
 use BackedEnum;
@@ -163,6 +164,16 @@ class QualificationResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**

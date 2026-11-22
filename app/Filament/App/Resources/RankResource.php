@@ -8,6 +8,7 @@ use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\RankResource\Pages\CreateRank;
 use App\Filament\App\Resources\RankResource\Pages\EditRank;
 use App\Filament\App\Resources\RankResource\Pages\ListRanks;
+use App\Filament\App\Resources\RankResource\RelationManagers\HoldersRelationManager;
 use App\Filament\Exports\RankExporter;
 use App\Models\Credential;
 use App\Models\Qualification;
@@ -213,6 +214,16 @@ class RankResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**
