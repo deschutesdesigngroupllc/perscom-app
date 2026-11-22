@@ -14,6 +14,11 @@ use Illuminate\Support\Number;
 class ServiceRecordStatsOverview extends BaseWidget
 {
     /**
+     * Counts change rarely, so the widget loads once instead of polling every few seconds.
+     */
+    protected ?string $pollingInterval = null;
+
+    /**
      * @return Stat[]
      */
     protected function getStats(): array
