@@ -11,6 +11,8 @@ use App\Models\Category;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListEvents extends ListRecords
@@ -42,6 +44,27 @@ class ListEvents extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))
                 ->favorite(),
         ])->toArray());
+    }
+
+    /**
+     * @return array<string, Tab>
+     */
+    public function getTabs(): array
+    {
+        return [
+            'upcoming' => Tab::make('Upcoming')
+                ->icon(Heroicon::OutlinedCalendarDays)
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where(fn (Builder $query) => $query->where('repeats', true)->orWhere('ends', '>=', now()))),
+            'past' => Tab::make('Past')
+                ->icon(Heroicon::OutlinedClock)
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('repeats', false)->where('ends', '<', now())),
+            'all' => Tab::make('All'),
+        ];
+    }
+
+    public function getDefaultActiveTab(): string|int|null
+    {
+        return 'upcoming';
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
+use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
 use App\Filament\App\Resources\EventResource\Pages\CreateEvent;
 use App\Filament\App\Resources\EventResource\Pages\EditEvent;
 use App\Filament\App\Resources\EventResource\Pages\ListEvents;
@@ -28,6 +29,7 @@ use Carbon\CarbonInterface;
 use Carbon\Month;
 use Carbon\WeekDay;
 use DateTimeInterface;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -53,6 +55,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -294,6 +297,12 @@ class EventResource extends BaseResource
                     ->sortable()
                     ->searchable()
                     ->icon(fn (Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                TextColumn::make('starts')
+                    ->label('Starts')
+                    ->dateTime(fn (Event $record): string => $record->all_day ? 'M j, Y' : 'M j, Y g:i A')
+                    ->timezone(fn (): string => UserSettingsService::timezone())
+                    ->description(fn (Event $record): ?string => $record->repeats ? 'Repeats' : null)
+                    ->sortable(),
                 TextColumn::make('calendar.name')
                     ->badge()
                     ->color(fn (Event $record): array => Color::generateV3Palette($record->calendar?->color)),
@@ -313,10 +322,8 @@ class EventResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->recordClasses(fn (Event $record): ?string => match ($record->has_passed) {
-                true => 'border-s-2! border-s-red-600!',
-                default => null,
-            })
+            ->recordClasses(fn (Event $record): ?string => $record->has_passed ? 'opacity-60' : null)
+            ->defaultSort('starts', fn (HasTable $livewire): string => data_get($livewire, 'activeTab') === 'upcoming' ? 'asc' : 'desc')
             ->groups(['all_day', 'calendar.name', 'repeats'])
             ->filters([
                 TernaryFilter::make('all_day'),
@@ -332,9 +339,14 @@ class EventResource extends BaseResource
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
+                TakeAttendanceAction::make()
+                    ->visible(fn (Event $record): bool => $record->starts->isPast()),
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    DeleteAction::make(),
+                ])
+                    ->tooltip('More'),
             ])
             ->toolbarActions([
                 ExportBulkAction::make()
@@ -343,8 +355,7 @@ class EventResource extends BaseResource
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultGroup('calendar.name');
+            ]);
     }
 
     public static function getRelations(): array
