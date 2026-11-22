@@ -6,8 +6,8 @@ namespace App\Filament\App\Resources\MessageResource\Pages;
 
 use App\Filament\App\Resources\AutomationResource;
 use App\Filament\App\Resources\MessageResource;
+use App\Filament\Concerns\HasContainedWizard;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Support\Enums\Width;
@@ -15,7 +15,7 @@ use Illuminate\Support\HtmlString;
 
 class CreateMessage extends CreateRecord
 {
-    use HasWizard;
+    use HasContainedWizard;
 
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 

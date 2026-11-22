@@ -74,6 +74,13 @@ class AddMemberWizardTest extends TenantTestCase
         Notification::assertNothingSent();
     }
 
+    public function test_the_wizard_keeps_its_steps_fields_and_buttons_in_one_card(): void
+    {
+        Livewire::test(CreateUser::class)
+            ->assertOk()
+            ->assertSeeHtml('fi-sc-wizard fi-contained');
+    }
+
     public function test_email_must_be_unique(): void
     {
         User::factory()->createQuietly(['email' => 'taken@example.test']);

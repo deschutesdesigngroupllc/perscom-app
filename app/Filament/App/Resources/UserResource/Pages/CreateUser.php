@@ -9,6 +9,7 @@ use App\Actions\Invites\SendInvite;
 use App\Data\Copilot\ProposedChangeSetData;
 use App\Data\Copilot\ProposedOperationData;
 use App\Filament\App\Resources\UserResource;
+use App\Filament\Concerns\HasContainedWizard;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\CopilotOperationType;
 use App\Models\Enums\InviteType;
@@ -25,7 +26,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Support\Enums\Width;
@@ -42,7 +42,7 @@ use Illuminate\Validation\ValidationException;
  */
 class CreateUser extends CreateRecord
 {
-    use HasWizard;
+    use HasContainedWizard;
 
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
