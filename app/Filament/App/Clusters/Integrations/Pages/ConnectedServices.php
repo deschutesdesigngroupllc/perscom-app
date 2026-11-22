@@ -82,6 +82,8 @@ class ConnectedServices extends SettingsPage
                                     ->helperText('Connecting adds the PERSCOM bot to your community server. You will need the Manage Server permission in Discord.')
                                     ->afterContent([
                                         Action::make('connectDiscord')
+                                            ->button()
+                                            ->extraAttributes(['class' => 'whitespace-nowrap'])
                                             ->label(fn (): string => filled($this->discordServerName()) ? 'Change Server' : 'Connect Server')
                                             ->icon('fab-discord')
                                             ->color(fn (): string => filled($this->discordServerName()) ? 'gray' : 'primary')
@@ -150,6 +152,8 @@ class ConnectedServices extends SettingsPage
                                     ->helperText('Connect your Slack workspace to post organization-wide notifications, messages and event reminders to a channel.')
                                     ->afterContent([
                                         Action::make('connectSlack')
+                                            ->button()
+                                            ->extraAttributes(['class' => 'whitespace-nowrap'])
                                             ->label(fn (): string => filled($this->slackWorkspaceName()) ? 'Reconnect' : 'Connect Workspace')
                                             ->icon('fab-slack')
                                             ->color(fn (): string => filled($this->slackWorkspaceName()) ? 'gray' : 'primary')
