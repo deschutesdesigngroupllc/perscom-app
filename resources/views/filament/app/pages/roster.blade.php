@@ -1,5 +1,10 @@
 <x-filament-panels::page>
   <style>
+    @page {
+      size: landscape;
+      margin: 12mm;
+    }
+
     @media print {
 
       .fi-sidebar,
@@ -9,22 +14,111 @@
         display: none !important;
       }
 
+      html,
+      body,
+      .fi-body,
+      .fi-layout,
+      .fi-main-ctn,
+      .fi-main {
+        background: #fff !important;
+      }
+
       .fi-main-ctn,
       .fi-main {
         margin: 0 !important;
         padding: 0 !important;
         max-width: none !important;
       }
+
+      * {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .roster-print-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9pt;
+        line-height: 1.3;
+        color: #111827;
+      }
+
+      .roster-print-table th,
+      .roster-print-table td {
+        border: 0.5pt solid #d1d5db;
+        padding: 1mm 2mm;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .roster-print-table thead th {
+        background: #e5e7eb;
+        font-size: 8pt;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .roster-print-table tbody {
+        break-inside: avoid;
+      }
+
+      .roster-print-unit th {
+        background: #f3f4f6;
+        font-weight: 600;
+      }
+
+      .roster-print-unit span {
+        margin-left: 2mm;
+        font-weight: 400;
+        color: #6b7280;
+      }
+
+      .roster-print-col-rank {
+        width: 12%;
+      }
+
+      .roster-print-col-slot {
+        width: 16%;
+      }
+
+      .roster-print-col-status {
+        width: 14%;
+      }
+
+      .roster-print-empty {
+        color: #9ca3af;
+        font-style: italic;
+      }
     }
   </style>
 
-  <div class="flex flex-col gap-4">
+  {{-- Printing switches to the light theme and, for the org chart, scales it to fit one landscape page. --}}
+  <div x-data="{
+      wasDark: false,
+      prepareForPrint() {
+          this.wasDark = document.documentElement.classList.contains('dark')
+          document.documentElement.classList.remove('dark')
+          const chart = this.$root.querySelector('[data-roster-chart]')
+          if (!chart) return
+          chart.style.zoom = ''
+          const printableWidth = 960
+          const nodes = chart.children
+          const chartWidth = nodes[nodes.length - 1].getBoundingClientRect().right - nodes[0].getBoundingClientRect().left
+          chart.style.zoom = Math.min(1, printableWidth / chartWidth)
+      },
+      restoreAfterPrint() {
+          if (this.wasDark) document.documentElement.classList.add('dark')
+          this.$root.querySelector('[data-roster-chart]')?.style.removeProperty('zoom')
+      },
+  }" x-on:beforeprint.window="prepareForPrint()" x-on:afterprint.window="restoreAfterPrint()"
+    class="flex flex-col gap-4">
     <div class="flex flex-col gap-3 print:hidden">
       <div class="flex flex-col gap-3 lg:flex-row lg:items-center">
         <div class="flex-1">
           <x-filament::input.wrapper prefix-icon="heroicon-m-magnifying-glass">
-            <x-filament::input type="search" wire:model.live.debounce.300ms="search" placeholder="Search by name, rank, position or specialty"
-              aria-label="Search the roster" />
+            <x-filament::input type="search" wire:model.live.debounce.300ms="search"
+              placeholder="Search by name, rank, position or specialty" aria-label="Search the roster" />
           </x-filament::input.wrapper>
         </div>
 
@@ -37,11 +131,9 @@
           @endforeach
         </x-filament::button.group>
 
-        @if ($display === 'chart')
-          <x-filament::button color="gray" icon="heroicon-m-printer" x-on:click="window.print()">
-            Print
-          </x-filament::button>
-        @endif
+        <x-filament::button color="gray" icon="heroicon-m-printer" x-on:click="window.print()">
+          Print
+        </x-filament::button>
       </div>
 
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5 lg:items-center">
@@ -132,15 +224,19 @@
             </x-filament::empty-state>
           @endif
         @elseif ($display === 'chart')
-          <div class="overflow-x-auto pb-4 print:overflow-visible">
-            <div class="flex min-w-max justify-center gap-6 p-2">
+          <div class="overflow-x-auto pb-4 print:overflow-visible print:pb-0">
+            <div data-roster-chart class="flex min-w-max justify-center gap-6 p-2">
               @foreach ($tree as $node)
                 <x-roster.chart-node :node="$node" :mode="$mode" :insights="$insights" :hidden-fields="$hiddenFields" />
               @endforeach
             </div>
           </div>
         @else
-          <div class="flex flex-col gap-8">
+          <div class="hidden print:block">
+            <x-roster.print-table :tree="$tree" :mode="$mode" :hidden-fields="$hiddenFields" />
+          </div>
+
+          <div class="flex flex-col gap-8 print:hidden">
             @foreach ($tree as $node)
               <x-roster.tree-node :node="$node" :mode="$mode" :layout="$display" :insights="$insights" :hidden-fields="$hiddenFields"
                 :expanded="true" />
