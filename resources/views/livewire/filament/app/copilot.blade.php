@@ -1,4 +1,4 @@
-<div>
+<div class="contents">
   @if ($this->isAvailable())
     {{ $this->askAction }}
 
