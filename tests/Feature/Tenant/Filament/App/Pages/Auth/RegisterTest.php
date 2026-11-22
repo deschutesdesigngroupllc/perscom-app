@@ -64,4 +64,18 @@ class RegisterTest extends TenantTestCase
         RegistrationSettings::fake(['enabled' => true, 'admin_approval_required' => false]);
         $this->assertTrue(value($plugin->getRegistration()));
     }
+
+    public function test_only_configured_social_providers_are_offered(): void
+    {
+        /** @var FilamentSocialitePlugin $plugin */
+        $plugin = Filament::getPanel('app')->getPlugin('filament-socialite');
+
+        $names = collect($plugin->getProviders())->keys()->all();
+
+        collect(['google', 'discord', 'github'])->each(function (string $name) use ($names): void {
+            $configured = filled(config("services.{$name}.client_id")) && filled(config("services.{$name}.client_secret"));
+
+            $this->assertSame($configured, in_array($name, $names, true), "Provider [{$name}] visibility should match its configuration.");
+        });
+    }
 }

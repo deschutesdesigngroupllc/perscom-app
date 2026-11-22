@@ -153,23 +153,19 @@ class AppPanelProvider extends PanelProvider
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration(fn (): bool => RegistrationSettings::isOpen())
                     ->slug('app')
-                    ->providers($isDemo ? [] : [
-                        Provider::make('google')
-                            ->label('Google')
-                            ->icon('fab-google')
+                    ->providers($isDemo ? [] : collect([
+                        'google' => ['Google', 'fab-google'],
+                        'discord' => ['Discord', 'fab-discord'],
+                        'github' => ['GitHub', 'fab-github'],
+                    ])
+                        ->filter(fn (array $provider, string $name): bool => filled(config("services.{$name}.client_id")) && filled(config("services.{$name}.client_secret")))
+                        ->map(fn (array $provider, string $name): Provider => Provider::make($name)
+                            ->label($provider[0])
+                            ->icon($provider[1])
                             ->stateless()
-                            ->outlined(false),
-                        Provider::make('discord')
-                            ->label('Discord')
-                            ->icon('fab-discord')
-                            ->stateless()
-                            ->outlined(false),
-                        Provider::make('github')
-                            ->label('GitHub')
-                            ->icon('fab-github')
-                            ->stateless()
-                            ->outlined(false),
-                    ]),
+                            ->outlined(false))
+                        ->values()
+                        ->all()),
             ])
             ->when(class_exists(AdvancedTablesPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
                 AdvancedTablesPlugin::make()
