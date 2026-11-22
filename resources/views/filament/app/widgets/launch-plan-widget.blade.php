@@ -17,11 +17,11 @@
 
     <ol class="divide-y divide-gray-950/5 dark:divide-white/10">
       @foreach ($steps as $step)
-        <li class="flex items-start gap-3 py-3">
+        <li class="flex items-center gap-3 py-3">
           @if ($step['done'])
-            <x-filament::icon :icon="\Filament\Support\Icons\Heroicon::CheckCircle" class="mt-0.5 size-5 shrink-0 text-success-600 dark:text-success-400" />
+            <x-filament::icon :icon="\Filament\Support\Icons\Heroicon::CheckCircle" class="size-5 shrink-0 text-success-600 dark:text-success-400" />
           @else
-            <span class="mt-0.5 size-5 shrink-0 rounded-full ring-2 ring-gray-300 ring-inset dark:ring-white/20" aria-hidden="true"></span>
+            <span class="size-5 shrink-0 rounded-full ring-2 ring-gray-300 ring-inset dark:ring-white/20" aria-hidden="true"></span>
           @endif
           <span class="min-w-0 flex-1">
             <span @class([
