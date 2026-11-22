@@ -35,6 +35,20 @@ class DashboardOnboardingTest extends TenantTestCase
             ->assertActionVisible('onboarding');
     }
 
+    public function test_the_wizard_opens_itself_only_once_per_session(): void
+    {
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', 'onboarding');
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', null)
+            ->assertActionVisible('onboarding');
+    }
+
     public function test_onboarding_action_is_hidden_when_not_accessible(): void
     {
         OnboardingSettings::fake([

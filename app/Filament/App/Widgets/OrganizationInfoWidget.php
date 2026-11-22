@@ -13,6 +13,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OrganizationInfoWidget extends Widget
 {
@@ -69,7 +70,11 @@ class OrganizationInfoWidget extends Widget
         /** @var OnboardingSettings $settings */
         $settings = resolve(OnboardingSettings::class);
 
-        return ! $settings->isAccessible() && blank($settings->completed_at);
+        if (filled($settings->completed_at)) {
+            return false;
+        }
+
+        return ! $settings->isAccessible() || Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY);
     }
 
     public function resumeOnboarding(): void
@@ -79,6 +84,8 @@ class OrganizationInfoWidget extends Widget
         }
 
         resolve(OnboardingSettings::class)->resume();
+
+        Session::forget(Dashboard::ONBOARDING_SHOWN_SESSION_KEY);
 
         $this->redirect(Dashboard::getUrl());
     }

@@ -39,6 +39,7 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -47,6 +48,11 @@ class Dashboard extends BaseDashboard
 {
     use GeneratesOrganizationBlueprints;
 
+    /**
+     * The session key that records the setup wizard already opened itself during this sign-in.
+     */
+    public const string ONBOARDING_SHOWN_SESSION_KEY = 'onboarding.shown';
+
     public $defaultAction = 'onboarding';
 
     protected static ?string $navigationLabel = 'Dashboard';
@@ -54,6 +60,23 @@ class Dashboard extends BaseDashboard
     protected static ?int $navigationSort = 1;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+
+    /**
+     * The wizard opens itself once per sign-in session. Closing it or choosing "Skip For Now" keeps it
+     * closed until the next sign-in; "Resume Setup Wizard" on the dashboard reopens it any time.
+     */
+    public function mount(): void
+    {
+        if (Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY)) {
+            $this->defaultAction = null;
+
+            return;
+        }
+
+        if ($this->shouldShowOnboarding()) {
+            Session::put(Dashboard::ONBOARDING_SHOWN_SESSION_KEY, true);
+        }
+    }
 
     public function getTitle(): string
     {
@@ -102,7 +125,7 @@ class Dashboard extends BaseDashboard
         Notification::make()
             ->success()
             ->title('Setup Wizard Dismissed')
-            ->body("You won't see this wizard again. You can configure your organization from the settings menu.")
+            ->body('Build your ranks, units and positions any time under Structure in the sidebar.')
             ->send();
     }
 
@@ -186,8 +209,8 @@ class Dashboard extends BaseDashboard
                             ->link()
                             ->requiresConfirmation()
                             ->modalHeading('Dismiss Setup Wizard')
-                            ->modalDescription("You won't see this wizard again. You can always configure your organization from the settings menu.")
-                            ->modalSubmitActionLabel("Yes, Don't Show Again")
+                            ->modalDescription("It won't open on its own again. You can reopen it from the dashboard, or build your structure under Structure in the sidebar.")
+                            ->modalSubmitActionLabel('Hide Setup Wizard')
                             ->action(function (): void {
                                 $this->dismissOnboarding();
                             })
