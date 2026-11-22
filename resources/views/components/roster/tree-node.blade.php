@@ -13,17 +13,24 @@
   {{-- Top level: a page section heading, with its sub-units as cards beneath it. --}}
   <section x-data="{ open: {{ $expanded ? 'true' : 'false' }} }" wire:key="roster-unit-{{ $unit->getKey() }}-0" class="flex flex-col gap-3">
     <button type="button" x-on:click="open = ! open" x-bind:aria-expanded="open.toString()"
-      class="group flex items-center gap-2.5 self-start rounded-lg text-start">
-      @if ($unit->icon)
-        <x-filament::icon :icon="$unit->icon" class="size-5 shrink-0 text-brass-600 dark:text-brass-400" />
-      @endif
-      <h2 class="font-display text-lg font-semibold text-gray-950 dark:text-white">{{ $unit->name }}</h2>
-      <span class="text-sm text-gray-500 tabular-nums dark:text-gray-400">
-        {{ $members > 0 ? $members . ' ' . Str::plural('member', $members) : 'No members' }}
-      </span>
+      class="group flex w-full items-center gap-2 text-start">
       <x-filament::icon icon="heroicon-m-chevron-down"
         class="size-4 shrink-0 text-gray-400 transition-transform duration-150 group-hover:text-gray-600 dark:text-gray-500 dark:group-hover:text-gray-300"
         x-bind:class="!open && '-rotate-90'" />
+      @if ($unit->icon)
+        <x-filament::icon :icon="$unit->icon" class="size-5 shrink-0 text-brass-600 dark:text-brass-400" />
+      @endif
+      <h2 class="font-display text-lg leading-none font-semibold text-gray-950 dark:text-white">{{ $unit->name }}</h2>
+      <span @class([
+          'shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium tabular-nums',
+          'bg-brass-50 text-brass-700 ring-1 ring-brass-600/20 ring-inset dark:bg-brass-400/10 dark:text-brass-300 dark:ring-brass-400/20' =>
+              $members > 0,
+          'bg-gray-100 text-gray-500 dark:bg-white/5 dark:text-gray-400' =>
+              $members === 0,
+      ])>
+        {{ $members > 0 ? $members . ' ' . Str::plural('member', $members) : 'No members' }}
+      </span>
+      <span class="ms-2 h-px flex-1 bg-gray-950/10 dark:bg-white/10" aria-hidden="true"></span>
     </button>
 
     <div x-show="open" @class([
