@@ -2,7 +2,7 @@
   $requestId = \Illuminate\Support\Facades\Context::get('request_id');
 @endphp
 <!DOCTYPE html>
-<html lang="en" class="h-full antialiased">
+<html lang="en" class="dark h-full antialiased">
 
 <head>
   <meta charset="utf-8">
@@ -10,14 +10,6 @@
   <meta name="robots" content="noindex">
   <title>@yield('title') · PERSCOM</title>
   <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-  {{-- Follow the theme chosen in PERSCOM (light, dark or system), the same way the panels do. --}}
-  <script>
-    (() => {
-      const theme = localStorage.getItem('theme') ?? 'system';
-      const dark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      document.documentElement.classList.toggle('dark', dark);
-    })();
-  </script>
   @googlefonts
   {{-- Self-contained so the page still renders when the error comes from a build or asset problem.
        Values mirror the app theme: Filament's simple page card, zinc neutrals and brand blue. --}}

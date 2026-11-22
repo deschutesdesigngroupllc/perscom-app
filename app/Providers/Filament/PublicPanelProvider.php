@@ -31,6 +31,7 @@ class PublicPanelProvider extends PanelProvider
     {
         return $panel
             ->id('public')
+            ->darkMode(isForced: true)
             ->path('public')
             ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
             ->colors(Brand::colors())

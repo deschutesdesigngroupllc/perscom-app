@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('admin')
+            ->darkMode(isForced: true)
             ->path('admin')
             ->domain(str(config('app.url'))->after('://')->toString())
             ->login(Login::class)

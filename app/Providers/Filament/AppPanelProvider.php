@@ -72,6 +72,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('app')
+            ->darkMode(isForced: true)
             ->login(Login::class)
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->registration(Register::class))
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->passwordReset(RequestPasswordReset::class))
