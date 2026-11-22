@@ -42,14 +42,15 @@ class ServiceRecords extends Page
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $title = 'Service Records';
+    protected static ?string $title = 'Records';
 
     /**
-     * "service-records" already belongs to the Service Record resource, so the overview lives at /records.
+     * "service-records" already belongs to the Service Record resource (one of the record types), so the
+     * overview lives at /records.
      */
     protected static ?string $slug = 'records';
 
-    protected ?string $subheading = 'Every promotion, award, assignment and qualification on file. To add one for a member, use Add Record on their profile.';
+    protected ?string $subheading = 'Every promotion, award, assignment, qualification, training, combat and service record on file. To add one for a member, use Add Record on their profile.';
 
     protected string $view = 'filament.app.pages.service-records';
 

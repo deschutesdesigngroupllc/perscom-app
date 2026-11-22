@@ -63,7 +63,7 @@ class AssignmentRecordResource extends BaseResource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationParentItem = 'Service Records';
+    protected static ?string $navigationParentItem = 'Records';
 
     public static function form(Schema $schema): Schema
     {

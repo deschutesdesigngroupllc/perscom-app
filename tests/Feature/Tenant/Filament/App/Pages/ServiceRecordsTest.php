@@ -46,7 +46,7 @@ class ServiceRecordsTest extends TenantTestCase
 
     public function test_detail_pages_nest_under_their_parents_in_the_sidebar(): void
     {
-        $this->assertSame('Service Records', RankRecordResource::getNavigationParentItem());
+        $this->assertSame('Records', RankRecordResource::getNavigationParentItem());
         $this->assertSame('Forms', SubmissionResource::getNavigationParentItem());
         $this->assertSame('Members', PromotionBoard::getNavigationParentItem());
         $this->assertSame('Members', Readiness::getNavigationParentItem());
@@ -56,7 +56,7 @@ class ServiceRecordsTest extends TenantTestCase
     {
         $this->get(ServiceRecords::getUrl())
             ->assertOk()
-            ->assertSee('Service Records');
+            ->assertSee('Records');
     }
 
     public function test_every_app_page_resolves_to_a_route(): void

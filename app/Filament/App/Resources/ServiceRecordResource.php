@@ -59,7 +59,7 @@ class ServiceRecordResource extends BaseResource
 
     protected static ?int $navigationSort = 7;
 
-    protected static ?string $navigationParentItem = 'Service Records';
+    protected static ?string $navigationParentItem = 'Records';
 
     public static function form(Schema $schema): Schema
     {

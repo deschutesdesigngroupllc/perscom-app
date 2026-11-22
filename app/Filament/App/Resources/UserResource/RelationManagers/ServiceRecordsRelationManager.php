@@ -23,7 +23,7 @@ class ServiceRecordsRelationManager extends RelationManager
 
     protected static string|BackedEnum|null $icon = 'heroicon-o-clipboard-document-list';
 
-    protected static ?string $title = 'Service Records';
+    protected static ?string $title = 'Records';
 
     public function table(Table $table): Table
     {
