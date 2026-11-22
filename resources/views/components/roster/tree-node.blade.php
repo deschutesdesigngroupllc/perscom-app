@@ -20,9 +20,9 @@
       @if ($unit->icon)
         <x-filament::icon :icon="$unit->icon" class="size-5 shrink-0 text-brass-600 dark:text-brass-400" />
       @endif
-      <h2 class="font-display text-lg leading-6 font-semibold text-gray-950 dark:text-white">{{ $unit->name }}</h2>
+      <h2 class="font-display text-lg font-semibold [text-box:trim-both_cap_alphabetic] text-gray-950 dark:text-white">{{ $unit->name }}</h2>
       <span @class([
-          'shrink-0 rounded-md px-1.5 py-0.5 text-xs font-medium tabular-nums',
+          'shrink-0 rounded-md px-1.5 py-1.5 text-xs font-medium tabular-nums [text-box:trim-both_cap_alphabetic]',
           'bg-brass-50 text-brass-700 ring-1 ring-brass-600/20 ring-inset dark:bg-brass-400/10 dark:text-brass-300 dark:ring-brass-400/20' =>
               $members > 0,
           'bg-gray-100 text-gray-500 dark:bg-white/5 dark:text-gray-400' =>
