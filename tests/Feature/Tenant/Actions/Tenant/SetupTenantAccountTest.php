@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Actions\Tenant;
 
+use App\Actions\Invites\AcceptInvite;
 use App\Actions\Tenant\SetupTenantAccount;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
@@ -86,7 +87,15 @@ class SetupTenantAccountTest extends TenantTestCase
                 $this->assertSame('Jordan Reyes', $founder->name);
                 $this->assertNotNull($founder->email_verified_at);
                 $this->assertTrue($founder->approved);
-                $this->assertTrue(Invite::query()->pending()->where('user_id', $founder->getKey())->where('type', InviteType::CLAIM)->exists());
+                $invite = Invite::query()->pending()->where('user_id', $founder->getKey())->where('type', InviteType::CLAIM)->firstOrFail();
+
+                $this->assertNull($founder->password);
+                $this->assertTrue($invite->isRedeemable(), 'The founder\'s set-password link must be redeemable.');
+
+                $claimed = AcceptInvite::handle($invite, ['password' => 'Correct-Horse-Battery-9', 'password_confirmation' => 'Correct-Horse-Battery-9']);
+
+                $this->assertTrue($claimed->is($founder));
+                $this->assertNotNull($claimed->refresh()->password);
             });
 
             Mail::assertQueued(NewTenantMail::class, function (NewTenantMail $mail): bool {

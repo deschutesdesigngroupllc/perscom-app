@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Actions\Tenant;
 
-use App\Actions\Auth\CreateNewUser;
 use App\Actions\Organization\ApplyOrganizationBlueprint;
 use App\Data\Organization\OrganizationBlueprintData;
 use App\Mail\Tenant\NewTenantMail;
@@ -157,8 +156,7 @@ class SetupTenantAccount
     }
 
     /**
-     * Create the founder's account and email them a one-time link to choose their own password. The
-     * random password is never shown to anyone; redeeming the link replaces it and verifies the email.
+     * Create the founder's account and email them a one-time link to choose their own password.
      *
      * @throws ValidationException
      */
@@ -168,13 +166,11 @@ class SetupTenantAccount
             return;
         }
 
-        $password = Str::password(length: 32, symbols: false);
-
-        $user = CreateNewUser::handle([
+        // The founder starts without a password: a claim invite can only be redeemed while the profile is
+        // unclaimed, and redeeming it is how they choose one.
+        $user = User::query()->create([
             'name' => filled($this->tenant->getAttribute('founder_name')) ? (string) $this->tenant->getAttribute('founder_name') : 'Admin',
             'email' => $this->tenant->email,
-            'password' => $password,
-            'password_confirmation' => $password,
         ]);
         $user->forceFill(['email_verified_at' => now(), 'approved' => true])->save();
         $user->assignRole(Utils::getSuperAdminName());
