@@ -30,7 +30,7 @@ class Notifications extends SettingsPage
 
     protected ?string $subheading = 'Manage your default notification settings.';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $slug = 'dashboard/notifications';
 

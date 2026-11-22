@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
-use App\Filament\App\Clusters\Settings\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Filament\App\Pages\Dashboard;
 use App\Models\PassportToken;
 use App\Services\UserSettingsService;

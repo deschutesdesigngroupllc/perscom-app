@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportClientResource\Pages\CreatePassportClient;
 use App\Filament\App\Resources\PassportClientResource\Pages\EditPassportClient;
 use App\Filament\App\Resources\PassportClientResource\Pages\ListPassportClients;
@@ -46,9 +47,11 @@ class PassportClientResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 3;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 13;
 
     protected static ?string $navigationLabel = 'OAuth Apps';
 

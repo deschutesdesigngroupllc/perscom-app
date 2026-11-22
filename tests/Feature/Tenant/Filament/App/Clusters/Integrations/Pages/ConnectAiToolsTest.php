@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Tenant\Filament\App\Clusters\Settings\Pages;
+namespace Tests\Feature\Tenant\Filament\App\Clusters\Integrations\Pages;
 
-use App\Filament\App\Clusters\Settings\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Livewire\Livewire;

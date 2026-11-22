@@ -43,7 +43,7 @@ class Dashboard extends SettingsPage
 
     protected static ?string $navigationLabel = 'Dashboard';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static string $settings = DashboardSettings::class;
 

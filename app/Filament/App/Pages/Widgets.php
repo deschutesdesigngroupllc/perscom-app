@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\User;
 use BackedEnum;
@@ -32,9 +33,11 @@ class Widgets extends Page
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-code-bracket';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 6;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 16;
 
     protected string $view = 'filament.app.pages.widgets';
 

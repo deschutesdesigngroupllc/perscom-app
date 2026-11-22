@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\ApiLogResource\Pages\ListApiLogs;
 use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Filament\App\Resources\ApiLogResource\RelationManagers\PurgesRelationManager;
@@ -43,9 +44,11 @@ class ApiLogResource extends BaseResource
 
     protected static ?string $navigationParentItem = 'API Keys';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 12;
 
     protected static ?string $navigationLabel = 'Logs';
 

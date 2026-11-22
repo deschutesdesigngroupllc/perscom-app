@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\WebhookResource\Pages\CreateWebhook;
 use App\Filament\App\Resources\WebhookResource\Pages\EditWebhook;
 use App\Filament\App\Resources\WebhookResource\Pages\ListWebhooks;
@@ -39,9 +40,11 @@ class WebhookResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 4;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 14;
 
     public static function form(Schema $schema): Schema
     {

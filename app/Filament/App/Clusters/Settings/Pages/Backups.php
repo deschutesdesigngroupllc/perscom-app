@@ -31,7 +31,7 @@ class Backups extends Page implements HasTable
 
     protected static ?string $cluster = Settings::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
 
     protected ?string $subheading = 'Your most recent account backups.';
 

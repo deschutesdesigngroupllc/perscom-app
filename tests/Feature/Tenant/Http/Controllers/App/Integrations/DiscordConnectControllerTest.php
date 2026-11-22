@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Http\Controllers\App\Integrations;
 
-use App\Filament\App\Clusters\Settings\Pages\Integration;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
 use App\Filament\App\Pages\Dashboard;
 use App\Models\Tenant;
 use App\Models\User;
@@ -110,7 +110,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $this->withSession(['integrations.discord.nonce' => 'different'])
             ->get(route('app.integrations.discord.connect', ['state' => $state, 'code' => 'abc']))
-            ->assertRedirect(Integration::getUrl(['tab' => 'discord::data::tab']));
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
 
         $this->assertNotificationBodyContains('opened in a different browser');
         $this->assertNull($this->tenant->refresh()->discord_guild_id);
@@ -124,7 +124,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $this->withSession(['integrations.discord.nonce' => $nonce])
             ->get(route('app.integrations.discord.connect', ['state' => $state, 'error' => 'access_denied']))
-            ->assertRedirect(Integration::getUrl(['tab' => 'discord::data::tab']));
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
 
         $this->assertNotificationBodyContains('You cancelled the authorization in Discord');
     }
@@ -139,7 +139,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $this->withSession(['integrations.discord.nonce' => $nonce])
             ->get(route('app.integrations.discord.connect', ['state' => $state, 'code' => 'abc']))
-            ->assertRedirect(Integration::getUrl(['tab' => 'discord::data::tab']));
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
 
         $this->assertNotificationBodyContains("Discord couldn't be reached");
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\WebhookLogResource\Pages\ListWebhookLogs;
 use App\Filament\App\Resources\WebhookLogResource\Pages\ViewWebhookLog;
 use App\Models\Enums\WebhookEvent;
@@ -41,9 +42,11 @@ class WebhookLogResource extends BaseResource
 
     protected static ?string $navigationParentItem = 'Webhooks';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 15;
 
     protected static ?string $navigationLabel = 'Logs';
 

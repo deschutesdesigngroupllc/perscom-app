@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Integrations\Concerns;
 
 use App\Exceptions\IntegrationConnectionException;
-use App\Filament\App\Clusters\Settings\Pages\Integration;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
 use App\Filament\App\Pages\Dashboard;
 use App\Services\IntegrationInstallService;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -29,7 +29,7 @@ trait CompletesIntegrationInstall
      */
     protected function completeInstall(Request $request, string $provider, string $label, Closure $connect): RedirectResponse
     {
-        $back = redirect()->to(Integration::getUrl(['tab' => sprintf('%s::data::tab', $provider)]));
+        $back = redirect()->to(ConnectedServices::getUrl(['tab' => sprintf('%s::data::tab', $provider)]));
 
         if (! Auth::user()?->hasRole(Utils::getSuperAdminName())) {
             $this->notifyFailure($label, sprintf('Only the organization owner can connect %s.', $label));

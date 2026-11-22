@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Tenant\Filament\App\Clusters\Settings\Pages;
+namespace Tests\Feature\Tenant\Filament\App\Clusters\Integrations\Pages;
 
-use App\Filament\App\Clusters\Settings\Pages\Integration;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
 use App\Jobs\Tenant\SyncDiscordMember;
 use App\Models\User;
 use App\Settings\IntegrationSettings;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
-class IntegrationTest extends TenantTestCase
+class ConnectedServicesTest extends TenantTestCase
 {
     protected function setUp(): void
     {
@@ -43,7 +43,7 @@ class IntegrationTest extends TenantTestCase
     {
         $this->connect();
 
-        Livewire::test(Integration::class)
+        Livewire::test(ConnectedServices::class)
             ->assertOk()
             ->assertSee('5th SFG Discord')
             ->assertSee('5th SFG Slack')
@@ -52,19 +52,19 @@ class IntegrationTest extends TenantTestCase
 
     public function test_discord_is_not_offered_without_a_bot_token(): void
     {
-        Livewire::test(Integration::class)
+        Livewire::test(ConnectedServices::class)
             ->assertSee('Connecting adds the PERSCOM bot to your community server.');
 
         config(['services.discord.token' => null]);
 
-        Livewire::test(Integration::class)
+        Livewire::test(ConnectedServices::class)
             ->assertOk()
             ->assertDontSee('Connecting adds the PERSCOM bot to your community server.');
     }
 
     public function test_it_does_not_list_servers_the_organization_has_not_connected(): void
     {
-        Livewire::test(Integration::class)
+        Livewire::test(ConnectedServices::class)
             ->assertOk()
             ->assertSee('Not connected')
             ->assertSee('Connect Server')
@@ -81,7 +81,7 @@ class IntegrationTest extends TenantTestCase
 
         $linked = User::factory()->createQuietly(['discord_user_id' => 'discord-jane']);
 
-        Livewire::test(Integration::class)
+        Livewire::test(ConnectedServices::class)
             ->fillForm([
                 'discord_settings.discord_channel' => 'chan-1',
                 'discord_settings.sync_roles' => true,

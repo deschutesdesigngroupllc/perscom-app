@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
 use App\Filament\App\Clusters\Settings\Pages\Dashboard as DashboardSettingsPage;
-use App\Filament\App\Clusters\Settings\Pages\Integration;
 use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\InviteResource;
 use App\Filament\App\Resources\RankResource;
@@ -133,7 +133,7 @@ class LaunchPlanWidget extends Widget
                 'description' => 'Post promotions, awards and event reminders where your members already talk.',
                 'done' => filled(data_get($integrations->discord_settings, 'discord_server')) || filled(data_get($integrations->slack_settings, 'team_id')),
                 'action' => 'Open Integrations',
-                'url' => Integration::getUrl(),
+                'url' => ConnectedServices::getUrl(),
             ],
         ];
     }

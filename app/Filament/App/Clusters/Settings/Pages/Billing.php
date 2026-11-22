@@ -21,7 +21,7 @@ class Billing extends Page
 
     protected string $view = 'filament.app.clusters.settings.pages.billing';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $cluster = Settings::class;
 

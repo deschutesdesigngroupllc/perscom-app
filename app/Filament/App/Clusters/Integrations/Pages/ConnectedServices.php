@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Clusters\Settings\Pages;
+namespace App\Filament\App\Clusters\Integrations\Pages;
 
 use App\Actions\Integrations\DisconnectDiscordServer;
 use App\Actions\Integrations\DisconnectSlackWorkspace;
-use App\Filament\App\Clusters\Settings;
-use App\Filament\App\Resources\PassportClientResource;
-use App\Filament\App\Resources\PassportTokenResource;
-use App\Filament\App\Resources\WebhookResource;
+use App\Filament\App\Clusters\Integrations;
 use App\Jobs\Tenant\SyncDiscordMember;
 use App\Models\User;
 use App\Services\DiscordService;
@@ -35,21 +32,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use UnitEnum;
 
-class Integration extends SettingsPage
+class ConnectedServices extends SettingsPage
 {
-    protected static ?string $cluster = Settings::class;
+    protected static ?string $cluster = Integrations::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
 
-    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Services';
 
-    protected static ?string $navigationLabel = 'Integrations';
+    protected static ?string $navigationLabel = 'Connected Services';
 
-    protected static ?int $navigationSort = 12;
+    protected static ?string $title = 'Connected Services';
+
+    protected static ?string $slug = 'services';
+
+    protected static ?int $navigationSort = 1;
 
     protected static string $settings = IntegrationSettings::class;
 
-    protected ?string $subheading = 'Adjust settings related to integrating PERSCOM with third-party services.';
+    protected ?string $subheading = 'Connect Discord, Slack, single sign-on and SMS to PERSCOM.';
 
     protected bool $shouldSyncDiscordMembers = false;
 
@@ -280,26 +281,5 @@ class Integration extends SettingsPage
         return filled(data_get($settings, 'discord_server'))
             ? (string) (data_get($settings, 'discord_server_name') ?: data_get($settings, 'discord_server'))
             : null;
-    }
-
-    /**
-     * @return Action[]
-     */
-    protected function getHeaderActions(): array
-    {
-        return [
-            Action::make('API Keys')
-                ->label('API Keys')
-                ->color('gray')
-                ->url(PassportTokenResource::getUrl()),
-            Action::make('OAuth 2.0 Clients')
-                ->label('OAuth 2.0 Clients')
-                ->color('gray')
-                ->url(PassportClientResource::getUrl()),
-            Action::make('Webhooks')
-                ->label('Webhooks')
-                ->color('gray')
-                ->url(WebhookResource::getUrl()),
-        ];
     }
 }

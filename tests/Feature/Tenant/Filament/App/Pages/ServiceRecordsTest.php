@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Pages;
 
+use App\Filament\App\Clusters\Integrations;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
 use App\Filament\App\Pages\PromotionBoard;
 use App\Filament\App\Pages\Readiness;
 use App\Filament\App\Pages\ServiceRecords;
@@ -58,10 +61,16 @@ class ServiceRecordsTest extends TenantTestCase
         $this->assertSame('Members', Readiness::getNavigationParentItem());
     }
 
-    public function test_api_oauth_webhooks_and_widgets_share_the_integrations_group(): void
+    public function test_integrations_live_in_one_cluster(): void
     {
-        foreach ([PassportTokenResource::class, ApiLogResource::class, PassportClientResource::class, WebhookResource::class, WebhookLogResource::class, Widgets::class] as $resource) {
-            $this->assertSame('Integrations', $resource::getNavigationGroup(), $resource);
+        foreach ([ConnectedServices::class, ConnectAiTools::class] as $page) {
+            $this->assertSame(Integrations::class, $page::getCluster(), $page);
+            $this->assertSame('Services', $page::getNavigationGroup(), $page);
+        }
+
+        foreach ([PassportTokenResource::class, ApiLogResource::class, PassportClientResource::class, WebhookResource::class, WebhookLogResource::class, Widgets::class] as $component) {
+            $this->assertSame(Integrations::class, $component::getCluster(), $component);
+            $this->assertSame('Developers', $component::getNavigationGroup(), $component);
         }
 
         $this->assertNull(PassportClientResource::getNavigationParentItem());

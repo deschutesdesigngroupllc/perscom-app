@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Clusters\Settings\Pages;
+namespace App\Filament\App\Clusters\Integrations\Pages;
 
-use App\Filament\App\Clusters\Settings;
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportTokenResource;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -22,15 +22,15 @@ use UnitEnum;
 
 class ConnectAiTools extends Page
 {
-    protected static ?string $cluster = Settings::class;
+    protected static ?string $cluster = Integrations::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cpu-chip';
 
-    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Services';
 
     protected static ?string $navigationLabel = 'Connect AI Tools';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $title = 'Connect AI Tools';
 

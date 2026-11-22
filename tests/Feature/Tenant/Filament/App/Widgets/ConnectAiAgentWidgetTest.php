@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Widgets;
 
-use App\Filament\App\Clusters\Settings\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Models\PassportToken;
 use App\Models\User;
