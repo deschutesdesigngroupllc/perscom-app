@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Actions\Tenant;
 
 use App\Actions\Auth\CreateNewUser;
+use App\Actions\Organization\ApplyOrganizationBlueprint;
+use App\Data\Organization\OrganizationBlueprintData;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
 use App\Models\Enums\InviteType;
+use App\Models\Enums\OrganizationType;
 use App\Models\Invite;
 use App\Models\Page;
 use App\Models\Tenant;
@@ -33,6 +36,8 @@ class SetupTenantAccount
 
     protected bool $shouldCreateUser = true;
 
+    protected bool $shouldApplyBlueprint = true;
+
     protected bool $shouldCreateNewsItem = true;
 
     protected bool $shouldCreateAnnouncement = true;
@@ -46,6 +51,7 @@ class SetupTenantAccount
         $this->tenant->run(function (): void {
             $this->when($this->shouldSeedSettings, fn () => $this->seedInitialSettings());
             $this->when($this->shouldSetInitialSettings, fn () => $this->setInitialSettings());
+            $this->when($this->shouldApplyBlueprint, fn () => $this->applyOrganizationBlueprint());
             $this->when($this->shouldCreateUser, fn () => $this->createInitialUserAccount());
             $this->when($this->shouldCreateNewsItem, fn () => $this->createFirstNewsfeedItem());
             $this->when($this->shouldCreateAnnouncement, fn () => $this->createAnnouncement());
@@ -74,6 +80,13 @@ class SetupTenantAccount
     public function shouldCreateUser(bool $createUser = true): static
     {
         $this->shouldCreateUser = $createUser;
+
+        return $this;
+    }
+
+    public function shouldApplyBlueprint(bool $applyBlueprint = true): static
+    {
+        $this->shouldApplyBlueprint = $applyBlueprint;
 
         return $this;
     }
@@ -120,6 +133,27 @@ class SetupTenantAccount
         $dashboard = resolve(DashboardSettings::class);
         $dashboard->title = $this->tenant->name;
         $dashboard->save();
+
+        $requestedSubdomain = $this->tenant->getAttribute('requested_subdomain');
+
+        if (filled($requestedSubdomain)) {
+            UpdateTenantSubdomain::handle($this->tenant, (string) $requestedSubdomain);
+        }
+    }
+
+    /**
+     * Start the organization with the structure that matches the type chosen at signup.
+     */
+    protected function applyOrganizationBlueprint(): void
+    {
+        $type = OrganizationType::tryFrom((string) $this->tenant->getAttribute('organization_type'));
+        $preset = $type?->blueprintPreset();
+
+        if (blank($preset) || ! array_key_exists($preset, OrganizationBlueprintData::presets())) {
+            return;
+        }
+
+        ApplyOrganizationBlueprint::handle(OrganizationBlueprintData::fromPreset($preset));
     }
 
     /**
@@ -133,7 +167,7 @@ class SetupTenantAccount
         $password = Str::password(length: 32, symbols: false);
 
         $user = CreateNewUser::handle([
-            'name' => 'Admin',
+            'name' => filled($this->tenant->getAttribute('founder_name')) ? (string) $this->tenant->getAttribute('founder_name') : 'Admin',
             'email' => $this->tenant->email,
             'password' => $password,
             'password_confirmation' => $password,

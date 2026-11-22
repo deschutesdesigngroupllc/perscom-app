@@ -67,9 +67,13 @@ class SetupTenantAccountTest extends TenantTestCase
     {
         Mail::fake();
 
+        $this->tenant->setAttribute('founder_name', 'Jordan Reyes');
+        $this->tenant->saveQuietly();
+
         (new SetupTenantAccount)
             ->shouldSeedSettings(false)
             ->shouldSetInitialSettings(false)
+            ->shouldApplyBlueprint(false)
             ->shouldCreateNewsItem(false)
             ->shouldCreateAnnouncement(false)
             ->shouldCreatePages(false)
@@ -79,6 +83,7 @@ class SetupTenantAccountTest extends TenantTestCase
             $this->tenant->run(function (): void {
                 $founder = User::query()->where('email', $this->tenant->email)->firstOrFail();
 
+                $this->assertSame('Jordan Reyes', $founder->name);
                 $this->assertNotNull($founder->email_verified_at);
                 $this->assertTrue($founder->approved);
                 $this->assertTrue(Invite::query()->pending()->where('user_id', $founder->getKey())->where('type', InviteType::CLAIM)->exists());
@@ -94,6 +99,9 @@ class SetupTenantAccountTest extends TenantTestCase
         } finally {
             // SetupTenantAccount writes inside $tenant->run(), which commits to the shared tenant
             // database, so the founder and their invite are removed explicitly.
+            $this->tenant->setAttribute('founder_name', null);
+            $this->tenant->saveQuietly();
+
             $this->tenant->run(function (): void {
                 Invite::query()->where('email', $this->tenant->email)->delete();
                 User::query()->where('email', $this->tenant->email)->get()->each->deleteQuietly();

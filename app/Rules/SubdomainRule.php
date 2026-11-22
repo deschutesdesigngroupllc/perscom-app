@@ -30,6 +30,7 @@ class SubdomainRule implements ValidationRule
         'status',
         'telescope',
         'widget',
+        'www',
     ];
 
     public function validate(string $attribute, mixed $value, Closure $fail): void

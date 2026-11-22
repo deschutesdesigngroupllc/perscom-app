@@ -18,7 +18,10 @@ class VerifyController extends Controller
         if ($registration->verified_at === null) {
             $tenant = CreateNewTenant::handle(
                 organization: $registration->organization,
-                email: $registration->email
+                email: $registration->email,
+                founderName: $registration->name,
+                requestedSubdomain: $registration->subdomain,
+                organizationType: $registration->organization_type,
             );
 
             $registration->update([

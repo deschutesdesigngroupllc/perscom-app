@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\OrganizationType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -47,7 +48,10 @@ class Registration extends Model
 
     protected $fillable = [
         'organization',
+        'name',
         'email',
+        'subdomain',
+        'organization_type',
         'verified_at',
         'tenant_id',
     ];
@@ -69,6 +73,7 @@ class Registration extends Model
     {
         return [
             'verified_at' => 'datetime',
+            'organization_type' => OrganizationType::class,
         ];
     }
 }
