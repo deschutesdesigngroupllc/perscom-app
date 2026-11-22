@@ -125,7 +125,7 @@ class LaunchPlanWidget extends Widget
                 'description' => 'Pick a memorable address your members can find again.',
                 'done' => filled($tenant?->custom_url) || filled(resolve(DashboardSettings::class)->subdomain),
                 'action' => 'Set Your URL',
-                'url' => DashboardSettingsPage::getUrl(),
+                'url' => DashboardSettingsPage::getUrl(['tab' => 'domain::data::tab']),
             ],
             [
                 'key' => 'integrations',

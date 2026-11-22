@@ -35,6 +35,15 @@ class LaunchPlanWidgetTest extends TenantTestCase
         $this->assertTrue($steps['profile']['done']);
     }
 
+    public function test_set_your_url_opens_the_domain_tab(): void
+    {
+        $this->actingAsOwner(['name' => 'Admin']);
+
+        $steps = collect((new LaunchPlanWidget)->getSteps())->keyBy('key');
+
+        $this->assertStringEndsWith('?tab=domain%3A%3Adata%3A%3Atab', $steps['url']['url']);
+    }
+
     public function test_it_renders_progress_and_calls_to_action_for_the_owner(): void
     {
         $this->actingAsOwner(['name' => 'Admin']);
