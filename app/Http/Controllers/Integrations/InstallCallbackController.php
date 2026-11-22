@@ -25,7 +25,7 @@ class InstallCallbackController
         $path = route(sprintf('app.integrations.%s.connect', $provider), absolute: false);
 
         $base = config('tenancy.enabled')
-            ? Tenant::query()->findOrFail(data_get($payload, 'tenant'))->url
+            ? IntegrationInstallService::returnUrlFor($payload, Tenant::query()->findOrFail(data_get($payload, 'tenant')))
             : config('app.url');
 
         return redirect()->to(Url::fromString(rtrim((string) $base, '/').$path)

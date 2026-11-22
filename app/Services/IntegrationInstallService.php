@@ -30,11 +30,12 @@ class IntegrationInstallService
             'provider' => $provider,
             'tenant' => $tenant?->getTenantKey(),
             'nonce' => $nonce,
+            'origin' => request()->getSchemeAndHttpHost(),
         ]);
     }
 
     /**
-     * @return array{provider: string, tenant: int|string|null, nonce: string}|null
+     * @return array{provider: string, tenant: int|string|null, nonce: string, origin?: string}|null
      */
     public static function decode(?string $state): ?array
     {
@@ -66,6 +67,30 @@ class IntegrationInstallService
             && data_get($payload, 'provider') === $provider
             && hash_equals((string) $nonce, (string) data_get($payload, 'nonce'))
             && (string) data_get($payload, 'tenant') === (string) $tenant?->getTenantKey();
+    }
+
+    /**
+     * Where to send the admin after the provider redirects back: the host they started on, as long as it
+     * belongs to the organization, so the session holding the nonce is the one that receives the code.
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    public static function returnUrlFor(array $payload, ?Tenant $tenant): string
+    {
+        $fallback = (string) ($tenant?->url ?? config('app.url'));
+        $origin = data_get($payload, 'origin');
+
+        if (blank($origin) || ! $tenant instanceof Tenant) {
+            return $fallback;
+        }
+
+        $originHost = parse_url((string) $origin, PHP_URL_HOST);
+        $allowedHosts = collect([$tenant->custom_url, $tenant->fallback_url, $tenant->url])
+            ->filter()
+            ->map(fn (string $url): ?string => parse_url($url, PHP_URL_HOST))
+            ->filter();
+
+        return $allowedHosts->contains($originHost) ? (string) $origin : $fallback;
     }
 
     protected static function sessionKey(string $provider): string
