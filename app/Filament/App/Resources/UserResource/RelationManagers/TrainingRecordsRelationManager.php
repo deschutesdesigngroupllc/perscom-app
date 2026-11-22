@@ -33,6 +33,8 @@ class TrainingRecordsRelationManager extends RelationManager
             ->description('The training records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 ExpiresAtColumn::makeForCredentials()

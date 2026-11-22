@@ -31,6 +31,8 @@ class AwardRecordsRelationManager extends RelationManager
             ->description('The award records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('award.name')

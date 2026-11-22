@@ -31,6 +31,8 @@ class RankRecordsRelationManager extends RelationManager
             ->description('The rank records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('rank.name')

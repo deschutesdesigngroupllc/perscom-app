@@ -99,6 +99,8 @@ class RankRecordResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 DateTimePicker::make('created_at')
+                                    ->label('Effective Date')
+                                    ->helperText('The date this took effect.')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
@@ -173,7 +175,9 @@ class RankRecordResource extends BaseResource
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
-                                TextEntry::make('created_at'),
+                                TextEntry::make('created_at')
+                                    ->label('Effective Date')
+                                    ->date(),
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
@@ -233,6 +237,9 @@ class RankRecordResource extends BaseResource
                             ->html(fn (RankRecord $record) => $record->text),
                     ),
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
+                    ->toggleable()
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('updated_at')

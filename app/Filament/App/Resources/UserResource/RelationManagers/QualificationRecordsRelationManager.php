@@ -34,6 +34,8 @@ class QualificationRecordsRelationManager extends RelationManager
             ->description('The qualification records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('qualification.name')

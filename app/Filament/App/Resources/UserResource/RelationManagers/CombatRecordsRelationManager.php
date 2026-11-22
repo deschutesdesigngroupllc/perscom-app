@@ -32,6 +32,8 @@ class CombatRecordsRelationManager extends RelationManager
             ->description('The combat records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('text')

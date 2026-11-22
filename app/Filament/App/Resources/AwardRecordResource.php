@@ -92,6 +92,8 @@ class AwardRecordResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 DateTimePicker::make('created_at')
+                                    ->label('Effective Date')
+                                    ->helperText('The date this took effect.')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
@@ -164,7 +166,9 @@ class AwardRecordResource extends BaseResource
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
-                                TextEntry::make('created_at'),
+                                TextEntry::make('created_at')
+                                    ->label('Effective Date')
+                                    ->date(),
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
@@ -221,6 +225,9 @@ class AwardRecordResource extends BaseResource
                             ->html(fn (AwardRecord $record) => $record->text),
                     ),
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
+                    ->toggleable()
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('updated_at')
