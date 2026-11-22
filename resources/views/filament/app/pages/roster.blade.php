@@ -140,7 +140,7 @@
             </div>
           </div>
         @else
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-8">
             @foreach ($tree as $node)
               <x-roster.tree-node :node="$node" :mode="$mode" :layout="$display" :insights="$insights" :hidden-fields="$hiddenFields"
                 :expanded="true" />

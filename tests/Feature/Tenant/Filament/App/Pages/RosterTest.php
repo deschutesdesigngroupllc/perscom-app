@@ -55,6 +55,25 @@ class RosterTest extends TenantTestCase
             ->assertSeeInOrder(['Alpha Company', 'Company Commander', 'First Platoon', 'Platoon Leader']);
     }
 
+    public function test_member_counts_include_sub_units_and_empty_units_stay_quiet(): void
+    {
+        User::factory()->count(2)->createQuietly(['unit_id' => $this->platoon->getKey()]);
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertSeeInOrder(['Alpha Company', '2 members', 'First Platoon'])
+            ->assertDontSee('No personnel assigned');
+    }
+
+    public function test_an_empty_unit_says_it_has_no_members(): void
+    {
+        $this->group->units()->detach($this->platoon->getKey());
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertSee('No members assigned to this unit.');
+    }
+
     public function test_search_only_shows_matching_members(): void
     {
         User::factory()->createQuietly(['name' => 'Jane Matching', 'unit_id' => $this->company->getKey()]);
