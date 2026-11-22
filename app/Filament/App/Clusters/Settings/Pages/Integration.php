@@ -70,7 +70,7 @@ class Integration extends SettingsPage
                     ->tabs([
                         Tab::make('Discord')
                             ->icon('fab-discord')
-                            ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
+                            ->visible(fn (): bool => DiscordService::isConfigured())
                             ->schema([
                                 TextEntry::make('discord_connection')
                                     ->label('Server')

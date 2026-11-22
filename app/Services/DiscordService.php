@@ -24,6 +24,17 @@ class DiscordService
      */
     public const string BOT_PERMISSIONS = '2617527475';
 
+    /**
+     * Connecting needs the OAuth client for the install and the bot token for everything after it, so
+     * Discord is only offered when all three are set.
+     */
+    public static function isConfigured(): bool
+    {
+        return filled(config('services.discord.client_id'))
+            && filled(config('services.discord.client_secret'))
+            && filled(config('services.discord.token'));
+    }
+
     public static function addBotToServerLink(): string
     {
         return Url::fromString('https://discord.com/api/oauth2/authorize')

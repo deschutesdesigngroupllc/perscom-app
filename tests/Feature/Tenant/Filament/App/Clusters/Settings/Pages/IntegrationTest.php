@@ -24,6 +24,7 @@ class IntegrationTest extends TenantTestCase
         config([
             'services.discord.client_id' => 'client',
             'services.discord.client_secret' => 'secret',
+            'services.discord.token' => 'bot-token',
             'services.slack.client_id' => 'client',
             'services.slack.client_secret' => 'secret',
         ]);
@@ -47,6 +48,18 @@ class IntegrationTest extends TenantTestCase
             ->assertSee('5th SFG Discord')
             ->assertSee('5th SFG Slack')
             ->assertSee('/profile · /roster · /events · /rsvp');
+    }
+
+    public function test_discord_is_not_offered_without_a_bot_token(): void
+    {
+        Livewire::test(Integration::class)
+            ->assertSee('Connecting adds the PERSCOM bot to your community server.');
+
+        config(['services.discord.token' => null]);
+
+        Livewire::test(Integration::class)
+            ->assertOk()
+            ->assertDontSee('Connecting adds the PERSCOM bot to your community server.');
     }
 
     public function test_it_does_not_list_servers_the_organization_has_not_connected(): void
