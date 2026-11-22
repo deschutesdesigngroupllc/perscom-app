@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\MessageResource\Pages\CreateMessage;
 use App\Filament\App\Resources\MessageResource\Pages\ListMessages;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
@@ -19,8 +20,9 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Component;
@@ -34,6 +36,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use UnitEnum;
 
 class MessageResource extends BaseResource
@@ -60,8 +63,8 @@ class MessageResource extends BaseResource
                         Tab::make('Channels')
                             ->icon('heroicon-o-queue-list')
                             ->schema(static::channelSchema()),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                        Tab::make('Recipients')
+                            ->icon('heroicon-o-users')
                             ->schema(static::detailsSchema()),
                         Tab::make('Schedule')
                             ->visible(fn (Get $get): mixed => $get('repeats'))
@@ -181,18 +184,29 @@ class MessageResource extends BaseResource
     }
 
     /**
-     * @return Select[]
+     * @return array<int, Field>
      */
     public static function detailsSchema(): array
     {
         return [
-            Select::make('recipients')
-                ->helperText('Select the recipients. Leave blank to send to everyone.')
-                ->preload()
+            Radio::make('audience')
+                ->label('Send To')
+                ->options(fn (): array => [
+                    'everyone' => sprintf('Everyone (%s %s)', number_format($count = User::query()->count()), Str::plural('member', $count)),
+                    'specific' => 'Specific members',
+                ])
+                ->default('everyone')
+                ->afterStateHydrated(fn (Radio $component, Get $get): mixed => $component->state(blank($get('recipients')) ? 'everyone' : 'specific'))
+                ->live()
+                ->dehydrated(false)
+                ->required(),
+            MemberSelect::make('recipients')
+                ->label('Members')
+                ->helperText('The members who will receive this message.')
                 ->multiple()
-                ->searchable()
-                ->nullable()
-                ->options(User::query()->orderBy('name')->pluck('name', 'id')),
+                ->visible(fn (Get $get): bool => $get('audience') === 'specific')
+                ->required(fn (Get $get): bool => $get('audience') === 'specific')
+                ->dehydrateStateUsing(fn (Get $get, mixed $state): mixed => $get('audience') === 'specific' ? $state : null),
         ];
     }
 

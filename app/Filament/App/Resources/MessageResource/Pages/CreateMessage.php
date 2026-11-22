@@ -43,7 +43,7 @@ class CreateMessage extends CreateRecord
             Step::make('Channels')
                 ->completedIcon('heroicon-m-hand-thumb-up')
                 ->schema(MessageResource::channelSchema()),
-            Step::make('Details')
+            Step::make('Recipients')
                 ->completedIcon('heroicon-m-hand-thumb-up')
                 ->schema(MessageResource::detailsSchema()),
             Step::make('Schedule')
