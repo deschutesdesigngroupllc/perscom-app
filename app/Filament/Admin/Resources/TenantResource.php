@@ -11,6 +11,7 @@ use App\Filament\Admin\Resources\TenantResource\Pages\EditTenant;
 use App\Filament\Admin\Resources\TenantResource\Pages\ListTenants;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
+use App\Jobs\System\SetupTenantAccount;
 use App\Models\Enums\SubscriptionStatus;
 use App\Models\Subscription;
 use App\Models\Tenant;
@@ -251,6 +252,21 @@ class TenantResource extends Resource
                     ->sortable(),
             ])
             ->recordActions([
+                Action::make('retrySetup')
+                    ->label('Retry Setup')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->visible(fn (Tenant $record): bool => ! $record->setup_completed)
+                    ->requiresConfirmation()
+                    ->modalHeading('Retry Setup')
+                    ->modalDescription('Runs the organization setup again. Steps that already finished are skipped, and the founder gets their set-password email once it completes.')
+                    ->modalSubmitActionLabel('Retry Setup')
+                    ->successNotificationTitle('Setup Queued')
+                    ->action(function (Action $action, Tenant $record): void {
+                        SetupTenantAccount::dispatch($record);
+
+                        $action->success();
+                    }),
                 Action::make('login')
                     ->icon('heroicon-o-arrow-right-end-on-rectangle')
                     ->color('gray')

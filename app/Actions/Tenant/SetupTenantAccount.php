@@ -164,6 +164,10 @@ class SetupTenantAccount
      */
     protected function createInitialUserAccount(): void
     {
+        if (User::query()->where('email', $this->tenant->email)->exists()) {
+            return;
+        }
+
         $password = Str::password(length: 32, symbols: false);
 
         $user = CreateNewUser::handle([
@@ -203,6 +207,10 @@ class SetupTenantAccount
 
     protected function createAnnouncement(): void
     {
+        if (Announcement::query()->where('global', true)->exists()) {
+            return;
+        }
+
         Announcement::create([
             'title' => 'Welcome to PERSCOM Personnel Management System, '.$this->tenant->name,
             'content' => '<p>Take a look around, and if you have any questions, please join our Slack at <a href="https://perscom.io/slack">https://perscom.io/slack</a>.</p>',
@@ -357,7 +365,7 @@ class SetupTenantAccount
         ];
 
         foreach ($pages as $page) {
-            Page::create($page);
+            Page::query()->firstOrCreate(['slug' => $page['slug']], $page);
         }
     }
 }
