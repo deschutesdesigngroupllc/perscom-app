@@ -8,7 +8,7 @@ export function Checkbox({ name, value, onChange, className }) {
       name={name}
       value={value}
       className={clsx(
-        'rounded border-gray-300 text-brand-600 shadow-sm focus:border-brand-300 focus:ring-2 focus:ring-brand-500/50',
+        'size-4 rounded accent-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600',
         className
       )}
       onChange={(e) => onChange(e)}
