@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\Actions;
 
+use App\Filament\App\Resources\CombatRecordResource;
+use App\Filament\App\Resources\ServiceRecordResource;
+use App\Filament\App\Resources\TrainingRecordResource;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
 use App\Models\Award;
 use App\Models\Enums\RankRecordType;
+use App\Models\Qualification;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\User;
@@ -85,5 +89,27 @@ class MemberRecordActionsTest extends TenantTestCase
             ->assertHasNoActionErrors();
 
         $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey()]);
+    }
+
+    public function test_qualify_from_the_profile(): void
+    {
+        $member = User::factory()->createQuietly();
+        $qualification = Qualification::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('qualifyMember', ['qualification_id' => $qualification->getKey()])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_qualifications', ['user_id' => $member->getKey(), 'qualification_id' => $qualification->getKey()]);
+    }
+
+    public function test_training_combat_and_service_open_their_forms_with_the_member_filled_in(): void
+    {
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->assertActionHasUrl('recordTraining', TrainingRecordResource::getUrl('create', ['user_id' => $member->getKey()]))
+            ->assertActionHasUrl('recordCombat', CombatRecordResource::getUrl('create', ['user_id' => $member->getKey()]))
+            ->assertActionHasUrl('recordService', ServiceRecordResource::getUrl('create', ['user_id' => $member->getKey()]));
     }
 }

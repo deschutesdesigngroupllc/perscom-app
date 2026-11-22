@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\Actions\ArchiveMemberAction;
-use App\Filament\Actions\AssignMemberAction;
 use App\Filament\Actions\AssignUsersBulkAction;
-use App\Filament\Actions\AwardMemberAction;
 use App\Filament\Actions\AwardUsersBulkAction;
 use App\Filament\Actions\ClaimInviteAction;
 use App\Filament\Actions\DeleteMemberAction;
-use App\Filament\Actions\PromoteMemberAction;
+use App\Filament\Actions\MemberRecordActions;
 use App\Filament\Actions\PromoteUsersBulkAction;
 use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
 use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
@@ -552,14 +550,8 @@ class UserResource extends BaseResource
                         $action->success();
                     }),
                 ClaimInviteAction::make(),
-                ActionGroup::make([
-                    PromoteMemberAction::make(),
-                    AwardMemberAction::make(),
-                    AssignMemberAction::make(),
-                ])
-                    ->label('Add Record')
-                    ->icon(Heroicon::OutlinedPlusCircle)
-                    ->tooltip('Add Record'),
+                MemberRecordActions::group()
+                    ->icon(Heroicon::OutlinedPlusCircle),
                 ViewAction::make(),
                 EditAction::make(),
                 ActionGroup::make([

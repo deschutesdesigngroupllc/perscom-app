@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Pages;
 
 use App\Filament\Actions\ArchiveMemberAction;
-use App\Filament\Actions\AssignMemberAction;
-use App\Filament\Actions\AwardMemberAction;
 use App\Filament\Actions\ClaimInviteAction;
 use App\Filament\Actions\DeleteMemberAction;
-use App\Filament\Actions\PromoteMemberAction;
+use App\Filament\Actions\MemberRecordActions;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
@@ -75,12 +73,7 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            ActionGroup::make([
-                PromoteMemberAction::make(),
-                AwardMemberAction::make(),
-                AssignMemberAction::make(),
-            ])
-                ->label('Add Record')
+            MemberRecordActions::group()
                 ->icon(Heroicon::OutlinedPlus)
                 ->button(),
             ClaimInviteAction::make()
