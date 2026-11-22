@@ -9,10 +9,13 @@ use App\Filament\Actions\Concerns\AppliesChangeSets;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\CopilotOperationType;
+use App\Models\Enums\RosterMode;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Unit;
+use App\Models\UnitSlot;
 use App\Models\User;
+use App\Settings\DashboardSettings;
 use Filament\Actions\BulkAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -46,22 +49,35 @@ class AssignUsersBulkAction extends BulkAction
     public static function formSchema(): array
     {
         return [
+            Select::make('unit_slot_id')
+                ->label('Slot')
+                ->helperText('The slot to assign them to. They also take the unit it belongs to and any position or specialty set on the slot.')
+                ->options(fn (): array => Unit::ordered()->with('slots')->get()
+                    ->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->all()])
+                    ->filter()
+                    ->all())
+                ->searchable()
+                ->visible(fn (): bool => static::usesManualRoster())
+                ->required(fn (): bool => static::usesManualRoster()),
             Select::make('unit_id')
                 ->label('Unit')
                 ->helperText('The unit to assign them to.')
                 ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
                 ->searchable()
-                ->required(),
+                ->hidden(fn (): bool => static::usesManualRoster())
+                ->required(fn (): bool => ! static::usesManualRoster()),
             Select::make('position_id')
                 ->label('Position')
                 ->helperText('The optional position for the assignment.')
                 ->options(fn (): array => Position::query()->orderBy('order')->pluck('name', 'id')->all())
-                ->searchable(),
+                ->searchable()
+                ->hidden(fn (): bool => static::usesManualRoster()),
             Select::make('specialty_id')
                 ->label('Specialty')
                 ->helperText('The optional specialty for the assignment.')
                 ->options(fn (): array => Specialty::query()->orderBy('order')->pluck('name', 'id')->all())
-                ->searchable(),
+                ->searchable()
+                ->hidden(fn (): bool => static::usesManualRoster()),
             Select::make('type')
                 ->label('Type')
                 ->helperText('Whether this is a primary or secondary assignment.')
@@ -81,19 +97,30 @@ class AssignUsersBulkAction extends BulkAction
     public static function operationFor(Collection $users, array $data): ProposedOperationData
     {
         $type = $data['type'] instanceof AssignmentRecordType ? $data['type'] : AssignmentRecordType::from((string) $data['type']);
+        $unitSlot = filled($data['unit_slot_id'] ?? null) ? UnitSlot::query()->find($data['unit_slot_id']) : null;
+        $unitId = $unitSlot instanceof UnitSlot ? $unitSlot->unit_id : ($data['unit_id'] ?? null);
 
         return new ProposedOperationData(
             type: CopilotOperationType::ASSIGNMENT_RECORD,
             userIds: $users->map(fn (User $user): int => $user->getKey())->values()->all(),
-            targetId: (int) $data['unit_id'],
+            targetId: (int) $unitId,
             text: $data['text'] ?? null,
             attributes: array_filter([
                 'type' => $type->value,
-                'position_id' => $data['position_id'] ?? null,
-                'specialty_id' => $data['specialty_id'] ?? null,
+                'unit_slot_id' => $unitSlot?->getKey(),
+                'position_id' => $unitSlot instanceof UnitSlot ? null : ($data['position_id'] ?? null),
+                'specialty_id' => $unitSlot instanceof UnitSlot ? null : ($data['specialty_id'] ?? null),
             ], filled(...)),
-            summary: sprintf('Assign %d member(s) to %s', $users->count(), Unit::query()->find($data['unit_id'])?->name),
+            summary: sprintf('Assign %d member(s) to %s', $users->count(), Unit::query()->find($unitId)?->name),
         );
+    }
+
+    /**
+     * In manual roster mode members are placed into slots rather than straight into units.
+     */
+    public static function usesManualRoster(): bool
+    {
+        return resolve(DashboardSettings::class)->roster_mode === RosterMode::MANUAL;
     }
 
     public static function getDefaultName(): ?string

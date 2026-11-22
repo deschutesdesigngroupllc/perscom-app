@@ -8,6 +8,7 @@ use App\Actions\Copilot\ApplyChangeSet;
 use App\Actions\Invites\SendInvite;
 use App\Data\Copilot\ProposedChangeSetData;
 use App\Data\Copilot\ProposedOperationData;
+use App\Filament\Actions\AssignUsersBulkAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\Concerns\HasContainedWizard;
 use App\Models\Enums\AssignmentRecordType;
@@ -84,18 +85,30 @@ class CreateUser extends CreateRecord
                 ->icon(Heroicon::OutlinedRectangleGroup)
                 ->schema([
                     Grid::make(2)->schema([
+                        Select::make('unit_slot_id')
+                            ->label('Slot')
+                            ->helperText('They also take the unit it belongs to and any position or specialty set on the slot.')
+                            ->options(fn (): array => Unit::ordered()->with('slots')->get()
+                                ->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->all()])
+                                ->filter()
+                                ->all())
+                            ->searchable()
+                            ->visible(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
                         Select::make('unit_id')
                             ->label('Unit')
                             ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
-                            ->searchable(),
+                            ->searchable()
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
                         Select::make('position_id')
                             ->label('Position')
                             ->options(fn (): array => Position::query()->orderBy('order')->pluck('name', 'id')->all())
-                            ->searchable(),
+                            ->searchable()
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
                         Select::make('specialty_id')
                             ->label('Specialty')
                             ->options(fn (): array => Specialty::query()->orderBy('order')->pluck('name', 'id')->all())
-                            ->searchable(),
+                            ->searchable()
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
                         Select::make('rank_id')
                             ->label('Rank')
                             ->options(fn (): array => Rank::query()->orderBy('order')->pluck('name', 'id')->all())
@@ -121,17 +134,13 @@ class CreateUser extends CreateRecord
         ]);
 
         $operations = collect([
-            filled($data['unit_id'] ?? null) ? new ProposedOperationData(
-                type: CopilotOperationType::ASSIGNMENT_RECORD,
-                userIds: [$user->getKey()],
-                targetId: (int) $data['unit_id'],
-                attributes: array_filter([
-                    'type' => AssignmentRecordType::PRIMARY->value,
-                    'position_id' => $data['position_id'] ?? null,
-                    'specialty_id' => $data['specialty_id'] ?? null,
-                ], filled(...)),
-                summary: sprintf('Assign %s', $user->name),
-            ) : null,
+            filled($data['unit_slot_id'] ?? null) || filled($data['unit_id'] ?? null) ? AssignUsersBulkAction::operationFor(collect([$user]), [
+                'type' => AssignmentRecordType::PRIMARY,
+                'unit_slot_id' => $data['unit_slot_id'] ?? null,
+                'unit_id' => $data['unit_id'] ?? null,
+                'position_id' => $data['position_id'] ?? null,
+                'specialty_id' => $data['specialty_id'] ?? null,
+            ]) : null,
             filled($data['rank_id'] ?? null) ? new ProposedOperationData(
                 type: CopilotOperationType::RANK_RECORD,
                 userIds: [$user->getKey()],

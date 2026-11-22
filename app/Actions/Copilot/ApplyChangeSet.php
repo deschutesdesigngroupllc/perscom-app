@@ -159,6 +159,7 @@ class ApplyChangeSet
             CopilotOperationType::ASSIGNMENT_RECORD => AssignmentRecord::create([
                 'user_id' => $user->getKey(),
                 'unit_id' => $operation->targetId,
+                'unit_slot_id' => $operation->attributes['unit_slot_id'] ?? null,
                 'position_id' => $operation->attributes['position_id'] ?? null,
                 'specialty_id' => $operation->attributes['specialty_id'] ?? null,
                 'author_id' => $actor->getKey(),

@@ -7,12 +7,18 @@ namespace Tests\Feature\Tenant\Filament\App\Resources;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\Pages\CreateUser;
 use App\Models\Enums\InviteType;
+use App\Models\Enums\RosterMode;
 use App\Models\Invite;
+use App\Models\Position;
 use App\Models\Rank;
+use App\Models\Slot;
 use App\Models\Unit;
 use App\Models\User;
 use App\Notifications\User\Invited;
+use App\Services\SettingsService;
+use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -55,6 +61,37 @@ class AddMemberWizardTest extends TenantTestCase
         $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey()]);
         $this->assertTrue(Invite::query()->pending()->where('user_id', $member->getKey())->where('type', InviteType::CLAIM)->exists());
         Notification::assertSentOnDemand(Invited::class);
+    }
+
+    public function test_manual_roster_places_new_members_into_a_slot(): void
+    {
+        DashboardSettings::fake(['roster_mode' => RosterMode::MANUAL]);
+        SettingsService::flush(DashboardSettings::class);
+
+        $unit = Unit::factory()->createQuietly();
+        $position = Position::factory()->createQuietly();
+        $slot = Slot::factory()->createQuietly(['position_id' => $position->getKey()]);
+        $unit->slots()->attach($slot);
+        $unitSlotId = DB::table('units_slots')->where('unit_id', $unit->getKey())->value('id');
+
+        Livewire::test(CreateUser::class)
+            ->fillForm([
+                'name' => 'Slot Member',
+                'email' => 'slot.member@example.test',
+                'send_invite' => false,
+                'unit_slot_id' => $unitSlotId,
+            ])
+            ->call('create')
+            ->assertHasNoErrors();
+
+        $member = User::query()->where('email', 'slot.member@example.test')->firstOrFail();
+
+        $this->assertDatabaseHas('records_assignments', [
+            'user_id' => $member->getKey(),
+            'unit_slot_id' => $unitSlotId,
+            'unit_id' => $unit->getKey(),
+            'position_id' => $position->getKey(),
+        ]);
     }
 
     public function test_placement_is_optional_and_no_invite_is_sent_when_unchecked(): void

@@ -11,13 +11,21 @@ use App\Filament\App\Resources\UserResource\Pages\ListUsers;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
 use App\Models\Award;
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\RankRecordType;
+use App\Models\Enums\RosterMode;
+use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\Rank;
+use App\Models\Slot;
+use App\Models\Specialty;
 use App\Models\Unit;
 use App\Models\User;
+use App\Services\SettingsService;
+use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -53,6 +61,56 @@ class MemberRecordActionsTest extends TenantTestCase
             'rank_id' => $senior->getKey(),
             'type' => RankRecordType::PROMOTION->value,
         ]);
+    }
+
+    public function test_assign_uses_slots_when_the_roster_is_manual(): void
+    {
+        DashboardSettings::fake(['roster_mode' => RosterMode::MANUAL]);
+        SettingsService::flush(DashboardSettings::class);
+
+        $unit = Unit::factory()->createQuietly(['name' => 'Alpha Company']);
+        $position = Position::factory()->createQuietly();
+        $specialty = Specialty::factory()->createQuietly();
+        $slot = Slot::factory()->createQuietly(['name' => 'Squad Leader', 'position_id' => $position->getKey(), 'specialty_id' => $specialty->getKey()]);
+        $unit->slots()->attach($slot);
+        $unitSlotId = DB::table('units_slots')->where('unit_id', $unit->getKey())->value('id');
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['unit_slot_id' => $unitSlotId, 'type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_assignments', [
+            'user_id' => $member->getKey(),
+            'unit_slot_id' => $unitSlotId,
+            'unit_id' => $unit->getKey(),
+            'position_id' => $position->getKey(),
+            'specialty_id' => $specialty->getKey(),
+        ]);
+    }
+
+    public function test_assign_requires_a_slot_when_the_roster_is_manual(): void
+    {
+        DashboardSettings::fake(['roster_mode' => RosterMode::MANUAL]);
+        SettingsService::flush(DashboardSettings::class);
+
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasActionErrors(['unit_slot_id' => 'required']);
+    }
+
+    public function test_assign_uses_units_when_the_roster_is_automatic(): void
+    {
+        $unit = Unit::factory()->createQuietly();
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['unit_id' => $unit->getKey(), 'type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey(), 'unit_slot_id' => null]);
     }
 
     public function test_award_from_a_members_row(): void
