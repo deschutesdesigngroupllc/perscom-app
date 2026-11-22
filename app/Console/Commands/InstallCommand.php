@@ -38,6 +38,23 @@ class InstallCommand extends Command implements Isolatable
     protected $description = 'Install the PERSCOM application.';
 
     /**
+     * Drop a tenant's database if it exists. Tenancy is never initialized here, because connecting to the
+     * tenant first fails for a database that is already gone, which is exactly the case a reset must survive.
+     *
+     * @throws DatabaseManagerNotRegisteredException
+     */
+    public static function deleteTenantDatabase(Tenant $tenant): bool
+    {
+        $manager = $tenant->database()->manager();
+
+        if (! $manager->databaseExists($tenant->database()->getName())) {
+            return false;
+        }
+
+        return $manager->deleteDatabase($tenant);
+    }
+
+    /**
      * @throws DatabaseManagerNotRegisteredException
      */
     public function handle(): int
@@ -277,11 +294,7 @@ class InstallCommand extends Command implements Isolatable
 
         if (config('tenancy.enabled')) {
             if (Schema::hasTable('tenants')) {
-                tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
-                    if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
-                        $tenant->database()->manager()->deleteDatabase($tenant);
-                    }
-                });
+                Tenant::all()->each(fn (Tenant $tenant) => static::deleteTenantDatabase($tenant));
             }
 
             $this->call('migrate:fresh', [
