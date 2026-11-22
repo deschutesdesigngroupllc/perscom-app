@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\TaskResource\Pages\CreateTask;
 use App\Filament\App\Resources\TaskResource\Pages\EditTask;
 use App\Filament\App\Resources\TaskResource\Pages\ListTasks;
+use App\Filament\App\Resources\TaskResource\RelationManagers\AssigneesRelationManager;
 use App\Filament\App\Resources\TaskResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\Exports\TaskExporter;
 use App\Models\Task;
@@ -119,6 +120,7 @@ class TaskResource extends BaseResource
     public static function getRelations(): array
     {
         return [
+            AssigneesRelationManager::class,
             AttachmentsRelationManager::class,
         ];
     }
