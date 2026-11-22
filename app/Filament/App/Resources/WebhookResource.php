@@ -39,9 +39,9 @@ class WebhookResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Admin';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {

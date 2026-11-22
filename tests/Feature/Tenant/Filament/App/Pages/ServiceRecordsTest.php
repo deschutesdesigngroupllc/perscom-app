@@ -7,9 +7,15 @@ namespace Tests\Feature\Tenant\Filament\App\Pages;
 use App\Filament\App\Pages\PromotionBoard;
 use App\Filament\App\Pages\Readiness;
 use App\Filament\App\Pages\ServiceRecords;
+use App\Filament\App\Pages\Widgets;
+use App\Filament\App\Resources\ApiLogResource;
 use App\Filament\App\Resources\AwardRecordResource;
+use App\Filament\App\Resources\PassportClientResource;
+use App\Filament\App\Resources\PassportTokenResource;
 use App\Filament\App\Resources\RankRecordResource;
 use App\Filament\App\Resources\SubmissionResource;
+use App\Filament\App\Resources\WebhookLogResource;
+use App\Filament\App\Resources\WebhookResource;
 use App\Models\AwardRecord;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -50,6 +56,17 @@ class ServiceRecordsTest extends TenantTestCase
         $this->assertSame('Forms', SubmissionResource::getNavigationParentItem());
         $this->assertSame('Members', PromotionBoard::getNavigationParentItem());
         $this->assertSame('Members', Readiness::getNavigationParentItem());
+    }
+
+    public function test_api_oauth_webhooks_and_widgets_share_the_integrations_group(): void
+    {
+        foreach ([PassportTokenResource::class, ApiLogResource::class, PassportClientResource::class, WebhookResource::class, WebhookLogResource::class, Widgets::class] as $resource) {
+            $this->assertSame('Integrations', $resource::getNavigationGroup(), $resource);
+        }
+
+        $this->assertNull(PassportClientResource::getNavigationParentItem());
+        $this->assertSame('API Keys', ApiLogResource::getNavigationParentItem());
+        $this->assertSame('Webhooks', WebhookLogResource::getNavigationParentItem());
     }
 
     public function test_it_is_reachable_at_its_own_url(): void

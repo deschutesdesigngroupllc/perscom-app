@@ -187,6 +187,7 @@ class AppPanelProvider extends PanelProvider
                 NavigationGroup::make('Records'),
                 NavigationGroup::make('Communications'),
                 NavigationGroup::make('Structure')->collapsed(),
+                NavigationGroup::make('Integrations')->collapsed(),
                 NavigationGroup::make('Admin')->collapsed(),
             ])
             ->sidebarCollapsibleOnDesktop()
