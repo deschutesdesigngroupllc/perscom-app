@@ -20,6 +20,7 @@ use App\Services\BillingService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use App\Support\Backup\TenantTemporaryDirectory;
+use App\Support\Brand;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
@@ -42,6 +43,7 @@ use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Facades\FilamentColor;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\IconColumn;
@@ -384,6 +386,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->configureActionConfirmations();
+
+        // Pages rendered outside a panel (invitations, approval-required) otherwise fall back to
+        // Filament's default amber; panels register the same palette when they serve.
+        FilamentColor::register(Brand::colors());
 
         IconColumn::configureUsing(fn (IconColumn $column): IconColumn => $column->falseColor('gray'));
         IconEntry::configureUsing(fn (IconEntry $entry): IconEntry => $entry->falseColor('gray'));
