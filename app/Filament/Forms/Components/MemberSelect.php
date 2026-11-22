@@ -10,6 +10,7 @@ use App\Models\User;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -75,5 +76,25 @@ class MemberSelect extends Select
             ->orderBy('name')
             ->limit(MemberSelect::SEARCH_LIMIT)
             ->get());
+    }
+
+    /**
+     * Fill the field from the page URL (for example ?user_id=4 or ?user_id[]=4&user_id[]=9) when a form
+     * is opened from a member's Add Record menu or a bulk action on the members table.
+     */
+    public function prefillFromQuery(): static
+    {
+        return $this->default(function (): array|int|null {
+            $ids = collect(Arr::wrap(request()->query($this->getName())))
+                ->filter(fn (mixed $id): bool => is_numeric($id))
+                ->map(fn (mixed $id): int => (int) $id)
+                ->values();
+
+            if ($ids->isEmpty()) {
+                return null;
+            }
+
+            return $this->isMultiple() ? $ids->all() : $ids->first();
+        });
     }
 }

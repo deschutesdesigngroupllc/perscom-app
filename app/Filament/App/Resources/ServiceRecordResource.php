@@ -74,6 +74,7 @@ class ServiceRecordResource extends BaseResource
                             ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
                                 MemberSelect::make('user_id')
+                                    ->prefillFromQuery()
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()

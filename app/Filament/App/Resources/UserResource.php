@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\Actions\ArchiveMemberAction;
-use App\Filament\Actions\AssignUsersBulkAction;
-use App\Filament\Actions\AwardUsersBulkAction;
 use App\Filament\Actions\ClaimInviteAction;
 use App\Filament\Actions\DeleteMemberAction;
 use App\Filament\Actions\MemberRecordActions;
-use App\Filament\Actions\PromoteUsersBulkAction;
 use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
 use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
 use App\Filament\App\Resources\UserResource\Filters\QualificationsFilter;
@@ -565,9 +562,7 @@ class UserResource extends BaseResource
                     ->exporter(UserExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
                 BulkActionGroup::make([
-                    PromoteUsersBulkAction::make(),
-                    AssignUsersBulkAction::make(),
-                    AwardUsersBulkAction::make(),
+                    ...MemberRecordActions::bulk(),
                     DeleteBulkAction::make(),
                 ]),
             ]);

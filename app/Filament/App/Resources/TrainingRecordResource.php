@@ -77,6 +77,7 @@ class TrainingRecordResource extends BaseResource
                             ->icon('heroicon-o-academic-cap')
                             ->schema([
                                 MemberSelect::make('user_id')
+                                    ->prefillFromQuery()
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()

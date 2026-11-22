@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Filament\Actions;
 
 use App\Filament\App\Resources\CombatRecordResource;
+use App\Filament\App\Resources\CombatRecordResource\Pages\CreateCombatRecord;
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Filament\App\Resources\TrainingRecordResource;
+use App\Filament\App\Resources\TrainingRecordResource\Pages\CreateTrainingRecord;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
@@ -111,6 +113,54 @@ class MemberRecordActionsTest extends TenantTestCase
             ->assertHasNoActionErrors();
 
         $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey(), 'unit_slot_id' => null]);
+    }
+
+    public function test_bulk_menu_offers_every_record_type(): void
+    {
+        $component = Livewire::test(ListUsers::class);
+
+        foreach (['promote', 'award', 'assign', 'qualify', 'recordTrainingBulk', 'recordCombatBulk', 'recordServiceBulk'] as $action) {
+            $component->assertActionVisible(TestAction::make($action)->table()->bulk());
+        }
+    }
+
+    public function test_bulk_qualify_records_a_qualification_for_each_member(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+        $qualification = Qualification::factory()->createQuietly();
+
+        Livewire::test(ListUsers::class)
+            ->selectTableRecords($members->pluck('id')->all())
+            ->callAction(TestAction::make('qualify')->table()->bulk(), ['qualification_id' => $qualification->getKey()])
+            ->assertHasNoActionErrors();
+
+        foreach ($members as $member) {
+            $this->assertDatabaseHas('records_qualifications', ['user_id' => $member->getKey(), 'qualification_id' => $qualification->getKey()]);
+        }
+    }
+
+    public function test_bulk_record_training_opens_the_form_with_every_selected_member(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+
+        Livewire::test(ListUsers::class)
+            ->selectTableRecords($members->pluck('id')->all())
+            ->callAction(TestAction::make('recordTrainingBulk')->table()->bulk())
+            ->assertRedirect(TrainingRecordResource::getUrl('create', ['user_id' => $members->pluck('id')->sort()->values()->all()]));
+    }
+
+    public function test_record_forms_fill_in_members_from_the_url(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+        $ids = $members->pluck('id')->values()->all();
+
+        Livewire::withQueryParams(['user_id' => $ids])
+            ->test(CreateTrainingRecord::class)
+            ->assertSchemaStateSet(['user_id' => $ids]);
+
+        Livewire::withQueryParams(['user_id' => (string) $ids[0]])
+            ->test(CreateCombatRecord::class)
+            ->assertSchemaStateSet(['user_id' => [$ids[0]]]);
     }
 
     public function test_award_from_a_members_row(): void

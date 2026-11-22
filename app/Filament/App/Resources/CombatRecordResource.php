@@ -74,6 +74,7 @@ class CombatRecordResource extends BaseResource
                             ->icon('heroicon-o-fire')
                             ->schema([
                                 MemberSelect::make('user_id')
+                                    ->prefillFromQuery()
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
