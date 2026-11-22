@@ -12,7 +12,7 @@
         <x-roster.empty-message structure="slot" :message="$slotNode['slot']->empty" />
       @endif
     @elseif ($layout === 'cards')
-      <div class="grid grid-cols-1 gap-3 px-4 pb-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div class="grid grid-cols-1 gap-2 px-3 pb-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         @foreach ($slotNode['users'] as $user)
           <x-roster.member-card :user="$user" :insight="$insights[$user->getKey()] ?? null" :hidden-fields="$hiddenFields" />
         @endforeach
@@ -27,7 +27,7 @@
   @endforeach
 @elseif ($node['users']->isNotEmpty())
   @if ($layout === 'cards')
-    <div class="grid grid-cols-1 gap-3 p-3 sm:grid-cols-2 xl:grid-cols-3">
+    <div class="grid grid-cols-1 gap-2 p-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       @foreach ($node['users'] as $user)
         <x-roster.member-card :user="$user" :insight="$insights[$user->getKey()] ?? null" :hidden-fields="$hiddenFields" />
       @endforeach
