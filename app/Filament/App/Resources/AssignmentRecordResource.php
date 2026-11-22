@@ -13,6 +13,7 @@ use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\Attachm
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\AssignmentRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
@@ -84,15 +85,12 @@ class AssignmentRecordResource extends BaseResource
                                     ->html()
                                     ->getStateUsing(fn (): HtmlString => new HtmlString("<span class='fi-sc-text'>Updating an assignment record does not update a user's position, specialty, unit, or status. To make these automated changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</span>"))
                                     ->visibleOn('edit'),
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The member this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                                 Select::make('type')
                                     ->helperText("The type of assignment record. A primary assignment record will update the user's assigned unit, position, and specialty. A secondary assignment will simply add a new record to the user's list of secondary assignments.")
                                     ->required()
@@ -114,14 +112,12 @@ class AssignmentRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Details')
                             ->icon('heroicon-o-information-circle')

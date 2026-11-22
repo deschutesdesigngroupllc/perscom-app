@@ -12,6 +12,7 @@ use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\Schedule;
 use App\Models\Calendar;
 use App\Models\Enums\NotificationChannel;
@@ -120,15 +121,13 @@ class EventResource extends BaseResource
                                     ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->label('Host')
                                     ->default(Auth::user()->getAuthIdentifier())
-                                    ->preload()
                                     ->helperText('The member hosting the event.')
                                     ->required()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form))
                                     ->columnSpanFull(),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 6rem;'])

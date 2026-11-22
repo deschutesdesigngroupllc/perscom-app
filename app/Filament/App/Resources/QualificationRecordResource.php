@@ -13,6 +13,7 @@ use App\Filament\App\Resources\QualificationRecordResource\Pages\ViewQualificati
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\QualificationRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
 use App\Models\Field;
@@ -73,15 +74,12 @@ class QualificationRecordResource extends BaseResource
                             ->columns()
                             ->icon('heroicon-o-star')
                             ->schema([
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The member this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                                 Select::make('qualification_id')
                                     ->required()
                                     ->helperText('The qualification for this record.')
@@ -104,14 +102,12 @@ class QualificationRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')

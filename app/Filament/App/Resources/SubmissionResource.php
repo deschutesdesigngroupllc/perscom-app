@@ -11,6 +11,7 @@ use App\Filament\App\Resources\SubmissionResource\Pages\ViewSubmission;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelationManager;
 use App\Filament\Exports\SubmissionExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Models\Form;
 use App\Models\Submission;
 use App\Support\Brand;
@@ -83,11 +84,9 @@ class SubmissionResource extends BaseResource
                                     ->relationship(name: 'form', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => FormResource::form($form)),
-                                Select::make('user_id')
-                                    ->preload()
+                                MemberSelect::make('user_id')
                                     ->relationship(name: 'user', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                     ]),
                 Tabs::make()

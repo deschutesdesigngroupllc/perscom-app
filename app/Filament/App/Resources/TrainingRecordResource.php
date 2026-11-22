@@ -14,6 +14,7 @@ use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\Attachmen
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CompetenciesRelationManager;
 use App\Filament\Exports\TrainingRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
 use App\Models\Credential;
@@ -73,23 +74,18 @@ class TrainingRecordResource extends BaseResource
                             ->columns()
                             ->icon('heroicon-o-academic-cap')
                             ->schema([
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The member this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                                Select::make('instructor_id')
+                                    ->searchable(),
+                                MemberSelect::make('instructor_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The instructor of the training.')
-                                    ->preload()
                                     ->relationship(name: 'instructor', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                                 Select::make('credentials')
                                     ->columnSpanFull()
                                     ->helperText('The credentials that were earned.')
@@ -113,14 +109,12 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')

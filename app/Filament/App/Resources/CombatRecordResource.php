@@ -13,6 +13,7 @@ use App\Filament\App\Resources\CombatRecordResource\RelationManagers\Attachments
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\CombatRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
 use App\Models\CombatRecord;
 use App\Models\Field;
@@ -70,16 +71,13 @@ class CombatRecordResource extends BaseResource
                             ->columns()
                             ->icon('heroicon-o-fire')
                             ->schema([
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The member this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->columnSpanFull()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->columnSpanFull(),
                                 RichEditor::make('text')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->required()
@@ -96,14 +94,12 @@ class CombatRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Fields')
                             ->icon('heroicon-o-pencil')

@@ -9,6 +9,7 @@ use App\Filament\App\Resources\DocumentResource\Pages\CreateDocument;
 use App\Filament\App\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\App\Resources\DocumentResource\Pages\ListDocuments;
 use App\Filament\Exports\DocumentExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Models\Document;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -95,14 +96,12 @@ class DocumentResource extends BaseResource
                                     ->required()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Select::make('author_id')
-                                    ->preload()
+                                MemberSelect::make('author_id')
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the document.')
                                     ->required()
                                     ->relationship('author', 'name')
-                                    ->columnSpanFull()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);
