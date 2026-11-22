@@ -8,7 +8,7 @@
 
 <div class="flex flex-col items-center" wire:key="roster-chart-{{ $unit->getKey() }}">
   <x-filament::section compact :heading="$unit->name" :has-content-el="false"
-    class="w-max min-w-60 max-w-md break-inside-avoid [&_.fi-section-header-heading]:whitespace-nowrap print:shadow-none print:ring-gray-400">
+    class="w-max min-w-60 break-inside-avoid [&_.fi-section-header-heading]:whitespace-nowrap print:shadow-none print:ring-gray-400">
     <x-slot name="afterHeader">
       <x-filament::badge color="gray" size="xs">{{ $node['total'] }}</x-filament::badge>
     </x-slot>
