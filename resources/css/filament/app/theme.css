@@ -230,3 +230,10 @@
 .fi-sidebar-nav::-webkit-scrollbar {
   display: none;
 }
+
+/* filament-socialite's stylesheet loads after the theme and resets --font-sans to Tailwind's default
+   stack. This rule is unlayered, so it outranks that reset and the panel keeps its font. */
+:root {
+  --font-sans:
+    var(--font-family), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
