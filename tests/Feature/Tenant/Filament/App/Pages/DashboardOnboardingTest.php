@@ -40,9 +40,24 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->fakeAccessibleOnboarding();
 
         $this->actingAsSuperAdmin();
+        Position::query()->delete();
 
         Livewire::test(Dashboard::class)
             ->assertSet('defaultAction', 'onboarding');
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', null)
+            ->assertActionVisible('onboarding');
+    }
+
+    public function test_the_wizard_does_not_open_itself_when_the_structure_already_exists(): void
+    {
+        $this->fakeAccessibleOnboarding();
+        Rank::factory()->createQuietly();
+        Unit::factory()->createQuietly();
+        Position::factory()->createQuietly();
+
+        $this->actingAsSuperAdmin();
 
         Livewire::test(Dashboard::class)
             ->assertSet('defaultAction', null)

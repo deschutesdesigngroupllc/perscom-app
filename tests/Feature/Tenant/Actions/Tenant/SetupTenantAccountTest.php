@@ -9,10 +9,15 @@ use App\Actions\Tenant\SetupTenantAccount;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
 use App\Models\Enums\InviteType;
+use App\Models\Enums\OrganizationType;
 use App\Models\Invite;
 use App\Models\Page;
+use App\Models\Rank;
 use App\Models\User;
+use App\Settings\OnboardingSettings;
 use Illuminate\Support\Facades\Mail;
+use ReflectionMethod;
+use ReflectionProperty;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SetupTenantAccountTest extends TenantTestCase
@@ -116,6 +121,33 @@ class SetupTenantAccountTest extends TenantTestCase
                 User::query()->where('email', $this->tenant->email)->get()->each->deleteQuietly();
             });
         }
+    }
+
+    public function test_applying_the_signup_blueprint_skips_the_setup_wizard(): void
+    {
+        OnboardingSettings::fake(['completed' => false, 'dismissed' => false, 'completed_at' => null]);
+
+        $this->tenant->setAttribute('organization_type', OrganizationType::MILITARY->value);
+
+        $action = new SetupTenantAccount;
+        (new ReflectionProperty($action, 'tenant'))->setValue($action, $this->tenant);
+        (new ReflectionMethod($action, 'applyOrganizationBlueprint'))->invoke($action);
+
+        $this->assertTrue(Rank::query()->exists());
+        $this->assertFalse(resolve(OnboardingSettings::class)->isAccessible());
+    }
+
+    public function test_no_blueprint_leaves_the_setup_wizard_available(): void
+    {
+        OnboardingSettings::fake(['completed' => false, 'dismissed' => false, 'completed_at' => null]);
+
+        $this->tenant->setAttribute('organization_type', OrganizationType::OTHER->value);
+
+        $action = new SetupTenantAccount;
+        (new ReflectionProperty($action, 'tenant'))->setValue($action, $this->tenant);
+        (new ReflectionMethod($action, 'applyOrganizationBlueprint'))->invoke($action);
+
+        $this->assertTrue(resolve(OnboardingSettings::class)->isAccessible());
     }
 
     public function test_fluent_toggles_return_the_same_instance(): void

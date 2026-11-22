@@ -15,6 +15,7 @@ use App\Models\Page;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Settings\DashboardSettings;
+use App\Settings\OnboardingSettings;
 use App\Settings\OrganizationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Artisan;
@@ -153,6 +154,10 @@ class SetupTenantAccount
         }
 
         ApplyOrganizationBlueprint::handle(OrganizationBlueprintData::fromPreset($preset));
+
+        // The structure the setup wizard would build already exists, so it shouldn't open; the dashboard's
+        // Launch Plan carries the owner through the rest.
+        resolve(OnboardingSettings::class)->markCompleted();
     }
 
     /**

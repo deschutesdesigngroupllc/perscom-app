@@ -62,12 +62,28 @@ class Dashboard extends BaseDashboard
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
     /**
-     * The wizard opens itself once per sign-in session. Closing it or choosing "Skip For Now" keeps it
-     * closed until the next sign-in; "Resume Setup Wizard" on the dashboard reopens it any time.
+     * Ranks, units and positions already exist (applied at signup, seeded by an install, or built by
+     * hand), so the wizard has nothing to add and shouldn't open on its own.
+     */
+    public static function hasStructure(): bool
+    {
+        return Rank::query()->exists() && Unit::query()->exists() && Position::query()->exists();
+    }
+
+    /**
+     * The wizard opens itself once per sign-in session, and not at all once the organization has a
+     * structure. Closing it or choosing "Skip For Now" keeps it closed until the next sign-in; "Resume
+     * Setup Wizard" on the dashboard reopens it any time.
      */
     public function mount(): void
     {
         if (Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY)) {
+            $this->defaultAction = null;
+
+            return;
+        }
+
+        if (static::hasStructure()) {
             $this->defaultAction = null;
 
             return;
