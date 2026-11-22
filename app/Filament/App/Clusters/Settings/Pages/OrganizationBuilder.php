@@ -50,7 +50,9 @@ class OrganizationBuilder extends Page
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
-    protected static ?string $navigationLabel = 'Organization Builder';
+    protected static ?string $navigationLabel = 'Builder';
+
+    protected static ?string $navigationParentItem = 'Organization';
 
     protected static ?int $navigationSort = 2;
 
