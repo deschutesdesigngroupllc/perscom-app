@@ -37,7 +37,8 @@
             @endunless
           </span>
           @unless ($step['done'])
-            <x-filament::button tag="a" :href="$step['url']" size="sm" color="gray">{{ $step['action'] }}</x-filament::button>
+            <x-filament::link :href="$step['url']" size="sm" :icon="\Filament\Support\Icons\Heroicon::ChevronRight" icon-position="after"
+              class="shrink-0">{{ $step['action'] }}</x-filament::link>
           @endunless
         </li>
       @endforeach
