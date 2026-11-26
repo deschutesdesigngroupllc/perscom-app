@@ -145,7 +145,7 @@ const GATE_CONTRACT = 'Run exactly the command(s) below from the repository root
 
 const gateRuns = []
 if (codeChanged && A.gates.phpstan) {
-  gateRuns.push(['PHPStan', `vendor/bin/phpstan analyse --memory-limit=3G`])
+  gateRuns.push(['PHPStan', `composer analyze`])
 }
 if (codeChanged && A.gates.rector) {
   gateRuns.push(['Rector', `vendor/bin/rector --dry-run`])

@@ -290,7 +290,7 @@ phase('Gates')
 const gateRuns = []
 if (A.gates.phpstan) {
   gateRuns.push(['PHPStan', () => agent(
-    `${GATE_CONTRACT}\n\nRepository root: ${A.root}\nCommand: vendor/bin/phpstan analyse --memory-limit=3G\n\n` +
+    `${GATE_CONTRACT}\n\nRepository root: ${A.root}\nCommand: composer analyze\n\n` +
     'The raised limit is deliberate: other gates run concurrently, and under that contention a worker at the default ' +
     '512M dies with "PHPStan process crashed because it reached configured PHP memory limit" — zero findings and a ' +
     'non-zero exit. If that still happens, report unverified with that reason, never pass.',

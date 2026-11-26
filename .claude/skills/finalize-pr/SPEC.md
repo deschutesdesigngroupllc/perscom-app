@@ -8,10 +8,6 @@ skills, and docs govern the diff, invokes the checks that already exist, and spe
 on what nothing else does: merging what several sources found into one prioritized, verified,
 uniformly written list.
 
-Ported from the leasecake repository's skill of the same name and adapted to perscom: `master` as
-the base, MySQL test databases, database-per-tenant authorization, `.ai/rules` beside
-`.claude/rules`, and no wiki.
-
 ## Scope
 
 In scope:

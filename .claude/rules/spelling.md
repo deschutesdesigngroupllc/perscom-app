@@ -13,7 +13,8 @@ notifications, and UI text (`isCancelled()`, `EventOccurrenceCancelled`, "Cancel
 
 ## Quick Sweep
 
-Run this against new files before committing:
+Run this against the files you change before committing, and skip this file, whose examples
+contain the flagged spellings:
 
 ```bash
 grep -rniE --include='*.php' --include='*.md' --include='*.blade.php' \

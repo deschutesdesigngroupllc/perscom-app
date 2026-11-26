@@ -27,8 +27,8 @@ last. No preamble before the first line.
 
 | Criterion                                              | Status    | Proven by                                           | Findings |
 |--------------------------------------------------------|-----------|-----------------------------------------------------|----------|
-| **C1** #812 · Members can open event detail pages      | ✓ met     | `EventResourceViewTest::test_members_with_the_def…` |          |
-| **C2** #812 · Members do not see the admin event list  | ✗ missing |                                                     | F2       |
+| **C1** #NNN · Members can open event detail pages      | ✓ met     | `EventResourceViewTest::test_members_with_the_def…` |          |
+| **C2** #NNN · Members do not see the admin event list  | ✗ missing |                                                     | F2       |
 
 ---
 
@@ -70,7 +70,7 @@ coverage line already says the spec stage did not run.
 
 | Column      | Holds                | Rules                                                             |
 |-------------|----------------------|-------------------------------------------------------------------|
-| `Criterion` | `**C2** #812 · text` | Bold ID, issue, then the text cut at about 70 characters with `…` |
+| `Criterion` | `**C2** #NNN · text` | Bold ID, issue, then the text cut at about 70 characters with `…` |
 | `Status`    | `✓ met`              | `✓ met`, `⚠ untested`, `◐ partial`, `✗ missing`, or `? unclear`   |
 | `Proven by` | `` `Test::method` `` | The first test, then `+n`. Empty unless met                       |
 | `Findings`  | `F6, F9`             | The row's `findings`, so a reader can jump to the fix             |
