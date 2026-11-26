@@ -49,4 +49,28 @@ class SendMassEmailTest extends TenantTestCase
         $this->assertNotNull($job->delay);
         $this->assertSame('central', $job->connection);
     }
+
+    public function test_a_job_queued_for_an_earlier_schedule_sends_nothing(): void
+    {
+        MailFacade::fake();
+
+        $user = User::factory()->create();
+
+        $mail = Mail::withoutEvents(fn (): Mail => Mail::create([
+            'subject' => 'Scheduled Update',
+            'content' => 'Later.',
+            'recipients' => [],
+            'send_now' => false,
+            'send_at' => now()->addDay(),
+        ]));
+
+        $job = new SendMassEmail($user, $mail);
+
+        Mail::withoutEvents(fn (): bool => $mail->update(['send_at' => now()->addDays(2)]));
+
+        $job->handle();
+
+        MailFacade::assertNothingSent();
+        $this->assertNull($mail->fresh()->sent_at);
+    }
 }

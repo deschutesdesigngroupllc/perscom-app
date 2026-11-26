@@ -100,15 +100,17 @@ another tenant alone, matching the one-server-one-organization rule that
 `App\Actions\Tenancy\DispatchTenantMassEmails::handle(Mail $mail)` sends an operator `Mail` to
 tenants. It returns `null` when tenancy is off, when `sent_at` is set, or when the mail is neither
 `send_now` nor scheduled with `send_at`. Otherwise it batches one `Central\SendMassEmail` per
-recipient on the `central` connection with `allowFailures()`: the tenants listed in `recipients`,
-or every tenant when that is empty. `SendMassEmail` delays itself until `send_at` for scheduled
-mail and sets `sent_at` after sending.
+recipient on the `central` connection with `allowFailures()`: the tenants listed in `recipients`
+that still exist, or every tenant when it is empty. `SendMassEmail` delays itself until `send_at`
+for scheduled mail and sets `sent_at` after sending.
 
-It is called from `App\Observers\MailObserver` on both `created` and `updated`, and from the
-retry action in `app/Filament/Admin/Resources/MailResource.php`. Consequences:
+It is called from `App\Observers\MailObserver` when a mail is created or its schedule
+(`send_now`, `send_at`) changes, and from the retry action in
+`app/Filament/Admin/Resources/MailResource.php`. Consequences:
 
-- The `sent_at` guard is what stops the `sent_at` update in `SendMassEmail` from dispatching again.
-- Saving an unsent mail that is `send_now` or has a `send_at` dispatches a new batch each time, so
-  editing a scheduled mail before it goes out queues a second set of jobs.
-- `recipients` is mapped through `Tenant::find()`, so a deleted tenant's ID fails the whole
-  dispatch with a type error rather than being skipped.
+- Editing a scheduled mail's subject or content queues nothing new. The queued jobs reload the
+  mail when they run, so they send the edited content.
+- Rescheduling queues a fresh batch for the new time. Each `SendMassEmail` remembers the schedule
+  it was queued for and sends nothing once the mail's schedule no longer matches, so the earlier
+  batch is a no-op.
+- The `sent_at` guard stops the retry action, and any later save, from sending a sent mail again.
