@@ -16,7 +16,7 @@
 @endphp
 
 <div class="flex flex-col gap-6">
-  <x-filament::section icon="heroicon-o-clock" heading="When" compact>
+  <x-filament::section icon="heroicon-o-clock" heading="When">
     <dl class="flex flex-col gap-3 text-sm">
       @if ($occurrence)
         <div>
@@ -59,7 +59,7 @@
   </x-filament::section>
 
   @if (filled($event->location) || filled($externalUrl))
-    <x-filament::section icon="heroicon-o-map-pin" heading="Where" compact>
+    <x-filament::section icon="heroicon-o-map-pin" heading="Where">
       <div class="flex flex-col gap-3 text-sm">
         @if (filled($event->location))
           <p class="whitespace-pre-line text-gray-950 dark:text-white">{{ $event->location }}</p>
@@ -76,7 +76,7 @@
   @endif
 
   @if ($author)
-    <x-filament::section icon="heroicon-o-user" heading="Host" compact>
+    <x-filament::section icon="heroicon-o-user" heading="Host">
       <div class="flex items-center gap-3">
         <x-filament::avatar :src="$author->profile_photo_url" alt="" size="lg" loading="lazy" />
         <div class="min-w-0">
@@ -91,8 +91,8 @@
 
   @if ($event->registration_enabled || collect($attendees)->flatten()->isNotEmpty())
     <div x-data="{ attendeeTab: 'going' }">
-      <x-filament::section icon="heroicon-o-user-group" heading="Who's Going" compact>
-        <x-filament::tabs label="Responses" class="-mx-2 -mt-2 mb-3" role="tablist">
+      <x-filament::section icon="heroicon-o-user-group" heading="Who's Going">
+        <x-filament::tabs label="Responses" class="mb-4" role="tablist">
           @foreach ($lists as $key => $list)
             <x-filament::tabs.item :alpine-active="'attendeeTab === \'' . $key . '\''" x-on:click="attendeeTab = '{{ $key }}'" role="tab"
               x-bind:aria-selected="attendeeTab === '{{ $key }}' ? 'true' : 'false'" :badge="$attendees[$key]->count()">

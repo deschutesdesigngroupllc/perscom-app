@@ -87,7 +87,7 @@
 
   @if ($occurrence)
     <x-filament::section aria-label="Your RSVP" x-intersect:enter="showFloatingBar = false"
-      x-intersect:leave="showFloatingBar = $el.getBoundingClientRect().top < 0" compact>
+      x-intersect:leave="showFloatingBar = $el.getBoundingClientRect().top < 0">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="min-w-0">
           <p class="text-sm font-semibold text-gray-950 dark:text-white">
