@@ -66,7 +66,6 @@ class MailResource extends Resource
                                     ->helperText('Leave blank to send to all tenants.')
                                     ->multiple()
                                     ->searchable()
-                                    ->required()
                                     ->nullable()
                                     ->options(Tenant::query()->orderBy('name')->pluck('name', 'id')),
                                 TextInput::make('subject')

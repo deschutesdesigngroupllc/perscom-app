@@ -68,4 +68,40 @@ class DispatchTenantMassEmailsTest extends CentralTestCase
             && $batch->jobs->isNotEmpty()
             && $batch->jobs->first() instanceof SendMassEmail);
     }
+
+    public function test_skips_recipient_tenants_that_no_longer_exist(): void
+    {
+        Bus::fake();
+        config(['tenancy.enabled' => true]);
+
+        $tenant = Tenant::factory()->createQuietly();
+        $deleted = Tenant::factory()->createQuietly();
+        $deletedKey = $deleted->getKey();
+        $deleted->deleteQuietly();
+
+        $mail = new Mail([
+            'subject' => 'Hello',
+            'content' => 'World',
+            'send_now' => true,
+            'recipients' => [$tenant->getKey(), $deletedKey],
+        ]);
+
+        DispatchTenantMassEmails::handle($mail);
+
+        Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->jobs->count() === 1);
+    }
+
+    public function test_a_blank_recipient_list_sends_to_every_tenant(): void
+    {
+        Bus::fake();
+        config(['tenancy.enabled' => true]);
+
+        Tenant::factory()->count(2)->createQuietly();
+
+        $mail = new Mail(['subject' => 'Hello', 'content' => 'World', 'send_now' => true, 'recipients' => []]);
+
+        DispatchTenantMassEmails::handle($mail);
+
+        Bus::assertBatched(fn (PendingBatch $batch): bool => $batch->jobs->count() === Tenant::query()->count());
+    }
 }
