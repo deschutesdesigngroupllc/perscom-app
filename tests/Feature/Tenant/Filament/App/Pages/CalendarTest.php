@@ -185,6 +185,25 @@ class CalendarTest extends TenantTestCase
             ->assertSee('No earlier events in the past year.');
     }
 
+    public function test_the_agenda_only_lists_events_for_members_who_can_open_them(): void
+    {
+        Event::factory()->createQuietly(['name' => 'Range Day', 'all_day' => false, 'starts' => Date::parse('2026-06-03 18:00:00'), 'ends' => Date::parse('2026-06-03 19:00:00')]);
+
+        $member = User::factory()->createQuietly()->syncRoles([]);
+        $member->givePermissionTo(['view_calendar', 'view_calendar_widget']);
+        $this->actingAs($member);
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Range Day');
+
+        $member->givePermissionTo('view_event');
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertSee('Range Day');
+    }
+
     public function test_rsvp_from_the_agenda_records_a_registration(): void
     {
         $user = $this->actingAsSuperAdmin();

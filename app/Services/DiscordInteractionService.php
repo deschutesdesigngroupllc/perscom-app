@@ -281,7 +281,7 @@ class DiscordInteractionService
      */
     protected static function events(?User $invoker): array
     {
-        if (! $invoker instanceof User || ! $invoker->can('viewAny', Event::class)) {
+        if (! $invoker instanceof User || ! $invoker->can('view', Event::class)) {
             return DiscordInteractionService::notAllowed($invoker);
         }
 
@@ -323,7 +323,7 @@ class DiscordInteractionService
      */
     protected static function rsvp(array $payload, ?User $invoker): array
     {
-        if (! $invoker instanceof User || ! $invoker->can('viewAny', Event::class)) {
+        if (! $invoker instanceof User || ! $invoker->can('view', Event::class)) {
             return DiscordInteractionService::notAllowed($invoker);
         }
 

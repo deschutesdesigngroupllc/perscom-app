@@ -68,6 +68,20 @@ class RecentPostsWidgetTest extends TenantTestCase
             ->assertSee('View All Announcements');
     }
 
+    public function test_the_rss_link_is_only_offered_to_members_whose_feed_would_load(): void
+    {
+        $member = User::factory()->createQuietly()->syncRoles([])->givePermissionTo(['view_recent_news', 'view_recent_announcements']);
+        $this->actingAs($member);
+
+        Livewire::test(RecentNews::class)->assertDontSee('news.xml');
+        Livewire::test(RecentAnnouncements::class)->assertDontSee('announcements.xml');
+
+        $member->givePermissionTo(['view_newsfeed', 'view_announcement']);
+
+        Livewire::test(RecentNews::class)->assertSee('news.xml');
+        Livewire::test(RecentAnnouncements::class)->assertSee('announcements.xml');
+    }
+
     private function actingAsSuperAdmin(): User
     {
         $user = User::factory()->createQuietly();

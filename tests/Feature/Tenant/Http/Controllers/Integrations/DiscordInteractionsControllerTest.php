@@ -223,7 +223,7 @@ class DiscordInteractionsControllerTest extends TenantTestCase
 
     public function test_commands_respect_permissions(): void
     {
-        User::factory()->createQuietly(['approved' => true, 'discord_user_id' => 'discord-recruit']);
+        User::factory()->createQuietly(['approved' => true, 'discord_user_id' => 'discord-recruit'])->syncRoles([]);
 
         $this->interact($this->command('events', invoker: 'discord-recruit'))
             ->assertJsonPath('data.content', 'You do not have permission to do that in PERSCOM.');

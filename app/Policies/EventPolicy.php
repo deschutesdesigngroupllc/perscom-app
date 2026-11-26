@@ -17,7 +17,7 @@ class EventPolicy
         return $authUser->can('view_any_event');
     }
 
-    public function view(AuthUser $authUser, Event $event): bool
+    public function view(AuthUser $authUser, ?Event $event = null): bool
     {
         return $authUser->can('view_event');
     }

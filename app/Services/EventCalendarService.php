@@ -59,7 +59,7 @@ class EventCalendarService
         $mine = (bool) ($filters['mine'] ?? false);
         $open = (bool) ($filters['open'] ?? false);
 
-        if ($mine && ! $user instanceof User) {
+        if (($mine && ! $user instanceof User) || ($user instanceof User && ! $user->can('view', Event::class))) {
             return collect();
         }
 

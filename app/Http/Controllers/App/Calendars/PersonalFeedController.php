@@ -18,7 +18,7 @@ class PersonalFeedController
         $user = CalendarFeedService::findUser($token);
 
         abort_unless($user instanceof User, 404);
-        abort_unless($user->can('viewAny', Event::class), 403);
+        abort_unless($user->can('view', Event::class), 403);
 
         $calendarIds = collect(Arr::wrap($request->query('calendars')))
             ->filter(fn (mixed $ids): bool => is_string($ids))

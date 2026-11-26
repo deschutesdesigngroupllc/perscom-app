@@ -151,7 +151,7 @@ class UpcomingEventsWidgetTest extends TenantTestCase
 
     public function test_members_who_cannot_view_events_see_nothing(): void
     {
-        $this->actingAs(User::factory()->createQuietly());
+        $this->actingAs(User::factory()->createQuietly()->syncRoles([])->givePermissionTo('view_upcoming_events_widget'));
 
         $this->makeOneTimeEvent(now()->addDay(), ['name' => 'Squad Briefing']);
 

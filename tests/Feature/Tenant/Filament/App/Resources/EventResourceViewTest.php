@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Resources;
 
+use App\Filament\App\Resources\EventResource;
 use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Models\Enums\EventRegistrationStatus;
@@ -200,6 +201,23 @@ class EventResourceViewTest extends TenantTestCase
             ->assertActionHidden('checkInLink');
 
         $this->assertFalse(RegistrationsRelationManager::canViewForRecord($event, ViewEvent::class));
+    }
+
+    public function test_members_with_the_default_role_can_open_an_event_but_not_the_event_list(): void
+    {
+        $member = User::factory()->createQuietly();
+        $member->assignRole('User');
+        $this->actingAs($member);
+
+        $event = Event::factory()->createQuietly(['name' => 'Range Day']);
+
+        Livewire::test(ViewEvent::class, ['record' => $event->getKey()])
+            ->assertOk()
+            ->assertSee('Range Day');
+
+        $this->get(EventResource::getUrl('view', ['record' => $event]))->assertOk();
+        $this->get(EventResource::getUrl())->assertForbidden();
+        $this->assertFalse(EventResource::canViewAny());
     }
 
     public function test_admins_can_see_the_registrations_relation_manager(): void

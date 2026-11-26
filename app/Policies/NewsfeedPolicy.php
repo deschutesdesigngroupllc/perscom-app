@@ -17,7 +17,7 @@ class NewsfeedPolicy
         return $authUser->can('view_any_newsfeed');
     }
 
-    public function view(AuthUser $authUser, Newsfeed $newsfeed): bool
+    public function view(AuthUser $authUser, ?Newsfeed $newsfeed = null): bool
     {
         return $authUser->can('view_newsfeed');
     }

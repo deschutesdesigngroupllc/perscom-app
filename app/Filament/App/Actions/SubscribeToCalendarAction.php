@@ -37,7 +37,7 @@ class SubscribeToCalendarAction extends Action
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
 
-        $this->visible(fn (): bool => Auth::user()?->can('viewAny', Event::class) ?? false);
+        $this->visible(fn (): bool => Auth::user()?->can('view', Event::class) ?? false);
 
         $this->schema([
             Select::make('calendar')

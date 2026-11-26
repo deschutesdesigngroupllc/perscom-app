@@ -17,7 +17,7 @@ class NewsFeedController
         $user = CalendarFeedService::findUser($token);
 
         abort_unless($user instanceof User, 404);
-        abort_unless($user->can('viewAny', Newsfeed::class), 403);
+        abort_unless($user->can('view', Newsfeed::class), 403);
 
         return RssFeedService::toResponse(RssFeedService::news());
     }

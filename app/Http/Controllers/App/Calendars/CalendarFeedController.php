@@ -18,7 +18,7 @@ class CalendarFeedController
         $user = CalendarFeedService::findUser($token);
 
         abort_unless($user instanceof User, 404);
-        abort_unless($user->can('viewAny', Event::class), 403);
+        abort_unless($user->can('view', Event::class), 403);
 
         return CalendarFeedService::toResponse(
             CalendarFeedService::render(CalendarFeedService::feedEvents($user, [$calendar->getKey()]), CalendarFeedService::calendarFeedName($calendar)),

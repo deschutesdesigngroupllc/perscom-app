@@ -16,7 +16,7 @@ class RssFeedControllerTest extends TenantTestCase
 {
     public function test_the_announcements_feed_is_valid_rss_without_a_session(): void
     {
-        $user = $this->member(['view_any_announcement']);
+        $user = $this->member(['view_announcement']);
         Announcement::factory()->createQuietly(['title' => 'Range Day Moved', 'content' => '<p>Now on Saturday & Sunday.</p>']);
 
         $response = $this->get(RssFeedService::announcementsFeedUrl($user))
@@ -32,7 +32,7 @@ class RssFeedControllerTest extends TenantTestCase
 
     public function test_the_news_feed_lists_items_with_their_author(): void
     {
-        $user = $this->member(['view_any_newsfeed']);
+        $user = $this->member(['view_newsfeed']);
         Newsfeed::factory()->createQuietly([
             'causer_type' => User::class,
             'causer_id' => $user->getKey(),
@@ -62,7 +62,7 @@ class RssFeedControllerTest extends TenantTestCase
 
     public function test_resetting_the_feed_token_invalidates_old_rss_links(): void
     {
-        $user = $this->member(['view_any_newsfeed']);
+        $user = $this->member(['view_newsfeed']);
         $url = RssFeedService::newsFeedUrl($user);
 
         CalendarFeedService::resetToken($user);
@@ -76,7 +76,7 @@ class RssFeedControllerTest extends TenantTestCase
      */
     private function member(array $permissions): User
     {
-        $user = User::factory()->createQuietly();
+        $user = User::factory()->createQuietly()->syncRoles([]);
 
         if ($permissions !== []) {
             $user->givePermissionTo($permissions);

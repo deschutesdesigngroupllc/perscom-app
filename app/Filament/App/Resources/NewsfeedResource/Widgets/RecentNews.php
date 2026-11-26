@@ -61,7 +61,7 @@ class RecentNews extends RecentPostsWidget
     {
         $user = Auth::user();
 
-        return $user instanceof User ? RssFeedService::newsFeedUrl($user) : null;
+        return $user instanceof User && $user->can('view', Newsfeed::class) ? RssFeedService::newsFeedUrl($user) : null;
     }
 
     /**

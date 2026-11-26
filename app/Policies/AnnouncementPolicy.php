@@ -17,7 +17,7 @@ class AnnouncementPolicy
         return $authUser->can('view_any_announcement');
     }
 
-    public function view(AuthUser $authUser, Announcement $announcement): bool
+    public function view(AuthUser $authUser, ?Announcement $announcement = null): bool
     {
         return $authUser->can('view_announcement');
     }

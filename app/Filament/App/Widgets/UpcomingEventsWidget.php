@@ -91,7 +91,7 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
 
         $user = $this->user();
 
-        if (! $user->can('viewAny', Event::class)) {
+        if (! $user->can('view', Event::class)) {
             return $this->occurrences = collect();
         }
 
