@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -31,18 +33,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'qualification_id',
+    'category_id',
+    'order',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'qualifications_categories')]
 class QualificationCategory extends Pivot
 {
-    protected $table = 'qualifications_categories';
-
-    protected $fillable = [
-        'qualification_id',
-        'category_id',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class);

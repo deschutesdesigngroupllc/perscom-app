@@ -9,18 +9,18 @@ use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\SentryContext;
+use App\Support\Brand;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -31,11 +31,11 @@ class PublicPanelProvider extends PanelProvider
     {
         return $panel
             ->id('public')
+            ->darkMode(isForced: true)
             ->path('public')
             ->domain(config('tenancy.enabled') ? null : str(config('app.url'))->after('://')->toString())
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverPages(in: app_path('Filament/Public/Pages'), for: 'App\\Filament\\Public\\Pages')
             ->when(config('tenancy.enabled'), fn (Panel $panel): Panel => $panel->middleware([
@@ -52,7 +52,7 @@ class PublicPanelProvider extends PanelProvider
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
                 ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
+                PreventRequestForgery::class,
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Resources;
 
 use App\Services\InternalApiService;
+use JsonException;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -30,6 +31,11 @@ class OrganizationStructureResource extends Resource
         'positions' => 'positions',
     ];
 
+    /**
+     * Read the organization's ranks, units and positions from the API.
+     *
+     * @throws JsonException when an API response body is not valid JSON
+     */
     public function handle(Request $request): Response
     {
         $structure = collect(static::SECTIONS)
@@ -41,21 +47,21 @@ class OrganizationStructureResource extends Resource
                 }
 
                 /** @var array{data?: array<int, array<string, mixed>>} $payload */
-                $payload = json_decode((string) $response->getContent(), true);
+                $payload = json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
                 return collect($payload['data'] ?? [])
                     ->sortBy('order')
-                    ->map(fn (array $item): array => array_filter([
+                    ->map(fn (array $item): array => collect([
                         'id' => $item['id'] ?? null,
                         'name' => $item['name'] ?? null,
                         'abbreviation' => $item['abbreviation'] ?? null,
                         'paygrade' => $item['paygrade'] ?? null,
                         'description' => $item['description'] ?? null,
-                    ], filled(...)))
+                    ])->filter(filled(...))->all())
                     ->values()
                     ->all();
             })
-            ->reject(fn (?array $section): bool => is_null($section))
+            ->reject(fn (?array $section): bool => $section === null)
             ->all();
 
         return Response::json($structure);

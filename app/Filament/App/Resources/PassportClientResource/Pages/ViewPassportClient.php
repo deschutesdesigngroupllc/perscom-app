@@ -12,8 +12,11 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
+
+use function is_string;
 
 class ViewPassportClient extends ViewRecord
 {
@@ -28,7 +31,7 @@ class ViewPassportClient extends ViewRecord
     {
         parent::mount($record);
 
-        $secret = session()->pull(static::PLAIN_SECRET_SESSION_KEY);
+        $secret = Session::pull(static::PLAIN_SECRET_SESSION_KEY);
 
         if (is_string($secret) && filled($secret)) {
             $this->plainSecret = $secret;
@@ -41,7 +44,6 @@ class ViewPassportClient extends ViewRecord
         return Action::make('showSecret')
             ->modalHeading('Client Secret')
             ->modalDescription("Copy this secret now and store it somewhere safe. It won't be shown again.")
-            ->modalIcon(Heroicon::OutlinedKey)
             ->fillForm(fn (): array => ['secret' => $this->plainSecret])
             ->schema([
                 TextInput::make('secret')

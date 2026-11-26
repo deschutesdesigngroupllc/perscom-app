@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\Units\UnitsController;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function sprintf;
+
 class UnitTest extends ApiResourceTestCase
 {
     public function endpoint(): string
@@ -54,7 +56,7 @@ class UnitTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test Unit',
-            'description' => $this->faker->sentence,
+            'description' => $this->faker->sentence(),
         ];
     }
 
@@ -64,7 +66,7 @@ class UnitTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 

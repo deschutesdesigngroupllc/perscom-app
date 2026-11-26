@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ai_usages', function (Blueprint $table) {
+        Schema::create('ai_usages', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('invocation_id')->nullable()->index();

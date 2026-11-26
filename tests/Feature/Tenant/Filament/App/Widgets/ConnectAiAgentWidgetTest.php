@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Widgets;
 
-use App\Filament\App\Clusters\Settings\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Models\PassportToken;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -22,9 +21,19 @@ class ConnectAiAgentWidgetTest extends TenantTestCase
         $this->assertTrue(ConnectAiAgentWidget::canView());
 
         Livewire::test(ConnectAiAgentWidget::class)
-            ->assertSee('Ask your AI about your personnel')
+            ->assertSee('Ask Your AI About Your Personnel')
             ->assertSee(route('mcp.server'))
             ->assertSee(ConnectAiTools::getUrl());
+    }
+
+    public function test_copy_buttons_receive_compiled_values(): void
+    {
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(ConnectAiAgentWidget::class)
+            ->assertDontSeeHtml('@js(')
+            ->assertSeeHtml("copy(serverUrl, 'url')")
+            ->assertSeeHtml("copy(claudeCommand, 'claude-code')");
     }
 
     public function test_members_without_access_to_connect_ai_tools_do_not_see_it(): void
@@ -67,15 +76,5 @@ class ConnectAiAgentWidgetTest extends TenantTestCase
         PassportToken::factory()->createQuietly(['user_id' => $user->getKey(), 'scopes' => ['view:user']]);
 
         $this->assertTrue(ConnectAiAgentWidget::canView());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

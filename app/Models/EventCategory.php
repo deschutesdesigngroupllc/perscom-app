@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -17,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Category $category
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  *
  * @method static Builder<static>|EventCategory newModelQuery()
  * @method static Builder<static>|EventCategory newQuery()
@@ -31,18 +33,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'event_id',
+    'category_id',
+    'order',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'events_categories')]
 class EventCategory extends Pivot
 {
-    protected $table = 'events_categories';
-
-    protected $fillable = [
-        'event_id',
-        'category_id',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);

@@ -21,6 +21,9 @@ use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+use function sprintf;
+
 class ApplyOrganizationBlueprintTest extends TenantTestCase
 {
     /**
@@ -44,7 +47,7 @@ class ApplyOrganizationBlueprintTest extends TenantTestCase
 
         $units = $this->units($blueprint);
         $slots = $units->flatMap(fn (UnitData $unit): array => $unit->slots)
-            ->unique(fn (SlotData $slot): string => implode('|', [strtolower($slot->name), $slot->position, $slot->specialty]));
+            ->unique(fn (SlotData $slot): string => implode('|', [mb_strtolower($slot->name), $slot->position, $slot->specialty]));
 
         $this->assertSame(count($blueprint->positions), $summary['positions']['created']);
         $this->assertSame(count($blueprint->ranks), $summary['ranks']['created']);

@@ -20,6 +20,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -30,7 +31,7 @@ class DomainResource extends Resource
 {
     protected static ?string $model = Domain::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected static string|UnitEnum|null $navigationGroup = 'Application';
 
@@ -91,7 +92,7 @@ class DomainResource extends Resource
             ->groups(['tenant.name'])
             ->filters([
                 TernaryFilter::make('is_custom_subdomain')
-                    ->label('Custom subdomain'),
+                    ->label('Custom Subdomain'),
                 SelectFilter::make('tenant_id')
                     ->label('Tenant')
                     ->multiple()

@@ -8,16 +8,18 @@ use App\Filament\App\Pages\Dashboard;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\VersionService;
-use App\Settings\DashboardSettings;
 use App\Settings\OnboardingSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OrganizationInfoWidget extends Widget
 {
-    use HasWidgetShield;
+    use HasWidgetShield {
+        canView as canViewWithShield;
+    }
 
     protected static ?int $sort = -5;
 
@@ -25,9 +27,7 @@ class OrganizationInfoWidget extends Widget
 
     protected string $view = 'filament.app.widgets.organization-info-widget';
 
-    protected ?string $title = null;
-
-    protected ?string $subtitle = null;
+    protected int|string|array $columnSpan = 'full';
 
     protected ?string $version = null;
 
@@ -35,10 +35,16 @@ class OrganizationInfoWidget extends Widget
 
     protected ?string $planColor = null;
 
-    public function mount(DashboardSettings $settings): void
+    public static function canView(): bool
     {
-        $this->title = $settings->title;
-        $this->subtitle = $settings->subtitle;
+        /** @var ?User $user */
+        $user = Auth::user();
+
+        return static::canViewWithShield() && (bool) $user?->hasRole(Utils::getSuperAdminName());
+    }
+
+    public function mount(): void
+    {
         $this->version = VersionService::version();
 
         /** @var ?Tenant $tenant */
@@ -64,7 +70,11 @@ class OrganizationInfoWidget extends Widget
         /** @var OnboardingSettings $settings */
         $settings = resolve(OnboardingSettings::class);
 
-        return ! $settings->isAccessible() && blank($settings->completed_at);
+        if (filled($settings->completed_at)) {
+            return false;
+        }
+
+        return ! $settings->isAccessible() || Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY);
     }
 
     public function resumeOnboarding(): void
@@ -74,6 +84,8 @@ class OrganizationInfoWidget extends Widget
         }
 
         resolve(OnboardingSettings::class)->resume();
+
+        Session::forget(Dashboard::ONBOARDING_SHOWN_SESSION_KEY);
 
         $this->redirect(Dashboard::getUrl());
     }

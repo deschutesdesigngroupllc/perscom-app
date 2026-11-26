@@ -56,7 +56,7 @@ class UserTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test User',
-            'email' => $this->faker->email,
+            'email' => $this->faker->email(),
         ];
     }
 
@@ -66,7 +66,7 @@ class UserTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 }

@@ -15,7 +15,7 @@ class HandleInertiaRequestsTest extends CentralTestCase
 {
     public function test_external_redirect_response_returns_409_status(): void
     {
-        $url = $this->faker->url;
+        $url = $this->faker->url();
 
         Route::get('/redirect', static fn (): Redirector|RedirectResponse => redirect($url))->middleware(HandleInertiaRequests::class);
 

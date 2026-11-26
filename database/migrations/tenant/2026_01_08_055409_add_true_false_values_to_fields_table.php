@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
-            $table->after('options_model', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
+            $table->after('options_model', function (Blueprint $table): void {
                 $table->string('true_value')->default('True')->nullable();
                 $table->string('false_value')->default('False')->nullable();
             });
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             //
         });
     }

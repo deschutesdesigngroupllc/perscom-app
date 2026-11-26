@@ -164,6 +164,8 @@ class ReadinessService
     }
 
     /**
+     * Calculate the attendance rate across the given members.
+     *
      * @param  array<int, int>  $userIds
      * @param  Collection<int, array{attended: int, no_show: int}>  $attendance
      */

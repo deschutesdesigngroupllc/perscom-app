@@ -8,6 +8,8 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasGroup;
 use App\Traits\HasUnit;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
@@ -25,7 +27,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|UnitGroup newModelQuery()
  * @method static Builder<static>|UnitGroup newQuery()
  * @method static Builder<static>|UnitGroup query()
- * @method static Builder<static>|UnitGroup unit(\App\Models\Unit $unit)
  * @method static Builder<static>|UnitGroup whereCreatedAt($value)
  * @method static Builder<static>|UnitGroup whereGroupId($value)
  * @method static Builder<static>|UnitGroup whereId($value)
@@ -34,17 +35,15 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'units_groups')]
 class UnitGroup extends Pivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasGroup;
     use HasUnit;
-
-    protected $table = 'units_groups';
-
-    protected $fillable = [
-        'created_at',
-        'updated_at',
-    ];
 }

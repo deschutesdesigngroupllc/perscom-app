@@ -67,6 +67,8 @@ class BillingService
     }
 
     /**
+     * Get the Stripe Checkout URL for a new subscription.
+     *
      * @throws Exception
      */
     public function checkoutUrl(Tenant $tenant, ?string $returnUrl = null): string
@@ -81,6 +83,8 @@ class BillingService
     }
 
     /**
+     * Get the Stripe billing portal URL for the tenant.
+     *
      * @param  array<string, mixed>  $options
      */
     public function portalUrl(Tenant $tenant, ?string $returnUrl = null, array $options = []): string

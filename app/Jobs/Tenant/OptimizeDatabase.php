@@ -12,6 +12,8 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 
+use function sprintf;
+
 class OptimizeDatabase implements RunsPerTenant, ShouldQueue
 {
     use Batchable;

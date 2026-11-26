@@ -9,6 +9,7 @@ use App\Filament\App\Resources\DocumentResource\Pages\CreateDocument;
 use App\Filament\App\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\App\Resources\DocumentResource\Pages\ListDocuments;
 use App\Filament\Exports\DocumentExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Models\Document;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -38,11 +39,11 @@ class DocumentResource extends BaseResource
 {
     protected static ?string $model = Document::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocument;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
@@ -83,7 +84,7 @@ class DocumentResource extends BaseResource
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')
@@ -95,14 +96,12 @@ class DocumentResource extends BaseResource
                                     ->required()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Select::make('author_id')
-                                    ->preload()
+                                MemberSelect::make('author_id')
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the document.')
                                     ->required()
                                     ->relationship('author', 'name')
-                                    ->columnSpanFull()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);
@@ -112,14 +111,14 @@ class DocumentResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedDocument)
-            ->emptyStateDescription('There are no documents to view. Create one to get started.')
+            ->emptyStateDescription('Documents hold policies, orders and templates for your organization. Add your first document.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->searchable()
@@ -137,7 +136,7 @@ class DocumentResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Document $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Document $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -146,7 +145,7 @@ class DocumentResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(DocumentExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -27,7 +27,7 @@ class ComponentsResolver extends StandardComponentsResolver
     {
         $resource = parent::resolveCollectionResourceClass();
 
-        if (! is_null($resource)) {
+        if ($resource !== null) {
             return $resource;
         }
 

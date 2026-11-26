@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         // Settings table
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table): void {
             $table->string('key')->unique()->primary();
             $table->text('value')->nullable();
         });

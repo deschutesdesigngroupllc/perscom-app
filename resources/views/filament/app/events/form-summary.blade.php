@@ -1,5 +1,8 @@
 @php
-  $color = is_string($calendar?->color) && preg_match('/^#[0-9a-fA-F]{3,8}$/', $calendar->color) ? $calendar->color : '#2563eb';
+  $color =
+      is_string($calendar?->color) && preg_match('/^#[0-9a-fA-F]{3,8}$/', $calendar->color)
+          ? $calendar->color
+          : \App\Support\Brand::PRIMARY_HEX;
   $multiDay = $starts && $ends && !$starts->isSameDay($ends);
 @endphp
 

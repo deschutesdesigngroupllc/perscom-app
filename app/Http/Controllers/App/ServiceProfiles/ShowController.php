@@ -6,7 +6,7 @@ namespace App\Http\Controllers\App\ServiceProfiles;
 
 use App\Models\User;
 use App\Services\ServiceProfileService;
-use Filament\Support\Colors\Color;
+use App\Support\Brand;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -23,9 +23,7 @@ class ShowController
             return redirect()->to(ServiceProfileService::url($member), 301);
         }
 
-        FilamentColor::register([
-            'primary' => Color::Blue,
-        ]);
+        FilamentColor::register(Brand::colors());
 
         return view('service-profiles.show', [
             'profile' => ServiceProfileService::build($member),

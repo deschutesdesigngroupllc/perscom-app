@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('calendars', function (Blueprint $table) {
+        Schema::table('calendars', function (Blueprint $table): void {
             $table->dropColumn('author_id');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('calendars', function (Blueprint $table) {
+        Schema::table('calendars', function (Blueprint $table): void {
             $table->unsignedBigInteger('author_id')->nullable();
         });
     }

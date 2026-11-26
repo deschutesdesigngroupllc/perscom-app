@@ -36,7 +36,7 @@ class TokenControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $redirect = $this->faker->url;
+        $redirect = $this->faker->url();
 
         $client = ClientFactory::new()->create([
             'owner_id' => $user->getKey(),
@@ -91,7 +91,7 @@ class TokenControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $redirect = $this->faker->url;
+        $redirect = $this->faker->url();
 
         $client = ClientFactory::new()->create([
             'owner_id' => $user->getKey(),
@@ -171,7 +171,7 @@ class TokenControllerTest extends TenantTestCase
         $client = ClientFactory::new()->asPasswordClient()->create();
 
         $user = User::factory()->state([
-            'password' => $password = $this->faker->password,
+            'password' => $password = $this->faker->password(),
         ])->createQuietly();
 
         $this->postJson($this->tenant->route('passport.token'), [
@@ -198,7 +198,7 @@ class TokenControllerTest extends TenantTestCase
         $client = ClientFactory::new()->asPasswordClient()->create();
 
         $user = User::factory()->state([
-            'password' => $password = $this->faker->password,
+            'password' => $password = $this->faker->password(),
         ])->createQuietly();
 
         $response = $this->postJson($this->tenant->route('passport.token'), [
@@ -241,7 +241,7 @@ class TokenControllerTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $redirect = $this->faker->url;
+        $redirect = $this->faker->url();
 
         $client = ClientFactory::new()->create([
             'owner_id' => $user->getKey(),

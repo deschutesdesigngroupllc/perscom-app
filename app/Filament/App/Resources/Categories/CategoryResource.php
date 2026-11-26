@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\Categories;
 
+use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\Categories\Pages\CreateCategory;
 use App\Filament\App\Resources\Categories\Pages\EditCategory;
 use App\Filament\App\Resources\Categories\Pages\ListCategories;
@@ -24,9 +25,11 @@ class CategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static ?string $cluster = Settings::class;
 
-    protected static ?int $navigationSort = 5;
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
+
+    protected static ?int $navigationSort = 34;
 
     protected static ?string $recordTitleAttribute = 'name';
 

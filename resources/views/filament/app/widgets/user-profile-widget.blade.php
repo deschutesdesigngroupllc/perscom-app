@@ -8,7 +8,7 @@
 <x-filament-widgets::widget>
   <div class="flex flex-col gap-6">
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <x-filament::section icon="heroicon-o-chevron-double-up" icon-color="warning">
+      <x-filament::section icon="heroicon-o-chevron-double-up" icon-color="brass">
         <x-slot name="heading">Current Rank</x-slot>
         <x-slot name="description">{{ $this->timeInGrade() ? 'In grade for ' . $this->timeInGrade() : 'Your current rank' }}</x-slot>
 
@@ -33,7 +33,7 @@
                   <x-filament::badge color="gray">{{ $user->rank->paygrade }}</x-filament::badge>
                 @endif
                 @if ($showsPromotion && $promotion->eligible)
-                  <x-filament::badge color="success" icon="heroicon-m-chevron-double-up">Promotion Eligible</x-filament::badge>
+                  <x-filament::badge color="brass" icon="heroicon-m-chevron-double-up">Promotion Eligible</x-filament::badge>
                 @endif
               </div>
             @else

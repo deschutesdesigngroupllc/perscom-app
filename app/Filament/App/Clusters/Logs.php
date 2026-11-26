@@ -6,13 +6,14 @@ namespace App\Filament\App\Clusters;
 
 use BackedEnum;
 use Filament\Clusters\Cluster;
+use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
 class Logs extends Cluster
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-command-line';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCommandLine;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 14;
 }

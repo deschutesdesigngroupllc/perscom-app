@@ -1,0 +1,223 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Tenant\Filament\Actions;
+
+use App\Filament\App\Resources\CombatRecordResource;
+use App\Filament\App\Resources\CombatRecordResource\Pages\CreateCombatRecord;
+use App\Filament\App\Resources\ServiceRecordResource;
+use App\Filament\App\Resources\TrainingRecordResource;
+use App\Filament\App\Resources\TrainingRecordResource\Pages\CreateTrainingRecord;
+use App\Filament\App\Resources\UserResource\Pages\ListUsers;
+use App\Filament\App\Resources\UserResource\Pages\ViewUser;
+use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
+use App\Models\Award;
+use App\Models\Enums\AssignmentRecordType;
+use App\Models\Enums\RankRecordType;
+use App\Models\Enums\RosterMode;
+use App\Models\Position;
+use App\Models\Qualification;
+use App\Models\Rank;
+use App\Models\Slot;
+use App\Models\Specialty;
+use App\Models\Unit;
+use App\Models\User;
+use App\Services\SettingsService;
+use App\Settings\DashboardSettings;
+use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Actions\Testing\TestAction;
+use Illuminate\Support\Facades\DB;
+use Livewire\Livewire;
+use Tests\Feature\Tenant\TenantTestCase;
+
+class MemberRecordActionsTest extends TenantTestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $admin = User::factory()->createQuietly();
+        $admin->assignRole(Utils::getSuperAdminName());
+        $this->actingAs($admin);
+    }
+
+    public function test_promote_from_the_profile_defaults_to_the_next_rank(): void
+    {
+        $senior = Rank::factory()->createQuietly(['order' => 1]);
+        $junior = Rank::factory()->createQuietly(['order' => 2]);
+        $member = User::factory()->createQuietly(['rank_id' => $junior->getKey()]);
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->mountAction('promoteMember')
+            ->assertSchemaStateSet([
+                'rank_id' => $senior->getKey(),
+                'type' => RankRecordType::PROMOTION,
+            ])
+            ->callMountedAction()
+            ->assertHasNoActionErrors()
+            ->assertNotified('Created 1 Record');
+
+        $this->assertDatabaseHas('records_ranks', [
+            'user_id' => $member->getKey(),
+            'rank_id' => $senior->getKey(),
+            'type' => RankRecordType::PROMOTION->value,
+        ]);
+    }
+
+    public function test_assign_uses_slots_when_the_roster_is_manual(): void
+    {
+        DashboardSettings::fake(['roster_mode' => RosterMode::MANUAL]);
+        SettingsService::flush(DashboardSettings::class);
+
+        $unit = Unit::factory()->createQuietly(['name' => 'Alpha Company']);
+        $position = Position::factory()->createQuietly();
+        $specialty = Specialty::factory()->createQuietly();
+        $slot = Slot::factory()->createQuietly(['name' => 'Squad Leader', 'position_id' => $position->getKey(), 'specialty_id' => $specialty->getKey()]);
+        $unit->slots()->attach($slot);
+        $unitSlotId = DB::table('units_slots')->where('unit_id', $unit->getKey())->value('id');
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['unit_slot_id' => $unitSlotId, 'type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_assignments', [
+            'user_id' => $member->getKey(),
+            'unit_slot_id' => $unitSlotId,
+            'unit_id' => $unit->getKey(),
+            'position_id' => $position->getKey(),
+            'specialty_id' => $specialty->getKey(),
+        ]);
+    }
+
+    public function test_assign_requires_a_slot_when_the_roster_is_manual(): void
+    {
+        DashboardSettings::fake(['roster_mode' => RosterMode::MANUAL]);
+        SettingsService::flush(DashboardSettings::class);
+
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasActionErrors(['unit_slot_id' => 'required']);
+    }
+
+    public function test_assign_uses_units_when_the_roster_is_automatic(): void
+    {
+        $unit = Unit::factory()->createQuietly();
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['unit_id' => $unit->getKey(), 'type' => AssignmentRecordType::PRIMARY->value])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey(), 'unit_slot_id' => null]);
+    }
+
+    public function test_bulk_menu_offers_every_record_type(): void
+    {
+        $component = Livewire::test(ListUsers::class);
+
+        foreach (['promote', 'award', 'assign', 'qualify', 'recordTrainingBulk', 'recordCombatBulk', 'recordServiceBulk'] as $action) {
+            $component->assertActionVisible(TestAction::make($action)->table()->bulk());
+        }
+    }
+
+    public function test_bulk_qualify_records_a_qualification_for_each_member(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+        $qualification = Qualification::factory()->createQuietly();
+
+        Livewire::test(ListUsers::class)
+            ->selectTableRecords($members->pluck('id')->all())
+            ->callAction(TestAction::make('qualify')->table()->bulk(), ['qualification_id' => $qualification->getKey()])
+            ->assertHasNoActionErrors();
+
+        foreach ($members as $member) {
+            $this->assertDatabaseHas('records_qualifications', ['user_id' => $member->getKey(), 'qualification_id' => $qualification->getKey()]);
+        }
+    }
+
+    public function test_bulk_record_training_opens_the_form_with_every_selected_member(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+
+        Livewire::test(ListUsers::class)
+            ->selectTableRecords($members->pluck('id')->all())
+            ->callAction(TestAction::make('recordTrainingBulk')->table()->bulk())
+            ->assertRedirect(TrainingRecordResource::getUrl('create', ['user_id' => $members->pluck('id')->sort()->values()->all()]));
+    }
+
+    public function test_record_forms_fill_in_members_from_the_url(): void
+    {
+        $members = User::factory()->count(2)->createQuietly();
+        $ids = $members->pluck('id')->values()->all();
+
+        Livewire::withQueryParams(['user_id' => $ids])
+            ->test(CreateTrainingRecord::class)
+            ->assertSchemaStateSet(['user_id' => $ids]);
+
+        Livewire::withQueryParams(['user_id' => (string) $ids[0]])
+            ->test(CreateCombatRecord::class)
+            ->assertSchemaStateSet(['user_id' => [$ids[0]]]);
+    }
+
+    public function test_award_from_a_members_row(): void
+    {
+        $member = User::factory()->createQuietly();
+        $award = Award::factory()->createQuietly();
+
+        Livewire::test(ListUsers::class)
+            ->callAction(TestAction::make('awardMember')->table($member), ['award_id' => $award->getKey()])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_awards', ['user_id' => $member->getKey(), 'award_id' => $award->getKey()]);
+    }
+
+    public function test_award_from_the_profile_awards_tab_targets_that_member(): void
+    {
+        $member = User::factory()->createQuietly();
+        $award = Award::factory()->createQuietly();
+
+        Livewire::test(AwardRecordsRelationManager::class, ['ownerRecord' => $member, 'pageClass' => ViewUser::class])
+            ->callAction(TestAction::make('awardMember')->table(), ['award_id' => $award->getKey()])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_awards', ['user_id' => $member->getKey(), 'award_id' => $award->getKey()]);
+    }
+
+    public function test_assign_from_the_profile(): void
+    {
+        $member = User::factory()->createQuietly();
+        $unit = Unit::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('assignMember', ['unit_id' => $unit->getKey(), 'type' => 'primary'])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_assignments', ['user_id' => $member->getKey(), 'unit_id' => $unit->getKey()]);
+    }
+
+    public function test_qualify_from_the_profile(): void
+    {
+        $member = User::factory()->createQuietly();
+        $qualification = Qualification::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->callAction('qualifyMember', ['qualification_id' => $qualification->getKey()])
+            ->assertHasNoActionErrors();
+
+        $this->assertDatabaseHas('records_qualifications', ['user_id' => $member->getKey(), 'qualification_id' => $qualification->getKey()]);
+    }
+
+    public function test_training_combat_and_service_open_their_forms_with_the_member_filled_in(): void
+    {
+        $member = User::factory()->createQuietly();
+
+        Livewire::test(ViewUser::class, ['record' => $member->getKey()])
+            ->assertActionHasUrl('recordTraining', TrainingRecordResource::getUrl('create', ['user_id' => $member->getKey()]))
+            ->assertActionHasUrl('recordCombat', CombatRecordResource::getUrl('create', ['user_id' => $member->getKey()]))
+            ->assertActionHasUrl('recordService', ServiceRecordResource::getUrl('create', ['user_id' => $member->getKey()]));
+    }
+}

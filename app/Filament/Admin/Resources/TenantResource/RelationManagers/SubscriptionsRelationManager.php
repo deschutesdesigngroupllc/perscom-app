@@ -13,15 +13,18 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+
+use function sprintf;
 
 class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-credit-card';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedCreditCard;
 
     /**
      * @param  Tenant  $ownerRecord
@@ -73,23 +76,23 @@ class SubscriptionsRelationManager extends RelationManager
             ])
             ->recordActions([
                 Action::make('stripe')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color(Color::generateV3Palette('#5167FC'))
                     ->openUrlInNewTab()
-                    ->url(fn (Subscription $record) => $record->stripe_url),
+                    ->url(fn (Subscription $record): ?string => $record->stripe_url),
                 DeleteAction::make(),
             ])
             ->headerActions([
                 Action::make('billing')
                     ->color(Color::generateV3Palette('#5167FC'))
-                    ->visible(function () {
+                    ->visible(function (): bool {
                         /** @var Tenant $tenant */
                         $tenant = $this->getOwnerRecord();
 
                         return $tenant->hasStripeId();
                     })
                     ->openUrlInNewTab()
-                    ->url(function () {
+                    ->url(function (): string {
                         /** @var Tenant $tenant */
                         $tenant = $this->getOwnerRecord();
 

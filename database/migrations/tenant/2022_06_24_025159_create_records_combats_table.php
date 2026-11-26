@@ -15,7 +15,7 @@ class CreateRecordsCombatsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records_combat', function (Blueprint $table) {
+        Schema::create('records_combat', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('document_id')->nullable();

@@ -10,12 +10,17 @@ use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
+use function is_array;
+
 class CreateAutomation extends CreateRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = AutomationResource::class;
 
     public function mount(): void
@@ -93,7 +98,7 @@ class CreateAutomation extends CreateRecord
 
         $prerequisites = $template['prerequisites'] ?? [];
         if ($prerequisites !== []) {
-            $description .= '<br><br>Prerequisites:<br>• '.implode('<br>• ', $prerequisites);
+            $description .= '<br><br>Prerequisites:<br>• '.collect($prerequisites)->implode('<br>• ');
         }
 
         return $description;

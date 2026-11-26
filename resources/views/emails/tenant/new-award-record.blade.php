@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# {{ $award ? 'Congratulations on the '.$award : 'You Received an Award' }}
 
-{{ __('A new award record has been added to your personnel file.') }}
+An award was added to your profile.
 
 @if ($award)
   **Award**: {{ $award }}<br>
@@ -18,6 +18,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->text('filters')->change();
         });
     }

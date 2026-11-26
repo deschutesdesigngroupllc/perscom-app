@@ -15,7 +15,7 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('color');

@@ -45,11 +45,13 @@ class GroupResource extends BaseResource
 {
     protected static ?string $model = Group::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleGroup;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationParentItem = 'Units';
 
     public static function form(Schema $schema): Schema
     {
@@ -60,7 +62,7 @@ class GroupResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Group')
-                            ->icon('heroicon-o-rectangle-group')
+                            ->icon(Heroicon::OutlinedRectangleGroup)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the group.')
@@ -75,7 +77,7 @@ class GroupResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -95,7 +97,7 @@ class GroupResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Toggle::make('hidden')
                                     ->helperText('Hide this group from the roster.')
@@ -118,7 +120,7 @@ class GroupResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedUserGroup)
-            ->emptyStateDescription('There are no groups to view. Create one to get started.')
+            ->emptyStateDescription('Groups collect units into larger formations on the roster. Create one to organize your units.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -128,7 +130,7 @@ class GroupResource extends BaseResource
                     ->label('Image'),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -158,7 +160,7 @@ class GroupResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(GroupExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

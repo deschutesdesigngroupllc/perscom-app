@@ -20,8 +20,10 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,7 +50,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
@@ -79,6 +81,14 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(AwardRecordObserver::class)]
 #[ScopedBy(AwardRecordScope::class)]
+#[Fillable([
+    'id',
+    'award_id',
+    'text',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'records_awards')]
 class AwardRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
@@ -94,16 +104,6 @@ class AwardRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-
-    protected $table = 'records_awards';
-
-    protected $fillable = [
-        'id',
-        'award_id',
-        'text',
-        'created_at',
-        'updated_at',
-    ];
 
     public function award(): BelongsTo
     {

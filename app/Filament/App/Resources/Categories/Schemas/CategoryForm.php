@@ -23,6 +23,8 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
+use function in_array;
+
 class CategoryForm
 {
     public static function configure(Schema $schema): Schema

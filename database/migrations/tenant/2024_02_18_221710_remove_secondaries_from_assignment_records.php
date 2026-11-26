@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropColumn(['secondary_unit_ids', 'secondary_position_ids', 'secondary_specialty_ids']);
         });
 
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             //
         });
     }

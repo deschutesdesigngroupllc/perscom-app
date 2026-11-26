@@ -1,8 +1,13 @@
 @component('mail::message')
-# Account Deletion Warning (1 Day)
+# {{ $organization }} Will Be Deleted Tomorrow
 
-{{ __('It has been 2 months since you last logged in to your PERSCOM account. We will delete your account tomorrow if there is no new activity on your account. This is your final notice. If this is a mistake, please reach out to our support team immediately.') }}
+This is your final notice. No one has signed in to **{{ $organization }}** for two months, so it will be deleted on **{{ $deletionDate }}** along with all of its records.
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@component('mail::button', ['url' => $url])
+  Sign In to Keep {{ $organization }}
+@endcomponent
+
+If this is a mistake, reply to this email right away.
+
+@include('emails.partials.sign-off')
 @endcomponent

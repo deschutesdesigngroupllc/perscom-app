@@ -9,14 +9,14 @@ return [
      * The google-fonts:fetch command will prefetch these fonts.
      */
     'fonts' => [
-        'default' => 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,700;1,400;1,700',
+        'default' => 'https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Barlow+Semi+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap',
     ],
 
     /*
      * This disk will be used to store local Google Fonts. The public disk
      * is the default because it can be served over HTTP with storage:link.
      */
-    'disk' => 'public',
+    'disk' => 'google-fonts',
 
     /*
      * Prepend all files that are written to the selected disk with this path.

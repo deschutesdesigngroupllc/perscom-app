@@ -10,6 +10,7 @@ use App\Models\Category;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListAwards extends ListRecords
@@ -29,9 +30,9 @@ class ListAwards extends ListRecords
         return Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->favorite()
-                ->icon('heroicon-o-tag')
+                ->icon(Heroicon::OutlinedTag)
                 ->label($category->name)
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id))),
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas('categories', fn (Builder $query): Builder => $query->whereKey($category->id))),
         ])->toArray();
     }
 

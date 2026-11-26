@@ -9,9 +9,12 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Components\ViewComponent;
+use Filament\Support\Enums\Width;
 
 class EditAutomation extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = AutomationResource::class;
 
     /**

@@ -11,8 +11,11 @@ use App\Filament\App\Resources\SubmissionResource\Pages\ViewSubmission;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelationManager;
 use App\Filament\Exports\SubmissionExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Models\Form;
+use App\Models\Status;
 use App\Models\Submission;
+use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -40,17 +43,21 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
+use function sprintf;
+
 class SubmissionResource extends BaseResource
 {
     use BuildsCustomFieldComponents;
 
     protected static ?string $model = Submission::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-folder-plus';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolderPlus;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 11;
+
+    protected static ?string $navigationParentItem = 'Forms';
 
     public static function getNavigationBadge(): ?string
     {
@@ -72,8 +79,8 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('submission-tab')
                     ->tabs([
                         Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                            ->badge(fn (?Submission $record): ?string => $record->status->name ?? null)
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('form_id')
@@ -82,11 +89,9 @@ class SubmissionResource extends BaseResource
                                     ->relationship(name: 'form', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => FormResource::form($form)),
-                                Select::make('user_id')
-                                    ->preload()
+                                MemberSelect::make('user_id')
                                     ->relationship(name: 'user', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                     ]),
                 Tabs::make()
@@ -94,8 +99,8 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('form-tab')
                     ->tabs([
                         Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
-                            ->label(fn (Get $get) => Form::find($get('form_id'))->name ?? 'Form')
+                            ->icon(Heroicon::OutlinedPencilSquare)
+                            ->label(fn (Get $get): string => Form::find($get('form_id'))->name ?? 'Form')
                             ->schema(fn (Get $get): array => SubmissionResource::buildCustomFieldInputs(collect(Form::find($get('form_id'))?->fields))),
                     ]),
             ]);
@@ -110,17 +115,17 @@ class SubmissionResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
-                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
-                            ->icon('heroicon-o-folder-plus')
+                            ->badge(fn (?Submission $record): ?string => $record->status->name ?? null)
+                            ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
+                            ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('form.name')
                                     ->label('Form'),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('read_at')
                                     ->dateTime()
@@ -134,8 +139,8 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('form-tab')
                     ->tabs([
                         Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
-                            ->label(fn (Submission $record) => $record->form->name ?? 'Form')
+                            ->icon(Heroicon::OutlinedPencilSquare)
+                            ->label(fn (Submission $record): string => $record->form->name ?? 'Form')
                             ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                     ]),
             ]);
@@ -145,7 +150,7 @@ class SubmissionResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedFolderPlus)
-            ->emptyStateDescription('There are no submissions to view. Create one to get started.')
+            ->emptyStateDescription('Form responses from members appear here as they come in.')
             ->columns([
                 TextColumn::make('form.name')
                     ->weight(fn (Submission $record): ?FontWeight => $record->read_at ? null : FontWeight::Bold)
@@ -153,12 +158,12 @@ class SubmissionResource extends BaseResource
                     ->iconPosition(IconPosition::Before)
                     ->searchable(),
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('status.name')
                     ->placeholder('No Status')
                     ->badge()
-                    ->color(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('read_at')
                     ->placeholder('Unread')
@@ -173,15 +178,27 @@ class SubmissionResource extends BaseResource
             ->groups([
                 Group::make('form.categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Submission $record) => $record->form?->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Submission $record): ?string => $record->form?->categoryPivot?->category?->name),
             ])
             ->filters([
                 TernaryFilter::make('read_at')
                     ->label('Read')
                     ->nullable(),
-                SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                SelectFilter::make('form')
+                    ->relationship('form', 'name')
                     ->preload()
+                    ->multiple(),
+                SelectFilter::make('status')
+                    ->label('Current Status')
+                    ->options(fn (): array => Status::query()->orderBy('order')->pluck('name', 'id')->all())
+                    ->multiple()
+                    ->query(fn (Builder $query, array $data): Builder => blank($data['values'] ?? null) ? $query : $query->whereHas('statuses', fn (Builder $query): Builder => $query
+                        ->whereIn('statuses.id', $data['values'])
+                        ->whereRaw('model_has_statuses.created_at = (select max(latest.created_at) from model_has_statuses as latest where latest.model_type = model_has_statuses.model_type and latest.model_id = model_has_statuses.model_id)'))),
+                SelectFilter::make('user')
+                    ->label('Member')
+                    ->relationship('user', 'name')
+                    ->searchable()
                     ->multiple(),
             ])
             ->recordActions([
@@ -192,7 +209,7 @@ class SubmissionResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(SubmissionExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -13,6 +13,8 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Validation\Rule;
 use Stringable;
 
+use function sprintf;
+
 class ProposeAssignmentRecords extends ProposalTool
 {
     public function description(): Stringable|string
@@ -53,11 +55,11 @@ class ProposeAssignmentRecords extends ProposalTool
             userIds: $validated['user_ids'],
             targetId: (int) $validated['unit_id'],
             text: $validated['text'] ?? null,
-            attributes: array_filter([
+            attributes: collect([
                 'type' => $type->value,
                 'position_id' => $validated['position_id'] ?? null,
                 'specialty_id' => $validated['specialty_id'] ?? null,
-            ], filled(...)),
+            ])->filter(filled(...))->all(),
             summary: sprintf(
                 'Assign %s to %s%s (%s)',
                 $this->describeMembers($validated['user_ids']),

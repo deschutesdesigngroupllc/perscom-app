@@ -14,6 +14,8 @@ use Illuminate\Support\Collection;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Twilio\TwilioChannel;
 
+use function in_array;
+
 enum NotificationChannel: string implements HasDescription, HasLabel
 {
     case BROADCAST = 'broadcast';
@@ -25,6 +27,8 @@ enum NotificationChannel: string implements HasDescription, HasLabel
     case SLACK = 'slack';
 
     /**
+     * Get the organization-wide channels from the given channels.
+     *
      * @param  iterable<int, NotificationChannel|string>|NotificationChannel|string|null  $channels
      * @return Collection<int, NotificationChannel>
      */
@@ -88,11 +92,11 @@ enum NotificationChannel: string implements HasDescription, HasLabel
         /** @var IntegrationSettings $settings */
         $settings = resolve(IntegrationSettings::class);
 
-        if ($this === NotificationChannel::SMS && $notifiable && blank($notifiable->phone_number)) {
+        if ($this === NotificationChannel::SMS && $notifiable instanceof User && blank($notifiable->phone_number)) {
             return false;
         }
 
-        if ($this === NotificationChannel::DISCORD_PRIVATE && $notifiable && blank($notifiable->discord_private_channel_id)) {
+        if ($this === NotificationChannel::DISCORD_PRIVATE && $notifiable instanceof User && blank($notifiable->discord_private_channel_id)) {
             return false;
         }
 

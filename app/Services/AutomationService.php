@@ -19,12 +19,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use JsonException;
 use RuntimeException;
 use stdClass;
 use Throwable;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
+
+use function in_array;
+use function is_array;
+use function is_float;
+use function is_string;
+use function sprintf;
 
 class AutomationService
 {
@@ -207,15 +215,20 @@ class AutomationService
     public function previewWebhookPayload(string $template, array $context): array
     {
         try {
-            $decoded = json_decode($template, true);
-            if (! is_array($decoded)) {
-                return [
-                    'valid' => false,
-                    'result' => null,
-                    'error' => 'Invalid JSON format',
-                ];
-            }
+            $decoded = json_decode($template, true, flags: JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            $decoded = null;
+        }
 
+        if (! is_array($decoded)) {
+            return [
+                'valid' => false,
+                'result' => null,
+                'error' => 'Invalid JSON format',
+            ];
+        }
+
+        try {
             $result = $this->evaluatePayloadTemplate($decoded, $context);
 
             return [
@@ -297,7 +310,12 @@ class AutomationService
         }
 
         if (is_string($template)) {
-            $template = json_decode($template, true);
+            try {
+                $template = json_decode($template, true, flags: JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                return $event->getSubject();
+            }
+
             if (! is_array($template)) {
                 return $event->getSubject();
             }
@@ -337,7 +355,7 @@ class AutomationService
      */
     protected function evaluateTemplateValue(string $value, array $context): mixed
     {
-        if (! str_contains($value, '{{')) {
+        if (Str::doesntContain($value, '{{')) {
             return $value;
         }
 
@@ -358,7 +376,7 @@ class AutomationService
      */
     protected function prepareContextForTwig(array $context): array
     {
-        return collect($context)->map(function ($value) {
+        return collect($context)->map(function (mixed $value): mixed {
             if ($value instanceof stdClass) {
                 return (array) $value;
             }
@@ -553,7 +571,7 @@ class AutomationService
         foreach ($fieldMappings as $field => $valueTemplate) {
             $evaluated = $this->evaluateTemplateValue((string) $valueTemplate, $context);
 
-            if (is_numeric($evaluated) && ! str_contains((string) $valueTemplate, '{{')) {
+            if (is_numeric($evaluated) && Str::doesntContain((string) $valueTemplate, '{{')) {
                 $result[$field] = is_float($evaluated + 0) ? (float) $evaluated : (int) $evaluated;
             } elseif ($evaluated === 'true' || $evaluated === 'false') {
                 $result[$field] = $evaluated === 'true';
@@ -574,7 +592,7 @@ class AutomationService
      */
     protected function evaluateMessageTemplate(string $template, array $context): string
     {
-        if (! str_contains($template, '{{')) {
+        if (Str::doesntContain($template, '{{')) {
             return $template;
         }
 

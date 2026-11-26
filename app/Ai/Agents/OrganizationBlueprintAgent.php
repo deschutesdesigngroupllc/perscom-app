@@ -125,6 +125,8 @@ class OrganizationBlueprintAgent implements Agent, HasStructuredOutput
     }
 
     /**
+     * List the field types a blueprint form field may use.
+     *
      * @return array<int, string>
      */
     protected static function fieldTypes(): array

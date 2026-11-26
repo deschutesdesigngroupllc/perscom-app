@@ -70,7 +70,7 @@ class AttachmentTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
             'file' => UploadedFile::fake()->create('data.pdf', 10),
         ];
     }
@@ -81,7 +81,7 @@ class AttachmentTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
         ];
     }
 }

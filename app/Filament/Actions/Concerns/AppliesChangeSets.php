@@ -7,17 +7,20 @@ namespace App\Filament\Actions\Concerns;
 use App\Actions\Copilot\ApplyChangeSet;
 use App\Data\Copilot\ProposedChangeSetData;
 use App\Data\Copilot\ProposedOperationData;
-use Filament\Actions\BulkAction;
+use Filament\Actions\Action;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+
+use function sprintf;
 
 trait AppliesChangeSets
 {
-    protected function applyOperation(BulkAction $action, ProposedOperationData $operation): void
+    protected function applyOperation(Action $action, ProposedOperationData $operation, string $source = 'bulk action'): void
     {
         try {
-            $result = ApplyChangeSet::handle(new ProposedChangeSetData([$operation]), Auth::user(), 'bulk action');
+            $result = ApplyChangeSet::handle(new ProposedChangeSetData([$operation]), Auth::user(), $source);
         } catch (AuthorizationException) {
             $action->failureNotificationTitle('You are not allowed to make this change. Nothing was applied.')->failure();
 
@@ -28,6 +31,6 @@ trait AppliesChangeSets
             return;
         }
 
-        $action->successNotificationTitle(sprintf('%d record(s) were created.', $result['created']))->success();
+        $action->successNotificationTitle(sprintf('Created %d %s', $result['created'], Str::plural('Record', $result['created'])))->success();
     }
 }

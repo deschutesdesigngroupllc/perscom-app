@@ -6,6 +6,9 @@ namespace App\Support\Passport;
 
 use Illuminate\Support\Facades\Session;
 
+use function is_int;
+use function sprintf;
+
 class OidcAuthorization
 {
     /**

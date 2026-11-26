@@ -47,7 +47,7 @@ class CalendarControllerTest extends TenantTestCase
     {
         $event = Event::factory()->createQuietly();
 
-        $this->actingAs(User::factory()->createQuietly())
+        $this->actingAs(User::factory()->createQuietly()->syncRoles([]))
             ->get(route('app.events.calendar', ['event' => $event->getKey()]))
             ->assertForbidden();
     }

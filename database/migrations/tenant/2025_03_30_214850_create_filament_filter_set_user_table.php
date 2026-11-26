@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::create('filament_filter_set_user', function (Blueprint $table) {
+        Schema::create('filament_filter_set_user', function (Blueprint $table): void {
             $userClass = Archilex\AdvancedTables\Support\Config::getUser();
             $user = new $userClass;
 

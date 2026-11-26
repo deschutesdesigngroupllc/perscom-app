@@ -28,7 +28,7 @@ class ApiControllerTest extends ApiTestCase
     public function test_api_cannot_be_reached_with_invalid_version(): void
     {
         $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => $this->faker->word,
+            'version' => $this->faker->word(),
         ]))->assertBadRequest();
     }
 

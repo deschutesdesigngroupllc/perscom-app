@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\TaskResource\Pages\CreateTask;
 use App\Filament\App\Resources\TaskResource\Pages\EditTask;
 use App\Filament\App\Resources\TaskResource\Pages\ListTasks;
+use App\Filament\App\Resources\TaskResource\RelationManagers\AssigneesRelationManager;
 use App\Filament\App\Resources\TaskResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\Exports\TaskExporter;
 use App\Models\Task;
@@ -34,11 +35,11 @@ class TaskResource extends BaseResource
 {
     protected static ?string $model = Task::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 12;
 
     public static function form(Schema $schema): Schema
     {
@@ -49,7 +50,7 @@ class TaskResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Task')
-                            ->icon('heroicon-o-clipboard-document-check')
+                            ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                             ->schema([
                                 TextInput::make('title')
                                     ->helperText('The title of the task.')
@@ -69,7 +70,7 @@ class TaskResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Form')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->schema([
                                 Select::make('form_id')
                                     ->preload()
@@ -85,14 +86,14 @@ class TaskResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedDocumentCheck)
-            ->emptyStateDescription('There are no tasks to view. Create one to get started.')
+            ->emptyStateDescription('Tasks are assignments with due dates for your members. Create one to start tracking work.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -109,7 +110,7 @@ class TaskResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(TaskExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -119,6 +120,7 @@ class TaskResource extends BaseResource
     public static function getRelations(): array
     {
         return [
+            AssigneesRelationManager::class,
             AttachmentsRelationManager::class,
         ];
     }

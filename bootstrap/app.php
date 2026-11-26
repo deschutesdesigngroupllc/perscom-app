@@ -32,7 +32,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
-use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -142,7 +142,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AddQueuedCookiesToResponse::class,
             StartSession::class,
             ShareErrorsFromSession::class,
-            ValidateCsrfToken::class,
+            PreventRequestForgery::class,
             ThrottleRequests::class,
             ThrottleRequestsWithRedis::class,
             SubstituteBindings::class,

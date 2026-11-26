@@ -13,9 +13,7 @@ use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\EventOccurrence;
 use App\Models\Schedule;
-use App\Models\User;
 use App\Settings\OrganizationSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Guava\Calendar\ValueObjects\CalendarEvent;
 use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
@@ -154,15 +152,5 @@ class CalendarWidgetTest extends TenantTestCase
         Event::factory()->createQuietly(['name' => 'Old Event', 'repeats' => false, 'all_day' => false, 'starts' => Date::parse('2026-01-01 10:00:00'), 'ends' => Date::parse('2026-01-01 11:00:00')]);
 
         return $event;
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

@@ -3,6 +3,5 @@ You received a new message.
 
 {!! $message !!}
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

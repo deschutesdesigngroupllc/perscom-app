@@ -6,15 +6,19 @@ namespace App\Filament\App\Resources\MessageResource\Pages;
 
 use App\Filament\App\Resources\AutomationResource;
 use App\Filament\App\Resources\MessageResource;
+use App\Filament\Concerns\HasContainedWizard;
 use Filament\Resources\Pages\CreateRecord;
-use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Wizard\Step;
+use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 
 class CreateMessage extends CreateRecord
 {
-    use HasWizard;
+    use HasContainedWizard;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = MessageResource::class;
 
@@ -25,7 +29,7 @@ class CreateMessage extends CreateRecord
     {
         return [
             Step::make('Message')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema([
                     Text::make('tip')
                         ->columnSpanFull()
@@ -38,13 +42,13 @@ class CreateMessage extends CreateRecord
                     ...MessageResource::messageSchema(),
                 ]),
             Step::make('Channels')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::channelSchema()),
-            Step::make('Details')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+            Step::make('Recipients')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::detailsSchema()),
             Step::make('Schedule')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::scheduleSchema()),
         ];
     }

@@ -17,7 +17,7 @@ class TenantDatabaseSeeder extends Seeder
     public function run(): void
     {
         /** @var SetupTenantAccount $action */
-        $action = app(SetupTenantAccount::class);
+        $action = resolve(SetupTenantAccount::class);
         $action
             ->shouldCreateUser(false)
             ->shouldCreateAnnouncement(false)

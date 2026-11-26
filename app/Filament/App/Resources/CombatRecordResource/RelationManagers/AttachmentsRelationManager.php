@@ -8,13 +8,14 @@ use App\Filament\App\Resources\AttachmentResource;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class AttachmentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'attachments';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-paper-clip';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedPaperClip;
 
     public function form(Schema $schema): Schema
     {

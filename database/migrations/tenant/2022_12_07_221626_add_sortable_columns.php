@@ -15,15 +15,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->integer('order')->after('image')->default(0);
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->integer('order')->after('description')->default(0);
         });
 
-        Schema::table('positions', function (Blueprint $table) {
+        Schema::table('positions', function (Blueprint $table): void {
             $table->integer('order')->after('description')->default(0);
         });
     }
@@ -35,15 +35,15 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
 
-        Schema::table('positions', function (Blueprint $table) {
+        Schema::table('positions', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
     }

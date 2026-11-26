@@ -10,6 +10,5 @@
   Go To Dashboard
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

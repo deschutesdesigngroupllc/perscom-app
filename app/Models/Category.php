@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -50,20 +51,19 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'description',
+    'resource',
+    'created_at',
+    'updated_at',
+])]
 class Category extends Model implements HasLabel
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasResourceLabel;
     use HasResourceUrl;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'resource',
-        'created_at',
-        'updated_at',
-    ];
 
     public function awards(): BelongsToMany
     {

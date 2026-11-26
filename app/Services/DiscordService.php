@@ -9,12 +9,15 @@ use Closure;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
+
+use function sprintf;
 
 class DiscordService
 {
@@ -23,13 +26,24 @@ class DiscordService
      */
     public const string BOT_PERMISSIONS = '2617527475';
 
+    /**
+     * Connecting needs the OAuth client for the install and the bot token for everything after it, so
+     * Discord is only offered when all three are set.
+     */
+    public static function isConfigured(): bool
+    {
+        return filled(config('services.discord.client_id'))
+            && filled(config('services.discord.client_secret'))
+            && filled(config('services.discord.token'));
+    }
+
     public static function addBotToServerLink(): string
     {
         return Url::fromString('https://discord.com/api/oauth2/authorize')
             ->withQueryParameters([
                 'client_id' => config('services.discord.client_id'),
                 'scope' => 'bot applications.commands',
-                'permissions' => DiscordService::BOT_PERMISSIONS,
+                'permissions' => self::BOT_PERMISSIONS,
             ])
             ->__toString();
     }
@@ -44,9 +58,9 @@ class DiscordService
             ->withQueryParameters([
                 'client_id' => config('services.discord.client_id'),
                 'scope' => 'bot applications.commands',
-                'permissions' => DiscordService::BOT_PERMISSIONS,
+                'permissions' => self::BOT_PERMISSIONS,
                 'response_type' => 'code',
-                'redirect_uri' => DiscordService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
                 'state' => $state,
             ])
             ->__toString();
@@ -73,11 +87,16 @@ class DiscordService
                 'client_secret' => config('services.discord.client_secret'),
                 'grant_type' => 'authorization_code',
                 'code' => $code,
-                'redirect_uri' => DiscordService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
             ]);
 
         if (! $response->successful() || blank($response->json('guild.id'))) {
-            Log::debug('Discord install code exchange failed', (array) $response->json());
+            Log::warning('Discord install code exchange failed', [
+                'status' => $response->status(),
+                'error' => $response->json('error'),
+                'error_description' => $response->json('error_description'),
+                'redirect_uri' => self::installRedirectUri(),
+            ]);
 
             return null;
         }
@@ -89,31 +108,37 @@ class DiscordService
     }
 
     /**
+     * Register the application's slash commands with Discord.
+     *
      * @param  array<int, array<string, mixed>>  $commands
      *
      * @throws ConnectionException
      */
     public static function registerCommands(array $commands): bool
     {
-        return DiscordService::send('put', sprintf('applications/%s/commands', config('services.discord.client_id')), $commands)?->successful() ?? false;
+        return self::send('put', sprintf('applications/%s/commands', config('services.discord.client_id')), $commands)?->successful() ?? false;
     }
 
     /**
+     * Get the roles in the server.
+     *
      * @return array<int, array<string, mixed>>
      *
      * @throws ConnectionException
      */
     public static function getRoles(string $guildId): array
     {
-        return (array) DiscordService::send('get', sprintf('guilds/%s/roles', $guildId))?->json();
+        return (array) self::send('get', sprintf('guilds/%s/roles', $guildId))?->json();
     }
 
     /**
+     * Create a role in the server and return its id.
+     *
      * @throws ConnectionException
      */
     public static function createRole(string $guildId, string $name): ?string
     {
-        $response = DiscordService::send('post', sprintf('guilds/%s/roles', $guildId), [
+        $response = self::send('post', sprintf('guilds/%s/roles', $guildId), [
             'name' => Str::limit($name, 97),
             'mentionable' => true,
         ]);
@@ -122,31 +147,37 @@ class DiscordService
     }
 
     /**
+     * Get a member of the server.
+     *
      * @return array<string, mixed>|null
      *
      * @throws ConnectionException
      */
     public static function getMember(string $guildId, string $userId): ?array
     {
-        $response = DiscordService::send('get', sprintf('guilds/%s/members/%s', $guildId, $userId));
+        $response = self::send('get', sprintf('guilds/%s/members/%s', $guildId, $userId));
 
         return $response?->successful() ? (array) $response->json() : null;
     }
 
     /**
+     * Add a role to a member of the server.
+     *
      * @throws ConnectionException
      */
     public static function addMemberRole(string $guildId, string $userId, string $roleId): bool
     {
-        return DiscordService::send('put', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
+        return self::send('put', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
     }
 
     /**
+     * Remove a role from a member of the server.
+     *
      * @throws ConnectionException
      */
     public static function removeMemberRole(string $guildId, string $userId, string $roleId): bool
     {
-        return DiscordService::send('delete', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
+        return self::send('delete', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
     }
 
     /**
@@ -156,73 +187,95 @@ class DiscordService
      */
     public static function setNickname(string $guildId, string $userId, string $nickname): bool
     {
-        return DiscordService::send('patch', sprintf('guilds/%s/members/%s', $guildId, $userId), [
+        return self::send('patch', sprintf('guilds/%s/members/%s', $guildId, $userId), [
             'nick' => Str::limit($nickname, 29),
         ])?->successful() ?? false;
     }
 
     /**
+     * Remove the bot from the server.
+     *
      * @throws ConnectionException
      */
     public static function leaveServer(string $guildId): bool
     {
-        return DiscordService::send('delete', sprintf('users/@me/guilds/%s', $guildId))?->successful() ?? false;
+        return self::send('delete', sprintf('users/@me/guilds/%s', $guildId))?->successful() ?? false;
     }
 
     /**
+     * Get the servers the bot belongs to.
+     *
      * @throws ConnectionException
      * @throws DiscordRateLimitException
      */
     public static function getGuilds(): mixed
     {
-        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) {
+        $request = function (DiscordService $service): mixed {
             $response = $service
                 ->client()
                 ->get('users/@me/guilds');
 
             $data = $response->json();
 
-            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord get guilds error', $data);
+                Log::warning('Discord get guilds error', ['status' => $response->status(), 'body' => $data]);
 
                 return null;
             }
 
             return $data;
-        }));
+        };
+
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler($request));
     }
 
     /**
+     * Get the channels in the server.
+     *
      * @throws ConnectionException
      * @throws DiscordRateLimitException
      */
     public static function getChannels(string|int $guildId): mixed
     {
-        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) use ($guildId) {
+        $request = function (DiscordService $service) use ($guildId): mixed {
             $response = $service
                 ->client()
                 ->get(sprintf('guilds/%s/channels', $guildId));
 
             $data = $response->json();
 
-            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord get channels error', $data);
+                Log::warning('Discord get channels error', ['guild' => $guildId, 'status' => $response->status(), 'body' => $data]);
 
                 return null;
             }
 
             return $data;
-        }));
+        };
+
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler($request));
+    }
+
+    /**
+     * Discord reports retry_after in seconds (as a float). Web requests wait at most two seconds per
+     * attempt so a rate limit never stalls a page; queued work honors the full delay up to a minute.
+     *
+     * @param  array<string, mixed>|null  $data
+     */
+    public static function retryDelayInMilliseconds(?array $data): int
+    {
+        $milliseconds = (int) ceil((float) data_get($data, 'retry_after', 1) * 1000);
+        $maximum = App::runningInConsole() ? 60_000 : 2_000;
+
+        return max(0, min($milliseconds, $maximum));
     }
 
     public function client(): PendingRequest
@@ -235,6 +288,8 @@ class DiscordService
     }
 
     /**
+     * Send a request to the Discord API.
+     *
      * @param  array<int|string, mixed>  $data
      *
      * @throws ConnectionException
@@ -249,7 +304,7 @@ class DiscordService
             }
 
             if (! $response->successful()) {
-                Log::debug('Discord API error', ['uri' => $uri, 'status' => $response->status(), 'body' => $response->json()]);
+                Log::warning('Discord API error', ['uri' => $uri, 'status' => $response->status(), 'body' => $response->json()]);
             }
 
             return $response;
@@ -265,9 +320,7 @@ class DiscordService
             } catch (DiscordRateLimitException $exception) {
                 $retryCount++;
 
-                $retryAfter = data_get($exception->getData(), 'retry_after', 10);
-
-                Sleep::until(Date::now()->addMilliseconds($retryAfter));
+                Sleep::until(Date::now()->addMilliseconds(self::retryDelayInMilliseconds($exception->getData())));
             }
         }
 

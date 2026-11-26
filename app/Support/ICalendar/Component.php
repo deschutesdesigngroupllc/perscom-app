@@ -9,9 +9,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 
-/**
- * An iCalendar (RFC 5545) component such as a VEVENT, holding content lines and nested components.
- */
+use function count;
+use function sprintf;
+
 class Component
 {
     use Conditionable;
@@ -38,7 +38,7 @@ class Component
      */
     public static function escape(string $value): string
     {
-        return str_replace(
+        return Str::replace(
             ['\\', ';', ',', "\r\n", "\r", "\n"],
             ['\\\\', '\;', '\\,', '\\n', '\\n', '\\n'],
             $value,
@@ -51,7 +51,7 @@ class Component
      */
     public static function fold(string $line): string
     {
-        if (strlen($line) <= 75) {
+        if (mb_strlen($line, '8bit') <= 75) {
             return $line;
         }
 
@@ -59,7 +59,7 @@ class Component
             $limit = count($carry) === 1 ? 75 : 74;
             $current = (string) end($carry);
 
-            if (strlen($current) + strlen($character) > $limit) {
+            if (mb_strlen($current, '8bit') + mb_strlen($character, '8bit') > $limit) {
                 $carry[] = $character;
             } else {
                 $carry[array_key_last($carry)] = $current.$character;
@@ -68,7 +68,7 @@ class Component
             return $carry;
         }, ['']);
 
-        return implode("\r\n ", $folded);
+        return collect($folded)->implode("\r\n ");
     }
 
     public static function formatUtcDateTime(CarbonInterface $value): string
@@ -131,7 +131,7 @@ class Component
         return $this->property($name, static::formatDate($value), ['VALUE' => 'DATE']);
     }
 
-    public function component(Component $component): static
+    public function component(self $component): static
     {
         $this->components[] = $component;
 
@@ -139,6 +139,8 @@ class Component
     }
 
     /**
+     * Add each of the given nested components.
+     *
      * @param  iterable<int, Component>  $components
      */
     public function components(iterable $components): static
@@ -172,6 +174,8 @@ class Component
     }
 
     /**
+     * Format the parameters as a content line parameter list.
+     *
      * @param  array<string, string>  $parameters
      */
     protected static function formatParameters(array $parameters): string
@@ -181,7 +185,7 @@ class Component
             ->map(fn (string $value, string $key): string => sprintf(
                 ';%s=%s',
                 Str::upper($key),
-                Str::contains($value, [':', ';', ',']) ? '"'.str_replace('"', '', $value).'"' : $value,
+                Str::contains($value, [':', ';', ',']) ? '"'.Str::replace('"', '', $value).'"' : $value,
             ))
             ->implode('');
     }

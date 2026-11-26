@@ -48,9 +48,9 @@ class AttachmentResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-paper-clip';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPaperClip;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static ?int $navigationSort = 32;
 
@@ -65,7 +65,7 @@ class AttachmentResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Attachment')
-                            ->icon('heroicon-o-paper-clip')
+                            ->icon(Heroicon::OutlinedPaperClip)
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
@@ -82,7 +82,7 @@ class AttachmentResource extends BaseResource
                             ]),
                         Tab::make('Resource')
                             ->visibleOn(CreateAttachment::class)
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 MorphToSelect::make('model')
                                     ->contained(false)
@@ -126,27 +126,27 @@ class AttachmentResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Attachment')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('attachment_url')
                                     ->label('URL')
-                                    ->url(fn ($state) => $state)
+                                    ->url(fn (?string $state): ?string => $state)
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
                                     ->label('Attachment'),
                             ]),
                         Tab::make('Resource')
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 TextEntry::make('model.label')
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
-                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (Attachment $record) => $record->model_url),
+                                    ->url(fn (Attachment $record): ?string => $record->model_url),
                             ]),
                     ]),
             ]);
@@ -156,7 +156,7 @@ class AttachmentResource extends BaseResource
     {
         return $table
             ->heading('Manage Attachments')
-            ->description('As files are uploaded to specific resources such as documents, records, users, etc. they will appear here for central management.')
+            ->description('As files are uploaded to specific resources such as documents, records, members, etc. they will appear here for central management.')
             ->recordTitleAttribute('name')
             ->emptyStateIcon(Heroicon::OutlinedPaperClip)
             ->emptyStateDescription('Create an attachment to get started.')
@@ -169,9 +169,9 @@ class AttachmentResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('attachment_url')
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn (?string $state): ?string => $state)
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
@@ -179,9 +179,9 @@ class AttachmentResource extends BaseResource
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (Attachment $record) => $record->model_url),
+                    ->url(fn (Attachment $record): ?string => $record->model_url),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -189,9 +189,9 @@ class AttachmentResource extends BaseResource
             ])
             ->recordActions([
                 Action::make('download')
-                    ->icon('heroicon-o-cloud-arrow-down')
+                    ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->color('gray')
-                    ->url(fn (?Attachment $record) => $record->attachment_url)
+                    ->url(fn (?Attachment $record): ?string => $record->attachment_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),
@@ -223,9 +223,9 @@ class AttachmentResource extends BaseResource
                     ->limit()
                     ->wrap()
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn (?string $state): ?string => $state)
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->sortable(),
             ])
@@ -234,9 +234,9 @@ class AttachmentResource extends BaseResource
             ])
             ->recordActions([
                 Action::make('download')
-                    ->icon('heroicon-o-cloud-arrow-down')
+                    ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->color('gray')
-                    ->url(fn (?Attachment $record) => $record->attachment_url)
+                    ->url(fn (?Attachment $record): ?string => $record->attachment_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),

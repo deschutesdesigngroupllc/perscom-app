@@ -19,6 +19,8 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class CalendarFeedServiceTest extends TenantTestCase
 {
     public function test_the_token_is_generated_once_and_can_be_reset(): void
@@ -27,7 +29,7 @@ class CalendarFeedServiceTest extends TenantTestCase
 
         $token = CalendarFeedService::tokenFor($user);
 
-        $this->assertSame(40, strlen($token));
+        $this->assertSame(40, mb_strlen($token));
         $this->assertSame($token, CalendarFeedService::tokenFor($user->fresh()));
 
         $reset = CalendarFeedService::resetToken($user);
@@ -109,7 +111,7 @@ class CalendarFeedServiceTest extends TenantTestCase
         $this->assertStringContainsString(sprintf("DTEND;TZID=%s:%s\r\n", $timezone, $this->local(Date::parse('2026-05-07 21:00:00'), $timezone)), $ics);
         $this->assertMatchesRegularExpression('/\r\nRRULE:FREQ=WEEKLY[^\r]*\r\n/', $ics);
         $this->assertStringContainsString(sprintf("EXDATE;TZID=%s:%s\r\n", $timezone, $this->local($cancelled, $timezone)), $ics);
-        $this->assertSame(1, substr_count($ics, 'BEGIN:VEVENT'));
+        $this->assertSame(1, mb_substr_count($ics, 'BEGIN:VEVENT'));
     }
 
     public function test_repeating_events_keep_local_time_in_the_organization_timezone(): void
@@ -137,7 +139,7 @@ class CalendarFeedServiceTest extends TenantTestCase
 
         $ics = CalendarFeedService::render([$event->fresh()], 'Events');
 
-        $this->assertSame(2, substr_count($ics, 'BEGIN:VEVENT'));
+        $this->assertSame(2, mb_substr_count($ics, 'BEGIN:VEVENT'));
         $this->assertStringContainsString('RECURRENCE-ID;TZID=', $ics);
         $this->assertStringContainsString('Meet at the north gate.', str_replace("\r\n ", '', $ics));
     }

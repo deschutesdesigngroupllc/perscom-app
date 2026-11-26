@@ -29,10 +29,10 @@ class AuthenticateApi
         $client = resolve(ClientCredentials::class);
 
         try {
-            return $authenticate->handle($request, fn ($request) => $next($request), 'api');
+            return $authenticate->handle($request, fn (Request $request): Response => $next($request), 'api');
         } catch (Exception $exception) {
             if ($exception instanceof AuthenticationException) {
-                return $client->handle($request, fn ($request) => $next($request));
+                return $client->handle($request, fn (Request $request): Response => $next($request));
             }
 
             throw $exception;

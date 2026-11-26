@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table): void {
             $table->id();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
@@ -25,11 +25,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->dropColumn('image');
         });
 
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->dropColumn('image');
         });
     }
@@ -43,11 +43,11 @@ return new class extends Migration
     {
         Schema::dropIfExists('images');
 
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->string('image')->nullable();
         });
 
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->string('image')->nullable();
         });
     }

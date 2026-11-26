@@ -13,7 +13,7 @@
 <x-filament-panels::page>
   <div class="flex min-w-0 flex-col gap-4" x-data x-init="if (!@js($hasDisplayPreference) && @js($display) !== 'agenda' && window.matchMedia('(max-width: 639px)').matches) { $wire.setDisplay('agenda', false) }">
     <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
-      <div class="flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0" role="group"
+      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0" role="group"
         aria-label="Filter events">
         @foreach ($calendars as $calendar)
           @php
@@ -81,9 +81,15 @@
         @endforelse
 
         <div class="flex justify-center">
-          <x-filament::button color="gray" wire:click="loadMore" wire:target="loadMore" :icon="$past ? 'heroicon-m-arrow-up' : 'heroicon-m-arrow-down'">
-            {{ $past ? 'Load earlier' : 'Load more' }}
-          </x-filament::button>
+          @if ($this->hasMoreAgenda())
+            <x-filament::button color="gray" wire:click="loadMore" wire:target="loadMore" :icon="$past ? 'heroicon-m-arrow-up' : 'heroicon-m-arrow-down'">
+              {{ $past ? 'Load Earlier' : 'Load More' }}
+            </x-filament::button>
+          @else
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              {{ $past ? 'No earlier events in the past year.' : 'No more events scheduled in the next year.' }}
+            </p>
+          @endif
         </div>
       </div>
     @else

@@ -49,7 +49,7 @@ class UserRequest extends Request
     {
         $user = $this->route('user');
 
-        if (is_null($user)) {
+        if ($user === null) {
             return [];
         }
 

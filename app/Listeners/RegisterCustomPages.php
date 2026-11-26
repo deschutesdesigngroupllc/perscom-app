@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Uri;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
+use function in_array;
+
 class RegisterCustomPages
 {
     /**
@@ -24,7 +26,7 @@ class RegisterCustomPages
     {
         $panel = Filament::getCurrentOrDefaultPanel();
 
-        if (is_null($panel) || App::isAdmin() || in_array($panel->getId(), ['admin', 'public'])) {
+        if ($panel === null || App::isAdmin() || in_array($panel->getId(), ['admin', 'public'])) {
             return;
         }
 
@@ -34,7 +36,10 @@ class RegisterCustomPages
 
         $pages = Page::all()->map(fn (Page $page): NavigationItem => NavigationItem::make($page->name)
             ->url(FilamentPage::getUrl(['page' => $page->slug]))
-            ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(), request()->getUri()))
+            ->isActiveWhen(fn (): bool => Str::is(
+                Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(),
+                request()->getUri(),
+            ))
             ->group('Pages')
             ->icon($page->icon)
             ->sort($page->order)

@@ -1,10 +1,9 @@
 @component('mail::message')
-# Hello,
+# Your Password Was Changed
 
-{{ __('We wanted to let you know that the password associated with your PERSCOM account has been changed.') }}
+The password for your PERSCOM account was just changed.
 
-{{ __('If this was not intended, or if you did not perform this action, please contact support@deschutesdesigngroup.com, or submit a support ticket.') }}
+If you didn't make this change, reset your password from the sign-in page right away and let your organization's administrator know.
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

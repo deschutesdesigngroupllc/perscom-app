@@ -12,6 +12,9 @@ use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
 
+use function in_array;
+use function is_array;
+
 /**
  * @property string $id
  * @property string|null $owner_type
@@ -39,7 +42,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-read int|null $tokens_count
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient existsIn(array $haystack)
+ * @method static Builder<static>|PassportClient existsIn(array $haystack)
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()
@@ -82,6 +85,13 @@ class PassportClient extends BaseClientModel
         'revoked' => false,
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'type' => PassportClientType::class,
+        ];
+    }
+
     public function hasScope(string $scope): bool
     {
         /**
@@ -93,12 +103,5 @@ class PassportClient extends BaseClientModel
         }
 
         return parent::hasScope($scope);
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => PassportClientType::class,
-        ];
     }
 }

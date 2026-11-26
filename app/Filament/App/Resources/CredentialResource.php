@@ -33,11 +33,13 @@ class CredentialResource extends BaseResource
 {
     protected static ?string $model = Credential::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 11;
+
+    protected static ?string $navigationParentItem = 'Qualifications';
 
     public static function form(Schema $schema): Schema
     {
@@ -86,7 +88,7 @@ class CredentialResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedIdentification)
-            ->emptyStateDescription('There are no credentials to view. Create one to get started.')
+            ->emptyStateDescription('Credentials record licenses and certifications with expiry dates. Add one to start tracking them.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -121,7 +123,7 @@ class CredentialResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CredentialExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

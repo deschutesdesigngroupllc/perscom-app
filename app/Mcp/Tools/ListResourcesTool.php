@@ -7,6 +7,7 @@ namespace App\Mcp\Tools;
 use App\Mcp\ApiResourceRegistry;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
+use Illuminate\Support\Collection;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -28,11 +29,14 @@ class ListResourcesTool extends Tool
     public function handle(Request $request): Response
     {
         $validated = $request->validate([
-            'resource' => ['nullable', 'string', 'in:'.implode(',', ApiResourceRegistry::keys())],
+            'resource' => ['nullable', 'string', 'in:'.collect(ApiResourceRegistry::keys())->implode(',')],
         ]);
 
         $resources = collect(ApiResourceRegistry::all())
-            ->when(filled($validated['resource'] ?? null), fn ($resources) => $resources->only($validated['resource']))
+            ->when(
+                filled($validated['resource'] ?? null),
+                fn (Collection $resources): Collection => $resources->only($validated['resource']),
+            )
             ->map(fn (array $resource, string $key): array => [
                 'resource' => $key,
                 'description' => $resource['description'],

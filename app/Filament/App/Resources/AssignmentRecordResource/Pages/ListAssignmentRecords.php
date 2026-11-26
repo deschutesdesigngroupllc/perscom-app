@@ -33,7 +33,7 @@ class ListAssignmentRecords extends ListRecords
                 ->favorite()
                 ->label($recordType->getLabel())
                 ->color($recordType->getColor())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type', $recordType)),
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('type', $recordType)),
         ])->toArray();
     }
 

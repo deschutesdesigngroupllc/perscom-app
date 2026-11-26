@@ -20,7 +20,7 @@ class PagesTable
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedBookOpen)
-            ->emptyStateDescription('There are no pages to view. Create one to get started.')
+            ->emptyStateDescription('Custom pages publish your own content inside PERSCOM. Create one to get started.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

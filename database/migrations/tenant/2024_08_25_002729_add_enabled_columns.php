@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->boolean('enabled')->after('global')->default(true);
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->dropColumn(['enabled']);
         });
     }

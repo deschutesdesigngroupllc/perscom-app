@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -31,18 +33,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'specialty_id',
+    'category_id',
+    'order',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'specialties_categories')]
 class SpecialtyCategory extends Pivot
 {
-    protected $table = 'specialties_categories';
-
-    protected $fillable = [
-        'specialty_id',
-        'category_id',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);

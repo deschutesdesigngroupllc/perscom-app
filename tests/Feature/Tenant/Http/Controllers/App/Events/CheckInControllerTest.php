@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Services\EventAttendanceService;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class CheckInControllerTest extends TenantTestCase
 {
     public function test_signed_link_checks_the_user_in(): void

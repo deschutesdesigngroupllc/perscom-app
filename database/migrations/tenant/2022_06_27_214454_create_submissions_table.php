@@ -15,7 +15,7 @@ class CreateSubmissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('submissions', function (Blueprint $table) {
+        Schema::create('submissions', function (Blueprint $table): void {
             $table->id();
             $table->unsignedInteger('form_id');
             $table->unsignedInteger('user_id')->nullable();

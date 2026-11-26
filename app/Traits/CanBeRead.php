@@ -14,12 +14,12 @@ trait CanBeRead
 {
     public function markAsRead(): static
     {
-        return tap($this, fn (Model $model) => $model->update(['read_at' => now()]));
+        return tap($this, fn (Model $model): bool => $model->update(['read_at' => now()]));
     }
 
     public function markAsUnread(): static
     {
-        return tap($this, fn (Model $model) => $model->update(['read_at' => null]));
+        return tap($this, fn (Model $model): bool => $model->update(['read_at' => null]));
     }
 
     protected function scopeRead(Builder $query): void

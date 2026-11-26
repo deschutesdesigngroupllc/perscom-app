@@ -20,11 +20,13 @@ trait JwtClaims
     }
 
     /**
+     * Get the custom claims to embed in the user's JWT.
+     *
      * @return array<string, mixed>
      */
     public function getJWTCustomClaims(): array
     {
-        $timezone = UserSettingsService::get('timezone', function () {
+        $timezone = UserSettingsService::get('timezone', function (): ?string {
             /** @var OrganizationSettings $settings */
             $settings = resolve(OrganizationSettings::class);
 

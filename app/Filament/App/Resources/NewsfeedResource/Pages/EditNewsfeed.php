@@ -10,11 +10,14 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class EditNewsfeed extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = NewsfeedResource::class;
 
     /**

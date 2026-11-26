@@ -10,6 +10,7 @@ use App\Models\ApiPurgeLog;
 use BackedEnum;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -22,13 +23,13 @@ class ApiPurgeLogResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Purges';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
     protected static ?string $navigationParentItem = 'API Keys';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $label = 'API cache logs';
 
@@ -39,7 +40,7 @@ class ApiPurgeLogResource extends BaseResource
             ->columns([
                 TextColumn::make('apiLog.id')
                     ->label('API Log ID')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->url(function (ApiPurgeLog $record): ?string {
                         if (blank($apiLogs = $record->apiLog)) {
@@ -58,7 +59,7 @@ class ApiPurgeLogResource extends BaseResource
                     ->placeholder('No Description')
                     ->label('Event')
                     ->searchable()
-                    ->formatStateUsing(fn ($state) => Str::title($state))
+                    ->formatStateUsing(fn ($state): string => Str::title($state))
                     ->sortable(),
                 TextColumn::make('tags')
                     ->label('Cache Tags')

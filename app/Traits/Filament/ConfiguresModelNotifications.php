@@ -10,10 +10,13 @@ use App\Models\ModelNotification;
 use App\Models\Submission;
 use App\Models\Unit;
 use App\Models\User;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+
+use function is_array;
 
 /**
  * @mixin CreateRecord
@@ -56,7 +59,7 @@ trait ConfiguresModelNotifications
 
         if (data_get($data, 'enabled', false)) {
             $subject = data_get($data, 'subject', '');
-            $message = data_get($data, 'messagesssss', 'test');
+            $message = $this->normalizeNotificationMessage(data_get($data, 'message'));
             $channels = data_get($data, 'channels', []);
 
             $recordClass = match (true) {
@@ -71,10 +74,36 @@ trait ConfiguresModelNotifications
                 ->append('.created')
                 ->toString();
 
-            collect(data_get($data, 'groups'))->each(fn (Group|string|int $groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'units'))->each(fn (Unit|string|int $unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'users'))->each(fn (User|string|int $userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'groups'))->each(
+                fn (Group|string|int $groupId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forGroup($groupId, $event, $subject, $message, $channels),
+                ),
+            );
+            collect(data_get($data, 'units'))->each(
+                fn (Unit|string|int $unitId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forUnit($unitId, $event, $subject, $message, $channels),
+                ),
+            );
+            collect(data_get($data, 'users'))->each(
+                fn (User|string|int $userId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forUser($userId, $event, $subject, $message, $channels),
+                ),
+            );
         }
+    }
+
+    /**
+     * The rich editor's raw state is a TipTap document, so it is rendered to HTML before being stored.
+     *
+     * @param  string|array<string, mixed>|null  $message
+     */
+    private function normalizeNotificationMessage(string|array|null $message): string
+    {
+        if (blank($message)) {
+            return '';
+        }
+
+        return is_array($message) ? RichContentRenderer::make($message)->toHtml() : $message;
     }
 
     private function fillModelNotificationData(Model $record): array

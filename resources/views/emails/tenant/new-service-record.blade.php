@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# New Service Record
 
-{{ __('A new service record has been added to your personnel file.') }}
+A service record was added to your profile.
 
 @if ($date)
   **Date**: {{ $date }}<br>
@@ -14,6 +14,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

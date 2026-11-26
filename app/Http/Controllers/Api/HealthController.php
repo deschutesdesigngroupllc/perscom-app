@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use JsonException;
 use Spatie\Health\ResultStores\ResultStore;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -13,6 +14,11 @@ use function response;
 
 class HealthController extends Controller
 {
+    /**
+     * Return the latest health check results.
+     *
+     * @throws JsonException when the stored check results are not valid JSON
+     */
     public function __invoke(Request $request, ResultStore $resultStore): JsonResponse
     {
         $checkResults = $resultStore->latestResults();
@@ -22,7 +28,7 @@ class HealthController extends Controller
         }
 
         return response()->json([
-            'data' => json_decode($checkResults->toJson(), true),
+            'data' => json_decode($checkResults->toJson(), true, 512, JSON_THROW_ON_ERROR),
         ]);
     }
 }

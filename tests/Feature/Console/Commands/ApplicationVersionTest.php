@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
+use function count;
+
 class ApplicationVersionTest extends TestCase
 {
     public function test_command_will_fail_return_version(): void
@@ -25,8 +27,8 @@ class ApplicationVersionTest extends TestCase
 
         $envVars = Collection::make(explode("\n", file_get_contents(App::environmentFilePath())))
             ->map(fn ($line): array => explode('=', $line, 2))
-            ->filter(fn ($parts): bool => count($parts) === 2 && trim($parts[0]) !== '')
-            ->mapWithKeys(fn (array $parts): array => [trim($parts[0]) => trim($parts[1])]);
+            ->filter(fn ($parts): bool => count($parts) === 2 && mb_trim($parts[0]) !== '')
+            ->mapWithKeys(fn (array $parts): array => [mb_trim($parts[0]) => mb_trim($parts[1])]);
 
         $this->assertSame($version, $envVars->get('APP_VERSION'));
 

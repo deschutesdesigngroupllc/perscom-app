@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\MessageResource\Pages\CreateMessage;
 use App\Filament\App\Resources\MessageResource\Pages\ListMessages;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
@@ -13,14 +14,16 @@ use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Component;
@@ -34,17 +37,21 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use UnitEnum;
+
+use function sprintf;
 
 class MessageResource extends BaseResource
 {
     protected static ?string $model = Message::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -55,17 +62,17 @@ class MessageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Message')
-                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                             ->schema(static::messageSchema()),
                         Tab::make('Channels')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema(static::channelSchema()),
-                        Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                        Tab::make('Recipients')
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema(static::detailsSchema()),
                         Tab::make('Schedule')
                             ->visible(fn (Get $get): mixed => $get('repeats'))
-                            ->icon('heroicon-o-arrow-path')
+                            ->icon(Heroicon::OutlinedArrowPath)
                             ->schema(static::scheduleSchema()),
                     ]),
             ]);
@@ -75,14 +82,14 @@ class MessageResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedChatBubbleLeftRight)
-            ->emptyStateDescription('There are no messages to view. Create one to get started.')
+            ->emptyStateDescription('Messages reach members by email, Discord, SMS and more. Write your first one.')
             ->columns([
                 TextColumn::make('message')
                     ->searchable()
                     ->html()
                     ->wrap()
                     ->sortable()
-                    ->icon(fn (Message $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Message $record): ?Heroicon => $record->repeats ? Heroicon::OutlinedArrowPath : null),
                 TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),
@@ -91,7 +98,7 @@ class MessageResource extends BaseResource
                 TextColumn::make('send_at')
                     ->placeholder('Sent Immediately')
                     ->label('Send')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -102,7 +109,7 @@ class MessageResource extends BaseResource
                 TextColumn::make('sent_at')
                     ->placeholder('Not Sent Yet')
                     ->label('Sent')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -119,7 +126,9 @@ class MessageResource extends BaseResource
             ->filters([
                 SelectFilter::make('channels')
                     ->options(NotificationChannel::class)
-                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->unless(is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                    ->modifyQueryUsing(fn (Builder $query, $data): Builder => $query
+                        ->unless(data_get($data, 'value') === null)
+                        ->whereJsonContains('channels', data_get($data, 'value'))),
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
@@ -146,6 +155,8 @@ class MessageResource extends BaseResource
     }
 
     /**
+     * Build the message body editor schema.
+     *
      * @return Component[]
      */
     public static function messageSchema(string $name = 'message'): array
@@ -160,6 +171,8 @@ class MessageResource extends BaseResource
     }
 
     /**
+     * Build the notification channel picker schema.
+     *
      * @return CheckboxList[]
      */
     public static function channelSchema(string $name = 'channels'): array
@@ -170,10 +183,10 @@ class MessageResource extends BaseResource
                 ->searchable()
                 ->hiddenLabel()
                 ->bulkToggleable()
-                ->descriptions(fn () => collect(NotificationChannel::cases())
+                ->descriptions(fn (): array => collect(NotificationChannel::cases())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                     ->all())
-                ->options(fn () => collect(NotificationChannel::cases())
+                ->options(fn (): array => collect(NotificationChannel::cases())
                     ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                     ->all()),
@@ -181,18 +194,35 @@ class MessageResource extends BaseResource
     }
 
     /**
-     * @return Select[]
+     * Build the message audience and recipient schema.
+     *
+     * @return array<int, Field>
      */
     public static function detailsSchema(): array
     {
         return [
-            Select::make('recipients')
-                ->helperText('Select the recipients. Leave blank to send to everyone.')
-                ->preload()
+            Radio::make('audience')
+                ->label('Send To')
+                ->options(fn (): array => [
+                    'everyone' => sprintf(
+                        'Everyone (%s %s)',
+                        Number::format($count = User::query()->count()),
+                        Str::plural('member', $count),
+                    ),
+                    'specific' => 'Specific members',
+                ])
+                ->default('everyone')
+                ->afterStateHydrated(fn (Radio $component, Get $get): mixed => $component->state(blank($get('recipients')) ? 'everyone' : 'specific'))
+                ->live()
+                ->dehydrated(false)
+                ->required(),
+            MemberSelect::make('recipients')
+                ->label('Members')
+                ->helperText('The members who will receive this message.')
                 ->multiple()
-                ->searchable()
-                ->nullable()
-                ->options(User::query()->orderBy('name')->pluck('name', 'id')),
+                ->visible(fn (Get $get): bool => $get('audience') === 'specific')
+                ->required(fn (Get $get): bool => $get('audience') === 'specific')
+                ->dehydrateStateUsing(fn (Get $get, mixed $state): mixed => $get('audience') === 'specific' ? $state : null),
         ];
     }
 
@@ -201,13 +231,13 @@ class MessageResource extends BaseResource
         return [
             DateTimePicker::make('send_at')
                 ->label('Send At')
-                ->timezone(UserSettingsService::get('timezone', function () {
+                ->timezone(UserSettingsService::get('timezone', function (): string {
                     /** @var OrganizationSettings $settings */
                     $settings = resolve(OrganizationSettings::class);
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
-                ->minDate(fn ($component) => now()
+                ->minDate(fn (DateTimePicker $component): CarbonInterface => now()
                     ->subDay()
                     ->shiftTimezone($component->getTimezone())
                     ->setTimezone(config('app.timezone')))

@@ -23,8 +23,12 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
+
+use function in_array;
+use function is_string;
 
 class Schedule
 {
@@ -32,7 +36,7 @@ class Schedule
     {
         if (! $startHidden) {
             $start = DateTimePicker::make('start')
-                ->timezone(UserSettingsService::get('timezone', function () {
+                ->timezone(UserSettingsService::get('timezone', function (): string {
                     /** @var OrganizationSettings $settings */
                     $settings = resolve(OrganizationSettings::class);
 
@@ -99,7 +103,7 @@ class Schedule
                             ->multiple()
                             ->label('On')
                             ->default('never')
-                            ->options(function (Get $get) {
+                            ->options(function (Get $get): Collection {
                                 $month = Date::parse($get('start'))->startOfMonth();
                                 $period = collect($month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings([
                                     'monthOverflow' => false,
@@ -167,7 +171,7 @@ class Schedule
                         $start = Date::parse($get('start'));
 
                         if ($shiftScheduleTimezone) {
-                            $start->shiftTimezone(UserSettingsService::get('timezone', function () {
+                            $start->shiftTimezone(UserSettingsService::get('timezone', function (): string {
                                 /** @var OrganizationSettings $settings */
                                 $settings = resolve(OrganizationSettings::class);
 

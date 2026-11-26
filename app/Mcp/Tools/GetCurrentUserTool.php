@@ -6,6 +6,7 @@ namespace App\Mcp\Tools;
 
 use App\Mcp\Tools\Concerns\RespondsWithApiResults;
 use App\Services\InternalApiService;
+use JsonException;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -26,6 +27,11 @@ class GetCurrentUserTool extends Tool
 {
     use RespondsWithApiResults;
 
+    /**
+     * Get the member the connection is signed in as.
+     *
+     * @throws JsonException when the API response body is not valid JSON
+     */
     public function handle(Request $request): Response
     {
         $response = InternalApiService::get('me');
@@ -35,7 +41,7 @@ class GetCurrentUserTool extends Tool
         }
 
         /** @var array{data?: array<int, array<string, mixed>>} $payload */
-        $payload = json_decode((string) $response->getContent(), true);
+        $payload = json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         return Response::json(['data' => $payload['data'][0] ?? null]);
     }

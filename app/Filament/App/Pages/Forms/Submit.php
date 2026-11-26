@@ -17,6 +17,7 @@ use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -38,7 +39,7 @@ class Submit extends Page implements HasForms
 
     protected static ?string $slug = '/forms/submit/{record}';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected string $view = 'filament.app.pages.forms.submit';
 
@@ -69,7 +70,7 @@ class Submit extends Page implements HasForms
     {
         return $schema
             ->statePath('data')
-            ->components(Submit::buildCustomFieldInputs($this->submissionForm->fields));
+            ->components(self::buildCustomFieldInputs($this->submissionForm->fields));
     }
 
     public function submit(): void

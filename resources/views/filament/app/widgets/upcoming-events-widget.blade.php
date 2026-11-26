@@ -15,7 +15,7 @@
       @php
         $event = $next->event;
         $status = $this->statusFor($next);
-        $color = $event->calendar?->color ?: '#2563eb';
+        $color = $event->calendar?->color ?: \App\Support\Brand::PRIMARY_HEX;
         $responses = $this->responses($next);
         $going = $responses
             ->get(EventRegistrationStatus::GOING->value, collect())

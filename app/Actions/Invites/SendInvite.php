@@ -7,6 +7,7 @@ namespace App\Actions\Invites;
 use App\Models\Enums\InviteType;
 use App\Models\Invite;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -39,7 +40,9 @@ class SendInvite
         $invite = DB::transaction(function () use ($type, $email, $name, $user, $invitedBy): Invite {
             Invite::query()
                 ->pending()
-                ->where(fn ($query) => $query->where('email', $email)->when($user, fn ($query) => $query->orWhere('user_id', $user->getKey())))
+                ->where(fn (Builder $query): Builder => $query
+                    ->where('email', $email)
+                    ->when($user, fn (Builder $query): Builder => $query->orWhere('user_id', $user->getKey())))
                 ->update(['revoked_at' => now()]);
 
             return Invite::create([

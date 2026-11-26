@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('awards_categories', function (Blueprint $table) {
+        Schema::create('awards_categories', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('award_id')->constrained('awards')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('documents_categories', function (Blueprint $table) {
+        Schema::create('documents_categories', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('forms_categories', function (Blueprint $table) {
+        Schema::create('forms_categories', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('form_id')->constrained('forms')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('qualifications_categories', function (Blueprint $table) {
+        Schema::create('qualifications_categories', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('qualification_id')->constrained('qualifications')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
@@ -45,7 +45,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('ranks_categories', function (Blueprint $table) {
+        Schema::create('ranks_categories', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('rank_id')->constrained('ranks')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();

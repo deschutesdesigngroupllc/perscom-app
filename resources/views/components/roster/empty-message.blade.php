@@ -1,6 +1,9 @@
 @props(['structure' => 'unit', 'message' => null])
 
-<x-filament::empty-state :contained="false" heading-tag="div" icon="heroicon-o-user-group" icon-color="gray" :heading="filled(Str::of($message)->stripTags())
-    ? new \Illuminate\Support\HtmlString($message)
-    : 'No personnel assigned to this ' . $structure . '.'"
-  class="px-4 py-6" />
+<div class="px-4 pb-3 text-sm text-gray-500 dark:text-gray-400">
+  @if (filled(Str::of($message)->stripTags()))
+    {!! $message !!}
+  @else
+    No members assigned to this {{ $structure }}.
+  @endif
+</div>

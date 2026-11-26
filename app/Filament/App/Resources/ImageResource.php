@@ -45,9 +45,9 @@ class ImageResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static ?int $navigationSort = 33;
 
@@ -62,7 +62,7 @@ class ImageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Image')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
@@ -86,7 +86,7 @@ class ImageResource extends BaseResource
                                     ->storeFileNamesIn('filename'),
                             ]),
                         Tab::make('Resource')
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 MorphToSelect::make('model')
                                     ->contained(false)
@@ -114,29 +114,29 @@ class ImageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Image')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('description')
                                     ->html(),
                                 TextEntry::make('image_url')
                                     ->label('URL')
-                                    ->url(fn ($state) => $state)
+                                    ->url(fn ($state): ?string => $state)
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
                                     ->label('Image'),
                             ]),
                         Tab::make('Resource')
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 TextEntry::make('model.label')
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
-                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (Image $record) => $record->model_url),
+                                    ->url(fn (Image $record): ?string => $record->model_url),
                             ]),
                     ]),
             ]);
@@ -148,7 +148,7 @@ class ImageResource extends BaseResource
             ->heading('Manage Images')
             ->description('As images are uploaded to specific resources such as awards, ranks, qualifications, etc. they will appear here for central management.')
             ->emptyStateIcon(Heroicon::OutlinedPhoto)
-            ->emptyStateDescription('There are no images to view. Create one to get started.')
+            ->emptyStateDescription('Images uploaded to records, awards and ranks appear here.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -158,7 +158,7 @@ class ImageResource extends BaseResource
                     ->label(''),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -167,9 +167,9 @@ class ImageResource extends BaseResource
                     ->limit()
                     ->wrap()
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn ($state): ?string => $state)
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
@@ -177,9 +177,9 @@ class ImageResource extends BaseResource
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (Image $record) => $record->model_url),
+                    ->url(fn (Image $record): ?string => $record->model_url),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -187,9 +187,9 @@ class ImageResource extends BaseResource
             ])
             ->recordActions([
                 Action::make('open')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color('gray')
-                    ->url(fn (?Image $record) => $record->image_url)
+                    ->url(fn (?Image $record): ?string => $record->image_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),

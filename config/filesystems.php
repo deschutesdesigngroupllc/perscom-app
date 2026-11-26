@@ -46,6 +46,19 @@ return [
             'throw' => false,
         ],
 
+        /*
+         * Google Fonts downloaded by spatie/laravel-google-fonts. The URL is root-relative so every
+         * organization subdomain loads its fonts from its own origin; browsers block cross-origin
+         * fonts without CORS headers. Not listed in tenancy.filesystem.disks, so it is shared.
+         */
+        'google-fonts' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => '/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

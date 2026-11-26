@@ -15,6 +15,8 @@ use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
+use function sprintf;
+
 /**
  * @property int $id
  * @property int $tenant_id
@@ -34,22 +36,22 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read string|null $stripe_url
  * @property-read Tenant|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription active()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription canceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription ended()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription expiredTrial()
+ * @method static Builder<static>|Subscription active()
+ * @method static Builder<static>|Subscription canceled()
+ * @method static Builder<static>|Subscription ended()
+ * @method static Builder<static>|Subscription expiredTrial()
  * @method static \Laravel\Cashier\Database\Factories\SubscriptionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription incomplete()
+ * @method static Builder<static>|Subscription incomplete()
  * @method static Builder<static>|Subscription newModelQuery()
  * @method static Builder<static>|Subscription newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription pastDue()
+ * @method static Builder<static>|Subscription notCanceled()
+ * @method static Builder<static>|Subscription notOnGracePeriod()
+ * @method static Builder<static>|Subscription notOnTrial()
+ * @method static Builder<static>|Subscription onGracePeriod()
+ * @method static Builder<static>|Subscription onTrial()
+ * @method static Builder<static>|Subscription pastDue()
  * @method static Builder<static>|Subscription query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription recurring()
+ * @method static Builder<static>|Subscription recurring()
  * @method static Builder<static>|Subscription whereCreatedAt($value)
  * @method static Builder<static>|Subscription whereEndsAt($value)
  * @method static Builder<static>|Subscription whereId($value)

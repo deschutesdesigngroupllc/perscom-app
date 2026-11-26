@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -40,13 +41,12 @@ use Spatie\EloquentSortable\Sortable;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Table(name: 'model_has_fields')]
 class Element extends MorphPivot implements Sortable
 {
     use CanBeOrdered;
     use ClearsApiCache;
     use ClearsResponseCache;
-
-    protected $table = 'model_has_fields';
 
     public function model(): MorphTo
     {

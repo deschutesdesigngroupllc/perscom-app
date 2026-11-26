@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('issuers', function (Blueprint $table) {
+        Schema::create('issuers', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->timestamps();

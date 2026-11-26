@@ -11,9 +11,12 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 
 class EditTenant extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = TenantResource::class;
 
     protected function getHeaderActions(): array
@@ -24,7 +27,7 @@ class EditTenant extends EditRecord
                 ->color(Color::generateV3Palette('#5167FC'))
                 ->visible(fn (Tenant $record): bool => $record->hasStripeId())
                 ->openUrlInNewTab()
-                ->url(fn (Tenant $record) => $record->stripe_url),
+                ->url(fn (Tenant $record): ?string => $record->stripe_url),
             DeleteAction::make(),
         ];
     }

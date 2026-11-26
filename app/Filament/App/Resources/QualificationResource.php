@@ -8,6 +8,7 @@ use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\QualificationResource\Pages\CreateQualification;
 use App\Filament\App\Resources\QualificationResource\Pages\EditQualification;
 use App\Filament\App\Resources\QualificationResource\Pages\ListQualifications;
+use App\Filament\App\Resources\QualificationResource\RelationManagers\HoldersRelationManager;
 use App\Filament\Exports\QualificationExporter;
 use App\Models\Qualification;
 use BackedEnum;
@@ -39,11 +40,11 @@ class QualificationResource extends BaseResource
 {
     protected static ?string $model = Qualification::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 9;
 
     public static function form(Schema $schema): Schema
     {
@@ -54,7 +55,7 @@ class QualificationResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Qualification')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the qualification.')
@@ -87,7 +88,7 @@ class QualificationResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -114,7 +115,7 @@ class QualificationResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedStar)
-            ->emptyStateDescription('There are no qualifications to view. Create one to get started.')
+            ->emptyStateDescription('Qualifications record the skills and certifications members earn. Add one to start tracking them.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
@@ -123,7 +124,7 @@ class QualificationResource extends BaseResource
                     ->label('Image'),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -146,7 +147,9 @@ class QualificationResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Qualification $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(
+                        fn (Qualification $record): ?string => $record->categoryPivot?->category?->name,
+                    ),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -155,7 +158,7 @@ class QualificationResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(QualificationExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -163,6 +166,16 @@ class QualificationResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**

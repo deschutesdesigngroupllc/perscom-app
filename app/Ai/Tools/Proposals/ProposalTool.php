@@ -13,10 +13,9 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-/**
- * Proposal tools never write to the database. They add an operation to the change set,
- * which the user reviews and explicitly applies afterwards.
- */
+use function count;
+use function sprintf;
+
 abstract class ProposalTool implements Tool
 {
     public const int MAX_MEMBERS = 200;
@@ -24,6 +23,8 @@ abstract class ProposalTool implements Tool
     public function __construct(protected ProposedChangeSetData $changeSet) {}
 
     /**
+     * Build the proposed operation from the validated input.
+     *
      * @param  array<string, mixed>  $validated
      */
     abstract protected function propose(array $validated): ProposedOperationData;
@@ -53,6 +54,8 @@ abstract class ProposalTool implements Tool
     }
 
     /**
+     * Get the schema for the members the proposal applies to.
+     *
      * @return array<string, mixed>
      */
     protected function memberSchema(JsonSchema $schema): array
@@ -63,6 +66,8 @@ abstract class ProposalTool implements Tool
     }
 
     /**
+     * Name the first few members, noting how many more there are.
+     *
      * @param  array<int, int>  $userIds
      */
     protected function describeMembers(array $userIds): string

@@ -7,16 +7,16 @@ namespace App\Console\Commands;
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Central\CleanBackups;
 use App\Jobs\Tenant\CleanBackups as CleanTenantBackups;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Throwable;
 
+#[Description('Clean up the all application backups.')]
+#[Signature('perscom:backup-clean')]
 class CleanBackupsCommand extends Command implements Isolatable
 {
-    protected $signature = 'perscom:backup-clean';
-
-    protected $description = 'Clean up the all application backups.';
-
     /**
      * @throws Throwable
      */

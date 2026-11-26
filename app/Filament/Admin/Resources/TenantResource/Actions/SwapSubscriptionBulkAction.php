@@ -9,7 +9,9 @@ use Exception;
 use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
+use Laravel\Cashier\Subscription;
 
 class SwapSubscriptionBulkAction extends BulkAction
 {
@@ -23,9 +25,8 @@ class SwapSubscriptionBulkAction extends BulkAction
         $this->modalHeading('Swap Subscription');
         $this->modalDescription('Enter the new price ID to swap the subscription of the tenant.');
         $this->modalSubmitActionLabel('Swap');
-        $this->modalIcon('heroicon-o-arrow-path');
 
-        $this->groupedIcon('heroicon-m-arrow-path');
+        $this->groupedIcon(Heroicon::ArrowPath);
 
         $this->form([
             TextInput::make('price_id')
@@ -40,8 +41,8 @@ class SwapSubscriptionBulkAction extends BulkAction
         $this->action(function (SwapSubscriptionBulkAction $action, Collection $records, array $data): void {
             try {
                 match (data_get($data, 'charge_immediately', false)) {
-                    true => $records->each(fn (Tenant $record) => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
-                    default => $records->each(fn (Tenant $record) => $record->subscription()?->swap(data_get($data, 'price_id'))),
+                    true => $records->each(fn (Tenant $record): ?Subscription => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
+                    default => $records->each(fn (Tenant $record): ?Subscription => $record->subscription()?->swap(data_get($data, 'price_id'))),
                 };
             } catch (Exception $exception) {
                 $action->failureNotificationTitle($exception->getMessage());

@@ -1,37 +1,25 @@
-<x-filament-widgets::widget class="fi-filament-info-widget">
-  <x-filament::section>
-    <div class="flex items-center justify-between gap-x-3 w-full">
-      <div class="flex-1">
-        <div class="font-bold leading-6 tracking-tight">
-          {{ $this->title }}
-        </div>
-
-        @if ($this->subtitle)
-          <p class="text-sm text-gray-700 dark:text-gray-400">
-            {{ $this->subtitle }}
-          </p>
+<x-filament-widgets::widget class="fi-organization-info-widget">
+  <x-filament::section compact>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        @if ($this->plan)
+          <x-filament::badge color="{{ $this->planColor ?? 'gray' }}">{{ $this->plan }}</x-filament::badge>
         @endif
-
         @if ($this->version)
-          <p class="text-xs text-gray-500 dark:text-gray-400">
-            {{ $this->version }}
-          </p>
+          <span class="font-mono text-xs text-gray-500 dark:text-gray-400">{{ $this->version }}</span>
         @endif
       </div>
 
-      <div class="flex flex-col items-end gap-y-1">
-        <x-filament::link color="gray" href="https://docs.perscom.io" icon="heroicon-m-book-open"
-          icon-alias="panels::widgets.filament-info.open-documentation-button" rel="noopener noreferrer" target="_blank">
-          {{ __('filament-panels::widgets/filament-info-widget.actions.open_documentation.label') }}
-        </x-filament::link>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
         @if ($this->canResumeOnboarding())
-          <x-filament::link tag="button" color="gray" icon="heroicon-m-rocket-launch" wire:click="resumeOnboarding">
-            {{ __('Resume Setup Wizard') }}
+          <x-filament::link tag="button" color="primary" icon="heroicon-m-rocket-launch" wire:click="resumeOnboarding">
+            Resume Setup Wizard
           </x-filament::link>
         @endif
-        @if ($this->plan)
-          <x-filament::badge color="{{ $this->planColor ?? 'info' }}">{{ $this->plan }}</x-filament::badge>
-        @endif
+        <x-filament::link color="gray" href="https://docs.perscom.io" icon="heroicon-m-book-open" rel="noopener noreferrer"
+          target="_blank">
+          Documentation
+        </x-filament::link>
       </div>
     </div>
   </x-filament::section>

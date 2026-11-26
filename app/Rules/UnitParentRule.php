@@ -8,6 +8,8 @@ use App\Models\Unit;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
+use function in_array;
+
 class UnitParentRule implements ValidationRule
 {
     public function __construct(protected ?Unit $unit = null)

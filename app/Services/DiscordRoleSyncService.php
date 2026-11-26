@@ -9,27 +9,28 @@ use App\Settings\IntegrationSettings;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
-/**
- * Keeps a member's Discord roles and nickname in step with their PERSCOM rank and unit. PERSCOM
- * creates one role per rank and per unit and only ever adds or removes the roles it created.
- */
+use function sprintf;
+
 class DiscordRoleSyncService
 {
     public static function isEnabled(): bool
     {
-        $settings = DiscordRoleSyncService::settings();
+        $settings = self::settings();
 
         return filled(data_get($settings, 'discord_server'))
             && (filled(data_get($settings, 'sync_roles')) || filled(data_get($settings, 'sync_nicknames')));
     }
 
     /**
+     * Sync the member's Discord roles and nickname.
+     *
      * @throws ConnectionException
      */
     public static function sync(User $user): void
     {
-        $settings = DiscordRoleSyncService::settings();
+        $settings = self::settings();
         $guildId = (string) data_get($settings, 'discord_server');
 
         if (blank($guildId) || blank($user->discord_user_id)) {
@@ -43,20 +44,22 @@ class DiscordRoleSyncService
         }
 
         if (filled(data_get($settings, 'sync_roles'))) {
-            DiscordRoleSyncService::syncRoles($user, $guildId, (array) data_get($member, 'roles', []));
+            self::syncRoles($user, $guildId, (array) data_get($member, 'roles', []));
         }
 
         if (filled(data_get($settings, 'sync_nicknames'))) {
-            DiscordService::setNickname($guildId, (string) $user->discord_user_id, DiscordRoleSyncService::nickname($user));
+            DiscordService::setNickname($guildId, (string) $user->discord_user_id, self::nickname($user));
         }
     }
 
     public static function nickname(User $user): string
     {
-        return trim(sprintf('%s %s', $user->rank?->abbreviation, $user->name));
+        return Str::trim(sprintf('%s %s', $user->rank?->abbreviation, $user->name));
     }
 
     /**
+     * Add the member's desired roles and remove stale managed ones.
+     *
      * @param  array<int, string>  $currentRoleIds
      *
      * @throws ConnectionException
@@ -65,12 +68,12 @@ class DiscordRoleSyncService
     {
         $user->loadMissing(['rank', 'unit']);
 
-        $desired = DiscordRoleSyncService::desiredRoles($user)
+        $desired = self::desiredRoles($user)
             ->map(fn (string $name, string $key): ?string => DiscordRoleSyncService::ensureRole($guildId, $key, $name))
             ->filter()
             ->values();
 
-        $managed = collect((array) data_get(DiscordRoleSyncService::settings(), 'managed_roles', []))->values();
+        $managed = collect((array) data_get(self::settings(), 'managed_roles', []))->values();
         $current = collect($currentRoleIds);
 
         $desired->diff($current)->each(fn (string $roleId): bool => DiscordService::addMemberRole($guildId, (string) $user->discord_user_id, $roleId));
@@ -79,6 +82,8 @@ class DiscordRoleSyncService
     }
 
     /**
+     * Get the role names the member should hold, keyed by rank or unit.
+     *
      * @return Collection<string, string>
      */
     protected static function desiredRoles(User $user): Collection
@@ -124,6 +129,8 @@ class DiscordRoleSyncService
     }
 
     /**
+     * Get the Discord integration settings.
+     *
      * @return array<string, mixed>
      */
     protected static function settings(bool $fresh = false): array

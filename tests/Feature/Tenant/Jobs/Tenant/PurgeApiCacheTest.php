@@ -10,6 +10,8 @@ use App\Services\ApiCacheService;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function in_array;
+
 class PurgeApiCacheTest extends TenantTestCase
 {
     public function test_creating_a_model_dispatches_the_job(): void
@@ -29,7 +31,7 @@ class PurgeApiCacheTest extends TenantTestCase
 
         $rank = Rank::factory()->createQuietly();
         $rank->update([
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
         ]);
 
         Queue::assertPushed(PurgeApiCache::class, fn (PurgeApiCache $job): bool => $job->tags === ApiCacheService::tagForModel($rank)

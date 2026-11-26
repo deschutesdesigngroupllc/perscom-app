@@ -66,7 +66,7 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
         /** @var Plain|null $token */
         $token = rescue(fn (): Token => $parser->parse($jwt), report: false);
 
-        if (is_null($token)) {
+        if ($token === null) {
             return null;
         }
 

@@ -8,6 +8,7 @@ use App\Models\Enums\SubscriptionPlanType;
 use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -32,6 +33,9 @@ use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Database\TenantCollection;
+
+use function array_key_exists;
+use function in_array;
 
 /**
  * @property int $id
@@ -114,6 +118,14 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TenantObserver::class)]
+#[Appends([
+    'database_status',
+    'url',
+    'custom_url',
+    'fallback_url',
+    'setup_completed',
+    'subscription_status',
+])]
 class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 {
     use Billable {
@@ -127,14 +139,18 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     use HasFeatures;
     use Notifiable;
 
-    protected $appends = [
-        'database_status',
-        'url',
-        'custom_url',
-        'fallback_url',
-        'setup_completed',
-        'subscription_status',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'setup_complete' => 'boolean',
+            'trial_ends_at' => 'datetime',
+            'setup_completed_at' => 'datetime',
+            'last_login_at' => 'datetime',
+        ];
+    }
 
     /**
      * @return array<int, string>
@@ -184,6 +200,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Generate a URL to the named route on the tenant's domain.
+     *
      * @param  array<string, mixed>  $parameters
      */
     public function route(string $name, array $parameters = []): string
@@ -195,7 +213,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return $this->url.route($name, $parameters, false);
     }
 
-    public function resolveRouteBinding($value, $field = null): Tenant|Model|null
+    public function resolveRouteBinding($value, $field = null): self|Model|null
     {
         /** @var Domain $domain */
         $domain = Domain::query()->where('domain', $value)->first();
@@ -271,7 +289,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 
     protected function setupCompleted(): Attribute
     {
-        return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
+        return Attribute::get(fn (): bool => $this->setup_completed_at !== null)
             ->shouldCache();
     }
 
@@ -297,6 +315,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the tenant's URL.
+     *
      * @return Attribute<string|null, never>
      */
     protected function url(): Attribute
@@ -307,6 +327,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the subscription plan from the current Stripe price.
+     *
      * @return Attribute<SubscriptionPlanType, never>
      */
     protected function subscriptionPlan(): Attribute
@@ -325,6 +347,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the status of the tenant's subscription.
+     *
      * @return Attribute<SubscriptionStatus, never>
      */
     protected function subscriptionStatus(): Attribute
@@ -339,18 +363,5 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             return SubscriptionStatus::from($subscription->stripe_status);
 
         })->shouldCache();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'setup_complete' => 'boolean',
-            'trial_ends_at' => 'datetime',
-            'setup_completed_at' => 'datetime',
-            'last_login_at' => 'datetime',
-        ];
     }
 }

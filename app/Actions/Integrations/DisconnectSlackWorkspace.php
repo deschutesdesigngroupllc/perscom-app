@@ -11,7 +11,7 @@ class DisconnectSlackWorkspace
 {
     public static function handle(): void
     {
-        rescue(fn () => SlackService::revoke(), report: false);
+        rescue(fn (): null => SlackService::revoke(), report: false);
 
         /** @var IntegrationSettings $settings */
         $settings = resolve(IntegrationSettings::class);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Central\Actions\Tenant;
 
 use App\Actions\Tenant\CreateNewTenant;
+use App\Models\Enums\OrganizationType;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
@@ -31,5 +32,23 @@ class CreateNewTenantTest extends CentralTestCase
         $this->assertDatabaseHas('domains', [
             'tenant_id' => $tenant->getKey(),
         ]);
+    }
+
+    public function test_keeps_signup_choices_for_the_setup_job(): void
+    {
+        Event::fake([BaseTenantCreated::class]);
+        Notification::fake();
+
+        $tenant = CreateNewTenant::handle(
+            organization: 'Bravo Company',
+            email: 'founder@example.com',
+            founderName: 'Jordan Reyes',
+            requestedSubdomain: 'bravo-co',
+            organizationType: OrganizationType::MILITARY,
+        )->refresh();
+
+        $this->assertSame('Jordan Reyes', $tenant->getAttribute('founder_name'));
+        $this->assertSame('bravo-co', $tenant->getAttribute('requested_subdomain'));
+        $this->assertSame('military', $tenant->getAttribute('organization_type'));
     }
 }

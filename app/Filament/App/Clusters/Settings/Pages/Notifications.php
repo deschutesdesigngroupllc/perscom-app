@@ -13,6 +13,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -20,7 +21,7 @@ use UnitEnum;
 
 class Notifications extends SettingsPage
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bell';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBell;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
@@ -30,7 +31,7 @@ class Notifications extends SettingsPage
 
     protected ?string $subheading = 'Manage your default notification settings.';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $slug = 'dashboard/notifications';
 
@@ -51,7 +52,7 @@ class Notifications extends SettingsPage
                     ->tabs([
                         Tab::make('Assignment Records')
                             ->statePath('assignment_records')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when an assignment record is created.',
@@ -61,7 +62,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Award Records')
                             ->statePath('award_records')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when an award record is created.',
@@ -71,7 +72,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Combat Records')
                             ->statePath('combat_records')
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a combat record is created.',
@@ -81,7 +82,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Qualification Records')
                             ->statePath('qualification_records')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a qualification record is created.',
@@ -91,7 +92,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Rank Records')
                             ->statePath('rank_records')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a rank record is created.',
@@ -101,7 +102,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Service Records')
                             ->statePath('service_records')
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a service record is created.',
@@ -111,7 +112,7 @@ class Notifications extends SettingsPage
                             ]),
                         Tab::make('Training Records')
                             ->statePath('training_records')
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 ModelNotification::make(
                                     description: 'Enable to send additional notifications when a training record is created.',

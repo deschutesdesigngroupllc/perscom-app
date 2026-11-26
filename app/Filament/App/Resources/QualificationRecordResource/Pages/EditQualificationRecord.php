@@ -10,10 +10,13 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 
 class EditQualificationRecord extends EditRecord
 {
     use SavesAndHydratesCustomFieldData;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = QualificationRecordResource::class;
 

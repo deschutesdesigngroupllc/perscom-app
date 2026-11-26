@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -19,7 +20,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-class TrainingRecordCompetency extends Pivot
-{
-    protected $table = 'records_trainings_competencies';
-}
+#[Table(name: 'records_trainings_competencies')]
+class TrainingRecordCompetency extends Pivot {}

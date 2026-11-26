@@ -15,7 +15,7 @@ class CreatePositionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('positions', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
+use App\Filament\App\Resources\EventResource\Actions\TakeAttendanceAction;
 use App\Filament\App\Resources\EventResource\Pages\CreateEvent;
 use App\Filament\App\Resources\EventResource\Pages\EditEvent;
 use App\Filament\App\Resources\EventResource\Pages\ListEvents;
@@ -12,6 +13,7 @@ use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\Schedule;
 use App\Models\Calendar;
 use App\Models\Enums\NotificationChannel;
@@ -27,6 +29,7 @@ use Carbon\CarbonInterface;
 use Carbon\Month;
 use Carbon\WeekDay;
 use DateTimeInterface;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -52,6 +55,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -62,15 +66,19 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function is_string;
+
 class EventResource extends BaseResource
 {
     protected static ?string $model = Event::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = null;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationParentItem = 'Calendar';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -118,15 +126,13 @@ class EventResource extends BaseResource
                                     ->multiple()
                                     ->maxItems(1)
                                     ->relationship('categories', 'name', modifyQueryUsing: fn (Builder $query): Builder => $query->where('resource', static::$model)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->label('Host')
                                     ->default(Auth::user()->getAuthIdentifier())
-                                    ->preload()
                                     ->helperText('The member hosting the event.')
                                     ->required()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form))
                                     ->columnSpanFull(),
                                 RichEditor::make('description')
                                     ->extraInputAttributes(['style' => 'min-height: 6rem;'])
@@ -235,7 +241,7 @@ class EventResource extends BaseResource
                             ->schema([
                                 Toggle::make('registration_enabled')
                                     ->live()
-                                    ->label('Registration enabled')
+                                    ->label('Registration Enabled')
                                     ->helperText('Whether members can RSVP to the event.')
                                     ->default(false),
                                 DateTimePicker::make('registration_deadline')
@@ -245,16 +251,16 @@ class EventResource extends BaseResource
                                     ->nullable()
                                     ->helperText('The deadline for registration. Leave blank for no deadline.'),
                                 Toggle::make('creates_training_record')
-                                    ->label('Create training records')
+                                    ->label('Create Training Records')
                                     ->helperText('Automatically create a training record for each member marked as attended.')
                                     ->default(false)
                                     ->columnSpanFull(),
                                 Toggle::make('notifications_enabled')
                                     ->live()
-                                    ->label('Reminders enabled')
+                                    ->label('Reminders Enabled')
                                     ->validationAttribute('enabled notifications')
                                     ->default(false)
-                                    ->helperText('Send reminder notifications to all registered users.')
+                                    ->helperText('Send reminder notifications to all registered members.')
                                     ->columnSpanFull(),
                                 Select::make('notifications_interval')
                                     ->visible(fn (Get $get): mixed => $get('notifications_enabled'))
@@ -269,8 +275,8 @@ class EventResource extends BaseResource
                                     ->helperText('How the notifications should be delivered.')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
-                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
+                                    ->descriptions(fn (): array => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
+                                    ->options(fn (): array => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
                             ]),
                     ]),
                 Group::make()
@@ -287,12 +293,18 @@ class EventResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedCalendarDays)
-            ->emptyStateDescription('There are no events to view. Create one to get started.')
+            ->emptyStateDescription('Events put operations, training and meetings on the calendar. Schedule your first event.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
-                    ->icon(fn (Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Event $record): ?Heroicon => $record->repeats ? Heroicon::OutlinedArrowPath : null),
+                TextColumn::make('starts')
+                    ->label('Starts')
+                    ->dateTime(fn (Event $record): string => $record->all_day ? 'M j, Y' : 'M j, Y g:i A')
+                    ->timezone(fn (): string => UserSettingsService::timezone())
+                    ->description(fn (Event $record): ?string => $record->repeats ? 'Repeats' : null)
+                    ->sortable(),
                 TextColumn::make('calendar.name')
                     ->badge()
                     ->color(fn (Event $record): array => Color::generateV3Palette($record->calendar?->color)),
@@ -312,10 +324,8 @@ class EventResource extends BaseResource
                 TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->recordClasses(fn (Event $record): ?string => match ($record->has_passed) {
-                true => 'border-s-2! border-s-red-600!',
-                default => null,
-            })
+            ->recordClasses(fn (Event $record): ?string => $record->has_passed ? 'opacity-60' : null)
+            ->defaultSort('starts', fn (HasTable $livewire): string => data_get($livewire, 'activeTab') === 'upcoming' ? 'asc' : 'desc')
             ->groups(['all_day', 'calendar.name', 'repeats'])
             ->filters([
                 TernaryFilter::make('all_day'),
@@ -331,19 +341,23 @@ class EventResource extends BaseResource
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
+                TakeAttendanceAction::make()
+                    ->visible(fn (Event $record): bool => $record->starts->isPast()),
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    DeleteAction::make(),
+                ])
+                    ->tooltip('More'),
             ])
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(EventExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ])
-            ->defaultGroup('calendar.name');
+            ]);
     }
 
     public static function getRelations(): array
@@ -406,7 +420,7 @@ class EventResource extends BaseResource
     protected static function formSummary(Get $get): array
     {
         $parse = fn (mixed $value): ?CarbonInterface => filled($value) && is_string($value) ? rescue(fn (): CarbonInterface => Date::parse($value), report: false) : null;
-        $allDay = (bool) $get('all_day');
+        $allDay = $get->boolean('all_day');
         $starts = $parse($get('starts'));
 
         return [
@@ -429,8 +443,8 @@ class EventResource extends BaseResource
                 ]), $allDay), report: false)
                 : null,
             'location' => $get('location'),
-            'registrationEnabled' => (bool) $get('registration_enabled'),
-            'remindersEnabled' => (bool) $get('notifications_enabled'),
+            'registrationEnabled' => $get->boolean('registration_enabled'),
+            'remindersEnabled' => $get->boolean('notifications_enabled'),
         ];
     }
 }

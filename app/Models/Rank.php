@@ -15,6 +15,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -65,6 +66,15 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(RankScope::class)]
+#[Fillable([
+    'name',
+    'description',
+    'abbreviation',
+    'paygrade',
+    'order',
+    'created_at',
+    'updated_at',
+])]
 class Rank extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
@@ -78,17 +88,9 @@ class Rank extends Model implements HasLabel, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'abbreviation',
-        'paygrade',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     /**
+     * Get the promotion requirements for the rank.
+     *
      * @return HasOne<RankRequirement, $this>
      */
     public function requirement(): HasOne

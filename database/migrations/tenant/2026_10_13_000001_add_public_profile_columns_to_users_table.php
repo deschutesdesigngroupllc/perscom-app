@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->boolean('hide_public_profile')->default(false)->after('cover_photo');
             $table->string('public_profile_key', 16)->nullable()->unique()->after('hide_public_profile');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropUnique(['public_profile_key']);
             $table->dropColumn(['hide_public_profile', 'public_profile_key']);
         });

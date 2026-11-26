@@ -26,18 +26,30 @@ class InviteResource extends BaseResource
 {
     protected static ?string $model = Invite::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
-    protected static ?string $navigationParentItem = 'Users';
+    protected static ?string $navigationParentItem = 'Members';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 3;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Invite::query()->pending()->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'gray';
+    }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->emptyStateDescription('There are no invitations to view. Invite personnel from the users page.')
+            ->emptyStateDescription('There are no invitations to view. Invite members from the Members page.')
             ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('email')

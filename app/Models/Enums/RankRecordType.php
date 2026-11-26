@@ -7,6 +7,7 @@ namespace App\Models\Enums;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 enum RankRecordType: int implements HasColor, HasIcon, HasLabel
@@ -30,12 +31,12 @@ enum RankRecordType: int implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): string
+    public function getIcon(): Heroicon
     {
         return match ($this) {
-            RankRecordType::PROMOTION => 'heroicon-o-arrow-up-circle',
-            RankRecordType::DEMOTION => 'heroicon-o-arrow-down-circle',
-            RankRecordType::LATERAL, RankRecordType::TRANSFER => 'heroicon-o-arrow-right-circle',
+            RankRecordType::PROMOTION => Heroicon::OutlinedArrowUpCircle,
+            RankRecordType::DEMOTION => Heroicon::OutlinedArrowDownCircle,
+            RankRecordType::LATERAL, RankRecordType::TRANSFER => Heroicon::OutlinedArrowRightCircle,
         };
     }
 }

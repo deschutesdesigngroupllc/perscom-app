@@ -46,6 +46,9 @@ use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -123,7 +126,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, EventRegistration> $eventRegistrations
  * @property-read int|null $event_registrations_count
  * @property-read EventRegistration|null $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Support\Facades\Event> $events
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
  * @property-read int|null $events_count
  * @property-read bool $facebook_connected
  * @property-read SocialiteUser|null $facebookUser
@@ -143,7 +146,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportClient> $oauthApps
  * @property-read int|null $oauth_apps_count
- * @property-read mixed $online
+ * @property-read bool $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read Position|null $position
@@ -192,13 +195,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User orderForRoster()
  * @method static Builder<static>|User permission($permissions, $without = false)
- * @method static Builder<static>|User position(\App\Models\Position $position)
  * @method static Builder<static>|User query()
- * @method static Builder<static>|User rank(\App\Models\Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
- * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
- * @method static Builder<static>|User status(\App\Models\Status $status)
- * @method static Builder<static>|User unit(\App\Models\Unit $unit)
  * @method static Builder<static>|User whereAppAuthenticationRecoveryCodes($value)
  * @method static Builder<static>|User whereAppAuthenticationSecret($value)
  * @method static Builder<static>|User whereApproved($value)
@@ -242,6 +240,51 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(UserObserver::class)]
+#[Appends([
+    'display_name',
+    'last_assignment_change_date',
+    'last_rank_change_date',
+    'online',
+    'profile_photo_url',
+    'cover_photo_url',
+])]
+#[Fillable([
+    'id',
+    'name',
+    'email',
+    'email_verified_at',
+    'phone_number',
+    'position_id',
+    'rank_id',
+    'specialty_id',
+    'status_id',
+    'unit_id',
+    'unit_slot_id',
+    'approved',
+    'password',
+    'remember_token',
+    'notes',
+    'notes_updated_at',
+    'profile_photo',
+    'cover_photo',
+    'hide_public_profile',
+    'last_seen_at',
+    'facebook_user_id',
+    'github_user_id',
+    'google_user_id',
+    'discord_user_id',
+    'discord_private_channel_id',
+    'created_at',
+    'updated_at',
+])]
+#[Hidden([
+    'password',
+    'remember_token',
+    'discord_private_channel_id',
+    'has_email_authentication',
+    'public_profile_key',
+    'calendar_feed_token',
+])]
 class User extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasAvatar, HasEmailAuthentication, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail, OAuthenticatable
 {
     use CanReceiveNotifications;
@@ -268,7 +311,6 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     use HasSpecialty;
     use HasStatus, HasStatusRecords {
         HasStatus::status insteadof HasStatusRecords;
-        HasStatus::scopeStatus insteadof HasStatusRecords;
     }
     use HasTrainingRecords;
     use HasUnit;
@@ -280,53 +322,20 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     use Notifiable;
     use SocialRelationships;
 
-    protected $fillable = [
-        'id',
-        'name',
-        'email',
-        'email_verified_at',
-        'phone_number',
-        'position_id',
-        'rank_id',
-        'specialty_id',
-        'status_id',
-        'unit_id',
-        'unit_slot_id',
-        'approved',
-        'password',
-        'remember_token',
-        'notes',
-        'notes_updated_at',
-        'profile_photo',
-        'cover_photo',
-        'hide_public_profile',
-        'last_seen_at',
-        'facebook_user_id',
-        'github_user_id',
-        'google_user_id',
-        'discord_user_id',
-        'discord_private_channel_id',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'discord_private_channel_id',
-        'has_email_authentication',
-        'public_profile_key',
-        'calendar_feed_token',
-    ];
-
-    protected $appends = [
-        'display_name',
-        'last_assignment_change_date',
-        'last_rank_change_date',
-        'online',
-        'profile_photo_url',
-        'cover_photo_url',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'approved' => 'boolean',
+            'email_verified_at' => 'datetime',
+            'hide_public_profile' => 'boolean',
+            'last_seen_at' => 'datetime',
+            'notes_updated_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
 
     /**
      * @throws Exception
@@ -398,7 +407,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
      */
     public function events(): BelongsToMany
     {
-        return $this->belongsToMany(Event::class, 'events_registrations')
+        return $this->belongsToMany(Event::class, EventRegistration::class)
             ->withPivot(['id', 'event_occurrence_id', 'status', 'checked_in_at'])
             ->wherePivotNull('event_occurrence_id')
             ->withTimestamps()
@@ -421,7 +430,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'users_tasks')
+        return $this->belongsToMany(Task::class, TaskAssignment::class)
             ->withPivot(['id', 'task_id', 'user_id', 'assigned_by_id', 'assigned_at', 'due_at', 'completed_at', 'expires_at'])
             ->as('assignment')
             ->using(TaskAssignment::class)
@@ -444,20 +453,24 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
             ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id');
 
-        collect($settings->roster_sort_order)->each(fn ($column) => $query->orderBy($column));
+        collect($settings->roster_sort_order)->each(fn (string $column): Builder => $query->orderBy($column));
     }
 
     /**
+     * Determine whether the member is online.
+     *
      * @return Attribute<string, never>
      */
     protected function online(): Attribute
     {
         return Attribute::make(
-            get: fn () => Cache::tags('users_online')->has('user_online_'.$this->id)
+            get: fn (): bool => Cache::tags('users_online')->has('user_online_'.$this->id)
         )->shouldCache();
     }
 
     /**
+     * Get the URL of the member's cover photo.
+     *
      * @return Attribute<?string, never>
      */
     protected function coverPhotoUrl(): Attribute
@@ -472,6 +485,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the time since the member's last primary assignment.
+     *
      * @return Attribute<?CarbonInterval, never>
      */
     protected function timeInAssignment(): Attribute
@@ -482,6 +497,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the time since the member's last rank change.
+     *
      * @return Attribute<?CarbonInterval, never>
      */
     protected function timeInGrade(): Attribute
@@ -493,6 +510,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the time since the member joined.
+     *
      * @return Attribute<CarbonInterval, never>
      */
     protected function timeInService(): Attribute
@@ -503,6 +522,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the date of the member's last assignment change.
+     *
      * @return Attribute<?Carbon, never>
      */
     protected function lastAssignmentChangeDate(): Attribute
@@ -518,6 +539,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the date of the member's last rank change.
+     *
      * @return Attribute<?Carbon, never>
      */
     protected function lastRankChangeDate(): Attribute
@@ -533,6 +556,8 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     }
 
     /**
+     * Get the member's display name.
+     *
      * @return Attribute<string, never>
      */
     protected function displayName(): Attribute
@@ -571,20 +596,5 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     protected function getDefaultGuardName(): string
     {
         return 'web';
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'approved' => 'boolean',
-            'email_verified_at' => 'datetime',
-            'hide_public_profile' => 'boolean',
-            'last_seen_at' => 'datetime',
-            'notes_updated_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 }

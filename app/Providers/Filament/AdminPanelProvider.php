@@ -8,6 +8,7 @@ use App\Filament\Admin\Pages\Auth\Login;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\SentryContext;
 use App\Http\Middleware\SetAuthGuard;
+use App\Support\Brand;
 use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\Auth\MultiFactor\Email\EmailAuthentication;
 use Filament\FontProviders\SpatieGoogleFontProvider;
@@ -18,8 +19,8 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -50,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('admin')
+            ->darkMode(isForced: true)
             ->path('admin')
             ->domain(str(config('app.url'))->after('://')->toString())
             ->login(Login::class)
@@ -61,9 +63,9 @@ class AdminPanelProvider extends PanelProvider
                     ->regenerableRecoveryCodes(),
                 EmailAuthentication::make(),
             ])
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
+            ->sidebarWidth('17rem')
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
@@ -73,24 +75,24 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->navigationItems([
                 NavigationItem::make('Health')
-                    ->icon('heroicon-o-heart')
+                    ->icon(Heroicon::OutlinedHeart)
                     ->group('Tools')
                     ->sort(3)
                     ->url(config('app.url').'/health', shouldOpenInNewTab: true),
                 NavigationItem::make('Horizon')
-                    ->icon('heroicon-o-queue-list')
+                    ->icon(Heroicon::OutlinedQueueList)
                     ->group('Tools')
                     ->sort(3)
                     ->url(config('app.url').'/'.config('horizon.path'), shouldOpenInNewTab: true),
                 NavigationItem::make('Pulse')
                     ->url(config('app.url').'/'.config('pulse.path'), shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-heart')
+                    ->icon(Heroicon::OutlinedHeart)
                     ->group('Tools')
                     ->sort(3),
                 NavigationItem::make('Telescope')
                     ->url(config('app.url').'/'.config('telescope.path'), shouldOpenInNewTab: true)
-                    ->visible(fn () => config('telescope.enabled'))
-                    ->icon('heroicon-o-presentation-chart-line')
+                    ->visible(fn (): bool => (bool) config('telescope.enabled'))
+                    ->icon(Heroicon::OutlinedPresentationChartLine)
                     ->group('Tools')
                     ->sort(3),
             ])

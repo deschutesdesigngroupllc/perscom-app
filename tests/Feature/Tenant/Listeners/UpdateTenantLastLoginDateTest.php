@@ -14,7 +14,7 @@ class UpdateTenantLastLoginDateTest extends TenantTestCase
 {
     public function test_handle_stamps_the_current_tenant_last_login_at(): void
     {
-        Date::setTestNow('2026-08-22 10:00:00');
+        $this->travelTo(Date::parse('2026-08-22 10:00:00'));
 
         $user = User::factory()->createQuietly();
 
@@ -25,7 +25,5 @@ class UpdateTenantLastLoginDateTest extends TenantTestCase
             Date::now()->toDateTimeString(),
             Date::parse($this->tenant->last_login_at)->toDateTimeString(),
         );
-
-        Date::setTestNow();
     }
 }

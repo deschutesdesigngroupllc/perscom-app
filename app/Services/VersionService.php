@@ -11,6 +11,9 @@ class VersionService
 {
     public static function version()
     {
-        return Cache::rememberForever('perscom_version', fn () => Process::run('git describe --tags --abbrev=0')->output());
+        return Cache::rememberForever(
+            'perscom_version',
+            fn (): string => Process::run('git describe --tags --abbrev=0')->output(),
+        );
     }
 }

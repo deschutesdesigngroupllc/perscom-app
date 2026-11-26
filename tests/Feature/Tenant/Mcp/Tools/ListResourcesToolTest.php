@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use ReflectionClass;
 use Tests\Feature\Tenant\Mcp\McpTestCase;
 
+use function sprintf;
+
 class ListResourcesToolTest extends McpTestCase
 {
     public function test_it_lists_every_registered_resource_with_its_capabilities(): void

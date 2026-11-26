@@ -46,11 +46,11 @@ class AnnouncementResource extends BaseResource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -61,7 +61,7 @@ class AnnouncementResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Announcement')
-                            ->icon('heroicon-o-megaphone')
+                            ->icon(Heroicon::OutlinedMegaphone)
                             ->schema([
                                 TextInput::make('title')
                                     ->afterStateUpdated(fn (Set $set, $state): mixed => $set('model_notifications.subject', $state))
@@ -84,7 +84,7 @@ class AnnouncementResource extends BaseResource
                                 Checkbox::make('global')
                                     ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
                                 DateTimePicker::make('expires_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -95,7 +95,7 @@ class AnnouncementResource extends BaseResource
                             ]),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 ModelNotification::make(),
                             ]),
@@ -107,13 +107,13 @@ class AnnouncementResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedMegaphone)
-            ->emptyStateDescription('There are no announcements to view. Create one to get started.')
+            ->emptyStateDescription('Announcements show a banner to members across the dashboard. Post your first one.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('content')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()
@@ -127,7 +127,7 @@ class AnnouncementResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('expires_at')
                     ->label('Expires')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -157,7 +157,7 @@ class AnnouncementResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AnnouncementExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

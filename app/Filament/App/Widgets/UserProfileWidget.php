@@ -16,14 +16,11 @@ use App\Models\User;
 use App\Services\PromotionEligibilityService;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\CarbonInterval;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * The signed-in member's service record: rank, assignment, awards and progress toward their next
- * promotion.
- */
 class UserProfileWidget extends Widget
 {
     use HasWidgetShield;
@@ -37,7 +34,7 @@ class UserProfileWidget extends Widget
     protected string $view = 'filament.app.widgets.user-profile-widget';
 
     /**
-     * @var array<int, class-string>|null
+     * @var array<int, class-string<RelationManager>>|null
      */
     protected ?array $relationManagers = null;
 
@@ -77,6 +74,8 @@ class UserProfileWidget extends Widget
     }
 
     /**
+     * Get the award records for the user.
+     *
      * @return EloquentCollection<int, AwardRecord>
      */
     public function awardRecords(): EloquentCollection
@@ -115,23 +114,29 @@ class UserProfileWidget extends Widget
 
     /**
      * Profile record tabs depend on which record types the organization hides, so link to a tab by
-     * looking up its position rather than assuming one.
+     * looking up its position rather than assuming one, and only when the member may open that tab.
      *
-     * @param  class-string  $relationManager
+     * @param  class-string<RelationManager>  $relationManager
      */
     protected function relationUrl(string $relationManager): ?string
     {
         $index = $this->relationIndex($relationManager);
 
-        return $index === null ? null : UserResource::getUrl('view', ['record' => $this->user(), 'relation' => (string) $index]);
+        if ($index === null || ! $relationManager::canViewForRecord($this->user(), ViewUser::class)) {
+            return null;
+        }
+
+        return UserResource::getUrl('view', ['record' => $this->user(), 'relation' => (string) $index]);
     }
 
     /**
-     * @param  class-string  $relationManager
+     * Get the profile tab index of the relation manager.
+     *
+     * @param  class-string<RelationManager>  $relationManager
      */
     protected function relationIndex(string $relationManager): ?int
     {
-        $this->relationManagers ??= new ViewUser()->getRelationManagers();
+        $this->relationManagers ??= ViewUser::profileRelationManagers();
 
         $index = array_search($relationManager, $this->relationManagers, true);
 

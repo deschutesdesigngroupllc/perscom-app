@@ -23,6 +23,9 @@ use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
+use function in_array;
+use function sprintf;
+
 class CredentialExpiring extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;

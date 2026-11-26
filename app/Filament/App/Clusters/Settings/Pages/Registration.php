@@ -13,6 +13,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
@@ -21,7 +22,7 @@ class Registration extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-plus';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserPlus;
 
     protected static ?string $navigationLabel = 'Registration';
 
@@ -51,15 +52,15 @@ class Registration extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Settings')
-                            ->icon('heroicon-o-cog')
+                            ->icon(Heroicon::OutlinedCog)
                             ->schema([
                                 Checkbox::make('enabled')
                                     ->default(true)
-                                    ->helperText('Uncheck to disable user registration.'),
+                                    ->helperText('Uncheck to disable member registration.'),
                                 Checkbox::make('admin_approval_required')
                                     ->label('Admin Approval Required')
                                     ->default(false)
-                                    ->helperText('Check to require admin approval before a user account can login once registered.'),
+                                    ->helperText('Check to require admin approval before a member account can login once registered.'),
                             ]),
                     ]),
             ]);

@@ -36,7 +36,7 @@ class SubdomainRuleTest extends CentralTestCase
             $passed = false;
         };
 
-        $rule->validate('domain', $this->faker->domainName, $fail);
+        $rule->validate('domain', $this->faker->domainName(), $fail);
 
         $this->assertTrue($passed);
     }

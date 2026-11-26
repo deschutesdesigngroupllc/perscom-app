@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support\Passport;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+use JsonException;
 use Laravel\Passport\Passport;
 use RuntimeException;
 
@@ -13,6 +17,8 @@ class JsonWebKey
      * The public JSON Web Key used to verify tokens signed with the Passport private key.
      *
      * @return array{kty: string, use: string, alg: string, kid: string, n: string, e: string}
+     *
+     * @throws JsonException when the key components cannot be encoded
      */
     public static function publicKey(): array
     {
@@ -30,6 +36,8 @@ class JsonWebKey
 
     /**
      * The RFC 7638 thumbprint of the public key, used as the key ID.
+     *
+     * @throws JsonException when the key components cannot be encoded
      */
     public static function thumbprint(): string
     {
@@ -45,6 +53,8 @@ class JsonWebKey
     }
 
     /**
+     * Get the RSA modulus and exponent of the public key, base64url encoded.
+     *
      * @return array{n: string, e: string}
      */
     protected static function components(): array
@@ -69,23 +79,21 @@ class JsonWebKey
 
     protected static function publicKeyContents(): string
     {
-        $key = str_replace('\\n', "\n", (string) config('passport.public_key'));
+        $key = Str::replace('\\n', "\n", (string) config('passport.public_key'));
 
         if (filled($key)) {
             return $key;
         }
 
-        $contents = @file_get_contents(Passport::keyPath('oauth-public.key'));
-
-        if ($contents === false) {
+        try {
+            return File::get(Passport::keyPath('oauth-public.key'));
+        } catch (FileNotFoundException) {
             throw new RuntimeException('Unable to read the OAuth public key.');
         }
-
-        return $contents;
     }
 
     protected static function base64UrlEncode(string $value): string
     {
-        return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
+        return mb_rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
     }
 }

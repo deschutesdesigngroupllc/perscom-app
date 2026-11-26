@@ -16,7 +16,7 @@ return new class extends Migration
     {
         DB::table('images')->whereNull('name')->update(['name' => 'Image']);
 
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->string('name')->nullable(false)->change();
         });
     }
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->string('name')->nullable()->change();
         });
     }

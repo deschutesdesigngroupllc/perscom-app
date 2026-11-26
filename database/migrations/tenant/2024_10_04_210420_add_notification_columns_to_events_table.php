@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->after('registration_deadline', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
+            $table->after('registration_deadline', function (Blueprint $table): void {
                 $table->boolean('notifications_enabled')->default(true);
                 $table->string('notifications_interval')->nullable();
                 $table->string('notifications_channels')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
             $table->dropColumn(['notifications_enabled', 'notifications_interval']);
         });
     }

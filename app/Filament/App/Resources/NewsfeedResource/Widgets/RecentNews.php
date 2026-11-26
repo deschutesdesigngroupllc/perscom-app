@@ -4,59 +4,101 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\NewsfeedResource\Widgets;
 
+use App\Filament\App\Resources\NewsfeedResource;
+use App\Filament\App\Widgets\RecentPostsWidget;
 use App\Models\Newsfeed;
+use App\Models\User;
+use App\Services\RssFeedService;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Actions\ViewAction;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Support\Colors\Color;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
-use Filament\Widgets\TableWidget as BaseWidget;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
-class RecentNews extends BaseWidget
+class RecentNews extends RecentPostsWidget
 {
     use HasWidgetShield;
 
     protected static ?int $sort = -2;
 
-    protected int|string|array $columnSpan = 'full';
-
-    public function table(Table $table): Table
+    public function heading(): string
     {
-        return $table
-            ->description("View you organization's most recent news.")
-            ->emptyStateHeading('No recent news')
-            ->emptyStateDescription('There are no recent news items to show.')
-            ->emptyStateIcon('heroicon-o-newspaper')
-            ->query(Newsfeed::query()->latest())
-            ->recordAction('view')
-            ->paginated([5])
-            ->columns([
-                Stack::make([
-                    TextColumn::make('headline')
-                        ->toggleable(false)
-                        ->weight(FontWeight::Bold),
-                    TextColumn::make('text')
-                        ->toggleable(false)
-                        ->html()
-                        ->wrap(),
-                    TextColumn::make('created_at')
-                        ->toggleable(false)
-                        ->color(Color::Gray),
-                ]),
-            ])
-            ->recordActions([
-                ViewAction::make()
-                    ->icon(null)
-                    ->hiddenLabel()
-                    ->modalHeading(fn (Newsfeed $record): string => $record->headline)
-                    ->schema([
-                        TextEntry::make('text')
-                            ->hiddenLabel()
-                            ->html(),
-                    ]),
-            ]);
+        return 'Recent News';
+    }
+
+    public function description(): string
+    {
+        return 'The latest from across your organization.';
+    }
+
+    public function icon(): string|BackedEnum
+    {
+        return Heroicon::OutlinedNewspaper;
+    }
+
+    public function emptyHeading(): string
+    {
+        return 'No news yet';
+    }
+
+    public function emptyDescription(): string
+    {
+        return 'News posted to your organization will show up here.';
+    }
+
+    public function allPostsLabel(): string
+    {
+        return 'View All News';
+    }
+
+    public function allPostsUrl(): ?string
+    {
+        return NewsfeedResource::canViewAny() ? NewsfeedResource::getUrl() : null;
+    }
+
+    public function rssFeedUrl(): ?string
+    {
+        $user = Auth::user();
+
+        return $user instanceof User && $user->can('view', Newsfeed::class) ? RssFeedService::newsFeedUrl($user) : null;
+    }
+
+    /**
+     * Get the latest newsfeed items with their authors, newest first.
+     *
+     * @return array<int, Model>
+     */
+    protected function records(): array
+    {
+        return Newsfeed::query()->with('causer')->latest()->limit(static::LIMIT)->get()->all();
+    }
+
+    protected function findRecord(mixed $key): ?Model
+    {
+        return Newsfeed::query()->with('causer')->find($key);
+    }
+
+    protected function titleFor(Model $record): string
+    {
+        /** @var Newsfeed $record */
+        return (string) $record->headline;
+    }
+
+    protected function bodyFor(Model $record): string
+    {
+        /** @var Newsfeed $record */
+        return (string) $record->text;
+    }
+
+    protected function colorFor(Model $record): ?string
+    {
+        /** @var Newsfeed $record */
+        return filled($record->color) ? $record->color : null;
+    }
+
+    protected function authorFor(Model $record): ?User
+    {
+        /** @var Newsfeed $record */
+        return $record->causer instanceof User ? $record->causer : null;
     }
 }

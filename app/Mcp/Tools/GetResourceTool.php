@@ -19,6 +19,8 @@ use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
+use function sprintf;
+
 #[Name('get_resource')]
 #[Title('Get Resource')]
 #[Description('Get a single PERSCOM record by its ID, optionally expanding related data with include.')]
@@ -32,7 +34,7 @@ class GetResourceTool extends Tool
     public function handle(Request $request): Response
     {
         $validated = $request->validate([
-            'resource' => ['required', 'string', 'in:'.implode(',', ApiResourceRegistry::keys())],
+            'resource' => ['required', 'string', 'in:'.collect(ApiResourceRegistry::keys())->implode(',')],
             'id' => ['required', 'integer', 'min:1'],
             'include' => ['nullable', 'array'],
             'include.*' => ['string'],
@@ -44,7 +46,7 @@ class GetResourceTool extends Tool
         $resource = ApiResourceRegistry::find($validated['resource']);
 
         $query = filled($validated['include'] ?? null)
-            ? ['include' => implode(',', $validated['include'])]
+            ? ['include' => collect($validated['include'])->implode(',')]
             : [];
 
         return $this->respondWithApiResult(

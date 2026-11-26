@@ -14,6 +14,8 @@ use Filament\Auth\MultiFactor\Email\Contracts\HasEmailAuthentication;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -56,6 +58,17 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'email',
+    'password',
+    'created_at',
+    'updated_at',
+])]
+#[Hidden([
+    'password',
+    'remember_token',
+])]
 class Admin extends Authenticatable implements FilamentUser, HasAppAuthentication, HasAppAuthenticationRecovery, HasEmailAuthentication, MustVerifyEmail
 {
     use CentralConnection;
@@ -65,27 +78,6 @@ class Admin extends Authenticatable implements FilamentUser, HasAppAuthenticatio
     use InteractsWithEmailAuthentication;
     use Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * @throws Exception
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $panel->getId() === 'admin';
-    }
-
     /**
      * @return array<string, string>
      */
@@ -94,5 +86,13 @@ class Admin extends Authenticatable implements FilamentUser, HasAppAuthenticatio
         return [
             'email_verified_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $panel->getId() === 'admin';
     }
 }

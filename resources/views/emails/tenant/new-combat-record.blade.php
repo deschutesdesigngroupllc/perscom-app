@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# New Combat Record
 
-{{ __('A new combat record has been added to your personnel file.') }}
+A combat record was added to your profile.
 
 @if ($date)
   **Date**: {{ $date }}<br>
@@ -15,6 +15,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

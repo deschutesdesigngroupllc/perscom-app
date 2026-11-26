@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Stancl\Tenancy\Features\UniversalRoutes;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain as BaseInitializeTenancyBySubdomain;
 use Stancl\Tenancy\Resolvers\DomainTenantResolver;
@@ -14,7 +15,7 @@ class InitializeTenancyBySubdomain extends BaseInitializeTenancyBySubdomain
 {
     public function __construct(Tenancy $tenancy, DomainTenantResolver $resolver)
     {
-        self::$onFail = static function ($exception, $request, $next) {
+        self::$onFail = static function ($exception, Request $request, Closure $next): mixed {
             if (UniversalRoutes::routeHasMiddleware($request->route(), UniversalRoutes::$middlewareGroup)) {
                 return $next($request);
             }

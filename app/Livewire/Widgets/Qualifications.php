@@ -63,7 +63,9 @@ class Qualifications extends Component implements HasActions, HasForms, HasTable
                 Group::make('categoryPivot.category_id')
                     ->titlePrefixedWithLabel(false)
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Qualification $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(
+                        fn (Qualification $record): ?string => $record->categoryPivot?->category?->name,
+                    ),
             ])
             ->groupingSettingsHidden()
             ->defaultGroup('categoryPivot.category_id');

@@ -26,13 +26,27 @@ class Readiness extends Page implements HasTable
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 5;
+
+    protected static ?string $navigationParentItem = 'Members';
 
     protected string $view = 'filament.app.pages.readiness';
 
     protected ?string $subheading = 'How current each unit is on qualifications, credentials and attendance.';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = ReadinessService::expiringItems()->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
 
     public static function canAccess(): bool
     {
@@ -43,6 +57,8 @@ class Readiness extends Page implements HasTable
     }
 
     /**
+     * Get the readiness summary of each unit.
+     *
      * @return Collection<int, UnitReadinessData>
      */
     public function getSummaries(): Collection

@@ -33,11 +33,15 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
+
+use function in_array;
+use function sprintf;
 
 class Calendar extends Page
 {
@@ -53,6 +57,11 @@ class Calendar extends Page
      * The number of days the agenda loads at a time.
      */
     public const int AGENDA_WINDOW_DAYS = 30;
+
+    /**
+     * The number of days past the loaded agenda searched for more events.
+     */
+    public const int AGENDA_HORIZON_DAYS = 365;
 
     public string $display = 'month';
 
@@ -88,6 +97,11 @@ class Calendar extends Page
      * @var array<string, OccurrenceData>
      */
     protected array $resolvedOccurrences = [];
+
+    /**
+     * @var array<string, OccurrenceData|null>
+     */
+    protected array $nextOccurrencesBeyondAgenda = [];
 
     /**
      * The heading shown above a day in the agenda.
@@ -168,9 +182,29 @@ class Calendar extends Page
         $this->reset(['calendarIds', 'mine', 'openOnly', 'agendaWindows']);
     }
 
+    /**
+     * Extend the agenda far enough to reach the next event beyond it.
+     */
     public function loadMore(): void
     {
-        $this->agendaWindows++;
+        $next = $this->nextOccurrenceBeyondAgenda();
+
+        if (! $next instanceof OccurrenceData) {
+            return;
+        }
+
+        $today = today(UserSettingsService::timezone());
+        $daysAway = (int) ceil(abs($today->diffInDays($next->localStarts()->startOfDay(), false)));
+
+        $this->agendaWindows = max(
+            $this->agendaWindows + 1,
+            (int) ceil(($daysAway + 1) / static::AGENDA_WINDOW_DAYS),
+        );
+    }
+
+    public function hasMoreAgenda(): bool
+    {
+        return $this->nextOccurrenceBeyondAgenda() instanceof OccurrenceData;
     }
 
     #[On('calendar-occurrence-selected')]
@@ -197,6 +231,8 @@ class Calendar extends Page
     }
 
     /**
+     * Get the active calendar filters.
+     *
      * @return array{calendars: array<int, int>, mine: bool, open: bool}
      */
     public function filters(): array
@@ -326,7 +362,7 @@ class Calendar extends Page
                     ->title('Event created.')
                     ->actions([
                         Action::make('view')
-                            ->label('Open event')
+                            ->label('Open Event')
                             ->button()
                             ->url(EventResource::getUrl('view', ['record' => $event])),
                     ])
@@ -366,6 +402,45 @@ class Calendar extends Page
     {
         return EventCalendarService::canCancelDate($occurrence)
             && (Auth::user()?->can('update', $occurrence->event) ?? false);
+    }
+
+    /**
+     * Find the closest event outside the loaded agenda.
+     *
+     * Looks forward past the agenda's end, or backward before its start when showing past events.
+     */
+    protected function nextOccurrenceBeyondAgenda(): ?OccurrenceData
+    {
+        [$start, $end] = $this->agendaRange();
+        $cacheKey = collect([$start->getTimestamp(), $end->getTimestamp(), $this->past, $this->filters()])
+            ->flatten()
+            ->map(fn (mixed $value): string => var_export($value, true))
+            ->implode('|');
+
+        if (Arr::exists($this->nextOccurrencesBeyondAgenda, $cacheKey)) {
+            return $this->nextOccurrencesBeyondAgenda[$cacheKey];
+        }
+
+        $user = Auth::user();
+        $boundary = $this->past ? $start : $end;
+        $searchStart = $this->past ? $start->copy()->subDays(static::AGENDA_HORIZON_DAYS) : $end;
+        $searchEnd = $this->past ? $start : $end->copy()->addDays(static::AGENDA_HORIZON_DAYS);
+
+        $occurrences = EventCalendarService::occurrences(
+            $searchStart,
+            $searchEnd,
+            $this->filters(),
+            $user instanceof User ? $user : null,
+        )
+            ->filter(fn (OccurrenceData $occurrence): bool => $this->past
+                ? $occurrence->starts->lessThan($boundary)
+                : $occurrence->starts->greaterThan($boundary))
+            ->sortBy(
+                fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp(),
+                descending: $this->past,
+            );
+
+        return $this->nextOccurrencesBeyondAgenda[$cacheKey] = $occurrences->first();
     }
 
     /**
@@ -413,6 +488,8 @@ class Calendar extends Page
     }
 
     /**
+     * Build the action that cancels a single occurrence.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function makeCancelOccurrenceAction(array $arguments): Action
@@ -452,6 +529,8 @@ class Calendar extends Page
     }
 
     /**
+     * Build the action that restores a cancelled occurrence.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function makeRestoreOccurrenceAction(array $arguments): Action
@@ -486,6 +565,8 @@ class Calendar extends Page
     }
 
     /**
+     * Get the details shown for the occurrence.
+     *
      * @return array<string, mixed>
      */
     protected function occurrenceDetails(OccurrenceData $occurrence): array
@@ -518,6 +599,8 @@ class Calendar extends Page
     }
 
     /**
+     * Normalize the calendar IDs to positive integers.
+     *
      * @param  array<int, int|string>  $calendarIds
      * @return array<int, int>
      */

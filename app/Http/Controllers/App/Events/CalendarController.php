@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
+use function is_string;
+use function sprintf;
+
 class CalendarController
 {
     /**

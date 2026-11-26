@@ -8,13 +8,14 @@ use App\Filament\App\Resources\CommentResource;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class CommentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'comments';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-chat-bubble-left';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedChatBubbleLeft;
 
     public function isReadOnly(): bool
     {

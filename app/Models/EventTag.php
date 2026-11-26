@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -19,12 +21,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
-class EventTag extends Pivot
-{
-    protected $table = 'events_tags';
-
-    protected $fillable = [
-        'tag_id',
-        'event_id',
-    ];
-}
+#[Fillable([
+    'tag_id',
+    'event_id',
+])]
+#[Table(name: 'events_tags')]
+class EventTag extends Pivot {}

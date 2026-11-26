@@ -14,6 +14,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -61,6 +62,14 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(SpecialtyScope::class)]
+#[Fillable([
+    'name',
+    'abbreviation',
+    'description',
+    'order',
+    'created_at',
+    'updated_at',
+])]
 class Specialty extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
@@ -72,13 +81,4 @@ class Specialty extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;
-
-    protected $fillable = [
-        'name',
-        'abbreviation',
-        'description',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
 }

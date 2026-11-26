@@ -8,7 +8,10 @@ use App\Support\Passport\OidcAuthorization;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+
+use function is_string;
 
 class CaptureOidcAuthorization
 {
@@ -20,9 +23,9 @@ class CaptureOidcAuthorization
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $scopes = explode(' ', (string) $request->query('scope'));
+        $scopes = Str::of((string) $request->query('scope'))->explode(' ');
 
-        if (! in_array('openid', $scopes, true)) {
+        if (! $scopes->containsStrict('openid')) {
             return $next($request);
         }
 

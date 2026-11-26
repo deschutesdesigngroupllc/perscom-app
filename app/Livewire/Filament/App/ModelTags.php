@@ -55,7 +55,7 @@ class ModelTags extends Component implements HasActions, HasForms, HasTable
             ->defaultGroup('type')
             ->groups([
                 Group::make('type')
-                    ->getDescriptionFromRecordUsing(fn (ModelTag $record) => $record->type->getDescription()),
+                    ->getDescriptionFromRecordUsing(fn (ModelTag $record): ?string => $record->type->getDescription()),
             ])
             ->paginated(false);
     }

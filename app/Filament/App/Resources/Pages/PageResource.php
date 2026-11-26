@@ -29,9 +29,11 @@ class PageResource extends BaseResource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|UnitEnum|null $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 12;
+
+    protected static ?string $navigationLabel = 'Custom Pages';
 
     public static function form(Schema $schema): Schema
     {

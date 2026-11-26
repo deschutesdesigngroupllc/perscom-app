@@ -10,6 +10,7 @@ use App\Models\Group;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListGroups extends ListRecords
@@ -29,14 +30,14 @@ class ListGroups extends ListRecords
         return [
             PresetView::make('visible')
                 ->label('Visible')
-                ->modifyQueryUsing(fn (Group|Builder $query) => $query->where('hidden', false))
+                ->modifyQueryUsing(fn (Group|Builder $query): Builder => $query->where('hidden', false))
                 ->favorite()
-                ->icon('heroicon-o-eye'),
+                ->icon(Heroicon::OutlinedEye),
             PresetView::make('hidden')
                 ->label('Hidden')
-                ->modifyQueryUsing(fn (Group|Builder $query) => $query->where('hidden', true))
+                ->modifyQueryUsing(fn (Group|Builder $query): Builder => $query->where('hidden', true))
                 ->favorite()
-                ->icon('heroicon-o-eye-slash'),
+                ->icon(Heroicon::OutlinedEyeSlash),
         ];
     }
 

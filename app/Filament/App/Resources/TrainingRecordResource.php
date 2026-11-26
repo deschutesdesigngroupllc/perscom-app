@@ -14,9 +14,11 @@ use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\Attachmen
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CompetenciesRelationManager;
 use App\Filament\Exports\TrainingRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
 use App\Models\Credential;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\TrainingRecord;
 use App\Models\User;
@@ -49,17 +51,21 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class TrainingRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;
 
     protected static ?string $model = TrainingRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-academic-cap';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
     protected static ?int $navigationSort = 8;
+
+    protected static ?string $navigationParentItem = 'Records';
 
     public static function form(Schema $schema): Schema
     {
@@ -71,25 +77,21 @@ class TrainingRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Training Record')
                             ->columns()
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->prefillFromQuery()
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
-                                    ->helperText('The user this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
-                                Select::make('instructor_id')
+                                    ->helperText('The member this record is assigned to.')
+                                    ->searchable(),
+                                MemberSelect::make('instructor_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The instructor of the training.')
-                                    ->preload()
                                     ->relationship(name: 'instructor', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                                 Select::make('credentials')
                                     ->columnSpanFull()
                                     ->helperText('The credentials that were earned.')
@@ -104,6 +106,8 @@ class TrainingRecordResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 DateTimePicker::make('created_at')
+                                    ->label('Effective Date')
+                                    ->helperText('The date this took effect.')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
@@ -113,17 +117,15 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -133,7 +135,7 @@ class TrainingRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -158,10 +160,10 @@ class TrainingRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Training Record')
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('instructor.display_name')
                                     ->label('Instructor'),
                                 TextEntry::make('credential_expirations')
@@ -180,15 +182,17 @@ class TrainingRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
-                                TextEntry::make('created_at'),
+                                TextEntry::make('created_at')
+                                    ->label('Effective Date')
+                                    ->date(),
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -207,36 +211,39 @@ class TrainingRecordResource extends BaseResource
             ->emptyStateDescription('Create a new training record to get started.')
             ->columns([
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 ExpiresAtColumn::makeForCredentials()
                     ->placeholder(new HtmlString('&ndash;')),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (TrainingRecord $record) => $record->document)
-                            ->user(fn (TrainingRecord $record) => $record->user)
+                            ->document(fn (TrainingRecord $record): ?Document => $record->document)
+                            ->user(fn (TrainingRecord $record): ?User => $record->user)
                             ->attached(fn (TrainingRecord $record): TrainingRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (TrainingRecord $record) => $record->text),
+                            ->html(fn (TrainingRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
+                    ->toggleable()
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -268,7 +275,7 @@ class TrainingRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(TrainingRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

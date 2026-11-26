@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +43,11 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'model_id',
+    'model_type',
+    'comment',
+])]
 class Comment extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -49,12 +55,6 @@ class Comment extends Model implements HasLabel
     use HasAuthor;
     use HasFactory;
     use HasResourceLabel;
-
-    protected $fillable = [
-        'model_id',
-        'model_type',
-        'comment',
-    ];
 
     public function commentable(): MorphTo
     {

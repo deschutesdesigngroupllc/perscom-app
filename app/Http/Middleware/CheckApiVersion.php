@@ -8,6 +8,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function in_array;
+
 class CheckApiVersion
 {
     public function handle(Request $request, Closure $next): Response

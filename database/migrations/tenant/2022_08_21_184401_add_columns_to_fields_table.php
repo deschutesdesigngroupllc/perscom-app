@@ -15,15 +15,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('forms', function (Blueprint $table) {
-            $table->after('slug', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
+            $table->after('slug', function (Blueprint $table): void {
                 $table->text('success_message')->nullable();
                 $table->boolean('is_public')->default(false);
             });
         });
 
-        Schema::table('fields', function (Blueprint $table) {
-            $table->after('required', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
+            $table->after('required', function (Blueprint $table): void {
                 $table->boolean('readonly')->default(false);
                 $table->boolean('disabled')->default(false);
             });
@@ -39,11 +39,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('forms', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
             $table->dropColumn('success_message', 'is_public');
         });
 
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropColumn('readonly', 'disabled', 'text', 'key');
         });
     }

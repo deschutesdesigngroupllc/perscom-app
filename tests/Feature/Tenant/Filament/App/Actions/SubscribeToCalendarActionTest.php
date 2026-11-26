@@ -55,7 +55,10 @@ class SubscribeToCalendarActionTest extends TenantTestCase
 
     public function test_the_subscribe_action_is_hidden_from_members_who_cannot_view_events(): void
     {
-        $this->actingAs(User::factory()->createQuietly());
+        $this->actingAs(User::factory()->createQuietly()->syncRoles([])->givePermissionTo([
+            'view_calendar',
+            'view_calendar_widget',
+        ]));
 
         Livewire::test(CalendarPage::class)
             ->assertActionHidden('subscribeToCalendar');

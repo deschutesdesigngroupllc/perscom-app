@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 namespace App\Actions\Tenant;
 
-use App\Actions\Auth\CreateNewUser;
+use App\Actions\Organization\ApplyOrganizationBlueprint;
+use App\Data\Organization\OrganizationBlueprintData;
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Announcement;
+use App\Models\Enums\InviteType;
+use App\Models\Enums\OrganizationType;
+use App\Models\Invite;
 use App\Models\Page;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Settings\DashboardSettings;
+use App\Settings\OnboardingSettings;
 use App\Settings\OrganizationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Validation\ValidationException;
+
+use function array_key_exists;
 
 class SetupTenantAccount
 {
@@ -31,6 +39,8 @@ class SetupTenantAccount
 
     protected bool $shouldCreateUser = true;
 
+    protected bool $shouldApplyBlueprint = true;
+
     protected bool $shouldCreateNewsItem = true;
 
     protected bool $shouldCreateAnnouncement = true;
@@ -42,12 +52,13 @@ class SetupTenantAccount
         $this->tenant = $tenant;
 
         $this->tenant->run(function (): void {
-            $this->when($this->shouldSeedSettings, fn () => $this->seedInitialSettings());
-            $this->when($this->shouldSetInitialSettings, fn () => $this->setInitialSettings());
-            $this->when($this->shouldCreateUser, fn () => $this->createInitialUserAccount());
-            $this->when($this->shouldCreateNewsItem, fn () => $this->createFirstNewsfeedItem());
-            $this->when($this->shouldCreateAnnouncement, fn () => $this->createAnnouncement());
-            $this->when($this->shouldCreatePages, fn () => $this->createPages());
+            $this->when($this->shouldSeedSettings, fn (): null => $this->seedInitialSettings());
+            $this->when($this->shouldSetInitialSettings, fn (): null => $this->setInitialSettings());
+            $this->when($this->shouldApplyBlueprint, fn (): null => $this->applyOrganizationBlueprint());
+            $this->when($this->shouldCreateUser, fn (): null => $this->createInitialUserAccount());
+            $this->when($this->shouldCreateNewsItem, fn (): null => $this->createFirstNewsfeedItem());
+            $this->when($this->shouldCreateAnnouncement, fn (): null => $this->createAnnouncement());
+            $this->when($this->shouldCreatePages, fn (): null => $this->createPages());
         });
 
         $this->tenant->update([
@@ -72,6 +83,13 @@ class SetupTenantAccount
     public function shouldCreateUser(bool $createUser = true): static
     {
         $this->shouldCreateUser = $createUser;
+
+        return $this;
+    }
+
+    public function shouldApplyBlueprint(bool $applyBlueprint = true): static
+    {
+        $this->shouldApplyBlueprint = $applyBlueprint;
 
         return $this;
     }
@@ -118,24 +136,65 @@ class SetupTenantAccount
         $dashboard = resolve(DashboardSettings::class);
         $dashboard->title = $this->tenant->name;
         $dashboard->save();
+
+        $requestedSubdomain = $this->tenant->getAttribute('requested_subdomain');
+
+        if (filled($requestedSubdomain)) {
+            UpdateTenantSubdomain::handle($this->tenant, (string) $requestedSubdomain);
+        }
     }
 
     /**
+     * Start the organization with the structure that matches the type chosen at signup.
+     */
+    protected function applyOrganizationBlueprint(): void
+    {
+        $type = OrganizationType::tryFrom((string) $this->tenant->getAttribute('organization_type'));
+        $preset = $type?->blueprintPreset();
+
+        if (blank($preset) || ! array_key_exists($preset, OrganizationBlueprintData::presets())) {
+            return;
+        }
+
+        ApplyOrganizationBlueprint::handle(OrganizationBlueprintData::fromPreset($preset));
+
+        // The structure the setup wizard would build already exists, so it shouldn't open; the dashboard's
+        // Launch Plan carries the owner through the rest.
+        resolve(OnboardingSettings::class)->markCompleted();
+    }
+
+    /**
+     * Create the founder's account and email them a one-time link to choose their own password.
+     *
      * @throws ValidationException
      */
     protected function createInitialUserAccount(): void
     {
-        $password = Str::password(length: 16, symbols: false);
+        if (User::query()->where('email', $this->tenant->email)->exists()) {
+            return;
+        }
 
-        $user = CreateNewUser::handle([
-            'name' => 'Admin',
+        // The founder starts without a password: a claim invite can only be redeemed while the profile is
+        // unclaimed, and redeeming it is how they choose one.
+        $user = User::query()->create([
+            'name' => filled($this->tenant->getAttribute('founder_name')) ? (string) $this->tenant->getAttribute('founder_name') : 'Admin',
             'email' => $this->tenant->email,
-            'password' => $password,
-            'password_confirmation' => $password,
         ]);
+        $user->forceFill(['email_verified_at' => now(), 'approved' => true])->save();
         $user->assignRole(Utils::getSuperAdminName());
 
-        Mail::to($user)->send(new NewTenantMail($this->tenant->refresh(), $user, $password));
+        $invite = Invite::create([
+            'type' => InviteType::CLAIM,
+            'email' => $user->email,
+            'name' => $user->name,
+            'user_id' => $user->getKey(),
+            'token' => Invite::hashToken(Str::random(64)),
+        ]);
+
+        $tenant = $this->tenant->refresh();
+        $setPasswordUrl = mb_rtrim((string) $tenant->url, '/').route('app.invites.accept', ['token' => $invite->refreshToken()], false);
+
+        Mail::to($user)->send(new NewTenantMail($tenant, $user, $setPasswordUrl));
     }
 
     protected function createFirstNewsfeedItem(): void
@@ -152,6 +211,10 @@ class SetupTenantAccount
 
     protected function createAnnouncement(): void
     {
+        if (Announcement::query()->where('global', true)->exists()) {
+            return;
+        }
+
         Announcement::create([
             'title' => 'Welcome to PERSCOM Personnel Management System, '.$this->tenant->name,
             'content' => '<p>Take a look around, and if you have any questions, please join our Slack at <a href="https://perscom.io/slack">https://perscom.io/slack</a>.</p>',
@@ -168,7 +231,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display awards using the PERSCOM widgets.',
                 'slug' => 'awards',
                 'hidden' => false,
-                'icon' => 'heroicon-o-trophy',
+                'icon' => Heroicon::OutlinedTrophy,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -196,7 +259,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display positions using the PERSCOM widgets.',
                 'slug' => 'positions',
                 'hidden' => false,
-                'icon' => 'heroicon-o-identification',
+                'icon' => Heroicon::OutlinedIdentification,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -224,7 +287,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display qualifications using the PERSCOM widgets.',
                 'slug' => 'qualifications',
                 'hidden' => false,
-                'icon' => 'heroicon-o-star',
+                'icon' => Heroicon::OutlinedStar,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -252,7 +315,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display ranks using the PERSCOM widgets.',
                 'slug' => 'ranks',
                 'hidden' => false,
-                'icon' => 'heroicon-o-chevron-double-up',
+                'icon' => Heroicon::OutlinedChevronDoubleUp,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -280,7 +343,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display specialties using the PERSCOM widgets.',
                 'slug' => 'specialties',
                 'hidden' => false,
-                'icon' => 'heroicon-o-briefcase',
+                'icon' => Heroicon::OutlinedBriefcase,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -306,7 +369,7 @@ class SetupTenantAccount
         ];
 
         foreach ($pages as $page) {
-            Page::create($page);
+            Page::query()->firstOrCreate(['slug' => $page['slug']], $page);
         }
     }
 }

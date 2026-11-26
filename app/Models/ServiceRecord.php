@@ -20,8 +20,10 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,7 +47,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
@@ -75,6 +77,13 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(ServiceRecordObserver::class)]
 #[ScopedBy(ServiceRecordScope::class)]
+#[Fillable([
+    'id',
+    'text',
+    'updated_at',
+    'created_at',
+])]
+#[Table(name: 'records_service')]
 class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
@@ -90,15 +99,6 @@ class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedIte
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-
-    protected $table = 'records_service';
-
-    protected $fillable = [
-        'id',
-        'text',
-        'updated_at',
-        'created_at',
-    ];
 
     public function headlineForNewsfeedItem(): string
     {

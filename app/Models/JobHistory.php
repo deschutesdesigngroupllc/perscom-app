@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -26,15 +28,13 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'job',
+    'finished_at',
+])]
+#[Table(name: 'job_history')]
 class JobHistory extends Model
 {
-    protected $table = 'job_history';
-
-    protected $fillable = [
-        'job',
-        'finished_at',
-    ];
-
     /**
      * @return array<string, string>
      */

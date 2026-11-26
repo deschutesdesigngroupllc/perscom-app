@@ -6,15 +6,15 @@ namespace App\Console\Commands;
 
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\SendApiExpirationReminders;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Throwable;
 
+#[Description('Send any API expiration reminders.')]
+#[Signature('perscom:api-expiration-reminders')]
 class SendApiExpirationRemindersCommand extends Command
 {
-    protected $signature = 'perscom:api-expiration-reminders';
-
-    protected $description = 'Send any API expiration reminders.';
-
     /**
      * @throws Throwable
      */

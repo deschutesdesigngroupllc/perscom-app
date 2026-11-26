@@ -22,6 +22,8 @@ use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
+use function sprintf;
+
 class PromotionEligible extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;

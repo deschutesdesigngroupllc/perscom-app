@@ -23,10 +23,10 @@ enum SubscriptionStatus: string implements HasColor, HasLabel
     {
         return match ($this) {
             SubscriptionStatus::ACTIVE => 'success',
-            SubscriptionStatus::INCOMPLETE, SubscriptionStatus::INCOMPLETE_EXPIRED => 'warning',
+            SubscriptionStatus::INCOMPLETE => 'warning',
             SubscriptionStatus::TRIALING => 'info',
-            SubscriptionStatus::PAST_DUE => 'danger',
-            SubscriptionStatus::CANCELED, SubscriptionStatus::UNPAID, SubscriptionStatus::NONE => 'gray',
+            SubscriptionStatus::PAST_DUE, SubscriptionStatus::UNPAID, SubscriptionStatus::INCOMPLETE_EXPIRED => 'danger',
+            SubscriptionStatus::CANCELED, SubscriptionStatus::NONE => 'gray',
         };
     }
 

@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# {{ $rank ? 'New Rank: '.$rank : 'New Rank Record' }}
 
-{{ __('A new rank record has been added to your personnel file.') }}
+A rank record was added to your profile.
 
 @if ($rank)
   **Rank**: {{ $rank }}<br>
@@ -18,6 +18,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

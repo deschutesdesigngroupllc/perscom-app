@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Filament\App\Resources;
 
+use App\Filament\Actions\InviteAction;
 use App\Filament\App\Resources\InviteResource\Pages\ListInvites;
 use App\Filament\App\Resources\UserResource\Pages\ListUsers;
 use App\Filament\App\Resources\UserResource\Pages\ViewUser;
@@ -12,7 +13,6 @@ use App\Models\Enums\InviteType;
 use App\Models\Invite;
 use App\Models\User;
 use App\Notifications\User\Invited;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
@@ -38,13 +38,12 @@ class InviteResourceTest extends TenantTestCase
         $email = $this->faker->unique()->safeEmail();
 
         Livewire::test(ListInvites::class)
-            ->callAction('invite', ['email' => $email, 'name' => 'Jane Doe'])
+            ->callAction('invite', ['emails' => $email])
             ->assertHasNoActionErrors()
-            ->assertNotified('The invitation has been sent.');
+            ->assertNotified('Sent 1 Invitation');
 
         $this->assertDatabaseHas(Invite::class, [
             'email' => $email,
-            'name' => 'Jane Doe',
             'type' => InviteType::CREATE->value,
             'invited_by_id' => $admin->id,
         ]);
@@ -60,7 +59,7 @@ class InviteResourceTest extends TenantTestCase
         $email = $this->faker->unique()->safeEmail();
 
         Livewire::test(ListUsers::class)
-            ->callAction('invite', ['email' => $email])
+            ->callAction('invite', ['emails' => $email])
             ->assertHasNoActionErrors();
 
         $this->assertDatabaseHas(Invite::class, [
@@ -77,10 +76,39 @@ class InviteResourceTest extends TenantTestCase
         $existing = User::factory()->createQuietly();
 
         Livewire::test(ListInvites::class)
-            ->callAction('invite', ['email' => $existing->email])
-            ->assertHasActionErrors(['email' => 'unique']);
+            ->callAction('invite', ['emails' => $existing->email])
+            ->assertNotified('No Invitations Sent');
 
         Notification::assertNothingSent();
+    }
+
+    public function test_it_invites_several_people_at_once_and_reports_what_it_skipped(): void
+    {
+        Notification::fake();
+
+        $this->actingAsSuperAdmin();
+        $existing = User::factory()->createQuietly();
+
+        Livewire::test(ListInvites::class)
+            ->callAction('invite', ['emails' => "first@example.test, second@example.test\n{$existing->email}\nnot-an-email"])
+            ->assertHasNoActionErrors()
+            ->assertNotified('Sent 2 Invitations');
+
+        $this->assertDatabaseHas(Invite::class, ['email' => 'first@example.test']);
+        $this->assertDatabaseHas(Invite::class, ['email' => 'second@example.test']);
+        $this->assertDatabaseMissing(Invite::class, ['email' => $existing->email]);
+        Notification::assertSentOnDemandTimes(Invited::class, 2);
+    }
+
+    public function test_it_limits_how_many_people_can_be_invited_at_once(): void
+    {
+        $this->actingAsSuperAdmin();
+
+        $emails = collect(range(1, InviteAction::MAX_INVITES + 1))->map(fn (int $i): string => "person{$i}@example.test")->implode(',');
+
+        Livewire::test(ListInvites::class)
+            ->callAction('invite', ['emails' => $emails])
+            ->assertHasActionErrors(['emails']);
     }
 
     public function test_it_sends_a_claim_invite_for_a_profile_without_a_password(): void
@@ -187,15 +215,5 @@ class InviteResourceTest extends TenantTestCase
         $this->actingAs(User::factory()->createQuietly());
 
         $this->get(ListInvites::getUrl())->assertForbidden();
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

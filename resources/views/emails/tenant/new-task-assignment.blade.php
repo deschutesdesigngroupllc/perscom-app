@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# You Have a New Task
 
-{{ __('A new task has been assigned to you.') }}
+A task was assigned to you.
 
 @if ($task)
   **Task**: {{ $task }}<br>
@@ -23,6 +23,5 @@
   View Tasks
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

@@ -10,6 +10,8 @@ use App\Services\ServiceProfileService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
+use function sprintf;
+
 class ImageController
 {
     public function __invoke(string $handle): Response
@@ -18,10 +20,12 @@ class ImageController
 
         abort_unless($member instanceof User && ServiceProfileService::isPublic($member), 404);
 
+        $profile = ServiceProfileService::build($member);
+
         $png = Cache::remember(
-            sprintf('service-profile-image:%s:%s', $member->getKey(), $member->updated_at?->getTimestamp()),
+            sprintf('service-profile-image:%s:%s', $member->getKey(), ServiceProfileService::imageVersion($profile)),
             now()->addDay(),
-            fn (): string => base64_encode(ServiceProfileImageService::render(ServiceProfileService::build($member))),
+            fn (): string => base64_encode(ServiceProfileImageService::render($profile)),
         );
 
         return response(base64_decode((string) $png), 200, [

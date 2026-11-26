@@ -6,17 +6,19 @@ namespace App\Filament\App\Resources\UnitResource\RelationManagers;
 
 use App\Filament\App\Resources\SlotResource;
 use App\Models\Enums\RosterMode;
+use App\Models\Unit;
 use App\Settings\DashboardSettings;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class SlotsRelationManager extends RelationManager
 {
@@ -52,7 +54,7 @@ class SlotsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make(),
                 AttachAction::make()
-                    ->label('Add slot')
+                    ->label('Add Slot')
                     ->multiple()
                     ->modalHeading('Add slot')
                     ->modalDescription('Attach a slot to this unit.')
@@ -61,11 +63,20 @@ class SlotsRelationManager extends RelationManager
             ])
             ->recordActions([
                 DetachAction::make()
-                    ->label('Remove slot'),
+                    ->label('Remove Slot'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DetachBulkAction::make()
+                        ->label('Remove Selected Slots')
+                        ->action(function (DetachBulkAction $action, Collection $records): void {
+                            /** @var Unit $unit */
+                            $unit = $this->getOwnerRecord();
+
+                            $unit->slots()->detach($records->pluck('id')->unique()->all());
+
+                            $action->success();
+                        }),
                 ]),
             ])
             ->defaultSort('slots.order');

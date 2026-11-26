@@ -95,7 +95,7 @@
                 </x-filament::badge>
               @endif
               @if (!in_array('status_id', $hidden, true) && $user->status)
-                <x-filament::badge :color="\Filament\Support\Colors\Color::generateV3Palette($user->status->color ?? '#2563eb')">
+                <x-filament::badge :color="\Filament\Support\Colors\Color::generateV3Palette($user->status->color ?? \App\Support\Brand::NEUTRAL_HEX)">
                   {{ $user->status->name }}
                 </x-filament::badge>
               @endif

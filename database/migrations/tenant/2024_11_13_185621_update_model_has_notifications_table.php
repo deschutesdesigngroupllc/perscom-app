@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('model_has_notifications', function (Blueprint $table) {
+        Schema::table('model_has_notifications', function (Blueprint $table): void {
             $table->dropForeign('model_has_notifications_user_id_foreign');
             $table->dropColumn('user_id');
         });
 
-        Schema::table('model_has_notifications', function (Blueprint $table) {
-            $table->after('model_id', function (Blueprint $table) {
+        Schema::table('model_has_notifications', function (Blueprint $table): void {
+            $table->after('model_id', function (Blueprint $table): void {
                 $table->nullableMorphs('group');
                 $table->nullableMorphs('unit');
                 $table->nullableMorphs('user');

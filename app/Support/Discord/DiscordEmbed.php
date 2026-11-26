@@ -7,6 +7,10 @@ namespace App\Support\Discord;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 
+use function count;
+use function is_scalar;
+use function is_string;
+
 final class DiscordEmbed
 {
     public const int TITLE_LIMIT = 256;
@@ -70,7 +74,7 @@ final class DiscordEmbed
 
         $url = Str::startsWith($url, '/') ? url($url) : $url;
 
-        if (! Str::startsWith($url, ['https://', 'http://'])) {
+        if (Str::doesntStartWith($url, ['https://', 'http://'])) {
             return null;
         }
 
@@ -86,9 +90,11 @@ final class DiscordEmbed
      */
     public static function imageUrl(?string $url): ?string
     {
-        $url = DiscordEmbed::absoluteUrl($url);
+        $url = self::absoluteUrl($url);
 
-        return filled($url) && ! Str::endsWith(Str::lower((string) parse_url($url, PHP_URL_PATH)), '.svg') ? $url : null;
+        $path = Str::lower((string) parse_url((string) $url, PHP_URL_PATH));
+
+        return filled($url) && Str::doesntEndWith($path, '.svg') ? $url : null;
     }
 
     public function title(?string $title): static
@@ -107,7 +113,7 @@ final class DiscordEmbed
 
     public function url(?string $url): static
     {
-        $this->url = DiscordEmbed::absoluteUrl($url);
+        $this->url = self::absoluteUrl($url);
 
         return $this;
     }
@@ -118,7 +124,7 @@ final class DiscordEmbed
     public function color(int|string|null $color): static
     {
         $this->color = is_string($color)
-            ? (int) hexdec(ltrim($color, '#'))
+            ? (int) hexdec(mb_ltrim($color, '#'))
             : $color;
 
         return $this;
@@ -135,35 +141,35 @@ final class DiscordEmbed
 
     public function thumbnail(?string $url): static
     {
-        $this->thumbnail = DiscordEmbed::imageUrl($url);
+        $this->thumbnail = self::imageUrl($url);
 
         return $this;
     }
 
     public function image(?string $url): static
     {
-        $this->image = DiscordEmbed::imageUrl($url);
+        $this->image = self::imageUrl($url);
 
         return $this;
     }
 
     public function author(?string $name, ?string $url = null, ?string $iconUrl = null): static
     {
-        $this->author = blank($name) ? null : array_filter([
+        $this->author = blank($name) ? null : collect([
             'name' => Str::limit($name, self::AUTHOR_NAME_LIMIT - 3),
-            'url' => DiscordEmbed::absoluteUrl($url),
-            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
-        ], filled(...));
+            'url' => self::absoluteUrl($url),
+            'icon_url' => self::imageUrl($iconUrl),
+        ])->filter(filled(...))->all();
 
         return $this;
     }
 
     public function footer(?string $text, ?string $iconUrl = null): static
     {
-        $this->footer = blank($text) ? null : array_filter([
+        $this->footer = blank($text) ? null : collect([
             'text' => Str::limit($text, self::FOOTER_TEXT_LIMIT - 3),
-            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
-        ], filled(...));
+            'icon_url' => self::imageUrl($iconUrl),
+        ])->filter(filled(...))->all();
 
         return $this;
     }
@@ -193,7 +199,7 @@ final class DiscordEmbed
      */
     public function toArray(): array
     {
-        return array_filter([
+        return collect([
             'title' => filled($this->title) ? Str::limit($this->title, self::TITLE_LIMIT - 3) : null,
             'description' => filled($this->description) ? Str::limit($this->description, self::DESCRIPTION_LIMIT - 3) : null,
             'url' => $this->url,
@@ -204,6 +210,6 @@ final class DiscordEmbed
             'author' => $this->author,
             'footer' => $this->footer,
             'fields' => $this->fields,
-        ], filled(...));
+        ])->filter(filled(...))->all();
     }
 }

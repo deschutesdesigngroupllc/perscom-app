@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasDocument;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -19,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read Category $category
  * @property-read Document $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  *
  * @method static Builder<static>|DocumentCategory document(\App\Models\Document $document)
  * @method static Builder<static>|DocumentCategory newModelQuery()
@@ -34,18 +36,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'category_id',
+    'order',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'documents_categories')]
 class DocumentCategory extends Pivot
 {
     use HasDocument;
-
-    protected $table = 'documents_categories';
-
-    protected $fillable = [
-        'category_id',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
 
     public function document(): BelongsTo
     {

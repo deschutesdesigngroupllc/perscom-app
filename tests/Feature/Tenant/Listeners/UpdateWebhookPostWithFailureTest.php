@@ -10,6 +10,9 @@ use GuzzleHttp\Psr7\Response;
 use Spatie\WebhookServer\Events\FinalWebhookCallFailedEvent;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function array_key_exists;
+use function is_array;
+
 class UpdateWebhookPostWithFailureTest extends TenantTestCase
 {
     public function test_handle_records_error_and_response_details_on_the_webhook_log(): void

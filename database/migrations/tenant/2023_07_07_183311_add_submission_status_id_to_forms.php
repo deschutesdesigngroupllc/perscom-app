@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('forms', function (Blueprint $table) {
-            $table->after('success_message', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
+            $table->after('success_message', function (Blueprint $table): void {
                 $table->unsignedBigInteger('submission_status_id')->nullable();
             });
         });
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('forms', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
             $table->dropColumn('submission_status_id');
         });
     }

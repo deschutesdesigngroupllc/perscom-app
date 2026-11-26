@@ -17,6 +17,8 @@ use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Activitylog\Exceptions\InvalidConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 
+use function is_array;
+
 class LogApiRequest
 {
     /**
@@ -81,6 +83,8 @@ class LogApiRequest
     }
 
     /**
+     * Capture the request body for the API log.
+     *
      * @throws JsonException
      */
     private function captureRequestBody(Request $request): mixed

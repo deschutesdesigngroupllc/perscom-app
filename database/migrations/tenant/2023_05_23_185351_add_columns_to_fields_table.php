@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->string('default')->nullable()->after('placeholder');
             $table->string('rules')->nullable()->after('required');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropColumn(['default', 'rules']);
         });
     }

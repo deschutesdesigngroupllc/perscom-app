@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('statuses', function (Blueprint $table) {
+        Schema::table('statuses', function (Blueprint $table): void {
             $table->dropColumn('bg_color');
             $table->renameColumn('text_color', 'color');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('statuses', function (Blueprint $table) {
+        Schema::table('statuses', function (Blueprint $table): void {
             $table->renameColumn('color', 'text_color');
             $table->string('bg_color')->after('text_color')->nullable();
         });

@@ -22,8 +22,10 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,7 +51,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
@@ -66,7 +68,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankRecord newModelQuery()
  * @method static Builder<static>|RankRecord newQuery()
  * @method static Builder<static>|RankRecord query()
- * @method static Builder<static>|RankRecord rank(\App\Models\Rank $rank)
  * @method static Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static Builder<static>|RankRecord whereAuthorId($value)
  * @method static Builder<static>|RankRecord whereCreatedAt($value)
@@ -83,6 +84,14 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(RankRecordObserver::class)]
 #[ScopedBy(RankRecordScope::class)]
+#[Fillable([
+    'id',
+    'text',
+    'type',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'records_ranks')]
 class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
@@ -100,19 +109,16 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
     use HasResourceUrl;
     use HasUser;
 
-    protected $table = 'records_ranks';
-
     protected $attributes = [
         'type' => RankRecordType::PROMOTION,
     ];
 
-    protected $fillable = [
-        'id',
-        'text',
-        'type',
-        'created_at',
-        'updated_at',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'type' => RankRecordType::class,
+        ];
+    }
 
     public function headlineForNewsfeedItem(): string
     {
@@ -132,12 +138,5 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
     public function recipientForNewsfeedItem(): ?User
     {
         return $this->user;
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => RankRecordType::class,
-        ];
     }
 }

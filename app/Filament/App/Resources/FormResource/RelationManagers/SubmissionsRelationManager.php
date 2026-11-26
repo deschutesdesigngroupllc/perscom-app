@@ -8,6 +8,7 @@ use BackedEnum;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,7 +16,7 @@ class SubmissionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'submissions';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-folder-plus';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedFolderPlus;
 
     public function infolist(Schema $schema): Schema
     {

@@ -23,13 +23,15 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
+use function sprintf;
+
 class Fields extends SettingsPage
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
 
     protected static ?string $navigationLabel = 'Field Defaults';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static string $settings = FieldSettings::class;
 
@@ -57,7 +59,7 @@ class Fields extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Assignment Records')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 Select::make('assignment_records')
                                     ->label('Custom Fields')
@@ -68,7 +70,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Award Records')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 Select::make('award_records')
                                     ->label('Custom Fields')
@@ -79,7 +81,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Combat Records')
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 Select::make('combat_records')
                                     ->label('Custom Fields')
@@ -90,7 +92,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Qualification Records')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 Select::make('qualification_records')
                                     ->label('Custom Fields')
@@ -101,7 +103,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Rank Records')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 Select::make('rank_records')
                                     ->label('Custom Fields')
@@ -112,7 +114,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Service Records')
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
                             ->schema([
                                 Select::make('service_records')
                                     ->label('Custom Fields')
@@ -123,7 +125,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Training Records')
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 Select::make('training_records')
                                     ->label('Custom Fields')
@@ -134,7 +136,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Users')
-                            ->icon('heroicon-o-users')
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('users')
                                     ->label('Custom Fields')
@@ -142,17 +144,17 @@ class Fields extends SettingsPage
                                     ->searchable()
                                     ->multiple()
                                     ->preload()
-                                    ->helperText('Add the specified custom fields to user profiles.')
+                                    ->helperText('Add the specified custom fields to member profiles.')
                                     ->hintAction(
                                         Action::make('syncUsers')
-                                            ->label('Sync All Users')
+                                            ->label('Sync All Members')
                                             ->icon(Heroicon::OutlinedArrowPath)
                                             ->requiresConfirmation()
-                                            ->modalHeading('Sync Custom Fields to All Users')
-                                            ->modalDescription('This will sync the custom field relationships for all existing users.')
+                                            ->modalHeading('Sync Custom Fields to All Members')
+                                            ->modalDescription('This will sync the custom field relationships for all existing members.')
                                             ->form([
                                                 Radio::make('sync_mode')
-                                                    ->label('How should existing fields be handled?')
+                                                    ->label('How Should Existing Fields Be Handled?')
                                                     ->options([
                                                         'with_detaching' => 'Replace all fields (removes fields not in list)',
                                                         'without_detaching' => 'Add only (keeps existing fields, adds new ones)',
@@ -195,7 +197,7 @@ class Fields extends SettingsPage
         });
 
         Notification::make()
-            ->title('Users synced successfully')
+            ->title('Members Updated')
             ->body(sprintf('%d users were synced with the custom field configuration.', $usersUpdated))
             ->success()
             ->send();

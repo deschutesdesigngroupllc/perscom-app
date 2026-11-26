@@ -6,13 +6,14 @@ namespace App\Support\Slack;
 
 use Illuminate\Support\Str;
 
-/**
- * Turns the Discord embeds every notification already builds into Slack Block Kit, so both
- * services show the same title, details, image and link.
- */
+use function count;
+use function sprintf;
+
 final class SlackBlocks
 {
     /**
+     * Convert a Discord embed into a Slack Block Kit message.
+     *
      * @param  array<string, mixed>  $embed
      * @return array{text: string, blocks: array<int, array<string, mixed>>}
      */
@@ -25,16 +26,16 @@ final class SlackBlocks
         $blocks = collect();
 
         if (filled($author)) {
-            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => SlackBlocks::escape((string) $author)]]]);
+            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => self::escape((string) $author)]]]);
         }
 
         if (filled($title)) {
             $blocks->push(['type' => 'header', 'text' => ['type' => 'plain_text', 'text' => Str::limit($title, 147), 'emoji' => true]]);
         }
 
-        $section = array_filter([
+        $section = collect([
             'type' => 'section',
-            'text' => filled($description) ? ['type' => 'mrkdwn', 'text' => Str::limit(SlackBlocks::markdown($description), 2997)] : null,
+            'text' => filled($description) ? ['type' => 'mrkdwn', 'text' => Str::limit(self::markdown($description), 2997)] : null,
             'fields' => collect((array) data_get($embed, 'fields', []))
                 ->take(10)
                 ->map(fn (array $field): array => [
@@ -46,7 +47,7 @@ final class SlackBlocks
             'accessory' => filled(data_get($embed, 'thumbnail.url'))
                 ? ['type' => 'image', 'image_url' => data_get($embed, 'thumbnail.url'), 'alt_text' => Str::limit($title ?: 'Image', 1997)]
                 : null,
-        ]);
+        ])->filter()->all();
 
         if (count($section) > 1) {
             $blocks->push($section);
@@ -65,7 +66,7 @@ final class SlackBlocks
         }
 
         if (filled(data_get($embed, 'footer.text'))) {
-            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => SlackBlocks::escape((string) data_get($embed, 'footer.text'))]]]);
+            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => self::escape((string) data_get($embed, 'footer.text'))]]]);
         }
 
         return [
@@ -79,7 +80,7 @@ final class SlackBlocks
      */
     public static function markdown(string $text): string
     {
-        return Str::of(SlackBlocks::escape($text))
+        return Str::of(self::escape($text))
             ->replaceMatches('/\*\*(.+?)\*\*/s', '*$1*')
             ->replaceMatches('/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/', '<$2|$1>')
             ->toString();
@@ -87,6 +88,6 @@ final class SlackBlocks
 
     public static function escape(string $text): string
     {
-        return str_replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
+        return Str::replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
     }
 }

@@ -16,6 +16,7 @@ use App\Traits\HasStatusRecords;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -50,7 +51,6 @@ use Stringable;
  * @method static Builder<static>|Submission newQuery()
  * @method static Builder<static>|Submission query()
  * @method static Builder<static>|Submission read()
- * @method static Builder<static>|Submission status(?mixed $statuses)
  * @method static Builder<static>|Submission unread()
  * @method static Builder<static>|Submission user(\App\Models\User $user)
  * @method static Builder<static>|Submission whereCreatedAt($value)
@@ -64,6 +64,13 @@ use Stringable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(SubmissionObserver::class)]
+#[Fillable([
+    'id',
+    'form_id',
+    'read_at',
+    'created_at',
+    'updated_at',
+])]
 class Submission extends Model implements HasLabel, Htmlable, Stringable
 {
     use CanBeRead;
@@ -76,14 +83,6 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     use HasResourceUrl;
     use HasStatusRecords;
     use HasUser;
-
-    protected $fillable = [
-        'id',
-        'form_id',
-        'read_at',
-        'created_at',
-        'updated_at',
-    ];
 
     public function __toString(): string
     {

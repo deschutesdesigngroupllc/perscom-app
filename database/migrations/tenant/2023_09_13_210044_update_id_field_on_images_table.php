@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->uuid('model_id')->change();
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->unsignedBigInteger('model_id')->change();
         });
     }

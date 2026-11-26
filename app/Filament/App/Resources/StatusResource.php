@@ -35,11 +35,11 @@ class StatusResource extends BaseResource
 {
     protected static ?string $model = Status::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-scale';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
     {
@@ -70,7 +70,7 @@ class StatusResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedScale)
-            ->emptyStateDescription('There are no statuses to view. Create one to get started.')
+            ->emptyStateDescription('Statuses describe where a member stands, like Active, On Leave or Retired. Add your first status.')
             ->columns([
                 TextColumn::make('name')
                     ->badge()
@@ -95,7 +95,7 @@ class StatusResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(StatusExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -14,6 +14,9 @@ use Illuminate\Support\Str;
 use Laravel\Passport\Guards\TokenGuard;
 use PHPOpenSourceSaver\JWTAuth\JWT;
 
+use function in_array;
+use function sprintf;
+
 class ApiPermissionService
 {
     /**
@@ -51,7 +54,7 @@ class ApiPermissionService
         $jwt = Auth::guard('jwt');
 
         /** @var array $scopes */
-        $scopes = rescue(fn () => Arr::wrap($jwt->getPayload()->get('scopes')), [], false);
+        $scopes = rescue(fn (): array => Arr::wrap($jwt->getPayload()->get('scopes')), [], false);
 
         if (in_array('*', $scopes)) {
             return true;
@@ -61,6 +64,8 @@ class ApiPermissionService
     }
 
     /**
+     * Get every scope an API token can be granted.
+     *
      * @return string[]
      */
     public static function scopes(): array
@@ -86,6 +91,8 @@ class ApiPermissionService
     }
 
     /**
+     * Convert a model or name into its permission resource name.
+     *
      * @param  array<string|Model>|string|Model  $model
      */
     protected static function transformResourceName(array|string|Model $model): string

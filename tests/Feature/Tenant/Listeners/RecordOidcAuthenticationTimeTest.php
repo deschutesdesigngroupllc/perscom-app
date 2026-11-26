@@ -18,7 +18,7 @@ class RecordOidcAuthenticationTimeTest extends TenantTestCase
 {
     public function test_it_records_the_time_the_user_authenticated(): void
     {
-        Date::setTestNow('2026-08-22 10:00:00');
+        $this->travelTo(Date::parse('2026-08-22 10:00:00'));
 
         $user = User::factory()->createQuietly();
 
@@ -26,8 +26,6 @@ class RecordOidcAuthenticationTimeTest extends TenantTestCase
 
         $this->assertSame(Date::now()->getTimestamp(), Session::get(OidcAuthorization::AUTH_TIME_SESSION_KEY));
         $this->assertSame(Date::now()->getTimestamp(), OidcAuthorization::authTime());
-
-        Date::setTestNow();
     }
 
     public function test_it_records_the_authentication_time_when_the_user_logs_in(): void

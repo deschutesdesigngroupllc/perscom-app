@@ -11,6 +11,7 @@ use App\Filament\Admin\Resources\TenantResource\Pages\EditTenant;
 use App\Filament\Admin\Resources\TenantResource\Pages\ListTenants;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
+use App\Jobs\System\SetupTenantAccount;
 use App\Models\Enums\SubscriptionStatus;
 use App\Models\Subscription;
 use App\Models\Tenant;
@@ -32,6 +33,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -39,6 +41,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Models\ImpersonationToken;
@@ -50,7 +53,7 @@ class TenantResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static string|UnitEnum|null $navigationGroup = 'Application';
 
@@ -65,7 +68,7 @@ class TenantResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Tenant')
-                            ->icon('heroicon-o-user-group')
+                            ->icon(Heroicon::OutlinedUserGroup)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText("The tenant's name.")
@@ -90,7 +93,7 @@ class TenantResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 DateTimePicker::make('last_login_at')
                                     ->label('Last Login')
@@ -103,7 +106,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Billing')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-credit-card')
+                            ->icon(Heroicon::OutlinedCreditCard)
                             ->columns(2)
                             ->schema([
                                 TextInput::make('invoice_emails')
@@ -111,7 +114,7 @@ class TenantResource extends Resource
                                     ->maxLength(255)
                                     ->label('Invoice Emails')
                                     ->helperText('Separate using a comma for multiple email addresses.')
-                                    ->dehydrateStateUsing(fn ($state): string|false => json_encode($state)),
+                                    ->dehydrateStateUsing(fn ($state): string => json_encode($state, JSON_THROW_ON_ERROR)),
                                 TextInput::make('billing_address')
                                     ->maxLength(255)
                                     ->label('Address')
@@ -147,7 +150,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Database')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-circle-stack')
+                            ->icon(Heroicon::OutlinedCircleStack)
                             ->schema([
                                 TextInput::make('tenancy_db_name')
                                     ->maxLength(255)
@@ -156,7 +159,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Payment')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-currency-dollar')
+                            ->icon(Heroicon::OutlinedCurrencyDollar)
                             ->schema([
                                 TextInput::make('stripe_id')
                                     ->maxLength(255)
@@ -177,12 +180,15 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Metadata')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-code-bracket')
+                            ->icon(Heroicon::OutlinedCodeBracket)
                             ->schema([
                                 CodeEditor::make('data')
                                     ->dehydrated(false)
                                     ->hiddenLabel()
-                                    ->formatStateUsing(fn (?Tenant $record): string|false => json_encode(json_decode($record?->getRawOriginal('data') ?? ''), JSON_PRETTY_PRINT))
+                                    ->formatStateUsing(fn (?Tenant $record): string|false => json_encode(
+                                        json_decode($record?->getRawOriginal('data') ?? ''),
+                                        JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR,
+                                    ))
                                     ->json(),
                             ]),
                     ]),
@@ -209,7 +215,7 @@ class TenantResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->openUrlInNewTab()
-                    ->url(fn ($state) => $state),
+                    ->url(fn (?string $state): ?string => $state),
                 IconColumn::make('customer')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record): bool => $record->hasStripeId()),
@@ -251,21 +257,36 @@ class TenantResource extends Resource
                     ->sortable(),
             ])
             ->recordActions([
+                Action::make('retrySetup')
+                    ->label('Retry Setup')
+                    ->icon(Heroicon::OutlinedArrowPath)
+                    ->color('warning')
+                    ->visible(fn (Tenant $record): bool => ! $record->setup_completed)
+                    ->requiresConfirmation()
+                    ->modalHeading('Retry Setup')
+                    ->modalDescription('Runs the organization setup again. Steps that already finished are skipped, and the founder gets their set-password email once it completes.')
+                    ->modalSubmitActionLabel('Retry Setup')
+                    ->successNotificationTitle('Setup Queued')
+                    ->action(function (Action $action, Tenant $record): void {
+                        dispatch(new SetupTenantAccount($record));
+
+                        $action->success();
+                    }),
                 Action::make('login')
-                    ->icon('heroicon-o-arrow-right-end-on-rectangle')
+                    ->icon(Heroicon::OutlinedArrowRightEndOnRectangle)
                     ->color('gray')
                     ->modalDescription('Login to the tenant using the user below.')
-                    ->visible(fn (Tenant $record) => $record->setup_completed)
+                    ->visible(fn (Tenant $record): bool => $record->setup_completed)
                     ->schema([
                         Select::make('user')
                             ->searchable()
                             ->helperText('Select the user to login as.')
-                            ->options(fn (Tenant $record) => $record->run(fn () => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
+                            ->options(fn (Tenant $record): array => $record->run(fn (): array => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
                                 $query->where('name', Utils::getSuperAdminName());
                             })->get()->pluck('name', 'id')->toArray()))
                             ->required(),
                     ])
-                    ->action(function (Action $action, Tenant $record, array $data) {
+                    ->action(function (Action $action, Tenant $record, array $data): RedirectResponse {
                         $token = ImpersonationToken::create([
                             'tenant_id' => $record->getTenantKey(),
                             'user_id' => data_get($data, 'user'),
@@ -291,7 +312,7 @@ class TenantResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): void {
                         $query->when(filled(data_get($data, 'subscription_status')), function (Builder $query) use ($data): void {
-                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
+                            $query->whereHas('subscriptions', fn (Builder $query): Builder => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
                         });
                     }),
                 Filter::make('subscription_price')
@@ -301,7 +322,7 @@ class TenantResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): void {
                         $query->when(filled(data_get($data, 'subscription_price')), function (Builder $query) use ($data): void {
-                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereHas('items', fn (Builder $query) => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
+                            $query->whereHas('subscriptions', fn (Builder $query): Builder => $query->whereHas('items', fn (Builder $query): Builder => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
                         });
                     }),
             ])
@@ -382,7 +403,7 @@ class TenantResource extends Resource
         return [
             Action::make('dashboard')
                 ->button()
-                ->url(fn () => $record->url, shouldOpenInNewTab: true),
+                ->url(fn (): ?string => $record->url, shouldOpenInNewTab: true),
         ];
     }
 }

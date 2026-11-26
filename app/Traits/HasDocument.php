@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use function in_array;
+
 /**
  * @mixin Eloquent
  */
@@ -28,7 +30,7 @@ trait HasDocument
     protected function documentParsed(): Attribute
     {
         return Attribute::make(
-            get: function () {
+            get: function (): ?string {
                 $resource = clone $this;
                 $user = in_array(HasUser::class, class_uses_recursive($resource::class))
                     ? $resource->user // @phpstan-ignore-line

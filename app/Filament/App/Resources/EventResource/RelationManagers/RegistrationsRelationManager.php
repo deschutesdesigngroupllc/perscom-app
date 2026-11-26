@@ -8,6 +8,7 @@ use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ class RegistrationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'registrations';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-user-plus';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedUserPlus;
 
     protected $listeners = ['refreshRegistrations' => '$refresh'];
 
@@ -43,19 +44,18 @@ class RegistrationsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The users that are registered for the event.')
-            ->emptyStateHeading('No registrations')
-            ->emptyStateDescription('There are no users registered.')
-            ->description('The users registered for the event.')
+            ->emptyStateHeading('No RSVPs Yet')
+            ->emptyStateDescription('Share the event to collect responses from members.')
+            ->description('The members registered for the event.')
             ->columns([
                 TextColumn::make('registration.user.display_name')
-                    ->label('User'),
+                    ->label('Member'),
                 TextColumn::make('registration.status')
                     ->label('Status')
                     ->badge(),
                 TextColumn::make('registration.created_at')
                     ->label('Registered')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -65,7 +65,7 @@ class RegistrationsRelationManager extends RelationManager
                 TextColumn::make('registration.checked_in_at')
                     ->label('Checked In')
                     ->placeholder('Not checked in')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

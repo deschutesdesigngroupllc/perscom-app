@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->boolean('hidden')->default(false)->after('readonly');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropColumn('hidden');
         });
     }

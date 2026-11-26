@@ -10,6 +10,9 @@ use App\Services\CalendarFeedService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+
+use function is_string;
 
 class PersonalFeedController
 {
@@ -18,12 +21,12 @@ class PersonalFeedController
         $user = CalendarFeedService::findUser($token);
 
         abort_unless($user instanceof User, 404);
-        abort_unless($user->can('viewAny', Event::class), 403);
+        abort_unless($user->can('view', Event::class), 403);
 
         $calendarIds = collect(Arr::wrap($request->query('calendars')))
             ->filter(fn (mixed $ids): bool => is_string($ids))
-            ->flatMap(fn (string $ids): array => explode(',', $ids))
-            ->map(fn (string $id): string => trim($id))
+            ->flatMap(fn (string $ids): array => Str::of($ids)->explode(',')->all())
+            ->map(fn (string $id): string => Str::trim($id))
             ->filter(fn (string $id): bool => ctype_digit($id))
             ->map(fn (string $id): int => (int) $id)
             ->values()

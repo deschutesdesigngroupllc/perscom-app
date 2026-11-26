@@ -35,11 +35,13 @@ class CompetencyResource extends BaseResource
 {
     protected static ?string $model = Competency::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-numbered-list';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNumberedList;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationParentItem = 'Qualifications';
 
     public static function form(Schema $schema): Schema
     {
@@ -83,7 +85,7 @@ class CompetencyResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedNumberedList)
-            ->emptyStateDescription('There are no competencies to view. Create one to get started.')
+            ->emptyStateDescription('Competencies are the skills a training covers. Add one to attach it to training records.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -104,7 +106,7 @@ class CompetencyResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Competency $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Competency $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -113,7 +115,7 @@ class CompetencyResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CompetencyExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -14,6 +14,8 @@ use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function array_key_exists;
+
 class AuthorizationControllerTest extends TenantTestCase
 {
     public function test_authorization_page_can_be_reached(): void

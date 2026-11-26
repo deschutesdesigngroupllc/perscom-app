@@ -7,9 +7,10 @@
 @endphp
 
 <div class="flex flex-col items-center" wire:key="roster-chart-{{ $unit->getKey() }}">
-  <x-filament::section compact :heading="$unit->name" :has-content-el="false" class="w-60 break-inside-avoid print:shadow-none print:ring-gray-400">
+  <x-filament::section compact :heading="$unit->name" :has-content-el="false"
+    class="w-max min-w-60 break-inside-avoid [&_.fi-section-header-heading]:whitespace-nowrap print:shadow-none print:ring-gray-400">
     <x-slot name="afterHeader">
-      <x-filament::badge color="gray" size="xs">{{ $node['total'] }}</x-filament::badge>
+      <x-filament::badge color="gray" size="sm">{{ $node['total'] }}</x-filament::badge>
     </x-slot>
 
     <ul class="divide-y divide-gray-100 dark:divide-white/5">
@@ -35,20 +36,25 @@
           @endif
         </li>
       @empty
-        <li class="px-3 py-2 text-center text-xs text-gray-500 dark:text-gray-400">No personnel assigned.</li>
+        <li class="px-3 py-2 text-center text-xs text-gray-500 dark:text-gray-400">No members assigned.</li>
       @endforelse
     </ul>
   </x-filament::section>
 
   @if (filled($node['children']))
     <div class="h-4 w-px bg-gray-300 dark:bg-white/20 print:bg-gray-500"></div>
-    <div class="relative flex gap-4 pt-4">
-      @if (count($node['children']) > 1)
-        <div class="absolute start-30 end-30 top-0 h-px bg-gray-300 dark:bg-white/20 print:bg-gray-500"></div>
-      @endif
+    <div class="flex">
       @foreach ($node['children'] as $child)
-        <div class="relative flex flex-col items-center">
-          <div class="absolute -top-4 h-4 w-px bg-gray-300 dark:bg-white/20 print:bg-gray-500"></div>
+        <div class="relative flex flex-col items-center px-2 pt-4">
+          @if (count($node['children']) > 1)
+            <div @class([
+                'absolute top-0 h-px bg-gray-300 dark:bg-white/20 print:bg-gray-500',
+                'start-1/2 end-0' => $loop->first,
+                'start-0 end-1/2' => $loop->last,
+                'inset-x-0' => !$loop->first && !$loop->last,
+            ])></div>
+          @endif
+          <div class="absolute start-1/2 top-0 h-4 w-px bg-gray-300 dark:bg-white/20 print:bg-gray-500"></div>
           <x-roster.chart-node :node="$child" :mode="$mode" :insights="$insights" :hidden-fields="$hiddenFields" />
         </div>
       @endforeach

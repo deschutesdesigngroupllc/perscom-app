@@ -36,11 +36,11 @@ class PositionResource extends BaseResource
 {
     protected static ?string $model = Position::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
@@ -83,14 +83,14 @@ class PositionResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedIdentification)
-            ->emptyStateDescription('There are no positions to view. Create one to get started.')
+            ->emptyStateDescription('Positions describe the role a member fills in their unit. Add one to assign it.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -108,7 +108,9 @@ class PositionResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Position $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(
+                        fn (Position $record): ?string => $record->categoryPivot?->category?->name,
+                    ),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -117,7 +119,7 @@ class PositionResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(PositionExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->after('last_seen_at', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
+            $table->after('last_seen_at', function (Blueprint $table): void {
                 $table->string('discord_user_id')->nullable();
                 $table->string('discord_private_channel_id')->nullable();
             });
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn(['discord_user_id', 'discord_private_channel_id']);
         });
     }

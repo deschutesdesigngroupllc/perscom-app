@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Context;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\WebhookServer\WebhookCall;
 
+use function is_array;
+
 class WebhookService
 {
     public static function dispatch(Webhook $webhook, string $event, mixed $data): PendingDispatch

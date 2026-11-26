@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Public\Pages\Forms;
 
+use App\Filament\Forms\Components\Turnstile;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
 use App\Traits\Filament\BuildsCustomFieldComponents;
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use DanHarrin\LivewireRateLimiting\WithRateLimiting;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -18,6 +21,8 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use function sprintf;
+
 /**
  * @property Schema $form
  */
@@ -26,6 +31,12 @@ class Submit extends Page implements HasForms
     use BuildsCustomFieldComponents;
     use InteractsWithFormActions;
     use InteractsWithForms;
+    use WithRateLimiting;
+
+    /**
+     * Public forms are open to anyone, so each visitor may submit only this many times a minute.
+     */
+    public const int SUBMISSIONS_PER_MINUTE = 5;
 
     public FormModel $submissionForm;
 
@@ -72,11 +83,26 @@ class Submit extends Page implements HasForms
     {
         return $schema
             ->statePath('data')
-            ->components(self::buildCustomFieldInputs($this->submissionForm->fields));
+            ->components([
+                ...self::buildCustomFieldInputs($this->submissionForm->fields),
+                Turnstile::make('turnstile'),
+            ]);
     }
 
     public function submit(): void
     {
+        try {
+            $this->rateLimit(static::SUBMISSIONS_PER_MINUTE);
+        } catch (TooManyRequestsException $tooManyRequestsException) {
+            Notification::make()
+                ->danger()
+                ->title('Too Many Submissions')
+                ->body(sprintf('Please wait %d seconds and try again.', $tooManyRequestsException->secondsUntilAvailable))
+                ->send();
+
+            return;
+        }
+
         $data = $this->form->getState();
 
         Submission::create(array_merge([
@@ -88,7 +114,7 @@ class Submit extends Page implements HasForms
         Notification::make()
             ->success()
             ->title('Form Submitted')
-            ->body($this->submissionForm->success_message ?? 'Your form has been successfully submitted.')
+            ->body($this->submissionForm->success_message ?? 'Thanks. Your response was received.')
             ->send();
     }
 
@@ -114,7 +140,7 @@ class Submit extends Page implements HasForms
     protected function getSubmitFormAction(): Action
     {
         return Action::make('submit')
-            ->label('Submit')
+            ->label(sprintf('Submit %s', $this->submissionForm->name))
             ->submit('submit');
     }
 }

@@ -23,6 +23,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 
+use function in_array;
+
 class TakeAttendanceAction extends Action
 {
     /**
@@ -67,7 +69,7 @@ class TakeAttendanceAction extends Action
                 ->live()
                 ->afterStateUpdated(fn (Event $record, Set $set, ?string $state): mixed => $set('attended', static::attendedUserIds(static::occurrenceFor($record, $state)))),
             CheckboxList::make('attended')
-                ->label('Registered members')
+                ->label('Registered Members')
                 ->helperText('Select the registered members who attended.')
                 ->options(fn (Event $record, Get $get): array => User::query()
                     ->whereKey(static::registrants(static::occurrenceFor($record, $get('occurrence')))->keys()->all())
@@ -79,7 +81,7 @@ class TakeAttendanceAction extends Action
                 ->searchable()
                 ->columns(2),
             Select::make('additional')
-                ->label('Additional attendees')
+                ->label('Additional Attendees')
                 ->helperText('Add members who attended without registering.')
                 ->multiple()
                 ->searchable()
@@ -90,7 +92,7 @@ class TakeAttendanceAction extends Action
                     ->pluck('name', 'id')
                     ->all()),
             Toggle::make('mark_no_show')
-                ->label('Mark unchecked registrants as no-show')
+                ->label('Mark Unchecked Registrants as No-Show')
                 ->helperText("Only members who responded Going are marked. Members who responded Maybe or Can't Go are left unchanged.")
                 ->visible(fn (Event $record, Get $get): bool => static::registrants(static::occurrenceFor($record, $get('occurrence')))->isNotEmpty()),
         ]);
@@ -127,6 +129,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the recent occurrence options for a repeating event.
+     *
      * @return array<string, string>
      */
     protected static function occurrenceOptions(Event $record): array
@@ -179,6 +183,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the registrations for the occurrence.
+     *
      * @return Collection<int, EventRegistration>
      */
     protected static function registrants(?OccurrenceData $occurrence): Collection
@@ -187,6 +193,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the IDs of the members marked attended for the occurrence.
+     *
      * @return array<int, int>
      */
     protected static function attendedUserIds(?OccurrenceData $occurrence): array

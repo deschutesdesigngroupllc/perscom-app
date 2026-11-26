@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tasks', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table): void {
             $table->text('description')->nullable()->change();
         });
     }

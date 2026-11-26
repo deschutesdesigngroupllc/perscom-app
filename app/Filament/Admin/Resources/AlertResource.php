@@ -24,6 +24,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -35,7 +36,7 @@ class AlertResource extends Resource
 {
     protected static ?string $model = Alert::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -50,7 +51,7 @@ class AlertResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Alert')
-                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                             ->schema([
                                 TextInput::make('title')
                                     ->columnSpanFull()
@@ -68,15 +69,15 @@ class AlertResource extends Resource
                                     ->hiddenLabel()
                                     ->required()
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(AlertChannel::cases())
+                                    ->descriptions(fn (): array => collect(AlertChannel::cases())
                                         ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->all())
-                                    ->options(fn () => collect(AlertChannel::cases())
+                                    ->options(fn (): array => collect(AlertChannel::cases())
                                         ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->all()),
                             ]),
                         Tab::make('Link')
-                            ->icon('heroicon-o-link')
+                            ->icon(Heroicon::OutlinedLink)
                             ->schema([
                                 TextInput::make('link_text')
                                     ->label('Text')

@@ -7,7 +7,7 @@
   /** @var User $user */
   /** @var array $hiddenFields */
   $coverUrl = in_array('cover_photo', $hiddenFields) ? null : $user->cover_photo_url;
-  $statusColor = $user->status?->color ?? '#6b7280';
+  $statusColor = $user->status?->color ?? \App\Support\Brand::NEUTRAL_HEX;
   $online = $user->online;
   $coverStyles = sprintf('height: %dpx;', (int) $coverHeight);
 
@@ -53,7 +53,8 @@
           @unless (in_array('online', $hiddenFields))
             <span
               class="inline-block h-3 w-3 shrink-0 rounded-full ring-2 ring-white dark:ring-gray-900 {{ $online ? 'bg-emerald-500' : 'bg-gray-400' }}"
-              title="{{ $online ? 'Online' : 'Offline' }}"></span>
+              title="{{ $online ? 'Online' : 'Offline' }}" aria-hidden="true"></span>
+            <span class="sr-only">{{ $online ? 'Online' : 'Offline' }}</span>
           @endunless
         </h2>
 

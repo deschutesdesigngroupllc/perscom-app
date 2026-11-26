@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
+use function in_array;
+
 class EventCalendarService
 {
     /**
@@ -45,6 +47,7 @@ class EventCalendarService
 
     /**
      * The occurrences shown on the calendar for a range, narrowed by the calendar filters.
+     * A user without the view event permission gets no occurrences.
      *
      * @param  array{calendars?: array<int, int|string>, mine?: bool, open?: bool}  $filters
      * @return Collection<int, OccurrenceData>
@@ -59,7 +62,7 @@ class EventCalendarService
         $mine = (bool) ($filters['mine'] ?? false);
         $open = (bool) ($filters['open'] ?? false);
 
-        if ($mine && ! $user instanceof User) {
+        if (($mine && ! $user instanceof User) || ($user instanceof User && ! $user->can('view', Event::class))) {
             return collect();
         }
 
@@ -161,6 +164,8 @@ class EventCalendarService
     }
 
     /**
+     * Get the member's effective response for the occurrence.
+     *
      * @param  EloquentCollection<int, EventRegistration>  $registrations
      */
     protected static function effectiveResponse(OccurrenceData $occurrence, EloquentCollection $registrations): ?EventRegistrationStatus

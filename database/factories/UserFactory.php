@@ -22,7 +22,7 @@ class UserFactory extends Factory
 {
     public function configure(): static
     {
-        return $this->afterCreating(fn (User $user) => $user->assignRole(Utils::getPanelUserRoleName()));
+        return $this->afterCreating(fn (User $user): User => $user->assignRole(Utils::getPanelUserRoleName()));
     }
 
     public function definition(): array
@@ -48,7 +48,7 @@ class UserFactory extends Factory
 
     public function unverified(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'email_verified_at' => null,
             ];
@@ -57,7 +57,7 @@ class UserFactory extends Factory
 
     public function unassigned(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'position_id' => null,
                 'rank_id' => null,
@@ -70,6 +70,6 @@ class UserFactory extends Factory
 
     public function withoutRoles(): static
     {
-        return $this->afterCreating(fn (User $user) => $user->removeRole(Utils::getPanelUserRoleName()));
+        return $this->afterCreating(fn (User $user): User => $user->removeRole(Utils::getPanelUserRoleName()));
     }
 }

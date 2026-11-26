@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -36,19 +37,18 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'title',
+    'message',
+    'link_url',
+    'link_text',
+    'background_color',
+    'text_color',
+    'created_at',
+    'updated_at',
+])]
 class Banner extends Model
 {
     use CentralConnection;
     use ClearsResponseCache;
-
-    protected $fillable = [
-        'title',
-        'message',
-        'link_url',
-        'link_text',
-        'background_color',
-        'text_color',
-        'created_at',
-        'updated_at',
-    ];
 }

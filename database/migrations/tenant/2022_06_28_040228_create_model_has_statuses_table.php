@@ -15,7 +15,7 @@ class CreateModelHasStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('model_has_statuses', function (Blueprint $table) {
+        Schema::create('model_has_statuses', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('status_id');
             $table->morphs('model');

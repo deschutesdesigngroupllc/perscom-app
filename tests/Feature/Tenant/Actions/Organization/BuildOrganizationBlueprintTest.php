@@ -11,6 +11,9 @@ use App\Data\Organization\OrganizationBlueprintData;
 use App\Data\Organization\UnitData;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+use function sprintf;
+
 class BuildOrganizationBlueprintTest extends TenantTestCase
 {
     public function test_it_describes_the_existing_organization(): void

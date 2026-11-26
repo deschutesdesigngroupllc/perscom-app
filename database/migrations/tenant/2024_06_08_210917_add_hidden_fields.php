@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('groups', function (Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table): void {
             $table->boolean('hidden')->default(false)->after('order');
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->boolean('hidden')->default(false)->after('order');
         });
     }
@@ -27,11 +27,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('groups', function (Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table): void {
             $table->dropColumn('hidden');
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->dropColumn('hidden');
         });
     }

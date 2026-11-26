@@ -44,157 +44,157 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Announcement::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Announcement $resource) => $resource->deleteQuietly());
-        Schema::table('announcements', function (Blueprint $table) {
+        Announcement::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Announcement $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Attachment::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Attachment $resource) => $resource->deleteQuietly());
-        Schema::table('attachments', function (Blueprint $table) {
+        Attachment::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Attachment $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('attachments', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Award::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Award $resource) => $resource->deleteQuietly());
-        Schema::table('awards', function (Blueprint $table) {
+        Award::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Award $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('awards', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Calendar::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Calendar $resource) => $resource->deleteQuietly());
-        Schema::table('calendars', function (Blueprint $table) {
+        Calendar::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Calendar $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('calendars', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Category::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Category $resource) => $resource->deleteQuietly());
-        Schema::table('categories', function (Blueprint $table) {
+        Category::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Category $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('categories', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Comment::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Comment $resource) => $resource->deleteQuietly());
-        Schema::table('comments', function (Blueprint $table) {
+        Comment::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Comment $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('comments', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Document::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Document $resource) => $resource->deleteQuietly());
-        Schema::table('documents', function (Blueprint $table) {
+        Document::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Document $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('documents', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Event::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Event $resource) => $resource->deleteQuietly());
-        Schema::table('events', function (Blueprint $table) {
+        Event::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Event $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('events', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Field::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Field $resource) => $resource->deleteQuietly());
-        Schema::table('fields', function (Blueprint $table) {
+        Field::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Field $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Form::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Form $resource) => $resource->deleteQuietly());
-        Schema::table('forms', function (Blueprint $table) {
+        Form::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Form $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('forms', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Group::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Group $resource) => $resource->deleteQuietly());
-        Schema::table('groups', function (Blueprint $table) {
+        Group::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Group $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('groups', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Image::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Image $resource) => $resource->deleteQuietly());
-        Schema::table('images', function (Blueprint $table) {
+        Image::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Image $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('images', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Schema::table('mail', function (Blueprint $table) {
+        Schema::table('mail', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Message::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Message $resource) => $resource->deleteQuietly());
-        Schema::table('messages', function (Blueprint $table) {
+        Message::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Message $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('messages', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Position::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Position $resource) => $resource->deleteQuietly());
-        Schema::table('positions', function (Blueprint $table) {
+        Position::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Position $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('positions', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Qualification::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Qualification $resource) => $resource->deleteQuietly());
-        Schema::table('qualifications', function (Blueprint $table) {
+        Qualification::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Qualification $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('qualifications', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Rank::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Rank $resource) => $resource->deleteQuietly());
-        Schema::table('ranks', function (Blueprint $table) {
+        Rank::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Rank $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Submission::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Submission $resource) => $resource->deleteQuietly());
-        Schema::table('submissions', function (Blueprint $table) {
+        Submission::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Submission $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('submissions', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        AssignmentRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (AssignmentRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_assignments', function (Blueprint $table) {
+        AssignmentRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (AssignmentRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        AwardRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (AwardRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_awards', function (Blueprint $table) {
+        AwardRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (AwardRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_awards', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        CombatRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (CombatRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_combat', function (Blueprint $table) {
+        CombatRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (CombatRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_combat', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        QualificationRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (QualificationRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_qualifications', function (Blueprint $table) {
+        QualificationRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (QualificationRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_qualifications', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        RankRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (RankRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_ranks', function (Blueprint $table) {
+        RankRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (RankRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_ranks', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        ServiceRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (ServiceRecord $resource) => $resource->deleteQuietly());
-        Schema::table('records_service', function (Blueprint $table) {
+        ServiceRecord::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (ServiceRecord $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('records_service', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Specialty::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Specialty $resource) => $resource->deleteQuietly());
-        Schema::table('specialties', function (Blueprint $table) {
+        Specialty::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Specialty $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('specialties', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Status::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Status $resource) => $resource->deleteQuietly());
-        Schema::table('statuses', function (Blueprint $table) {
+        Status::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Status $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('statuses', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Tag::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Tag $resource) => $resource->deleteQuietly());
-        Schema::table('tags', function (Blueprint $table) {
+        Tag::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Tag $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('tags', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Task::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Task $resource) => $resource->deleteQuietly());
-        Schema::table('tasks', function (Blueprint $table) {
+        Task::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Task $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('tasks', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Unit::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Unit $resource) => $resource->deleteQuietly());
-        Schema::table('units', function (Blueprint $table) {
+        Unit::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Unit $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('units', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        User::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (User $resource) => $resource->deleteQuietly());
-        Schema::table('users', function (Blueprint $table) {
+        User::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (User $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
 
-        Webhook::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Webhook $resource) => $resource->deleteQuietly());
-        Schema::table('webhooks', function (Blueprint $table) {
+        Webhook::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Webhook $resource): ?bool => $resource->deleteQuietly());
+        Schema::table('webhooks', function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }
@@ -204,127 +204,127 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('calendars', function (Blueprint $table) {
+        Schema::table('calendars', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('categories', function (Blueprint $table) {
+        Schema::table('categories', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('comments', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('documents', function (Blueprint $table) {
+        Schema::table('documents', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('forms', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('groups', function (Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('mail', function (Blueprint $table) {
+        Schema::table('mail', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('messages', function (Blueprint $table) {
+        Schema::table('messages', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('positions', function (Blueprint $table) {
+        Schema::table('positions', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('qualifications', function (Blueprint $table) {
+        Schema::table('qualifications', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('submissions', function (Blueprint $table) {
+        Schema::table('submissions', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_awards', function (Blueprint $table) {
+        Schema::table('records_awards', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_combat', function (Blueprint $table) {
+        Schema::table('records_combat', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_qualifications', function (Blueprint $table) {
+        Schema::table('records_qualifications', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_ranks', function (Blueprint $table) {
+        Schema::table('records_ranks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_service', function (Blueprint $table) {
+        Schema::table('records_service', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('specialties', function (Blueprint $table) {
+        Schema::table('specialties', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('statuses', function (Blueprint $table) {
+        Schema::table('statuses', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::table('tags', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('tasks', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('webhooks', function (Blueprint $table) {
+        Schema::table('webhooks', function (Blueprint $table): void {
             $table->softDeletes();
         });
     }

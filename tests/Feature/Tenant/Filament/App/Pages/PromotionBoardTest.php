@@ -10,7 +10,6 @@ use App\Models\Rank;
 use App\Models\RankRecord;
 use App\Models\RankRequirement;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
@@ -105,15 +104,5 @@ class PromotionBoardTest extends TenantTestCase
         $this->assertFalse(PromotionBoard::canAccess());
 
         Livewire::test(PromotionBoard::class)->assertForbidden();
-    }
-
-    protected function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

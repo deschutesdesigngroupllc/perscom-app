@@ -23,7 +23,10 @@ class ApiResourceCollection extends CollectionResource
         $response->withHeaders([
             'Surrogate-Key' => $apiCacheService->surrogateKeysForResource(
                 resource: $this
-            )->when(config('tenancy.enabled'), fn (Collection $headers) => $headers->push($apiCacheService->getTenantCacheTag()))->implode(' '),
+            )->when(
+                config('tenancy.enabled'),
+                fn (Collection $headers): Collection => $headers->push($apiCacheService->getTenantCacheTag()),
+            )->implode(' '),
         ]);
     }
 

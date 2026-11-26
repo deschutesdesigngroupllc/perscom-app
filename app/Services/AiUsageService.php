@@ -37,6 +37,8 @@ class AiUsageService
     }
 
     /**
+     * Ensure the tenant has AI tokens left this month.
+     *
      * @throws AiUsageLimitExceededException
      */
     public static function ensureWithinLimit(): void

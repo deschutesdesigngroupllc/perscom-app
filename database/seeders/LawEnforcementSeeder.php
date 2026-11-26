@@ -35,10 +35,13 @@ use App\Models\Task;
 use App\Models\TrainingRecord;
 use App\Models\Unit;
 use App\Models\User;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use JsonException;
 
 class LawEnforcementSeeder extends Seeder
 {
@@ -57,6 +60,12 @@ class LawEnforcementSeeder extends Seeder
         'Special Operations Division' => 'Office of the Chief',
     ];
 
+    /**
+     * Seed the law enforcement demo organization.
+     *
+     * @throws FileNotFoundException when a bundled image cannot be read
+     * @throws JsonException when the field options cannot be encoded
+     */
     public function run(): void
     {
         $user = User::first() ?? User::factory()->create();
@@ -287,20 +296,16 @@ class LawEnforcementSeeder extends Seeder
                 ['name' => 'Chief of Police', 'abbreviation' => 'COP', 'paygrade' => 'P8', 'order' => 1],
             )
             ->create()
-            ->each(function (Rank $rank) {
+            ->each(function (Rank $rank): void {
                 $path = "ranks/law/$rank->abbreviation.svg";
                 $image = storage_path("app/images/ranks/law/$rank->abbreviation.svg");
 
                 if (! Storage::exists($path)) {
-                    if (! file_exists($image)) {
+                    if (File::missing($image)) {
                         return;
                     }
 
-                    $file = file_get_contents($image);
-
-                    if ($file === false) {
-                        return;
-                    }
+                    $file = File::get($image);
 
                     Storage::put(
                         path: $path,
@@ -422,7 +427,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Incident / Case Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date / Time of Incident', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
                     ['name' => 'Location', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Force Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Soft Empty Hand', 'Hard Empty Hand', 'OC Spray', 'Baton / Impact Weapon', 'Conducted Electrical Weapon (CEW)', 'Less-Lethal Munition', 'K9 Apprehension', 'Firearm - Display / Pointing', 'Firearm - Discharged'])],
+                    ['name' => 'Force Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Soft Empty Hand', 'Hard Empty Hand', 'OC Spray', 'Baton / Impact Weapon', 'Conducted Electrical Weapon (CEW)', 'Less-Lethal Munition', 'K9 Apprehension', 'Firearm - Display / Pointing', 'Firearm - Discharged'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Subject Injury', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Officer Injury', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Narrative & Force Factors', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Articulate the totality of circumstances under Graham v. Connor, including subject behavior, severity of crime, and immediate threat assessment.'],
@@ -447,8 +452,8 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Case Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Pursuit Initiated', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
                     ['name' => 'Pursuit Terminated', 'type' => FieldType::FIELD_DATETIME, 'cast' => FieldType::FIELD_DATETIME->getCast(), 'required' => true],
-                    ['name' => 'Reason for Pursuit', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Felony - Violent', 'Felony - Property', 'Misdemeanor', 'Stolen Vehicle', 'DUI', 'Traffic Violation Only', 'Other'])],
-                    ['name' => 'Termination Reason', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Subject Stopped', 'PIT / Tactical Intervention', 'Subject Lost', 'Supervisor Termination', 'Officer Termination', 'Collision'])],
+                    ['name' => 'Reason for Pursuit', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Felony - Violent', 'Felony - Property', 'Misdemeanor', 'Stolen Vehicle', 'DUI', 'Traffic Violation Only', 'Other'], JSON_THROW_ON_ERROR)],
+                    ['name' => 'Termination Reason', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Subject Stopped', 'PIT / Tactical Intervention', 'Subject Lost', 'Supervisor Termination', 'Officer Termination', 'Collision'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Collision or Injury Occurred?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Pursuit Narrative', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Include speeds, distance, weather, road conditions, traffic, supervisor notification, and tactics employed.'],
                 )
@@ -471,7 +476,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Badge Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Current Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Current Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Shift / Watch Change', 'Beat Reassignment', 'Specialty Assignment', 'Promotion', 'Transfer', 'Resignation / Retirement', 'Other'])],
+                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Shift / Watch Change', 'Beat Reassignment', 'Specialty Assignment', 'Promotion', 'Transfer', 'Resignation / Retirement', 'Other'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Reason / Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],
                 )
@@ -518,7 +523,7 @@ class LawEnforcementSeeder extends Seeder
                     ['name' => 'Email Address', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast(), 'required' => true],
                     ['name' => 'Phone Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Date of Birth', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
-                    ['name' => 'Application Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Recruit (Non-Certified)', 'Lateral (Currently Certified)', 'Returning Sworn Member'])],
+                    ['name' => 'Application Type', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Recruit (Non-Certified)', 'Lateral (Currently Certified)', 'Returning Sworn Member'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Currently POST Certified?', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast(), 'required' => true],
                     ['name' => 'Prior Sworn Service', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => false, 'help' => 'List previous agencies, dates of service, and assignments. Leave blank if non-certified.'],
                     ['name' => 'Why do you want to be a police officer?', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true],

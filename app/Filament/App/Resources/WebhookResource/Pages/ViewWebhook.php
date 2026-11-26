@@ -26,13 +26,13 @@ class ViewWebhook extends ViewRecord
     {
         return [
             Action::make('test')
-                ->label('Test webhook')
+                ->label('Test Webhook')
                 ->schema([
                     CodeEditor::make('payload')
                         ->required()
-                        ->default(fn (): string|false => json_encode([
+                        ->default(fn (): string => json_encode([
                             'status' => 'ok',
-                        ], JSON_PRETTY_PRINT))
+                        ], JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR))
                         ->json()
                         ->helperText('Provide an example JSON payload to test.'),
                 ])
@@ -42,7 +42,11 @@ class ViewWebhook extends ViewRecord
                 ->modalSubmitActionLabel('Send')
                 ->successNotificationTitle('The test webhook has been successfully sent.')
                 ->action(function (array $data, Action $action, Webhook $record): void {
-                    WebhookService::dispatch($record, WebhookEvent::TEST_WEBHOOK->value, json_decode(data_get($data, 'payload', []) ?? [], true));
+                    WebhookService::dispatch(
+                        $record,
+                        WebhookEvent::TEST_WEBHOOK->value,
+                        json_decode(data_get($data, 'payload', []) ?? [], true, flags: JSON_THROW_ON_ERROR),
+                    );
 
                     $action->success();
                 }),

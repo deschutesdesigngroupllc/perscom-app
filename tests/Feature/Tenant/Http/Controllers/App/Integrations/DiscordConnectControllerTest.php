@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Http\Controllers\App\Integrations;
 
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
+use App\Filament\App\Pages\Dashboard;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\IntegrationInstallService;
 use App\Settings\IntegrationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Notifications\NotificationMailbox;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -45,7 +50,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $location = (string) $response->headers->get('Location');
 
-        $this->assertStringStartsWith(rtrim((string) $this->tenant->url, '/').'/integrations/discord/connect', $location);
+        $this->assertStringStartsWith(mb_rtrim((string) $this->tenant->url, '/').'/integrations/discord/connect', $location);
         $this->assertStringContainsString('code=abc', $location);
     }
 
@@ -106,7 +111,80 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $this->withSession(['integrations.discord.nonce' => 'different'])
             ->get(route('app.integrations.discord.connect', ['state' => $state, 'code' => 'abc']))
-            ->assertForbidden();
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
+
+        $this->assertNotificationBodyContains('opened in a different browser');
+        $this->assertNull($this->tenant->refresh()->discord_guild_id);
+    }
+
+    public function test_cancelling_in_discord_explains_what_happened(): void
+    {
+        $this->actingAs($this->admin());
+
+        [$state, $nonce] = $this->startInstall();
+
+        $this->withSession(['integrations.discord.nonce' => $nonce])
+            ->get(route('app.integrations.discord.connect', ['state' => $state, 'error' => 'access_denied']))
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
+
+        $this->assertNotificationBodyContains('You cancelled the authorization in Discord');
+    }
+
+    public function test_an_unreachable_discord_is_reported_instead_of_erroring(): void
+    {
+        Http::fake(fn (): never => throw new ConnectionException('timed out'));
+
+        $this->actingAs($this->admin());
+
+        [$state, $nonce] = $this->startInstall();
+
+        $this->withSession(['integrations.discord.nonce' => $nonce])
+            ->get(route('app.integrations.discord.connect', ['state' => $state, 'code' => 'abc']))
+            ->assertRedirect(ConnectedServices::getUrl(['tab' => 'discord::data::tab']));
+
+        $this->assertNotificationBodyContains("Discord couldn't be reached");
+    }
+
+    public function test_members_are_sent_to_the_dashboard_with_an_explanation(): void
+    {
+        $this->actingAs(User::factory()->withoutRoles()->createQuietly());
+
+        $this->get(route('app.integrations.discord.connect', ['state' => 'x', 'code' => 'abc']))
+            ->assertRedirect(Dashboard::getUrl());
+
+        $this->assertNotificationBodyContains('Only the organization owner can connect Discord');
+    }
+
+    public function test_the_callback_returns_to_the_host_the_install_started_on(): void
+    {
+        $this->tenant->forceFill(['custom_url' => 'https://roster.example.test'])->saveQuietly();
+
+        $state = Crypt::encrypt(['provider' => 'discord', 'tenant' => $this->tenant->getKey(), 'nonce' => 'n', 'origin' => mb_rtrim((string) $this->tenant->fallback_url, '/')]);
+
+        $response = $this->get(route('integrations.install.callback', ['provider' => 'discord', 'state' => $state, 'code' => 'abc']))
+            ->assertRedirect();
+
+        $this->assertStringStartsWith(mb_rtrim((string) $this->tenant->fallback_url, '/').'/integrations/discord/connect', (string) $response->headers->get('Location'));
+    }
+
+    public function test_the_callback_ignores_an_origin_outside_the_organization(): void
+    {
+        $state = Crypt::encrypt(['provider' => 'discord', 'tenant' => $this->tenant->getKey(), 'nonce' => 'n', 'origin' => 'https://evil.example.test']);
+
+        $response = $this->get(route('integrations.install.callback', ['provider' => 'discord', 'state' => $state, 'code' => 'abc']))
+            ->assertRedirect();
+
+        $this->assertStringStartsNotWith('https://evil.example.test', (string) $response->headers->get('Location'));
+    }
+
+    protected function assertNotificationBodyContains(string $text): void
+    {
+        $mailbox = resolve(NotificationMailbox::class);
+        $mailbox->flush();
+
+        $bodies = collect($mailbox->pull())->pluck('body')->implode(' ');
+
+        $this->assertStringContainsString($text, $bodies);
     }
 
     /**

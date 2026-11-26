@@ -47,11 +47,11 @@ class UnitResource extends BaseResource
 {
     protected static ?string $model = Unit::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -62,7 +62,7 @@ class UnitResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Unit')
-                            ->icon('heroicon-o-home')
+                            ->icon(Heroicon::OutlinedHome)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the unit.')
@@ -92,7 +92,7 @@ class UnitResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -112,7 +112,7 @@ class UnitResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Toggle::make('hidden')
                                     ->helperText('Hide this unit from the roster.')
@@ -122,7 +122,7 @@ class UnitResource extends BaseResource
                                 RichEditor::make('empty')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
-                                    ->helperText('Display a message when no users or slots occupy the unit.')
+                                    ->helperText('Display a message when no members or slots occupy the unit.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
@@ -135,7 +135,7 @@ class UnitResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedHome)
-            ->emptyStateDescription('There are no units to view. Create one to get started.')
+            ->emptyStateDescription('Units organize members into your chain of command. Add your first unit to start building the roster.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -149,7 +149,7 @@ class UnitResource extends BaseResource
                     ->label('Image'),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -179,7 +179,7 @@ class UnitResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(UnitExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -30,9 +30,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 
-/**
- * The signed-in member's next event and their agenda for the coming week, with RSVP and check-in.
- */
+use function is_string;
+use function sprintf;
+
 class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
 {
     use HasWidgetShield;
@@ -91,7 +91,7 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
 
         $user = $this->user();
 
-        if (! $user->can('viewAny', Event::class)) {
+        if (! $user->can('view', Event::class)) {
             return $this->occurrences = collect();
         }
 
@@ -163,6 +163,8 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
     }
 
     /**
+     * Get the registrations for the occurrence grouped by response.
+     *
      * @return Collection<string, Collection<int, EventRegistration>>
      */
     public function responses(OccurrenceData $occurrence): Collection
@@ -171,6 +173,8 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
     }
 
     /**
+     * Count the registrations for the occurrence by response.
+     *
      * @return array{going: int, maybe: int, not_going: int}
      */
     public function summary(OccurrenceData $occurrence): array

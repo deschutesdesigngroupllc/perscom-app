@@ -44,7 +44,7 @@ class CalendarFeedControllerTest extends TenantTestCase
     {
         $calendar = Calendar::factory()->createQuietly();
 
-        $this->get(CalendarFeedService::calendarFeedUrl(User::factory()->createQuietly(), $calendar))
+        $this->get(CalendarFeedService::calendarFeedUrl(User::factory()->createQuietly()->syncRoles([]), $calendar))
             ->assertForbidden();
     }
 }

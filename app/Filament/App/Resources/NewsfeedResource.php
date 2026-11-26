@@ -40,7 +40,7 @@ class NewsfeedResource extends BaseResource
 {
     protected static ?string $model = Newsfeed::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
     protected static ?string $label = 'newsfeed item';
 
@@ -51,6 +51,8 @@ class NewsfeedResource extends BaseResource
     protected static ?string $slug = 'newsfeed';
 
     protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationParentItem = 'Announcements';
 
     protected static ?string $recordTitleAttribute = 'headline';
 
@@ -98,6 +100,16 @@ class NewsfeedResource extends BaseResource
             ]);
     }
 
+    /**
+     * The headline and text live in the activity log's JSON properties, not in columns.
+     *
+     * @return array<int, string>
+     */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['properties->headline', 'properties->text'];
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -113,7 +125,7 @@ class NewsfeedResource extends BaseResource
                             ->toggleable(false)
                             ->html()
                             ->wrap()
-                            ->formatStateUsing(fn ($state) => Str::limit($state, 250)),
+                            ->formatStateUsing(fn ($state): string => Str::limit($state, 250)),
                         TextColumn::make('created_at')
                             ->toggleable(false)
                             ->weight(FontWeight::Light)

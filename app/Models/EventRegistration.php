@@ -10,12 +10,17 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Exception;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
+
+use function in_array;
+use function sprintf;
 
 /**
  * App\Models\EventRegistration
@@ -28,7 +33,7 @@ use Illuminate\Support\Facades\Date;
  * @property Carbon|null $checked_in_at
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  * @property-read EventOccurrence|null $occurrence
  * @property-read User $user
  *
@@ -49,6 +54,13 @@ use Illuminate\Support\Facades\Date;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(EventRegistrationObserver::class)]
+#[Fillable([
+    'event_id',
+    'event_occurrence_id',
+    'status',
+    'checked_in_at',
+])]
+#[Table(name: 'events_registrations')]
 class EventRegistration extends Pivot
 {
     use ClearsApiCache;
@@ -57,14 +69,18 @@ class EventRegistration extends Pivot
 
     public $incrementing = true;
 
-    protected $table = 'events_registrations';
-
-    protected $fillable = [
-        'event_id',
-        'event_occurrence_id',
-        'status',
-        'checked_in_at',
-    ];
+    /**
+     * @return array<string, class-string<EventRegistrationStatus>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => EventRegistrationStatus::class,
+            'checked_in_at' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
 
     public function event(): BelongsTo
     {
@@ -96,15 +112,13 @@ class EventRegistration extends Pivot
             /** @var \Illuminate\Support\Facades\Event $event */
             $event = $eventRegistration->event;
 
-            throw_if(! $event->registration_enabled,
-                Exception::class,
-                sprintf('Registrations for %s are disabled.', $event->name));
+            if (! $event->registration_enabled) {
+                throw new Exception(sprintf('Registrations for %s are disabled.', $event->name));
+            }
 
-            throw_if(
-                $event->registration_deadline &&
-                Date::parse($event->registration_deadline)->isPast(),
-                Exception::class,
-                sprintf('The registration deadline for %s has passed.', $event->name));
+            if ($event->registration_deadline && Date::parse($event->registration_deadline)->isPast()) {
+                throw new Exception(sprintf('The registration deadline for %s has passed.', $event->name));
+            }
         });
     }
 
@@ -114,18 +128,5 @@ class EventRegistration extends Pivot
             /** @phpstan-ignore-next-line **/
             $query->future();
         });
-    }
-
-    /**
-     * @return array<string, class-string<EventRegistrationStatus>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'status' => EventRegistrationStatus::class,
-            'checked_in_at' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
     }
 }

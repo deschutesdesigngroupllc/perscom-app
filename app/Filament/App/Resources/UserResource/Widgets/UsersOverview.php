@@ -15,6 +15,11 @@ class UsersOverview extends StatsOverviewWidget
 {
     use HasWidgetShield;
 
+    /**
+     * Counts change rarely, so the widget loads once instead of polling every few seconds.
+     */
+    protected ?string $pollingInterval = null;
+
     protected static ?int $sort = -3;
 
     /**

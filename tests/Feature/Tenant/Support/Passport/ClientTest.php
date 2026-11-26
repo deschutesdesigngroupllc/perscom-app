@@ -19,8 +19,8 @@ class ClientTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         $client = $clients->createAuthorizationCodeGrantClient(
-            name: $this->faker->word,
-            redirectUris: [$this->faker->url],
+            name: $this->faker->word(),
+            redirectUris: [$this->faker->url()],
             user: $user,
         );
 
@@ -36,8 +36,8 @@ class ClientTest extends TenantTestCase
         $user = User::factory()->createQuietly();
 
         $client = $clients->createAuthorizationCodeGrantClient(
-            name: $this->faker->word,
-            redirectUris: [$this->faker->url],
+            name: $this->faker->word(),
+            redirectUris: [$this->faker->url()],
             confidential: false,
             user: $user,
         );
@@ -52,7 +52,7 @@ class ClientTest extends TenantTestCase
         $clients = resolve(ClientRepository::class);
 
         $client = $clients->createPasswordGrantClient(
-            name: $this->faker->word,
+            name: $this->faker->word(),
         );
 
         $this->assertTrue($client->firstParty());
@@ -65,7 +65,7 @@ class ClientTest extends TenantTestCase
         $clients = resolve(ClientRepository::class);
 
         $client = $clients->createPersonalAccessGrantClient(
-            name: $this->faker->word,
+            name: $this->faker->word(),
         );
 
         $this->assertTrue($client->firstParty());

@@ -35,11 +35,13 @@ class CalendarResource extends BaseResource
 {
     protected static ?string $model = Calendar::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = null;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationParentItem = 'Calendar';
 
     public static function form(Schema $schema): Schema
     {
@@ -74,7 +76,7 @@ class CalendarResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedCalendar)
-            ->emptyStateDescription('There are no calendars to view. Create one to get started.')
+            ->emptyStateDescription('Calendars group events by purpose, like Operations or Training. Create one for your first events.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -94,7 +96,7 @@ class CalendarResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CalendarExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', function (Blueprint $table): void {
             $table->string('model_type')->nullable()->change();
             $table->unsignedBigInteger('model_id')->nullable()->change();
         });
 
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->string('model_type')->nullable()->change();
             $table->unsignedBigInteger('model_id')->nullable()->change();
         });

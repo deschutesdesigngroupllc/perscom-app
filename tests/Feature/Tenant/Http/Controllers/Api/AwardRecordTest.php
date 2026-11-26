@@ -59,7 +59,7 @@ class AwardRecordTest extends ApiResourceTestCase
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
             'award_id' => Award::factory()->create()->getKey(),
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 
@@ -69,7 +69,7 @@ class AwardRecordTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 }

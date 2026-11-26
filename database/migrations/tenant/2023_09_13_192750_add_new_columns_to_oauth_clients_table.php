@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->text('description')->nullable()->after('name');
             $table->text('logout')->nullable()->after('redirect');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->dropColumn(['description', 'logout']);
         });
     }

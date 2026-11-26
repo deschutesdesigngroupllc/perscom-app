@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\User;
 use BackedEnum;
@@ -15,6 +16,8 @@ use Filament\Infolists\Components\CodeEntry;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Phiki\Grammar\Grammar;
@@ -30,11 +33,13 @@ class Widgets extends Page
     #[Url]
     public string $widget = 'roster';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-code-bracket';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCodeBracket;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 10;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 16;
 
     protected string $view = 'filament.app.pages.widgets';
 
@@ -106,7 +111,9 @@ class Widgets extends Page
                         ->helperText('The widget to display.')
                         ->searchable()
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        })
                         ->options(static::$widgets),
                     Select::make('api_key')
                         ->label('API Key')
@@ -114,18 +121,22 @@ class Widgets extends Page
                         ->searchable()
                         ->preload()
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        })
                         ->suffixAction(Action::make('open')
-                            ->icon('heroicon-o-plus')
+                            ->icon(Heroicon::OutlinedPlus)
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))
                         )
-                        ->options(fn () => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
+                        ->options(fn (): Collection => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
                     Checkbox::make('dark_mode')
                         ->helperText('Check to enable dark mode.')
                         ->label('Dark Mode')
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set)),
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        }),
                     CodeEntry::make('widget_code')
                         ->copyable()
                         ->grammar(Grammar::Javascript)

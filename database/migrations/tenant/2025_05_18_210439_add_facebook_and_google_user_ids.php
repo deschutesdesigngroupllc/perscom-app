@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->after('last_seen_at', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
+            $table->after('last_seen_at', function (Blueprint $table): void {
                 $table->string('facebook_user_id')->nullable();
                 $table->string('github_user_id')->nullable();
                 $table->string('google_user_id')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn(['facebook_user_id', 'github_user_id', 'google_user_id']);
         });
     }

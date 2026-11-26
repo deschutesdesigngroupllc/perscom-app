@@ -22,11 +22,14 @@ use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Throwable;
+
+use function sprintf;
 
 class ApplyChangeSet
 {
@@ -50,8 +53,8 @@ class ApplyChangeSet
             ->get()
             ->keyBy('id');
 
-        $operations->each(fn (ProposedOperationData $operation) => static::validate($operation, $users));
-        $operations->each(fn (ProposedOperationData $operation) => static::authorize($operation, $actor, $users));
+        $operations->each(fn (ProposedOperationData $operation): null => static::validate($operation, $users));
+        $operations->each(fn (ProposedOperationData $operation): null => static::authorize($operation, $actor, $users));
 
         $results = DB::transaction(fn (): array => $operations
             ->map(fn (ProposedOperationData $operation): array => [
@@ -75,6 +78,8 @@ class ApplyChangeSet
     }
 
     /**
+     * Validate the operation against its members and target.
+     *
      * @param  Collection<int, User>  $users
      *
      * @throws ValidationException
@@ -98,7 +103,10 @@ class ApplyChangeSet
             CopilotOperationType::MESSAGE => null,
         };
 
-        if ($targetModel !== null && ($operation->targetId === null || ! $targetModel::query()->whereKey($operation->targetId)->exists())) {
+        if (
+            $targetModel !== null
+            && ($operation->targetId === null || $targetModel::query()->whereKey($operation->targetId)->doesntExist())
+        ) {
             throw ValidationException::withMessages(['operations' => sprintf('The operation "%s" refers to a %s that does not exist.', $operation->summary, class_basename($targetModel))]);
         }
 
@@ -108,6 +116,8 @@ class ApplyChangeSet
     }
 
     /**
+     * Authorize the actor to apply the operation.
+     *
      * @param  Collection<int, User>  $users
      *
      * @throws AuthorizationException
@@ -118,7 +128,7 @@ class ApplyChangeSet
         $ability = $operation->type->getAuthorizationAbility();
 
         if ($operation->type === CopilotOperationType::STATUS_RECORD) {
-            collect($operation->userIds)->each(fn (int $id) => $gate->authorize($ability, $users->get($id)));
+            collect($operation->userIds)->each(fn (int $id): Response => $gate->authorize($ability, $users->get($id)));
 
             return;
         }
@@ -127,6 +137,8 @@ class ApplyChangeSet
     }
 
     /**
+     * Apply the operation and count the records it creates.
+     *
      * @param  Collection<int, User>  $users
      */
     protected static function apply(ProposedOperationData $operation, User $actor, Collection $users): int
@@ -142,7 +154,7 @@ class ApplyChangeSet
         }
 
         return collect($operation->userIds)
-            ->each(fn (int $id) => static::applyToUser($operation, $actor, $users->get($id)))
+            ->each(fn (int $id): null => static::applyToUser($operation, $actor, $users->get($id)))
             ->count();
     }
 
@@ -159,6 +171,7 @@ class ApplyChangeSet
             CopilotOperationType::ASSIGNMENT_RECORD => AssignmentRecord::create([
                 'user_id' => $user->getKey(),
                 'unit_id' => $operation->targetId,
+                'unit_slot_id' => $operation->attributes['unit_slot_id'] ?? null,
                 'position_id' => $operation->attributes['position_id'] ?? null,
                 'specialty_id' => $operation->attributes['specialty_id'] ?? null,
                 'author_id' => $actor->getKey(),

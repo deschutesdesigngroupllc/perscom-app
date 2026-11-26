@@ -17,10 +17,6 @@ use Filament\Schemas\Components\View;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Lets the signed-in member subscribe to the organization's events from Google, Apple or Outlook
- * calendars using their personal feed link.
- */
 class SubscribeToCalendarAction extends Action
 {
     protected function setUp(): void
@@ -33,12 +29,11 @@ class SubscribeToCalendarAction extends Action
 
         $this->modalHeading('Subscribe to Calendar');
         $this->modalDescription('Add events to the calendar app you already use. Subscribed calendars update automatically as events change.');
-        $this->modalIcon(Heroicon::OutlinedCalendarDays);
         $this->modalWidth('lg');
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
 
-        $this->visible(fn (): bool => Auth::user()?->can('viewAny', Event::class) ?? false);
+        $this->visible(fn (): bool => Auth::user()?->can('view', Event::class) ?? false);
 
         $this->schema([
             Select::make('calendar')
@@ -60,7 +55,10 @@ class SubscribeToCalendarAction extends Action
                 ->color('gray')
                 ->requiresConfirmation()
                 ->modalHeading('Reset Calendar Link')
-                ->modalDescription('Your current subscription links will stop working. Calendar apps subscribed with the old link must be subscribed again.')
+                ->modalDescription(
+                    'Your current calendar and RSS links will stop working. '
+                    .'Calendar apps and feed readers using the old links must be subscribed again.',
+                )
                 ->modalSubmitActionLabel('Reset Link')
                 ->action(function (): void {
                     /** @var User $user */
@@ -82,6 +80,8 @@ class SubscribeToCalendarAction extends Action
     }
 
     /**
+     * Build the subscription links for the member's calendar feed.
+     *
      * @return array{url: string, webcalUrl: string, googleUrl: string, outlookUrl: string, qrCode: string, name: string}
      */
     public static function links(mixed $calendarId): array

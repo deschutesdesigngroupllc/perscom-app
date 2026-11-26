@@ -26,6 +26,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -33,17 +34,19 @@ use Illuminate\Validation\Rule;
 use Throwable;
 use UnitEnum;
 
+use function sprintf;
+
 class Dashboard extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
     protected static ?string $navigationLabel = 'Dashboard';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static string $settings = DashboardSettings::class;
 
@@ -67,7 +70,7 @@ class Dashboard extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Home Page')
-                            ->icon('heroicon-o-home')
+                            ->icon(Heroicon::OutlinedHome)
                             ->schema([
                                 TextInput::make('title')
                                     ->maxLength(255)
@@ -79,9 +82,9 @@ class Dashboard extends SettingsPage
                             ]),
                         Tab::make('Domain')
                             ->visible(config('tenancy.enabled'))
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->badgeColor('gray')
-                            ->badge(fn () => tenant('url'))
+                            ->badge(fn (): ?string => tenant('url'))
                             ->schema([
                                 TextEntry::make('fallback')
                                     ->state(function (): HtmlString {
@@ -98,16 +101,18 @@ class Dashboard extends SettingsPage
                                     ->suffix(config('app.base_url'))
                                     ->suffixAction(Action::make('test')
                                         ->label('Reset')
-                                        ->icon('heroicon-o-arrow-path')
+                                        ->icon(Heroicon::OutlinedArrowPath)
                                         ->color('primary')
                                         ->requiresConfirmation()
                                         ->modalDescription('Are you sure you want to reset your subdomain? This means your dashboard will no longer be accessible by your custom subdomain. You will only be able to reach your dashboard using your fallback URL from this point on.')
-                                        ->action(fn () => $this->resetTenantSubdomain())
+                                        ->action(function (): void {
+                                            $this->resetTenantSubdomain();
+                                        })
                                         ->tooltip('Reset subdomain')
                                     ),
                             ]),
                         Tab::make('User Profile')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->schema([
                                 Toggle::make('public_profiles_enabled')
                                     ->label('Public Service Profiles')
@@ -116,7 +121,7 @@ class Dashboard extends SettingsPage
                                     ->label('Display Name Format')
                                     ->maxLength(255)
                                     ->required()
-                                    ->helperText('Define how user names are displayed. Available tokens: {name}, {rank.name}, {rank.abbreviation}, {position.name}, {specialty.name}, {specialty.abbreviation}, {unit.name}, {status.name}')
+                                    ->helperText('Define how member names are displayed. Available tokens: {name}, {rank.name}, {rank.abbreviation}, {position.name}, {specialty.name}, {specialty.abbreviation}, {unit.name}, {status.name}')
                                     ->placeholder('{rank.abbreviation} {name} - {position.name}'),
                                 TextInput::make('cover_photo_height')
                                     ->label('Cover Photo Height')
@@ -127,7 +132,7 @@ class Dashboard extends SettingsPage
                                     ->default(250),
                                 Select::make('user_hidden_fields')
                                     ->label('Hidden Fields')
-                                    ->helperText('Choose from a list of user fields that should be hidden from their user profile.')
+                                    ->helperText('Choose from a list of member fields that should be hidden from their member profile.')
                                     ->multiple()
                                     ->options(collect([
                                         'approved' => 'Approval Status',
@@ -165,7 +170,7 @@ class Dashboard extends SettingsPage
                                     ])->sort()->all()),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Radio::make('roster_mode')
                                     ->label('Mode')
@@ -176,7 +181,7 @@ class Dashboard extends SettingsPage
                                     ->label('Sort')
                                     ->reorderable()
                                     ->addActionLabel('Add New Field')
-                                    ->helperText('Choose the order in which the users on the roster are sorted under their respective unit or slot. Items on the top will be treated as having the most priority.')
+                                    ->helperText('Choose the order in which the members on the roster are sorted under their respective unit or slot. Items on the top will be treated as having the most priority.')
                                     ->simple(Select::make('roster_sort_order')
                                         ->distinct()
                                         ->options([
@@ -202,7 +207,7 @@ class Dashboard extends SettingsPage
         /** @var ?Tenant $tenant */
         $tenant = tenant();
 
-        if (is_null($tenant)) {
+        if ($tenant === null) {
             return;
         }
 
@@ -218,6 +223,8 @@ class Dashboard extends SettingsPage
     }
 
     /**
+     * Point the tenant at the given subdomain and notify the user.
+     *
      * @throws Throwable
      */
     private function updateTenantSubdomain(string $subdomain): void
@@ -238,6 +245,8 @@ class Dashboard extends SettingsPage
     }
 
     /**
+     * Remove the tenant's custom subdomain and notify the user.
+     *
      * @throws Throwable
      */
     private function resetTenantSubdomain(): void

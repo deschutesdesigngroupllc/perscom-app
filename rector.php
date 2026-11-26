@@ -5,7 +5,6 @@ declare(strict_types=1);
 use Rector\CodingStyle\Rector\Use_\SeparateMultiUseImportsRector;
 use Rector\Config\RectorConfig;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\TypeDeclaration\Rector\ClassMethod\ParamTypeByMethodCallTypeRector;
 use RectorLaravel\Set\LaravelLevelSetList;
 use RectorLaravel\Set\LaravelSetList;
 
@@ -24,9 +23,6 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withSkip([
-        ParamTypeByMethodCallTypeRector::class => [
-            __DIR__.'/app/Http/Controllers/Api/AuthorizesRequests.php',
-        ],
         SeparateMultiUseImportsRector::class => [
             __DIR__.'/app/Models/User.php',
         ],
@@ -39,7 +35,6 @@ return RectorConfig::configure()
         typeDeclarations: true,
         typeDeclarationDocblocks: true,
         privatization: true,
-        earlyReturn: true,
         carbon: true,
     )
     ->withImportNames(

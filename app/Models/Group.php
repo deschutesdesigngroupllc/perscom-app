@@ -16,6 +16,7 @@ use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -70,6 +71,15 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(GroupScope::class)]
+#[Fillable([
+    'name',
+    'description',
+    'empty',
+    'order',
+    'icon',
+    'created_at',
+    'updated_at',
+])]
 class Group extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
@@ -87,16 +97,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'hidden' => false,
     ];
 
-    protected $fillable = [
-        'name',
-        'description',
-        'empty',
-        'order',
-        'icon',
-        'created_at',
-        'updated_at',
-    ];
-
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_groups')
@@ -106,9 +106,10 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     protected function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->unless($groupId === null, fn (Builder $query): Builder => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
+                    /** @var User $query */
                     $query
                         ->orderForRoster()
                         ->with([
@@ -124,7 +125,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->with([
                 'units.secondary_assignment_records.user' => function ($query): void {
                     /** @var User|HasManyDeep $query */
-                    /** @phpstan-ignore larastan.relationExistence */
                     $query->orderForRoster()
                         ->with([
                             'position',
@@ -141,7 +141,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     protected function scopeForManualRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->unless(is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->unless($groupId === null, fn (Builder $query): Builder => $query->where('groups.id', $groupId))
             ->with([
                 'units.slots.users' => function ($query): void {
                     /** @var User $query */

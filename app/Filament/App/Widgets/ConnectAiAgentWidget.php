@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
-use App\Filament\App\Clusters\Settings\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Filament\App\Pages\Dashboard;
 use App\Models\PassportToken;
 use App\Services\UserSettingsService;
 use Filament\Widgets\Widget;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+
+use function in_array;
 
 class ConnectAiAgentWidget extends Widget
 {
@@ -44,7 +47,7 @@ class ConnectAiAgentWidget extends Widget
         return PassportToken::query()
             ->where('user_id', Auth::id())
             ->where('revoked', false)
-            ->where(fn ($query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()))
+            ->where(fn (Builder $query): Builder => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()))
             ->whereJsonContains('scopes', 'mcp:use')
             ->exists();
     }
@@ -69,6 +72,8 @@ class ConnectAiAgentWidget extends Widget
     }
 
     /**
+     * Get the example prompts to try with a connected AI tool.
+     *
      * @return array<int, string>
      */
     public function getExamplePrompts(): array

@@ -15,7 +15,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::create(config('data-lens.table_names.custom_reports'), function (Blueprint $table) {
+        Schema::create(config('data-lens.table_names.custom_reports'), function (Blueprint $table): void {
             $table->id();
 
             $table->uuid('api_uuid')->nullable()->unique();
@@ -44,7 +44,7 @@ return new class extends Migration
             $table->index('api_uuid');
         });
 
-        Schema::create(config('data-lens.table_names.custom_report_user'), function (Blueprint $table) {
+        Schema::create(config('data-lens.table_names.custom_report_user'), function (Blueprint $table): void {
             $table->foreignId('custom_report_id')
                 ->constrained(config('data-lens.table_names.custom_reports'))
                 ->cascadeOnDelete();
@@ -54,7 +54,7 @@ return new class extends Migration
             $table->primary(['custom_report_id', 'user_id']);
         });
 
-        Schema::create(config('data-lens.table_names.custom_report_schedules'), function (Blueprint $table) {
+        Schema::create(config('data-lens.table_names.custom_report_schedules'), function (Blueprint $table): void {
             $table->id();
             $table->foreignId('custom_report_id')->constrained(config('data-lens.table_names.custom_reports'))->cascadeOnDelete();
             $table->string('name')->nullable();
@@ -88,7 +88,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create(config('data-lens.table_names.custom_report_schedule_history'), function (Blueprint $table) {
+        Schema::create(config('data-lens.table_names.custom_report_schedule_history'), function (Blueprint $table): void {
             $table->id();
             $table->foreignId('report_schedule_id')->constrained(config('data-lens.table_names.custom_report_schedules'))->cascadeOnDelete();
             $table->timestamp('executed_at');
@@ -103,7 +103,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create(config('data-lens.table_names.custom_report_schedule_recipients'), function (Blueprint $table) {
+        Schema::create(config('data-lens.table_names.custom_report_schedule_recipients'), function (Blueprint $table): void {
             $table->id();
             $table->foreignId('report_schedule_id')->constrained(config('data-lens.table_names.custom_report_schedules'))->cascadeOnDelete();
             $table->string('email');

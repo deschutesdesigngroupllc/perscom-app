@@ -8,6 +8,7 @@ use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\App\Resources\RankResource\Pages\CreateRank;
 use App\Filament\App\Resources\RankResource\Pages\EditRank;
 use App\Filament\App\Resources\RankResource\Pages\ListRanks;
+use App\Filament\App\Resources\RankResource\RelationManagers\HoldersRelationManager;
 use App\Filament\Exports\RankExporter;
 use App\Models\Credential;
 use App\Models\Qualification;
@@ -41,9 +42,9 @@ class RankResource extends BaseResource
 {
     protected static ?string $model = Rank::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chevron-double-up';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChevronDoubleUp;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
     protected static ?int $navigationSort = 5;
 
@@ -56,7 +57,7 @@ class RankResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Rank')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the rank.')
@@ -135,7 +136,7 @@ class RankResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -162,7 +163,7 @@ class RankResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedChevronDoubleUp)
-            ->emptyStateDescription('There are no ranks to view. Create one to get started.')
+            ->emptyStateDescription('Ranks build your chain of command and drive promotions and time in grade. Add your first rank.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -178,7 +179,7 @@ class RankResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -196,7 +197,7 @@ class RankResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Rank $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Rank $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -205,7 +206,7 @@ class RankResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(RankExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -213,6 +214,16 @@ class RankResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**

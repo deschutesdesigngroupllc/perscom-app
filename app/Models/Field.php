@@ -15,6 +15,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject as ArrayObjectAlias;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -23,8 +24,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
-
-use function in_array;
+use Illuminate\Support\Str;
+use JsonException;
 
 /**
  * @property int $id
@@ -87,6 +88,24 @@ use function in_array;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'key',
+    'type',
+    'cast',
+    'description',
+    'placeholder',
+    'default',
+    'help',
+    'required',
+    'rules',
+    'readonly',
+    'options',
+    'options_type',
+    'options_model',
+    'created_at',
+    'updated_at',
+])]
 class Field extends Model implements HasLabel, Hideable
 {
     use CanBeHidden;
@@ -96,24 +115,19 @@ class Field extends Model implements HasLabel, Hideable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'name',
-        'key',
-        'type',
-        'cast',
-        'description',
-        'placeholder',
-        'default',
-        'help',
-        'required',
-        'rules',
-        'readonly',
-        'options',
-        'options_type',
-        'options_model',
-        'created_at',
-        'updated_at',
-    ];
+    /**
+     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'readonly' => 'boolean',
+            'required' => 'boolean',
+            'type' => FieldType::class,
+            'options_type' => FieldOptionsType::class,
+            'options_model' => FieldOptionsModel::class,
+        ];
+    }
 
     public function forms(): MorphToMany
     {
@@ -131,11 +145,19 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
+    /**
+     * Get the selectable options for the field.
+     *
+     * @throws JsonException when the stored options are not valid JSON
+     */
     protected function options(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ArrayObject {
             if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::ARRAY->value) {
-                return new ArrayObject(json_decode($value), ArrayObjectAlias::ARRAY_AS_PROPS);
+                return new ArrayObject(
+                    json_decode($value, flags: JSON_THROW_ON_ERROR),
+                    ArrayObjectAlias::ARRAY_AS_PROPS,
+                );
             }
 
             if (filled(data_get($attributes, 'options_model')) && $this->options_model instanceof FieldOptionsModel && data_get($attributes, 'options_type') === FieldOptionsType::MODEL->value) {
@@ -156,34 +178,20 @@ class Field extends Model implements HasLabel, Hideable
     {
         return Attribute::make(
             get: function ($value, array $attributes): ?string {
-                $rules = explode('|', data_get($attributes, 'rules', '') ?? '');
+                $rules = Str::of(data_get($attributes, 'rules', '') ?? '')->explode('|');
 
-                if (data_get($attributes, 'required') && ! in_array('required', $rules)) {
-                    $rules[] = 'required';
+                if (data_get($attributes, 'required') && $rules->doesntContain('required')) {
+                    $rules->push('required');
                 }
 
                 if (data_get($attributes, 'type') === FieldType::FIELD_FILE->value) {
-                    $rules[] = 'file';
+                    $rules->push('file');
                 }
 
-                return filled($rules)
-                    ? implode('|', array_unique(array_filter($rules)))
+                return $rules->isNotEmpty()
+                    ? $rules->filter()->unique()->implode('|')
                     : null;
             }
         )->shouldCache();
-    }
-
-    /**
-     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'readonly' => 'boolean',
-            'required' => 'boolean',
-            'type' => FieldType::class,
-            'options_type' => FieldOptionsType::class,
-            'options_model' => FieldOptionsModel::class,
-        ];
     }
 }

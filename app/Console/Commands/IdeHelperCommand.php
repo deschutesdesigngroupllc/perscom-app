@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Tenant;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
@@ -14,12 +16,10 @@ use SplFileInfo;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Throwable;
 
+#[Description('Generate IDE helper files, initializing tenancy only when it is enabled.')]
+#[Signature('perscom:ide-helper {--models : Only regenerate the model docblocks}')]
 class IdeHelperCommand extends Command
 {
-    protected $signature = 'perscom:ide-helper {--models : Only regenerate the model docblocks}';
-
-    protected $description = 'Generate IDE helper files, initializing tenancy only when it is enabled.';
-
     /**
      * @throws TenantCouldNotBeIdentifiedById
      */
@@ -31,6 +31,8 @@ class IdeHelperCommand extends Command
     }
 
     /**
+     * Generate the helpers while tenancy is initialized for the first tenant.
+     *
      * @throws TenantCouldNotBeIdentifiedById
      */
     protected function generateWithTenancy(): int
@@ -65,7 +67,7 @@ class IdeHelperCommand extends Command
         ];
 
         if (filled($ignored = $this->modelsWithoutTables())) {
-            $options['--ignore'] = implode(',', $ignored);
+            $options['--ignore'] = collect($ignored)->implode(',');
         }
 
         $this->call('ide-helper:models', $options);

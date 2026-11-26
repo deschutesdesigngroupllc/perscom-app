@@ -10,6 +10,7 @@ use App\Traits\Filament\ConfiguresModelNotifications;
 use App\Traits\Filament\SavesAndHydratesCustomFieldData;
 use App\Traits\Filament\SetsUserFromRequestQuery;
 use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\Enums\Width;
 
 class CreateTrainingRecord extends CreateRecord
 {
@@ -17,6 +18,8 @@ class CreateTrainingRecord extends CreateRecord
     use ConfiguresModelNotifications;
     use SavesAndHydratesCustomFieldData;
     use SetsUserFromRequestQuery;
+
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = TrainingRecordResource::class;
 }

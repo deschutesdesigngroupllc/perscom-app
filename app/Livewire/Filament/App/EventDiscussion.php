@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 /**
- * A conversation thread for an event: comments listed oldest first with an inline composer.
- *
  * @property-read Schema $form
  */
 class EventDiscussion extends Component implements HasActions, HasSchemas
@@ -117,6 +115,8 @@ class EventDiscussion extends Component implements HasActions, HasSchemas
     }
 
     /**
+     * Get the event's comments with their authors loaded.
+     *
      * @return Collection<int, Comment>
      */
     public function comments(): Collection
@@ -158,6 +158,8 @@ class EventDiscussion extends Component implements HasActions, HasSchemas
     }
 
     /**
+     * Find the event comment referenced by the action arguments.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function findComment(array $arguments): ?Comment

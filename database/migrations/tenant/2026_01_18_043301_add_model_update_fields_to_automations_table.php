@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('automations', function (Blueprint $table) {
+        Schema::table('automations', function (Blueprint $table): void {
             $table->string('model_update_target')->nullable()->after('message_recipients_expression');
             $table->string('model_update_lookup_type')->nullable()->after('model_update_target');
             $table->text('model_update_lookup_expression')->nullable()->after('model_update_lookup_type');
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('automations', function (Blueprint $table) {
+        Schema::table('automations', function (Blueprint $table): void {
             $table->dropColumn([
                 'model_update_target',
                 'model_update_lookup_type',

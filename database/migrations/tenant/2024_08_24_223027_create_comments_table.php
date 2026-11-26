@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('author_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->nullableMorphs('model');

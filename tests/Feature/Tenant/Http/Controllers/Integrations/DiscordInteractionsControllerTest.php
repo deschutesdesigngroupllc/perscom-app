@@ -10,6 +10,7 @@ use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\Schedule;
+use App\Models\Unit;
 use App\Models\User;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
@@ -17,6 +18,8 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Tenant\TenantTestCase;
+
+use function sprintf;
 
 class DiscordInteractionsControllerTest extends TenantTestCase
 {
@@ -223,7 +226,7 @@ class DiscordInteractionsControllerTest extends TenantTestCase
 
     public function test_commands_respect_permissions(): void
     {
-        User::factory()->createQuietly(['approved' => true, 'discord_user_id' => 'discord-recruit']);
+        User::factory()->createQuietly(['approved' => true, 'discord_user_id' => 'discord-recruit'])->syncRoles([]);
 
         $this->interact($this->command('events', invoker: 'discord-recruit'))
             ->assertJsonPath('data.content', 'You do not have permission to do that in PERSCOM.');
@@ -234,11 +237,12 @@ class DiscordInteractionsControllerTest extends TenantTestCase
         Event::factory()->createQuietly(['name' => 'Exercise Robin Sage', 'starts' => now()->addDay(), 'ends' => now()->addDay()->addHour()]);
         Event::factory()->createQuietly(['name' => 'Range Day', 'starts' => now()->addDay(), 'ends' => now()->addDay()->addHour()]);
         Event::factory()->createQuietly(['name' => 'Robin Sage Debrief', 'starts' => now()->subDays(3), 'ends' => now()->subDays(3)->addHour()]);
+        $this->linkedMember();
 
         $response = $this->interact([
             'type' => 4,
             'guild_id' => 'guild-1',
-            'member' => ['user' => ['id' => 'stranger']],
+            'member' => ['user' => ['id' => 'discord-admin']],
             'data' => ['name' => 'rsvp', 'options' => [['name' => 'event', 'type' => 3, 'value' => 'robin', 'focused' => true]]],
         ])->assertJsonPath('type', 8);
 
@@ -251,16 +255,49 @@ class DiscordInteractionsControllerTest extends TenantTestCase
         $this->travelTo(Date::parse('2026-06-20 12:00:00'));
 
         $event = $this->repeatingEvent();
+        $this->linkedMember();
 
         $response = $this->interact([
             'type' => 4,
             'guild_id' => 'guild-1',
-            'member' => ['user' => ['id' => 'stranger']],
+            'member' => ['user' => ['id' => 'discord-admin']],
             'data' => ['name' => 'rsvp', 'options' => [['name' => 'event', 'type' => 3, 'value' => 'drill', 'focused' => true]]],
         ])->assertJsonPath('type', 8);
 
         $this->assertSame('Weekly Drill · Jun 25', $response->json('data.choices.0.name'));
         $this->assertSame($event->getKey().'|'.Date::parse('2026-06-25 20:00:00')->getTimestamp(), $response->json('data.choices.0.value'));
+    }
+
+    public function test_autocomplete_suggests_nothing_to_discord_users_without_a_linked_account(): void
+    {
+        Unit::factory()->createQuietly(['name' => 'Recon Detachment']);
+        Event::factory()->createQuietly(['name' => 'Exercise Robin Sage', 'starts' => now()->addDay(), 'ends' => now()->addDay()->addHour()]);
+
+        $this->autocomplete('roster', 'unit', 'stranger')->assertJsonPath('data.choices', []);
+        $this->autocomplete('rsvp', 'event', 'stranger')->assertJsonPath('data.choices', []);
+    }
+
+    public function test_autocomplete_suggests_nothing_members_cannot_see(): void
+    {
+        Unit::factory()->createQuietly(['name' => 'Recon Detachment']);
+        Event::factory()->createQuietly(['name' => 'Exercise Robin Sage', 'starts' => now()->addDay(), 'ends' => now()->addDay()->addHour()]);
+        User::factory()->createQuietly(['approved' => true, 'discord_user_id' => 'discord-recruit'])->syncRoles([]);
+
+        $this->autocomplete('roster', 'unit', 'discord-recruit')->assertJsonPath('data.choices', []);
+        $this->autocomplete('rsvp', 'event', 'discord-recruit')->assertJsonPath('data.choices', []);
+    }
+
+    /**
+     * Send an autocomplete request for a command option as the given Discord user.
+     */
+    protected function autocomplete(string $command, string $option, string $invoker): TestResponse
+    {
+        return $this->interact([
+            'type' => 4,
+            'guild_id' => 'guild-1',
+            'member' => ['user' => ['id' => $invoker]],
+            'data' => ['name' => $command, 'options' => [['name' => $option, 'type' => 3, 'value' => '', 'focused' => true]]],
+        ])->assertJsonPath('type', 8);
     }
 
     protected function repeatingEvent(): Event

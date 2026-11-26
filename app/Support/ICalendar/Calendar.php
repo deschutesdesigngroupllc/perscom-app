@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Support\ICalendar;
 
-/**
- * A VCALENDAR document published to calendar apps.
- */
 class Calendar extends Component
 {
     public static function create(string $name, string $timezone): static

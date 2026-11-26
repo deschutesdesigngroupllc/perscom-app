@@ -33,8 +33,8 @@ class SlackService
         return Url::fromString('https://slack.com/oauth/v2/authorize')
             ->withQueryParameters([
                 'client_id' => config('services.slack.client_id'),
-                'scope' => implode(',', SlackService::SCOPES),
-                'redirect_uri' => SlackService::installRedirectUri(),
+                'scope' => collect(self::SCOPES)->implode(','),
+                'redirect_uri' => self::installRedirectUri(),
                 'state' => $state,
             ])
             ->__toString();
@@ -46,6 +46,8 @@ class SlackService
     }
 
     /**
+     * Exchange the OAuth install code for the workspace's bot token.
+     *
      * @return array{team_id: string, team_name: string, bot_token: string}|null
      *
      * @throws ConnectionException
@@ -58,11 +60,15 @@ class SlackService
                 'client_id' => config('services.slack.client_id'),
                 'client_secret' => config('services.slack.client_secret'),
                 'code' => $code,
-                'redirect_uri' => SlackService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
             ]);
 
         if (! $response->successful() || $response->json('ok') !== true || blank($response->json('access_token'))) {
-            Log::debug('Slack install code exchange failed', ['error' => $response->json('error')]);
+            Log::warning('Slack install code exchange failed', [
+                'status' => $response->status(),
+                'error' => $response->json('error'),
+                'redirect_uri' => self::installRedirectUri(),
+            ]);
 
             return null;
         }
@@ -75,23 +81,31 @@ class SlackService
     }
 
     /**
+     * Get the workspace's public channels keyed by ID.
+     *
      * @return array<string, string>
      *
      * @throws ConnectionException
      */
     public static function channels(): array
     {
-        $token = SlackService::token();
+        $token = self::token();
 
         if (blank($token)) {
             return [];
         }
 
-        $response = SlackService::client($token)->get('conversations.list', [
+        $response = self::client($token)->get('conversations.list', [
             'types' => 'public_channel',
             'exclude_archived' => true,
             'limit' => 500,
         ]);
+
+        if ($response->json('ok') !== true) {
+            Log::warning('Slack channel list failed', ['error' => $response->json('error')]);
+
+            return [];
+        }
 
         return collect((array) $response->json('channels'))
             ->mapWithKeys(fn (array $channel): array => [(string) data_get($channel, 'id') => '#'.data_get($channel, 'name')])
@@ -100,23 +114,25 @@ class SlackService
     }
 
     /**
+     * Post the message to the configured Slack channel.
+     *
      * @param  array<string, mixed>  $message
      *
      * @throws ConnectionException
      */
     public static function postMessage(array $message): bool
     {
-        $token = SlackService::token();
+        $token = self::token();
         $channel = data_get(resolve(IntegrationSettings::class)->slack_settings, 'slack_channel');
 
         if (blank($token) || blank($channel)) {
             return false;
         }
 
-        $response = SlackService::client($token)->post('chat.postMessage', [...$message, 'channel' => $channel]);
+        $response = self::client($token)->post('chat.postMessage', [...$message, 'channel' => $channel]);
 
         if ($response->json('ok') !== true) {
-            Log::debug('Slack post message failed', ['error' => $response->json('error')]);
+            Log::warning('Slack post message failed', ['error' => $response->json('error')]);
 
             return false;
         }
@@ -125,14 +141,16 @@ class SlackService
     }
 
     /**
+     * Revoke the stored bot token with Slack.
+     *
      * @throws ConnectionException
      */
     public static function revoke(): void
     {
-        $token = SlackService::token();
+        $token = self::token();
 
         if (filled($token)) {
-            SlackService::client($token)->get('auth.revoke');
+            self::client($token)->get('auth.revoke');
         }
     }
 

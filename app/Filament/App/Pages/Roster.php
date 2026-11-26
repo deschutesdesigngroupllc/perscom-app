@@ -19,6 +19,9 @@ use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
+use UnitEnum;
+
+use function in_array;
 
 class Roster extends Page
 {
@@ -55,7 +58,9 @@ class Roster extends Page
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQueueList;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 1;
+
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
     protected ?string $subheading = "A comprehensive overview of your organization's personnel.";
 
@@ -97,6 +102,8 @@ class Roster extends Page
     }
 
     /**
+     * Get the active roster filters.
+     *
      * @return array{search: string, rank_id: ?int, status_id: ?int, position_id: ?int, unit_id: ?int, online: bool}
      */
     public function filters(): array
@@ -112,6 +119,8 @@ class Roster extends Page
     }
 
     /**
+     * Collect the members of every node in the tree.
+     *
      * @param  array<int, array<string, mixed>>  $nodes
      */
     protected static function treeMembers(array $nodes): Collection

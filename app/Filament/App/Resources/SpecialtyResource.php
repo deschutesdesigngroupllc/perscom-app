@@ -36,11 +36,13 @@ class SpecialtyResource extends BaseResource
 {
     protected static ?string $model = Specialty::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $navigationParentItem = 'Positions';
 
     public static function form(Schema $schema): Schema
     {
@@ -87,7 +89,7 @@ class SpecialtyResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedBriefcase)
-            ->emptyStateDescription('There are no specialties to view. Create one to get started.')
+            ->emptyStateDescription("Specialties describe each member's job or occupational field. Add one to assign it to members.")
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -97,7 +99,7 @@ class SpecialtyResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -115,7 +117,7 @@ class SpecialtyResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Specialty $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Specialty $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -124,7 +126,7 @@ class SpecialtyResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(SpecialtyExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

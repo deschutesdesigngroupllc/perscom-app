@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Enums\InviteStatus;
 use App\Models\Enums\InviteType;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,39 +56,51 @@ use SensitiveParameter;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'type',
+    'email',
+    'name',
+    'user_id',
+    'invited_by_id',
+    'token',
+    'sent_at',
+    'expires_at',
+    'accepted_at',
+    'revoked_at',
+    'created_at',
+    'updated_at',
+])]
+#[Hidden([
+    'token',
+])]
 class Invite extends Model
 {
     use HasFactory;
 
     public const int EXPIRATION_DAYS = 7;
 
-    protected $fillable = [
-        'type',
-        'email',
-        'name',
-        'user_id',
-        'invited_by_id',
-        'token',
-        'sent_at',
-        'expires_at',
-        'accepted_at',
-        'revoked_at',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $hidden = [
-        'token',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => InviteType::class,
+            'sent_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'accepted_at' => 'datetime',
+            'revoked_at' => 'datetime',
+        ];
+    }
 
     public static function hashToken(#[SensitiveParameter] string $token): string
     {
         return hash('sha256', $token);
     }
 
-    public static function findByToken(#[SensitiveParameter] string $token): ?Invite
+    public static function findByToken(#[SensitiveParameter] string $token): ?self
     {
-        return Invite::query()->where('token', Invite::hashToken($token))->first();
+        return self::query()->where('token', self::hashToken($token))->first();
     }
 
     /**
@@ -98,9 +112,9 @@ class Invite extends Model
         $token = Str::random(64);
 
         $this->forceFill([
-            'token' => Invite::hashToken($token),
+            'token' => self::hashToken($token),
             'sent_at' => now(),
-            'expires_at' => now()->addDays(Invite::EXPIRATION_DAYS),
+            'expires_at' => now()->addDays(self::EXPIRATION_DAYS),
         ])->save();
 
         return $token;
@@ -146,7 +160,7 @@ class Invite extends Model
         $query
             ->whereNull('accepted_at')
             ->whereNull('revoked_at')
-            ->where(fn (Builder $query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()));
+            ->where(fn (Builder $query): Builder => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()));
     }
 
     /**
@@ -162,19 +176,5 @@ class Invite extends Model
                 default => InviteStatus::PENDING,
             }
         );
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'type' => InviteType::class,
-            'sent_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'accepted_at' => 'datetime',
-            'revoked_at' => 'datetime',
-        ];
     }
 }

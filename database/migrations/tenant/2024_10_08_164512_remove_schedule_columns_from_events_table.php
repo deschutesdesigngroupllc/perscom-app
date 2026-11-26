@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Event::query()->where('repeats', true)->get()->each(function (Event $event) {
+        Event::query()->where('repeats', true)->get()->each(function (Event $event): void {
             $event->schedule()->create(Arr::only($event->getAttributes(), [
                 'frequency',
                 'interval',
@@ -29,7 +29,7 @@ return new class extends Migration
             ]));
         });
 
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
             $table->dropColumn([
                 'frequency',
                 'interval',
@@ -49,8 +49,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->after('repeats', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
+            $table->after('repeats', function (Blueprint $table): void {
                 $table->text('frequency')->nullable();
                 $table->integer('interval')->default(1);
                 $table->string('end_type')->nullable();

@@ -13,12 +13,13 @@ use App\Models\Group;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Laravel\Ai\Prompts\AgentPrompt;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\Services\Ai\OrganizationBlueprintServiceTest;
 use Tests\Feature\Tenant\TenantTestCase;
+
+use function count;
 
 class OrganizationBuilderTest extends TenantTestCase
 {
@@ -56,6 +57,7 @@ class OrganizationBuilderTest extends TenantTestCase
 
         Livewire::test(OrganizationBuilder::class)
             ->assertSuccessful()
+            ->assertDontSee('AI Generation Unavailable')
             ->set('data.instruction', 'Add a rifle platoon and an airborne rank structure.')
             ->call('propose')
             ->assertNotified('Proposal Ready')
@@ -109,6 +111,8 @@ class OrganizationBuilderTest extends TenantTestCase
 
         Livewire::test(OrganizationBuilder::class)
             ->assertDontSee('Propose Additions')
+            ->assertSeeHtml('fi-callout')
+            ->assertSee('AI Generation Unavailable')
             ->assertSee('AI generation is not available');
     }
 
@@ -138,15 +142,5 @@ class OrganizationBuilderTest extends TenantTestCase
         Livewire::test(OrganizationBuilder::class)
             ->callAction('exportBlueprint')
             ->assertFileDownloaded('organization-blueprint.json');
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

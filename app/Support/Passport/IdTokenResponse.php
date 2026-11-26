@@ -8,6 +8,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
+use JsonException;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
@@ -17,16 +18,24 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use LogicException;
 use SensitiveParameter;
 
+use function in_array;
+use function is_array;
+use function is_string;
+
 class IdTokenResponse extends BearerTokenResponse
 {
     /**
      * @return array<string, string>
+     *
+     * @throws JsonException when the signing key components cannot be encoded
      */
     protected function getExtraParams(
         #[SensitiveParameter]
         AccessTokenEntityInterface $accessToken
     ): array {
-        $scopes = array_map(fn (ScopeEntityInterface $scope): string => $scope->getIdentifier(), $accessToken->getScopes());
+        $scopes = collect($accessToken->getScopes())
+            ->map(fn (ScopeEntityInterface $scope): string => $scope->getIdentifier())
+            ->all();
 
         if (! in_array('openid', $scopes, true) || blank($accessToken->getUserIdentifier())) {
             return [];
@@ -44,7 +53,11 @@ class IdTokenResponse extends BearerTokenResponse
     }
 
     /**
+     * Build the signed OpenID Connect ID token for the user.
+     *
      * @param  array<int, string>  $scopes
+     *
+     * @throws JsonException when the signing key components cannot be encoded
      */
     protected function makeIdToken(AccessTokenEntityInterface $accessToken, User $user, array $scopes): string
     {
@@ -124,8 +137,8 @@ class IdTokenResponse extends BearerTokenResponse
         }
 
         try {
-            $payload = json_decode($this->decrypt($value), true);
-        } catch (LogicException) {
+            $payload = json_decode($this->decrypt($value), true, 512, JSON_THROW_ON_ERROR);
+        } catch (LogicException|JsonException) {
             return [];
         }
 

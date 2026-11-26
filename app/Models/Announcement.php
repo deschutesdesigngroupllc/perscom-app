@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
+use App\Support\Brand;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -14,6 +15,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -57,6 +59,14 @@ use Illuminate\Support\Str;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'title',
+    'content',
+    'global',
+    'expires_at',
+    'created_at',
+    'updated_at',
+])]
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
     use CanBeEnabled;
@@ -73,14 +83,16 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         'global' => false,
     ];
 
-    protected $fillable = [
-        'title',
-        'content',
-        'global',
-        'expires_at',
-        'created_at',
-        'updated_at',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'global' => 'boolean',
+            'expires_at' => 'datetime',
+        ];
+    }
 
     protected function scopeGlobal(Builder $query): void
     {
@@ -88,6 +100,8 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
     }
 
     /**
+     * Resolve the announcement color to a hex value.
+     *
      * @return Attribute<string, never>
      */
     protected function color(): Attribute
@@ -99,20 +113,9 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
                     'success' => '#16a34a',
                     'danger' => '#dc2626',
                     'warning' => '#ca8a04',
-                    default => '#2563eb'
+                    default => Brand::PRIMARY_HEX
                 },
             },
         );
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'global' => 'boolean',
-            'expires_at' => 'datetime',
-        ];
     }
 }

@@ -19,7 +19,6 @@ use App\Models\User;
 use App\Notifications\Tenant\EventOccurrenceCancelled;
 use App\Services\EventCalendarService;
 use App\Services\UserSettingsService;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Guava\Calendar\Enums\CalendarViewType;
 use Illuminate\Support\Facades\Date;
@@ -155,6 +154,63 @@ class CalendarTest extends TenantTestCase
             ->call('togglePast')
             ->assertSee('Last Week Event')
             ->assertDontSee('Far Away Event');
+    }
+
+    public function test_load_more_skips_ahead_to_the_next_event(): void
+    {
+        $this->actingAsSuperAdmin();
+        Event::factory()->createQuietly([
+            'name' => 'Winter Field Exercise',
+            'all_day' => false,
+            'starts' => Date::parse('2026-11-20 18:00:00'),
+            'ends' => Date::parse('2026-11-20 19:00:00'),
+        ]);
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Winter Field Exercise')
+            ->assertSee('Load More')
+            ->call('loadMore')
+            ->assertSee('Winter Field Exercise')
+            ->assertDontSee('Load More')
+            ->assertSee('No more events scheduled in the next year.');
+    }
+
+    public function test_the_agenda_says_when_there_is_nothing_more_to_load(): void
+    {
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Load More')
+            ->assertSee('No more events scheduled in the next year.')
+            ->call('togglePast')
+            ->assertDontSee('Load earlier')
+            ->assertSee('No earlier events in the past year.');
+    }
+
+    public function test_the_agenda_only_lists_events_for_members_who_can_open_them(): void
+    {
+        Event::factory()->createQuietly([
+            'name' => 'Range Day',
+            'all_day' => false,
+            'starts' => Date::parse('2026-06-03 18:00:00'),
+            'ends' => Date::parse('2026-06-03 19:00:00'),
+        ]);
+
+        $member = User::factory()->createQuietly()->syncRoles([]);
+        $member->givePermissionTo(['view_calendar', 'view_calendar_widget']);
+        $this->actingAs($member);
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Range Day');
+
+        $member->givePermissionTo('view_event');
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertSee('Range Day');
     }
 
     public function test_rsvp_from_the_agenda_records_a_registration(): void
@@ -330,15 +386,5 @@ class CalendarTest extends TenantTestCase
         Schedule::factory()->for($event, 'repeatable')->createQuietly(['start' => $start, 'duration' => 2, 'frequency' => ScheduleFrequency::WEEKLY, 'interval' => 1, 'end_type' => ScheduleEndType::NEVER]);
 
         return $event->refresh();
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

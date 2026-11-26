@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->enum('type', ['primary', 'secondary'])->nullable()->after('author_id')->default('primary');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropColumn('type');
         });
     }

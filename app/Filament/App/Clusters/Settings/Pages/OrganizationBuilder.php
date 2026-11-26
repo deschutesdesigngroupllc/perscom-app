@@ -20,9 +20,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Callout;
 use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
@@ -31,6 +31,9 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use UnitEnum;
+
+use function array_key_exists;
+use function sprintf;
 
 /**
  * @property-read Schema $form
@@ -48,11 +51,13 @@ class OrganizationBuilder extends Page
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
-    protected static string|UnitEnum|null $navigationGroup = 'AI & Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'General';
 
-    protected static ?string $navigationLabel = 'Organization Builder';
+    protected static ?string $navigationLabel = 'Builder';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?string $navigationParentItem = 'Organization';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $slug = 'dashboard/organization-builder';
 
@@ -95,11 +100,14 @@ class OrganizationBuilder extends Page
                             Action::make('propose')
                                 ->label('Propose Additions')
                                 ->icon(Heroicon::OutlinedSparkles)
-                                ->action(fn () => $this->propose()),
+                                ->action(function (): void {
+                                    $this->propose();
+                                }),
                         ]),
                     ]),
-                Text::make('ai_unavailable')
-                    ->content('AI generation is not available for your organization right now. You can still import a preset or edit the proposal below by hand.')
+                Callout::make('AI Generation Unavailable')
+                    ->description('AI generation is not available for your organization right now. You can still import a preset or edit the proposal below by hand.')
+                    ->warning()
                     ->visible(fn (): bool => ! AiUsageService::isAvailable()),
                 Section::make('Import a Preset')
                     ->description('Load a ready-made structure into the proposal. Anything that already exists is skipped when applied.')
@@ -113,7 +121,9 @@ class OrganizationBuilder extends Page
                                 ->label('Import Preset')
                                 ->icon(Heroicon::OutlinedArrowDownTray)
                                 ->color('gray')
-                                ->action(fn () => $this->importPreset()),
+                                ->action(function (): void {
+                                    $this->importPreset();
+                                }),
                         ]),
                     ]),
                 Section::make('Proposal')
@@ -128,7 +138,9 @@ class OrganizationBuilder extends Page
                                 ->modalHeading('Apply Proposal')
                                 ->modalDescription('Everything in the proposal will be created. Entities that already exist are skipped.')
                                 ->modalSubmitActionLabel('Apply')
-                                ->action(fn () => $this->apply()),
+                                ->action(function (): void {
+                                    $this->apply();
+                                }),
                         ]),
                     ]),
             ]);

@@ -8,8 +8,6 @@ use App\Filament\App\Resources\PassportClientResource\Pages\CreatePassportClient
 use App\Filament\App\Resources\PassportClientResource\Pages\ViewPassportClient;
 use App\Models\Enums\PassportClientType;
 use App\Models\PassportClient;
-use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\ClientRepository;
 use Livewire\Livewire;
@@ -87,16 +85,6 @@ class PassportClientResourceTest extends TenantTestCase
             ->assertSee($this->tenant->url.'/oauth/authorize')
             ->assertSee($this->tenant->url.'/oauth/userinfo')
             ->assertDontSee('?tenant=');
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 
     private function client(): PassportClient

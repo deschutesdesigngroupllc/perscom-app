@@ -35,6 +35,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use UnitEnum;
 
+use function sprintf;
+
 class PromotionBoard extends Page implements HasTable
 {
     use InteractsWithTable;
@@ -44,9 +46,11 @@ class PromotionBoard extends Page implements HasTable
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowTrendingUp;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static string|UnitEnum|null $navigationGroup = 'People';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationParentItem = 'Members';
 
     protected static ?string $title = 'Promotion Board';
 
@@ -56,6 +60,18 @@ class PromotionBoard extends Page implements HasTable
      * @var Collection<int, PromotionEvaluationData>|null
      */
     protected ?Collection $evaluations = null;
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = PromotionEligibilityService::eligibleCount();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'brass';
+    }
 
     public static function canAccess(): bool
     {
@@ -184,7 +200,7 @@ class PromotionBoard extends Page implements HasTable
         $promotable = PromotionEligibilityService::evaluateMany($users)
             ->filter(fn (PromotionEvaluationData $evaluation): bool => $evaluation->eligible && $evaluation->nextRank instanceof Rank);
 
-        DB::transaction(fn () => $promotable->each(fn (PromotionEvaluationData $evaluation): RankRecord => RankRecord::create([
+        DB::transaction(fn (): Collection => $promotable->each(fn (PromotionEvaluationData $evaluation): RankRecord => RankRecord::create([
             'user_id' => $evaluation->user->getKey(),
             'rank_id' => $evaluation->nextRank->getKey(),
             'author_id' => Auth::id(),
@@ -198,6 +214,8 @@ class PromotionBoard extends Page implements HasTable
     }
 
     /**
+     * Get the evaluations of members who have a next rank.
+     *
      * @return Collection<int, PromotionEvaluationData>
      */
     protected function evaluations(): Collection
@@ -212,6 +230,8 @@ class PromotionBoard extends Page implements HasTable
     }
 
     /**
+     * Get the promotion requirements listed for the member on the active tab.
+     *
      * @return array<int, string>
      */
     protected function requirementsFor(User $user): array

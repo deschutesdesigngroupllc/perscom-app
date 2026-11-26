@@ -16,12 +16,13 @@ use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Laravel\Ai\Prompts\AgentPrompt;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\Services\Ai\OrganizationBlueprintServiceTest;
 use Tests\Feature\Tenant\TenantTestCase;
+
+use function count;
 
 class DashboardOnboardingTest extends TenantTestCase
 {
@@ -32,6 +33,35 @@ class DashboardOnboardingTest extends TenantTestCase
         $this->actingAsSuperAdmin();
 
         Livewire::test(Dashboard::class)
+            ->assertActionVisible('onboarding');
+    }
+
+    public function test_the_wizard_opens_itself_only_once_per_session(): void
+    {
+        $this->fakeAccessibleOnboarding();
+
+        $this->actingAsSuperAdmin();
+        Position::query()->delete();
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', 'onboarding');
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', null)
+            ->assertActionVisible('onboarding');
+    }
+
+    public function test_the_wizard_does_not_open_itself_when_the_structure_already_exists(): void
+    {
+        $this->fakeAccessibleOnboarding();
+        Rank::factory()->createQuietly();
+        Unit::factory()->createQuietly();
+        Position::factory()->createQuietly();
+
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Dashboard::class)
+            ->assertSet('defaultAction', null)
             ->assertActionVisible('onboarding');
     }
 
@@ -271,15 +301,5 @@ class DashboardOnboardingTest extends TenantTestCase
             'dismissed' => false,
             'completed_at' => null,
         ]);
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

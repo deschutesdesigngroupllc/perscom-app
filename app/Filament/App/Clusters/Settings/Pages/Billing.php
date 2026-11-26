@@ -8,6 +8,7 @@ use App\Facades\Billing as BillingFacade;
 use App\Filament\App\Clusters\Settings;
 use BackedEnum;
 use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
@@ -15,13 +16,13 @@ use UnitEnum;
 
 class Billing extends Page
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-credit-card';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
     protected string $view = 'filament.app.clusters.settings.pages.billing';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $cluster = Settings::class;
 

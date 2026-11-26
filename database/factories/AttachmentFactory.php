@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Models\Attachment;
 use App\Models\ServiceRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Attachment>
@@ -15,7 +16,11 @@ class AttachmentFactory extends Factory
 {
     public function configure(): static
     {
-        return $this->afterMaking(fn (Attachment $attachment) => $attachment->model()->associate(ServiceRecord::factory()->create()));
+        return $this->afterMaking(
+            fn (Attachment $attachment): Model => $attachment
+                ->model()
+                ->associate(ServiceRecord::factory()->create()),
+        );
     }
 
     public function definition(): array

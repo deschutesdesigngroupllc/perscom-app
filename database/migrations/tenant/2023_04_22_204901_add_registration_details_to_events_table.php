@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events', function (Blueprint $table) {
-            $table->after('rrule', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
+            $table->after('rrule', function (Blueprint $table): void {
                 $table->boolean('registration_enabled')->default(true);
                 $table->timestamp('registration_deadline')->nullable();
             });
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
             $table->dropColumn(['registration_enabled', 'registration_deadline']);
         });
     }

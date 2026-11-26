@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\TrainingRecordCredentialObserver;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -34,20 +36,31 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TrainingRecordCredentialObserver::class)]
+#[Fillable([
+    'training_record_id',
+    'credential_id',
+    'issued_at',
+    'expires_at',
+])]
+#[Table(name: 'records_trainings_credentials')]
 class TrainingRecordCredential extends Pivot
 {
     public $incrementing = true;
 
-    protected $table = 'records_trainings_credentials';
-
-    protected $fillable = [
-        'training_record_id',
-        'credential_id',
-        'issued_at',
-        'expires_at',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'issued_at' => 'datetime',
+            'expires_at' => 'datetime',
+        ];
+    }
 
     /**
+     * Get the training record the credential was issued on.
+     *
      * @return BelongsTo<TrainingRecord, $this>
      */
     public function training_record(): BelongsTo
@@ -56,6 +69,8 @@ class TrainingRecordCredential extends Pivot
     }
 
     /**
+     * Get the credential that was issued.
+     *
      * @return BelongsTo<Credential, $this>
      */
     public function credential(): BelongsTo
@@ -73,16 +88,5 @@ class TrainingRecordCredential extends Pivot
     protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'issued_at' => 'datetime',
-            'expires_at' => 'datetime',
-        ];
     }
 }

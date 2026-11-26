@@ -16,6 +16,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
@@ -24,7 +25,7 @@ class Permission extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
     protected static ?string $navigationLabel = 'Permissions';
 
@@ -54,30 +55,30 @@ class Permission extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Defaults')
-                            ->icon('heroicon-o-identification')
+                            ->icon(Heroicon::OutlinedIdentification)
                             ->schema([
                                 Select::make('default_roles')
                                     ->label('Role(s)')
                                     ->searchable()
                                     ->multiple()
                                     ->options(Role::query()->orderBy('name')->pluck('name', 'id')->toArray())
-                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->all())
-                                    ->helperText('The default role(s) a new user will be granted when created.'),
+                                    ->dehydrateStateUsing(fn ($state): array => collect($state)->map(fn ($id): int => (int) $id)->all())
+                                    ->helperText('The default role(s) a new member will be granted when created.'),
                                 Select::make('default_permissions')
                                     ->label('Permission(s)')
                                     ->multiple()
                                     ->preload()
                                     ->searchable()
                                     ->options(PermissionModel::query()->orderBy('name')->pluck('name', 'id')->toArray())
-                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->all())
-                                    ->helperText('The default permission(s) a new user will be granted when created.'),
+                                    ->dehydrateStateUsing(fn ($state): array => collect($state)->map(fn ($id): int => (int) $id)->all())
+                                    ->helperText('The default permission(s) a new member will be granted when created.'),
                             ]),
                         Tab::make('Security')
-                            ->icon('heroicon-o-lock-closed')
+                            ->icon(Heroicon::OutlinedLockClosed)
                             ->schema([
                                 Toggle::make('require_multi_factor_authentication')
-                                    ->label('Require multi-factor authentication')
-                                    ->helperText('When enabled, every user must set up an authenticator app or email code before they can access the dashboard.'),
+                                    ->label('Require Multi-Factor Authentication')
+                                    ->helperText('When enabled, every member must set up an authenticator app or email code before they can access the dashboard.'),
                             ]),
                     ]),
             ]);

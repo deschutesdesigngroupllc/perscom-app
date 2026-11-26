@@ -45,11 +45,15 @@ class FormResource extends BaseResource
 {
     protected static ?string $model = FormModel::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationParentItem = 'Forms';
+
+    protected static ?string $navigationLabel = 'Form Builder';
 
     public static function form(Schema $schema): Schema
     {
@@ -60,7 +64,7 @@ class FormResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Form')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->columns()
                             ->schema([
                                 TextInput::make('name')
@@ -99,7 +103,7 @@ class FormResource extends BaseResource
                                     ->columnSpanFull(),
                                 RichEditor::make('instructions')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('Any instructions the user filling out the form should follow.')
+                                    ->helperText('Any instructions the member filling out the form should follow.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
@@ -109,7 +113,7 @@ class FormResource extends BaseResource
                                     ->required(),
                             ]),
                         Tab::make('Submission')
-                            ->icon('heroicon-o-folder-plus')
+                            ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('submission_status_id')
                                     ->preload()
@@ -125,7 +129,7 @@ class FormResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Notifications')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 ModelNotification::make(
                                     alert: new HtmlString("<div class='font-bold'>Enable to send notifications when a form is submitted.</div>")
@@ -139,7 +143,7 @@ class FormResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedPencilSquare)
-            ->emptyStateDescription('There are no forms to view. Create one to get started.')
+            ->emptyStateDescription('Forms collect applications, requests and reports from members. Build your first form.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -151,7 +155,7 @@ class FormResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -167,7 +171,9 @@ class FormResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (FormModel $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(
+                        fn (FormModel $record): ?string => $record->categoryPivot?->category?->name,
+                    ),
             ])
             ->filters([
                 TernaryFilter::make('is_public')
@@ -181,7 +187,7 @@ class FormResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(FormExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

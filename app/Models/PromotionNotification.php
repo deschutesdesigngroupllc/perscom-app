@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -27,14 +28,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'user_id',
+    'rank_id',
+])]
 class PromotionNotification extends Model
 {
-    protected $fillable = [
-        'user_id',
-        'rank_id',
-    ];
-
     /**
+     * Get the user the notification is for.
+     *
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo
@@ -43,6 +45,8 @@ class PromotionNotification extends Model
     }
 
     /**
+     * Get the rank the notification is about.
+     *
      * @return BelongsTo<Rank, $this>
      */
     public function rank(): BelongsTo

@@ -16,7 +16,7 @@ return new class extends Migration
 
         $tableName = config('data-lens.table_names.custom_report_summaries', 'custom_report_summaries');
 
-        Schema::create($tableName, function (Blueprint $table) {
+        Schema::create($tableName, function (Blueprint $table): void {
             $table->id();
             $table->foreignId('custom_report_id')
                 ->constrained(config('data-lens.table_names.custom_reports', 'custom_reports'))

@@ -8,7 +8,7 @@ use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -26,6 +26,24 @@ class OrganizationInfoWidgetTest extends TenantTestCase
 
         Livewire::test(OrganizationInfoWidget::class)
             ->assertSee('Resume Setup Wizard');
+    }
+
+    public function test_resume_link_is_shown_once_the_wizard_was_skipped_this_session(): void
+    {
+        OnboardingSettings::fake([
+            'completed' => false,
+            'dismissed' => false,
+            'completed_at' => null,
+        ]);
+
+        $this->actingAsSuperAdmin();
+        Session::put(Dashboard::ONBOARDING_SHOWN_SESSION_KEY, true);
+
+        Livewire::test(OrganizationInfoWidget::class)
+            ->assertSee('Resume Setup Wizard')
+            ->call('resumeOnboarding');
+
+        $this->assertFalse(Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY));
     }
 
     public function test_resume_link_is_hidden_while_onboarding_is_still_accessible(): void
@@ -85,15 +103,5 @@ class OrganizationInfoWidgetTest extends TenantTestCase
         Livewire::test(OrganizationInfoWidget::class)
             ->call('resumeOnboarding')
             ->assertRedirect(Dashboard::getUrl());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

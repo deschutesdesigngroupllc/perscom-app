@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\MailObserver;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -39,20 +41,18 @@ use Illuminate\Support\Carbon;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(MailObserver::class)]
+#[Fillable([
+    'subject',
+    'content',
+    'recipients',
+    'links',
+    'send_now',
+    'send_at',
+    'sent_at',
+])]
+#[Table(name: 'mail')]
 class Mail extends Model
 {
-    protected $table = 'mail';
-
-    protected $fillable = [
-        'subject',
-        'content',
-        'recipients',
-        'links',
-        'send_now',
-        'send_at',
-        'sent_at',
-    ];
-
     /**
      * @return array<string, string>
      */

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Stancl\VirtualColumn\VirtualColumn;
 
+use function is_string;
+
 /**
  * @mixin Eloquent|Model
  */
@@ -51,7 +53,7 @@ trait HasCustomFieldData
     protected static function isFilePath($value): bool
     {
         return is_string($value)
-            && ! Str::startsWith($value, ['http://', 'https://'])
+            && Str::doesntStartWith($value, ['http://', 'https://'])
             && preg_match('/\.[a-zA-Z0-9]{1,10}$/', $value);
     }
 
@@ -68,7 +70,7 @@ trait HasCustomFieldData
             default => null,
         };
 
-        if (is_null($fields)) {
+        if ($fields === null) {
             return;
         }
 

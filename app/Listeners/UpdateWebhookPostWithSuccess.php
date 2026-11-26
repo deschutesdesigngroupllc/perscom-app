@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use App\Models\WebhookLog;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Spatie\WebhookServer\Events\WebhookCallSucceededEvent;
@@ -20,7 +21,7 @@ class UpdateWebhookPostWithSuccess implements ShouldQueue
         /** @var WebhookLog $webhookLog */
         $webhookLog = WebhookLog::find($modelId);
 
-        if (filled($webhookLog) && filled($modelId) && $event->response) {
+        if (filled($webhookLog) && filled($modelId) && $event->response instanceof Response) {
             $properties = $webhookLog->properties;
             $properties->put('status_code', $event->response->getStatusCode());
             $properties->put('reason_phrase', $event->response->getReasonPhrase());

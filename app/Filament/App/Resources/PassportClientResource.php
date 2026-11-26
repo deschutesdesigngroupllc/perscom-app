@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportClientResource\Pages\CreatePassportClient;
 use App\Filament\App\Resources\PassportClientResource\Pages\EditPassportClient;
 use App\Filament\App\Resources\PassportClientResource\Pages\ListPassportClients;
@@ -37,18 +38,25 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Laravel\Passport\Passport;
 use UnitEnum;
+
+use function in_array;
 
 class PassportClientResource extends BaseResource
 {
     protected static ?string $model = PassportClient::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 9;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 13;
+
+    protected static ?string $navigationLabel = 'OAuth Apps';
 
     protected static ?string $pluralModelLabel = 'clients';
 
@@ -94,7 +102,7 @@ class PassportClientResource extends BaseResource
                                     ->searchable()
                                     ->multiple()
                                     ->live()
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->options(fn (): Collection => Passport::scopes()->pluck('id', 'id')->sort())
                                     ->hidden(fn (Get $get): mixed => $get('all_scopes')),
                                 Checkbox::make('all_scopes')
                                     ->default(true)
@@ -115,7 +123,7 @@ class PassportClientResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Client')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('id')
@@ -154,7 +162,7 @@ class PassportClientResource extends BaseResource
                                     ->badge(),
                             ]),
                         Tab::make('Endpoints')
-                            ->icon('heroicon-o-link')
+                            ->icon(Heroicon::OutlinedLink)
                             ->schema([
                                 KeyValueEntry::make('endpoints')
                                     ->hiddenLabel()

@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Exceptions\ExpressionEvaluationException;
+use Illuminate\Support\Str;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Throwable;
+
+use function array_key_exists;
+use function in_array;
+use function is_array;
+use function is_string;
+use function sprintf;
 
 class ExpressionLanguageService
 {
@@ -164,14 +171,14 @@ class ExpressionLanguageService
                     return (string) preg_replace('/[^A-Za-z0-9]/', '', (string) $text);
                 }
 
-                return str_replace(mb_str_split((string) $characters), '', (string) $text);
+                return Str::replace(mb_str_split((string) $characters), '', (string) $text);
             }
         );
 
         $this->expressionLanguage->register(
             'old_value',
             fn (string $key): string => sprintf('$changes[%s]["old"] ?? null', $key),
-            function (array $arguments, $key) {
+            function (array $arguments, $key): mixed {
                 $changes = $arguments['changes'] ?? null;
 
                 return $changes[$key]['old'] ?? null;
@@ -181,7 +188,7 @@ class ExpressionLanguageService
         $this->expressionLanguage->register(
             'new_value',
             fn (string $key): string => sprintf('$changes[%s]["new"] ?? null', $key),
-            function (array $arguments, $key) {
+            function (array $arguments, $key): mixed {
                 $changes = $arguments['changes'] ?? null;
 
                 return $changes[$key]['new'] ?? null;

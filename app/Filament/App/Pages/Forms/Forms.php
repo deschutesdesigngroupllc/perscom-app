@@ -27,13 +27,13 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static ?string $slug = 'forms/list';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 9;
 
     protected static ?string $navigationLabel = 'Forms';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
     protected string $view = 'filament.app.pages.forms.list';
 
@@ -59,12 +59,12 @@ class Forms extends Page implements HasForms, HasTable
                 Group::make('categoryPivot.category_id')
                     ->collapsible()
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Form $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->groupingSettingsHidden()
             ->recordActions([
                 Action::make('open')
-                    ->icon('heroicon-o-pencil')
+                    ->icon(Heroicon::OutlinedPencil)
                     ->url(fn (?Form $record): string => Submit::getUrl([
                         'record' => $record,
                     ])),

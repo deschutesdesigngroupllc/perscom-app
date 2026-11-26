@@ -13,8 +13,10 @@ use App\Filament\App\Resources\CombatRecordResource\RelationManagers\Attachments
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\Exports\CombatRecordExporter;
+use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
 use App\Models\CombatRecord;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\User;
 use App\Settings\FieldSettings;
@@ -46,17 +48,21 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class CombatRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;
 
     protected static ?string $model = CombatRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFire;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 4;
+
+    protected static ?string $navigationParentItem = 'Records';
 
     public static function form(Schema $schema): Schema
     {
@@ -68,18 +74,16 @@ class CombatRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Combat Record')
                             ->columns()
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
-                                Select::make('user_id')
-                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                MemberSelect::make('user_id')
+                                    ->prefillFromQuery()
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
-                                    ->helperText('The user this record is assigned to.')
-                                    ->preload()
-                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
+                                    ->helperText('The member this record is assigned to.')
                                     ->searchable()
-                                    ->columnSpanFull()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->columnSpanFull(),
                                 RichEditor::make('text')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->required()
@@ -87,6 +91,8 @@ class CombatRecordResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 DateTimePicker::make('created_at')
+                                    ->label('Effective Date')
+                                    ->helperText('The date this took effect.')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
@@ -96,17 +102,15 @@ class CombatRecordResource extends BaseResource
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn (Schema $form): Schema => DocumentResource::form($form)),
-                                Select::make('author_id')
+                                MemberSelect::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
-                                    ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn (Schema $form): Schema => UserResource::form($form)),
+                                    ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -116,7 +120,7 @@ class CombatRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -141,25 +145,27 @@ class CombatRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Combat Record')
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 TextEntry::make('user.display_name')
-                                    ->label('User'),
+                                    ->label('Member'),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
-                                TextEntry::make('created_at'),
+                                TextEntry::make('created_at')
+                                    ->label('Effective Date')
+                                    ->date(),
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -178,34 +184,37 @@ class CombatRecordResource extends BaseResource
             ->emptyStateDescription('Create a new combat record to get started.')
             ->columns([
                 TextColumn::make('user.display_name')
-                    ->label('User')
+                    ->label('Member')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', $query->getModel()->getTable().'.user_id'), $direction))
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (CombatRecord $record) => $record->document)
-                            ->user(fn (CombatRecord $record) => $record->user)
+                            ->document(fn (CombatRecord $record): ?Document => $record->document)
+                            ->user(fn (CombatRecord $record): ?User => $record->user)
                             ->attached(fn (CombatRecord $record): CombatRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (CombatRecord $record) => $record->text),
+                            ->html(fn (CombatRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
+                    ->toggleable()
                     ->toggleable()
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -232,7 +241,7 @@ class CombatRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CombatRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

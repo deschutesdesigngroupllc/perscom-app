@@ -9,6 +9,7 @@ use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -18,12 +19,12 @@ class EventsRelationManager extends RelationManager
 {
     protected static string $relationship = 'events';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedCalendarDays;
 
     public function table(Table $table): Table
     {
         return $table
-            ->description('The events the user has attended.')
+            ->description('The events the member has attended.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable(),
@@ -31,7 +32,7 @@ class EventsRelationManager extends RelationManager
                     ->label('Organizer')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', 'events.author_id'), $direction)),
                 TextColumn::make('start')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -40,7 +41,7 @@ class EventsRelationManager extends RelationManager
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('end')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

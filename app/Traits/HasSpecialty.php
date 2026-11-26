@@ -6,7 +6,6 @@ namespace App\Traits;
 
 use App\Models\Specialty;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,11 +16,6 @@ trait HasSpecialty
     public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);
-    }
-
-    protected function scopeSpecialty(Builder $query, Specialty $specialty): void
-    {
-        $query->whereBelongsTo($specialty);
     }
 
     protected function initializeHasSpecialty(): void

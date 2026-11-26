@@ -29,11 +29,13 @@ class IssuerResource extends BaseResource
 {
     protected static ?string $model = Issuer::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 12;
+
+    protected static ?string $navigationParentItem = 'Qualifications';
 
     public static function form(Schema $schema): Schema
     {
@@ -60,7 +62,7 @@ class IssuerResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedBriefcase)
-            ->emptyStateDescription('There are no issuers to view. Create one to get started.')
+            ->emptyStateDescription('Issuers are the organizations that grant credentials. Add one before recording credentials.')
             ->columns([
                 TextColumn::make('name')
                     ->searchable()
@@ -73,7 +75,7 @@ class IssuerResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(IssuerExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

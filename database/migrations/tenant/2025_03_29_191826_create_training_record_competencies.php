@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('records_trainings_competencies', function (Blueprint $table) {
+        Schema::create('records_trainings_competencies', function (Blueprint $table): void {
             $table->foreignId('training_record_id')->nullable()->constrained('records_trainings')->cascadeOnDelete();
             $table->foreignId('competency_id')->nullable()->constrained('competencies')->cascadeOnDelete();
         });

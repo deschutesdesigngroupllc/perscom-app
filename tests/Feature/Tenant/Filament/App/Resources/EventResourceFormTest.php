@@ -13,9 +13,7 @@ use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\Schedule;
-use App\Models\User;
 use App\Services\UserSettingsService;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -128,15 +126,5 @@ class EventResourceFormTest extends TenantTestCase
 
         Livewire::test(EditEvent::class, ['record' => $event->getKey()])
             ->assertFormFieldExists('image.path');
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

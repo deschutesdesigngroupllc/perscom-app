@@ -50,6 +50,8 @@ class EventOccurrenceService
     }
 
     /**
+     * Get the event's occurrences that overlap the given range.
+     *
      * @return Collection<int, OccurrenceData>
      */
     public static function forEvent(Event $event, CarbonInterface $start, CarbonInterface $end): Collection
@@ -138,6 +140,8 @@ class EventOccurrenceService
     }
 
     /**
+     * Expand the event into its occurrences within the given range.
+     *
      * @return Collection<int, OccurrenceData>
      */
     protected static function expand(Event $event, CarbonInterface $start, CarbonInterface $end): Collection
@@ -210,6 +214,8 @@ class EventOccurrenceService
     }
 
     /**
+     * Attach the stored occurrence records to the matching occurrences.
+     *
      * @param  Collection<int, OccurrenceData>  $occurrences
      * @return Collection<int, OccurrenceData>
      */

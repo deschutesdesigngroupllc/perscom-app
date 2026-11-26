@@ -8,14 +8,9 @@ use App\Jobs\Central\SendMassEmail;
 use App\Models\Mail;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-/**
- * Sends an operator mass-email to tenants. This only applies to the multi-tenant
- * SaaS deployment; self-hosted installs have no tenant audience.
- */
 class DispatchTenantMassEmails
 {
     /**
@@ -31,9 +26,8 @@ class DispatchTenantMassEmails
             return null;
         }
 
-        /** @var Collection<Tenant> $recipients */
         $recipients = filled($mail->recipients)
-            ? Collection::wrap($mail->recipients)->map(fn ($tenantId): Tenant => Tenant::find($tenantId))
+            ? Tenant::query()->whereKey($mail->recipients)->get()
             : Tenant::all();
 
         return Bus::batch(

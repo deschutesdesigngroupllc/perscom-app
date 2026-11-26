@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Filament\Actions\AssignMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
-use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AssignmentRecord;
-use App\Models\Enums\AssignmentRecordType;
+use App\Models\Document;
 use App\Models\User;
+use App\Support\Brand;
 use BackedEnum;
-use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -23,7 +24,7 @@ class AssignmentRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'assignment_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $title = 'Assignment Records';
 
@@ -31,9 +32,11 @@ class AssignmentRecordsRelationManager extends RelationManager
     {
         return $table
             ->heading('Assignment Records')
-            ->description('The assignment records for the user.')
+            ->description('The assignment records for the member.')
             ->columns([
                 TextColumn::make('created_at')
+                    ->label('Date')
+                    ->date()
                     ->toggleable(false)
                     ->sortable(),
                 TextColumn::make('type')
@@ -51,44 +54,33 @@ class AssignmentRecordsRelationManager extends RelationManager
                 TextColumn::make('status.name')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (AssignmentRecord $record) => $record->document)
-                            ->user(fn (AssignmentRecord $record) => $record->user)
+                            ->document(fn (AssignmentRecord $record): ?Document => $record->document)
+                            ->user(fn (AssignmentRecord $record): ?User => $record->user)
                             ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (AssignmentRecord $record) => $record->text),
+                            ->html(fn (AssignmentRecord $record): ?string => $record->text),
                     ),
             ])
-            ->emptyStateActions([
-                Action::make('create')
-                    ->label('New assignment record')
-                    ->url(function (): string {
-                        /** @var User $user */
-                        $user = $this->getOwnerRecord();
-
-                        return AssignmentRecordResource::getUrl('create', [
-                            'user_id' => $user->getKey(),
-                            'type' => AssignmentRecordType::PRIMARY,
-                        ]);
-                    })
-                    ->button(),
+            ->headerActions([
+                AssignMemberAction::make(),
             ]);
     }
 }

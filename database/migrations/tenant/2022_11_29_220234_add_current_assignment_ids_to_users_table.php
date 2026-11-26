@@ -15,8 +15,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->after('email_verified_at', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
+            $table->after('email_verified_at', function (Blueprint $table): void {
                 $table->unsignedBigInteger('position_id')->nullable();
                 $table->unsignedBigInteger('rank_id')->nullable();
                 $table->unsignedBigInteger('specialty_id')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn('position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id');
         });
     }

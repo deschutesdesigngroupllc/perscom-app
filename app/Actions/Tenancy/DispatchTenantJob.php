@@ -10,16 +10,11 @@ use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-/**
- * Dispatches a per-tenant job across the whole deployment.
- *
- * - Tenancy enabled: batches the job once per tenant on the central connection.
- * - Self-hosted (tenancy disabled): RequiresTenancy jobs are skipped entirely;
- *   RunsPerTenant jobs run once against the central database.
- */
 class DispatchTenantJob
 {
     /**
+     * Dispatch the job once per tenant, or once centrally when tenancy is off.
+     *
      * @param  class-string  $job
      * @param  array<int, mixed>  $arguments  extra constructor arguments after the tenant key
      *

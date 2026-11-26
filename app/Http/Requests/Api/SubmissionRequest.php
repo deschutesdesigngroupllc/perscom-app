@@ -41,6 +41,8 @@ class SubmissionRequest extends Request
     }
 
     /**
+     * Get the validation rules for the custom fields of the submitted form.
+     *
      * @return string[]
      */
     protected function getFieldRules(): array

@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->string('status')->after('event_id')->default(EventRegistrationStatus::GOING)->nullable();
         });
     }
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->dropColumn('status');
         });
     }

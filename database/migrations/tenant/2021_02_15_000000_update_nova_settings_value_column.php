@@ -18,7 +18,7 @@ return new class extends Migration
         // TODO Remove in next major release
         // Legacy support
         // Convert value column to text if needed as the 'value' column was previously a varchar
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table('settings', function (Blueprint $table): void {
             $table->text('value')->nullable()->change();
         });
     }

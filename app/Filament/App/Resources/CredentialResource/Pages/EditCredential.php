@@ -7,11 +7,14 @@ namespace App\Filament\App\Resources\CredentialResource\Pages;
 use App\Filament\App\Resources\CredentialResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Str;
 
 class EditCredential extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = CredentialResource::class;
 
     public function getSubheading(): string|Htmlable|null

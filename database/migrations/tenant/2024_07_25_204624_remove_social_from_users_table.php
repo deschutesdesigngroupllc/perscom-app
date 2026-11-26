@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn(['social_id', 'social_driver', 'social_token', 'social_refresh_token']);
         });
     }
@@ -23,8 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->after('remember_token', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
+            $table->after('remember_token', function (Blueprint $table): void {
                 $table->string('social_id')->nullable();
                 $table->string('social_driver')->nullable();
                 $table->string('social_token')->nullable();

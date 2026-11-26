@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\EventCalendarService;
 use App\Services\EventOccurrenceService;
 use App\Services\UserSettingsService;
+use App\Support\Brand;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Carbon\WeekDay;
 use Filament\Actions\Action;
@@ -30,6 +31,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\Locked;
 
+use function in_array;
+use function sprintf;
+
 class CalendarWidget extends BaseCalendarWidget
 {
     use HasWidgetShield;
@@ -37,7 +41,7 @@ class CalendarWidget extends BaseCalendarWidget
     /**
      * The fallback color for events whose calendar has none.
      */
-    public const string DEFAULT_COLOR = '#2563eb';
+    public const string DEFAULT_COLOR = Brand::PRIMARY_HEX;
 
     /**
      * The grid layout: "month" or "week".

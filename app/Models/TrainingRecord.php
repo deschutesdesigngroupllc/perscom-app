@@ -20,7 +20,9 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,8 +56,8 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Credential> $credentials
  * @property-read int|null $credentials_count
  * @property-read Document|null $document
- * @property-read mixed $document_parsed
- * @property-read \Illuminate\Support\Facades\Event|null $event
+ * @property-read string|null $document_parsed
+ * @property-read Event|null $event
  * @property-read EventOccurrence|null $eventOccurrence
  * @property-read User|null $instructor
  * @property-read string $label
@@ -90,6 +92,14 @@ use Illuminate\Support\Carbon;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TrainingRecordObserver::class)]
+#[Fillable([
+    'id',
+    'instructor_id',
+    'text',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'records_trainings')]
 class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
@@ -107,25 +117,15 @@ class TrainingRecord extends Model implements HasLabel, ShouldGenerateNewsfeedIt
     use HasResourceUrl;
     use HasUser;
 
-    protected $table = 'records_trainings';
-
-    protected $fillable = [
-        'id',
-        'instructor_id',
-        'text',
-        'created_at',
-        'updated_at',
-    ];
-
     public function competencies(): BelongsToMany
     {
-        return $this->belongsToMany(Competency::class, 'records_trainings_competencies')
+        return $this->belongsToMany(Competency::class, TrainingRecordCompetency::class)
             ->using(TrainingRecordCompetency::class);
     }
 
     public function credentials(): BelongsToMany
     {
-        return $this->belongsToMany(Credential::class, 'records_trainings_credentials')
+        return $this->belongsToMany(Credential::class, TrainingRecordCredential::class)
             ->using(TrainingRecordCredential::class)
             ->withPivot(['id', 'issued_at', 'expires_at']);
     }

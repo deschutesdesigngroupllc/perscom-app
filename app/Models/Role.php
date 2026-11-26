@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -30,7 +31,7 @@ use Spatie\Permission\Models\Role as BaseRole;
  * @method static \Database\Factories\RoleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Role newModelQuery()
  * @method static Builder<static>|Role newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Role permission($permissions, $without = false)
+ * @method static Builder<static>|Role permission($permissions, $without = false)
  * @method static Builder<static>|Role query()
  * @method static Builder<static>|Role whereCreatedAt($value)
  * @method static Builder<static>|Role whereDescription($value)
@@ -38,10 +39,14 @@ use Spatie\Permission\Models\Role as BaseRole;
  * @method static Builder<static>|Role whereId($value)
  * @method static Builder<static>|Role whereName($value)
  * @method static Builder<static>|Role whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Role withoutPermission($permissions)
+ * @method static Builder<static>|Role withoutPermission($permissions)
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Appends([
+    'is_custom_role',
+    'is_application_role',
+])]
 class Role extends BaseRole
 {
     use ClearsResponseCache;
@@ -49,11 +54,6 @@ class Role extends BaseRole
 
     protected $attributes = [
         'guard_name' => 'web',
-    ];
-
-    protected $appends = [
-        'is_custom_role',
-        'is_application_role',
     ];
 
     protected function isCustomRole(): Attribute

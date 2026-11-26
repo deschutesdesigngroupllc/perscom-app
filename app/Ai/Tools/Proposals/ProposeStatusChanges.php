@@ -10,6 +10,8 @@ use App\Models\Status;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Stringable;
 
+use function sprintf;
+
 class ProposeStatusChanges extends ProposalTool
 {
     public function description(): Stringable|string

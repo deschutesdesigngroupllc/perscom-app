@@ -13,6 +13,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Spatie\LaravelData\Data;
 
+use function sprintf;
+
 class OccurrenceData extends Data
 {
     public function __construct(

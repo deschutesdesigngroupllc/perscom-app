@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\Actions\AssignUsersBulkAction;
-use App\Filament\Actions\AwardUsersBulkAction;
+use App\Filament\Actions\ArchiveMemberAction;
 use App\Filament\Actions\ClaimInviteAction;
-use App\Filament\Actions\PromoteUsersBulkAction;
+use App\Filament\Actions\DeleteMemberAction;
+use App\Filament\Actions\MemberRecordActions;
 use App\Filament\App\Resources\UserResource\Filters\AwardsFilter;
 use App\Filament\App\Resources\UserResource\Filters\CredentialsFilter;
 use App\Filament\App\Resources\UserResource\Filters\QualificationsFilter;
@@ -21,11 +21,12 @@ use App\Services\SettingsService;
 use App\Services\UserSettingsService;
 use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
+use App\Support\Brand;
 use App\Traits\Filament\BuildsCustomFieldComponents;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
@@ -63,19 +64,38 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
+use function in_array;
+use function sprintf;
+
 class UserResource extends BaseResource
 {
     use BuildsCustomFieldComponents;
 
     protected static ?string $model = User::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
+    protected static ?string $modelLabel = 'member';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Personnel';
+    protected static ?string $pluralModelLabel = 'members';
 
-    protected static ?int $navigationSort = 6;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
+
+    protected static string|UnitEnum|null $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'display_name';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $count = User::query()->where('approved', false)->count();
+
+        return $count > 0 ? (string) $count : null;
+    }
+
+    public static function getNavigationBadgeColor(): string
+    {
+        return 'warning';
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -86,7 +106,7 @@ class UserResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Demographics')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->columns()
                             ->schema([
                                 Grid::make(8)
@@ -128,8 +148,8 @@ class UserResource extends BaseResource
                                     ->previewable(),
                             ]),
                         Tab::make('Assignment')
-                            ->badge(fn (?User $record) => $record?->position?->name)
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->badge(fn (?User $record): ?string => $record?->position?->name)
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->columns()
                             ->schema([
                                 Select::make('position_id')
@@ -156,31 +176,31 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(fn (?User $record): array => UserResource::buildCustomFieldInputs($record?->fields ?? collect())),
                         Tab::make('Details')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 DateTimePicker::make('created_at')
                                     ->default(now())
                                     ->required()
-                                    ->helperText('The date the user profile was created. Used to calculate time in service.'),
+                                    ->helperText('The date the member profile was created. Used to calculate time in service.'),
                                 DateTimePicker::make('updated_at')
                                     ->default(now())
                                     ->required()
-                                    ->helperText('The date the user profile was last updated.'),
+                                    ->helperText('The date the member profile was last updated.'),
                                 DateTimePicker::make('last_seen_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
                                     ->label('Last Online')
-                                    ->helperText('The date the user last logged in.'),
+                                    ->helperText('The date the member last logged in.'),
                                 DateTimePicker::make('email_verified_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -190,18 +210,18 @@ class UserResource extends BaseResource
                                     ->helperText("The date the user's email was verified. Set this to bypass user email verification."),
                             ]),
                         Tab::make('Notes')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->schema([
                                 RichEditor::make('notes')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull()
-                                    ->helperText('Use this optional area to keep notes on the user.'),
+                                    ->helperText('Use this optional area to keep notes on the member.'),
                             ]),
                         Tab::make('Rank')
-                            ->badge(fn (?User $record) => $record?->rank?->name)
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->badge(fn (?User $record): ?string => $record?->rank?->name)
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->columns()
                             ->schema([
                                 Select::make('rank_id')
@@ -213,9 +233,9 @@ class UserResource extends BaseResource
                                     ->createOptionForm(fn (Schema $form): Schema => RankResource::form($form)),
                             ]),
                         Tab::make('Status')
-                            ->badge(fn (?User $record) => $record?->status?->name)
-                            ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
-                            ->icon('heroicon-o-scale')
+                            ->badge(fn (?User $record): ?string => $record?->status?->name)
+                            ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
+                            ->icon(Heroicon::OutlinedScale)
                             ->schema([
                                 Select::make('status_id')
                                     ->helperText("The user's current status.")
@@ -251,7 +271,7 @@ class UserResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Profile')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->schema([
                                 Fieldset::make('Identity')
                                     ->columns(['default' => 1, 'md' => 2])
@@ -261,7 +281,7 @@ class UserResource extends BaseResource
                                             ->hidden(fn (): bool => in_array('name', $hiddenFields)),
                                         TextEntry::make('email')
                                             ->label('Email')
-                                            ->icon('heroicon-o-envelope')
+                                            ->icon(Heroicon::OutlinedEnvelope)
                                             ->copyable()
                                             ->placeholder('—')
                                             ->hidden(fn (): bool => in_array('email', $hiddenFields)),
@@ -292,7 +312,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Assignment')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->visible(fn (): bool => ! in_array('assignment', $hiddenFields))
                             ->schema([
                                 Fieldset::make('Primary Assignment')
@@ -322,12 +342,12 @@ class UserResource extends BaseResource
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
-                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline mr-1' alt='%s' />", $url, $record->rank->name)))),
+                                            ->prefix(fn (?User $record): ?HtmlString => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline mr-1' alt='%s' />", $url, $record->rank->name)))),
                                         TextEntry::make('status.name')
                                             ->label('Status')
                                             ->placeholder('No Status')
                                             ->badge()
-                                            ->color(fn (?User $record): array => Color::generateV3Palette($record?->status?->color ?? '#6b7280'))
+                                            ->color(fn (?User $record): array => Color::generateV3Palette($record?->status?->color ?? Brand::NEUTRAL_HEX))
                                             ->hidden(fn (): bool => in_array('status_id', $hiddenFields)),
                                         TextEntry::make('approved')
                                             ->label('Approved')
@@ -364,7 +384,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Awards')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->badge(fn (?User $record): ?int => $record?->awards?->count() ?: null)
                             ->badgeColor('warning')
                             ->visible(fn (): bool => ! in_array('award_records', $hiddenFields))
@@ -374,12 +394,12 @@ class UserResource extends BaseResource
                                     ->viewData(fn (User $record): array => [
                                         'items' => $record->awards,
                                         'emptyMessage' => 'No awards have been received yet.',
-                                        'fallbackIcon' => 'heroicon-o-trophy',
+                                        'fallbackIcon' => Heroicon::OutlinedTrophy,
                                         'storageKey' => 'user-awards-view',
                                     ]),
                             ]),
                         Tab::make('Qualifications')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->badge(fn (?User $record): ?int => $record?->qualifications?->count() ?: null)
                             ->badgeColor('success')
                             ->visible(fn (): bool => ! in_array('qualification_records', $hiddenFields))
@@ -389,11 +409,11 @@ class UserResource extends BaseResource
                                     ->viewData(fn (User $record): array => [
                                         'items' => $record->qualifications,
                                         'emptyMessage' => 'No qualifications have been earned yet.',
-                                        'fallbackIcon' => 'heroicon-o-star',
+                                        'fallbackIcon' => Heroicon::OutlinedStar,
                                     ]),
                             ]),
                         Tab::make('Credentials')
-                            ->icon('heroicon-o-identification')
+                            ->icon(Heroicon::OutlinedIdentification)
                             ->badge(fn (?User $record): ?int => $record?->credentials?->count() ?: null)
                             ->badgeColor('info')
                             ->visible(fn (): bool => ! in_array('credentials', $hiddenFields))
@@ -406,7 +426,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Custom Fields')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->visible(fn (User $record): bool => $record->fields->isNotEmpty())
                             ->schema(fn (User $record): array => UserResource::buildCustomFieldEntries($record->fields)),
                     ]),
@@ -419,19 +439,25 @@ class UserResource extends BaseResource
 
         return $table
             ->emptyStateIcon(Heroicon::OutlinedUser)
-            ->emptyStateDescription('There are no users to view. Create one to get started.')
+            ->emptyStateDescription('Invite members or add them yourself to build your roster.')
             ->columns([
                 ImageColumn::make('profile_photo')
                     ->placeholder('No Profile Photo')
                     ->hidden(fn (): bool => in_array('profile_photo', $hiddenFields))
                     ->label('')
-                    ->defaultImageUrl(fn (User $record) => $record->profile_photo_url),
+                    ->defaultImageUrl(fn (User $record): string => $record->profile_photo_url),
                 TextColumn::make('display_name')
                     ->label('Name')
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
-                    ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('name', $direction))
-                    ->searchable(query: fn (Builder $query, string $search) => $query->where('name', 'like', sprintf('%%%s%%', $search)))
-                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? 'heroicon-o-exclamation-circle' : null)
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy('name', $direction))
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->where('name', 'like', sprintf('%%%s%%', $search)))
+                    ->icon(function (?User $record): ?Heroicon {
+                        if (! $record instanceof User || $record->approved || ! Auth::user()->can('approve', $record)) {
+                            return null;
+                        }
+
+                        return Heroicon::OutlinedExclamationCircle;
+                    })
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 TextColumn::make('email')
@@ -444,7 +470,7 @@ class UserResource extends BaseResource
                     ->badge()
                     ->color(fn ($state): string => match ($state) {
                         true => 'success',
-                        default => 'info',
+                        default => 'gray',
                     })
                     ->formatStateUsing(fn ($state): string => match ($state) {
                         true => 'Online',
@@ -464,6 +490,8 @@ class UserResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('rank.name')
                     ->placeholder('No Rank')
+                    ->badge()
+                    ->color('brass')
                     ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('status.name')
@@ -471,7 +499,7 @@ class UserResource extends BaseResource
                     ->icon(fn (User $record): ?string => $record->status?->icon)
                     ->hidden(fn (): bool => in_array('status_id', $hiddenFields))
                     ->badge()
-                    ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
+                    ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->badge()
@@ -517,9 +545,9 @@ class UserResource extends BaseResource
             ->recordActions([
                 Action::make('approve')
                     ->color('success')
-                    ->icon('heroicon-o-check-circle')
+                    ->icon(Heroicon::OutlinedCheckCircle)
                     ->visible(fn (?User $record): bool => ! $record->approved && Auth::user()->can('approve', $record))
-                    ->successNotificationTitle('The user has been successfully approved.')
+                    ->successNotificationTitle('Member Approved')
                     ->action(function (Action $action, User $record): void {
                         $record->forceFill([
                             'approved' => true,
@@ -528,18 +556,22 @@ class UserResource extends BaseResource
                         $action->success();
                     }),
                 ClaimInviteAction::make(),
+                MemberRecordActions::group()
+                    ->icon(Heroicon::OutlinedPlusCircle),
                 ViewAction::make(),
                 EditAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                    ArchiveMemberAction::make(),
+                    DeleteMemberAction::make(),
+                ])
+                    ->tooltip('More'),
             ])
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(UserExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
-                    PromoteUsersBulkAction::make(),
-                    AssignUsersBulkAction::make(),
-                    AwardUsersBulkAction::make(),
+                    ...MemberRecordActions::bulk(),
                     DeleteBulkAction::make(),
                 ]),
             ]);

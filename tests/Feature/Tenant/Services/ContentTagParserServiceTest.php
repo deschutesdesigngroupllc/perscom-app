@@ -18,6 +18,8 @@ use App\Models\Unit;
 use App\Models\User;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class ContentTagParserServiceTest extends TenantTestCase
 {
     public function test_it_correctly_replaces_user_text(): void

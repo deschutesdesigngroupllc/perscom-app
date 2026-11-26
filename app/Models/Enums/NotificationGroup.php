@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Enums;
 
 use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Str;
 
 enum NotificationGroup: string implements HasLabel
@@ -27,11 +28,11 @@ enum NotificationGroup: string implements HasLabel
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): ?Heroicon
     {
         return match ($this) {
-            NotificationGroup::EVENTS => 'heroicon-o-calendar-days',
-            NotificationGroup::RECORDS => 'heroicon-o-rectangle-stack',
+            NotificationGroup::EVENTS => Heroicon::OutlinedCalendarDays,
+            NotificationGroup::RECORDS => Heroicon::OutlinedRectangleStack,
         };
     }
 }

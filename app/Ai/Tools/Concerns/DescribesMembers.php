@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Date;
 trait DescribesMembers
 {
     /**
+     * Summarize the member's profile for an agent.
+     *
      * @return array<string, mixed>
      */
     protected function describeMember(User $user): array

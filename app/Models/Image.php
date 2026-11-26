@@ -11,6 +11,8 @@ use App\Traits\HasResourceUrl;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+
+use function array_key_exists;
 
 /**
  * @property int $id
@@ -52,6 +56,15 @@ use Illuminate\Support\Facades\Storage;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Appends(['image_url'])]
+#[Fillable([
+    'name',
+    'description',
+    'filename',
+    'path',
+    'created_at',
+    'updated_at',
+])]
 class Image extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -60,17 +73,6 @@ class Image extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'filename',
-        'path',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $appends = ['image_url'];
-
     public function model(): MorphTo
     {
         return $this->morphTo('model');
@@ -78,7 +80,7 @@ class Image extends Model implements HasLabel
 
     protected static function booted(): void
     {
-        static::deleting(fn (Image $model) => Storage::delete($model->path));
+        static::deleting(fn (Image $model): bool => Storage::delete($model->path));
     }
 
     protected function imageUrl(): Attribute

@@ -8,10 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Mcp\ApiResourceRegistry;
 use Illuminate\Http\JsonResponse;
 
-/**
- * OAuth 2.0 Authorization Server Metadata (RFC 8414) pointing MCP clients at the tenant's
- * Passport endpoints, including dynamic client registration.
- */
 class AuthorizationServerMetadataController extends Controller
 {
     public function __invoke(): JsonResponse

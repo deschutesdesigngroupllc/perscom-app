@@ -17,6 +17,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 
+use function sprintf;
+
 class AwardUsersBulkAction extends BulkAction
 {
     use AppliesChangeSets;
@@ -29,30 +31,52 @@ class AwardUsersBulkAction extends BulkAction
             ->label('Award')
             ->icon(Heroicon::OutlinedTrophy)
             ->modalHeading('Add Award Record')
-            ->modalDescription('Create an award record for each selected user. Each user is notified as usual.')
+            ->modalDescription('Create an award record for each selected member. Each member is notified as usual.')
             ->modalSubmitActionLabel('Create Award Records')
             ->visible(fn (): bool => Gate::check('create', AwardRecord::class))
             ->deselectRecordsAfterCompletion()
-            ->schema([
-                Select::make('award_id')
-                    ->label('Award')
-                    ->helperText('The award to give each selected user.')
-                    ->options(fn (): array => Award::query()->orderBy('order')->pluck('name', 'id')->all())
-                    ->searchable()
-                    ->required(),
-                RichEditor::make('text')
-                    ->label('Text')
-                    ->helperText('Optional citation included with each record.'),
-            ])
-            ->action(function (BulkAction $action, Collection $records, array $data): void {
-                $this->applyOperation($action, new ProposedOperationData(
-                    type: CopilotOperationType::AWARD_RECORD,
-                    userIds: $records->map(fn (User $user): int => $user->getKey())->values()->all(),
-                    targetId: (int) $data['award_id'],
-                    text: $data['text'] ?? null,
-                    summary: sprintf('Award %s to %d user(s)', Award::query()->find($data['award_id'])?->name, $records->count()),
-                ));
-            });
+            ->schema(static::formSchema())
+            ->action(fn (BulkAction $action, Collection $records, array $data): null => $this->applyOperation(
+                $action,
+                static::operationFor($records, $data),
+            ));
+    }
+
+    /**
+     * Build the form that collects the award details.
+     *
+     * @return array<int, \Filament\Schemas\Components\Component|\Filament\Forms\Components\Field>
+     */
+    public static function formSchema(): array
+    {
+        return [
+            Select::make('award_id')
+                ->label('Award')
+                ->helperText('The award to give.')
+                ->options(fn (): array => Award::query()->orderBy('order')->pluck('name', 'id')->all())
+                ->searchable()
+                ->required(),
+            RichEditor::make('text')
+                ->label('Text')
+                ->helperText('Optional citation included with each record.'),
+        ];
+    }
+
+    /**
+     * Build the award operation for the selected members.
+     *
+     * @param  Collection<int, User>  $users
+     * @param  array<string, mixed>  $data
+     */
+    public static function operationFor(Collection $users, array $data): ProposedOperationData
+    {
+        return new ProposedOperationData(
+            type: CopilotOperationType::AWARD_RECORD,
+            userIds: $users->map(fn (User $user): int => $user->getKey())->values()->all(),
+            targetId: (int) $data['award_id'],
+            text: $data['text'] ?? null,
+            summary: sprintf('Award %s to %d member(s)', Award::query()->find($data['award_id'])?->name, $users->count()),
+        );
     }
 
     public static function getDefaultName(): ?string

@@ -10,6 +10,7 @@ use App\Traits\HasAttachments;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +51,14 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'title',
+    'description',
+    'instructions',
+    'form_id',
+    'created_at',
+    'updated_at',
+])]
 class Task extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -59,15 +68,6 @@ class Task extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'instructions',
-        'form_id',
-        'created_at',
-        'updated_at',
-    ];
-
     public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);
@@ -75,7 +75,7 @@ class Task extends Model implements HasLabel
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'users_tasks')
+        return $this->belongsToMany(User::class, TaskAssignment::class)
             ->withPivot(['id', 'task_id', 'user_id', 'assigned_by_id', 'assigned_at', 'due_at', 'completed_at', 'expires_at'])
             ->as('assignment')
             ->using(TaskAssignment::class)

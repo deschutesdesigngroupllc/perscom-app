@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\ApiLogResource\Pages\ListApiLogs;
 use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Filament\App\Resources\ApiLogResource\RelationManagers\PurgesRelationManager;
@@ -20,6 +21,7 @@ use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -30,22 +32,28 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Phiki\Grammar\Grammar;
 use Symfony\Component\HttpFoundation\Response;
 use UnitEnum;
 
+use function in_array;
+use function sprintf;
+
 class ApiLogResource extends BaseResource
 {
     protected static ?string $model = ApiLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
     protected static ?string $navigationParentItem = 'API Keys';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 9;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 12;
 
     protected static ?string $navigationLabel = 'Logs';
 
@@ -56,7 +64,7 @@ class ApiLogResource extends BaseResource
         return $table
             ->emptyStateActions([
                 Action::make('new')
-                    ->label('New API key')
+                    ->label('New API Key')
                     ->url(PassportTokenResource::getUrl('create')),
             ])
             ->emptyStateDescription("There are no API logs to view. Create your first API key to start integrating with PERSCOM's powerful API.")
@@ -70,10 +78,10 @@ class ApiLogResource extends BaseResource
                 TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->searchable(query: fn (Builder|ApiLog $query, string $search) => $query->whereMeta('request_id', 'LIKE', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))),
+                    ->searchable(query: fn (Builder|ApiLog $query, string $search): Builder => $query->whereMeta('request_id', 'LIKE', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))->orWhereMeta('trace_id', 'like', sprintf('%%%s%%', $search))),
                 TextColumn::make('log_name')
                     ->label('Log')
-                    ->formatStateUsing(fn ($state) => match ($state) {
+                    ->formatStateUsing(fn ($state): string => match ($state) {
                         'api' => 'API',
                         'oauth' => 'OAuth',
                         default => Str::title($state)
@@ -93,6 +101,7 @@ class ApiLogResource extends BaseResource
                 TextColumn::make('status')
                     ->color(fn ($state): string => match (true) {
                         $state >= 200 && $state < 300 => 'success',
+                        $state >= 100 && $state < 400 => 'warning',
                         default => 'danger',
                     })
                     ->badge()
@@ -121,7 +130,7 @@ class ApiLogResource extends BaseResource
                         ->when(
                             filled(data_get($data, 'values')),
                             function (Builder $query) use ($data): void {
-                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
+                                $query->where(fn (Builder $query): Collection => collect(data_get($data, 'values'))->each(fn (int|string $id): Builder => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
                             },
                         )),
                 SelectFilter::make('log_name')
@@ -143,17 +152,17 @@ class ApiLogResource extends BaseResource
                         ->when(
                             filled(data_get($data, 'values')),
                             function (Builder|ApiLog $query) use ($data): void {
-                                $query->where(fn (Builder|ApiLog $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereMeta('method', $method)));
+                                $query->where(fn (Builder|ApiLog $query): Collection => collect(data_get($data, 'values'))->each(fn (string $method): Builder => $query->orWhereMeta('method', $method)));
                             },
                         )),
                 QueryBuilder::make()
                     ->constraints([
                         Constraint::make('request_id')
                             ->label('Request ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -175,10 +184,10 @@ class ApiLogResource extends BaseResource
                             ]),
                         Constraint::make('trace_id')
                             ->label('Trace ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -199,10 +208,10 @@ class ApiLogResource extends BaseResource
                                     }),
                             ]),
                         Constraint::make('endpoint')
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -225,10 +234,10 @@ class ApiLogResource extends BaseResource
                         DateConstraint::make('created_at')
                             ->label('Requested'),
                         Constraint::make('status')
-                            ->icon('heroicon-o-flag')
+                            ->icon(Heroicon::OutlinedFlag)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -261,7 +270,7 @@ class ApiLogResource extends BaseResource
                 ->columnSpanFull()
                 ->tabs([
                     Tab::make('Client')
-                        ->icon('heroicon-o-user')
+                        ->icon(Heroicon::OutlinedUser)
                         ->schema([
                             TextEntry::make('request_id')
                                 ->copyable()
@@ -281,7 +290,7 @@ class ApiLogResource extends BaseResource
                                 ->label('IP Address'),
                         ]),
                     Tab::make('Request')
-                        ->icon('heroicon-o-cloud-arrow-up')
+                        ->icon(Heroicon::OutlinedCloudArrowUp)
                         ->schema([
                             TextEntry::make('method')
                                 ->badge(),
@@ -293,14 +302,14 @@ class ApiLogResource extends BaseResource
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
                                 ->helperText('Sensitive headers are hidden by default.')
-                                ->getStateUsing(fn (?ApiLog $record) => collect($record->request_headers)
+                                ->getStateUsing(fn (?ApiLog $record): array => collect($record->request_headers)
                                     ->reject(fn ($value, $key): bool => in_array(Str::lower($key), [
                                         'authorization',
                                         '_token',
                                         'x-csrf-token',
                                         'x-xsrf-token',
                                     ]))
-                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->all()
+                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value): string => Str::limit($value))->join(', ')])->all()
                                 ),
                             CodeEntry::make('body')
                                 ->copyable()
@@ -311,12 +320,13 @@ class ApiLogResource extends BaseResource
                             ? 'Truncated'
                             : null)
                         ->badgeColor('gray')
-                        ->icon('heroicon-o-cloud-arrow-down')
+                        ->icon(Heroicon::OutlinedCloudArrowDown)
                         ->schema([
                             TextEntry::make('status')
                                 ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state])
                                 ->color(fn ($state): string => match (true) {
                                     $state >= 200 && $state < 300 => 'success',
+                                    $state >= 100 && $state < 400 => 'warning',
                                     default => 'danger',
                                 })
                                 ->badge(),
@@ -324,7 +334,7 @@ class ApiLogResource extends BaseResource
                                 ->label('Headers')
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
-                                ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->join(', ')])->toArray()),
+                                ->getStateUsing(fn (?ApiLog $record): array => collect($record->response_headers)->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->join(', ')])->toArray()),
                             CodeEntry::make('content')
                                 ->copyable()
                                 ->grammar(Grammar::Json),
@@ -404,10 +414,10 @@ class ApiLogResource extends BaseResource
     {
         $originalSearchAttributes = $searchAttributes;
 
-        $searchAttributes = array_filter(Arr::pluck($searchAttributes, [
+        $searchAttributes = collect(Arr::pluck($searchAttributes, [
             'request_id',
             'trace_id',
-        ]));
+        ]))->filter()->all();
 
         /** @var Builder|ApiLog $query */
         $query = parent::applyGlobalSearchAttributeConstraint($query, $search, $searchAttributes, $isFirst);

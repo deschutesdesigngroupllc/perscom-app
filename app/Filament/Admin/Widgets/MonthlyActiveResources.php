@@ -8,6 +8,7 @@ use App\Metrics\Metric;
 use App\Metrics\TenantCreationMetric;
 use App\Metrics\UserCreationMetric;
 use App\Metrics\UserLoginMetric;
+use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
@@ -72,9 +73,9 @@ class MonthlyActiveResources extends BaseWidget
             ->perMonth()
             ->sum('count');
 
-        $icon = fn ($number): string => match (true) {
-            $number >= 0 => 'heroicon-m-arrow-trending-up',
-            default => 'heroicon-m-arrow-trending-down'
+        $icon = fn ($number): Heroicon => match (true) {
+            $number >= 0 => Heroicon::ArrowTrendingUp,
+            default => Heroicon::ArrowTrendingDown
         };
 
         return [

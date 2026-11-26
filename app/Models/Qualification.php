@@ -14,6 +14,7 @@ use App\Traits\HasQualificationRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -62,6 +63,14 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(QualificationScope::class)]
+#[Fillable([
+    'name',
+    'description',
+    'validity_days',
+    'order',
+    'created_at',
+    'updated_at',
+])]
 class Qualification extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
@@ -73,15 +82,6 @@ class Qualification extends Model implements HasLabel, Sortable
     use HasQualificationRecords;
     use HasResourceLabel;
     use HasResourceUrl;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'validity_days',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
 
     /**
      * @return array<string, string>

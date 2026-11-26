@@ -18,6 +18,7 @@ use App\Models\User;
 use App\Services\Ai\OrganizationBlueprintService;
 use App\Services\AiUsageService;
 use App\Settings\OnboardingSettings;
+use App\Settings\OrganizationSettings;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
@@ -38,12 +39,22 @@ use Filament\Support\Enums\Width;
 use Filament\Support\Exceptions\Halt;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+
+use function array_key_exists;
+use function sprintf;
 
 class Dashboard extends BaseDashboard
 {
     use GeneratesOrganizationBlueprints;
+
+    /**
+     * The session key that records the setup wizard already opened itself during this sign-in.
+     */
+    public const string ONBOARDING_SHOWN_SESSION_KEY = 'onboarding.shown';
 
     public $defaultAction = 'onboarding';
 
@@ -51,11 +62,55 @@ class Dashboard extends BaseDashboard
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $title = 'PERSCOM Personnel Management System';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
-    protected ?string $subheading = 'Personnel management made easy for high-performing, results-driven organizations.';
+    /**
+     * Ranks, units and positions already exist (applied at signup, seeded by an install, or built by
+     * hand), so the wizard has nothing to add and shouldn't open on its own.
+     */
+    public static function hasStructure(): bool
+    {
+        return Rank::query()->exists() && Unit::query()->exists() && Position::query()->exists();
+    }
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    /**
+     * The wizard opens itself once per sign-in session, and not at all once the organization has a
+     * structure. Closing it or choosing "Skip For Now" keeps it closed until the next sign-in; "Resume
+     * Setup Wizard" on the dashboard reopens it any time.
+     */
+    public function mount(): void
+    {
+        if (Session::has(self::ONBOARDING_SHOWN_SESSION_KEY)) {
+            $this->defaultAction = null;
+
+            return;
+        }
+
+        if (static::hasStructure()) {
+            $this->defaultAction = null;
+
+            return;
+        }
+
+        if ($this->shouldShowOnboarding()) {
+            Session::put(self::ONBOARDING_SHOWN_SESSION_KEY, true);
+        }
+    }
+
+    public function getTitle(): string
+    {
+        /** @var OrganizationSettings $settings */
+        $settings = resolve(OrganizationSettings::class);
+
+        return filled($settings->name) ? $settings->name : 'Dashboard';
+    }
+
+    public function getSubheading(): ?string
+    {
+        $firstName = Str::of((string) Auth::user()?->name)->trim()->before(' ')->toString();
+
+        return filled($firstName) ? sprintf('Welcome back, %s.', $firstName) : null;
+    }
 
     public function onboardingAction(): Action
     {
@@ -66,7 +121,6 @@ class Dashboard extends BaseDashboard
             ->modalHeading('Welcome to '.($tenant?->name ?? 'PERSCOM'))
             ->modalDescription("Let's get your organization set up. Complete each step below to create your organizational structure.")
             ->modalWidth(Width::SixExtraLarge)
-            ->modalIcon(Heroicon::OutlinedRocketLaunch)
             ->visible(fn (): bool => $this->shouldShowOnboarding())
             ->fillForm(fn (): array => $this->getOnboardingFormData())
             ->steps($this->getOnboardingSteps())
@@ -89,7 +143,7 @@ class Dashboard extends BaseDashboard
         Notification::make()
             ->success()
             ->title('Setup Wizard Dismissed')
-            ->body("You won't see this wizard again. You can configure your organization from the settings menu.")
+            ->body('Build your ranks, units and positions any time under Structure in the sidebar.')
             ->send();
     }
 
@@ -100,10 +154,10 @@ class Dashboard extends BaseDashboard
     {
         return [
             CopyAction::make('perscom_id')
-                ->visible(fn () => config('tenancy.enabled'))
+                ->visible(fn (): bool => (bool) config('tenancy.enabled'))
                 ->label(fn (): string => 'PERSCOM ID: '.tenant('id'))
                 ->copyable((string) tenant('id'))
-                ->icon('heroicon-o-document-duplicate')
+                ->icon(Heroicon::OutlinedDocumentDuplicate)
                 ->iconPosition(IconPosition::After)
                 ->color('gray'),
         ];
@@ -129,6 +183,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Get the initial state of the onboarding form.
+     *
      * @return array<string, mixed>
      */
     protected function getOnboardingFormData(): array
@@ -154,6 +210,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Build the steps of the onboarding wizard.
+     *
      * @return Step[]
      */
     protected function getOnboardingSteps(): array
@@ -167,14 +225,14 @@ class Dashboard extends BaseDashboard
                 ->schema([
                     Actions::make([
                         Action::make('dismissOnboarding')
-                            ->label("Don't show this setup wizard again")
+                            ->label("Don't Show This Setup Wizard Again")
                             ->icon(Heroicon::OutlinedXCircle)
                             ->color('gray')
                             ->link()
                             ->requiresConfirmation()
                             ->modalHeading('Dismiss Setup Wizard')
-                            ->modalDescription("You won't see this wizard again. You can always configure your organization from the settings menu.")
-                            ->modalSubmitActionLabel("Yes, Don't Show Again")
+                            ->modalDescription("It won't open on its own again. You can reopen it from the dashboard, or build your structure under Structure in the sidebar.")
+                            ->modalSubmitActionLabel('Hide Setup Wizard')
                             ->action(function (): void {
                                 $this->dismissOnboarding();
                             })
@@ -252,7 +310,7 @@ class Dashboard extends BaseDashboard
                 ->completedIcon(Heroicon::CheckCircle)
                 ->schema([
                     Section::make('Create Personnel')
-                        ->description('Personnel are the users in your organization. Each person is assigned to a unit, and given a position and rank.')
+                        ->description('Personnel are the members in your organization. Each person is assigned to a unit, and given a position and rank.')
                         ->schema([
                             Text::make('personnel_info')
                                 ->extraAttributes(['class' => 'w-full'])
@@ -331,7 +389,7 @@ class Dashboard extends BaseDashboard
                                     </div>
                                 ')),
                             Checkbox::make('finish.dont_show_again')
-                                ->label("Don't show this setup wizard again")
+                                ->label("Don't Show This Setup Wizard Again")
                                 ->helperText('You can always access organization settings from the settings menu.'),
                         ]),
                 ]),
@@ -339,6 +397,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Apply the onboarding choices and mark setup as complete.
+     *
      * @param  array<string, mixed>  $data
      */
     protected function completeOnboarding(array $data): void
@@ -364,7 +424,7 @@ class Dashboard extends BaseDashboard
 
     protected function generateOnboardingBlueprint(Get $get, Set $set): void
     {
-        $description = (string) $get('builder.description');
+        $description = $get->string('builder.description');
 
         if (blank($description)) {
             Notification::make()
@@ -398,6 +458,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Apply the proposed structure when one was built.
+     *
      * @param  array<string, mixed>  $data
      *
      * @throws Halt
@@ -424,6 +486,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Create the first member when a name and email were given.
+     *
      * @param  array<string, mixed>  $data
      */
     protected function createPersonnelIfNeeded(array $data): ?User

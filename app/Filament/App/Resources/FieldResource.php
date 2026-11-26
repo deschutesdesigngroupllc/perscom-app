@@ -55,11 +55,11 @@ class FieldResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
 
     protected static ?string $navigationLabel = 'Custom Fields';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Resources';
+    protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
     protected static ?int $navigationSort = 30;
 
@@ -75,10 +75,10 @@ class FieldResource extends BaseResource
                     ->tabs([
                         Tab::make('Field')
                             ->columns()
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema([
                                 TextInput::make('name')
-                                    ->helperText('This is the name of the field that will be displayed to the user.')
+                                    ->helperText('This is the name of the field that will be displayed to the member.')
                                     ->required()
                                     ->lazy()
                                     ->afterStateUpdated(function (Set $set, $state, $operation): void {
@@ -94,7 +94,7 @@ class FieldResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 Select::make('type')
-                                    ->helperText('The type of field. Fields allow user input while components provide the ability to decorate a form with static content.')
+                                    ->helperText('The type of field. Fields allow member input while components provide the ability to decorate a form with static content.')
                                     ->searchable()
                                     ->options([
                                         'Components' => collect(FieldType::cases())->filter(fn (FieldType $type): bool => $type->getType() === 'component')->mapWithKeys(fn (FieldType $type): array => [$type->value => $type->getLabel()])->all(),
@@ -121,7 +121,13 @@ class FieldResource extends BaseResource
                                 KeyValue::make('options')
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
-                                    ->formatStateUsing(fn (?Field $record, $state): mixed => filled($record?->getRawOriginal('options')) ? json_decode((string) $record->getRawOriginal('options'), true) : null)
+                                    ->formatStateUsing(fn (?Field $record, $state): mixed => filled(
+                                        $record?->getRawOriginal('options'),
+                                    ) ? json_decode(
+                                        (string) $record->getRawOriginal('options'),
+                                        true,
+                                        flags: JSON_THROW_ON_ERROR,
+                                    ) : null)
                                     ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::ARRAY)
                                     ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::ARRAY)
                                     ->dehydrateStateUsing(fn ($state): string => Collection::wrap($state)->filter()->toJson()),
@@ -149,7 +155,7 @@ class FieldResource extends BaseResource
                                     ->language(Language::Html),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('placeholder')
@@ -158,7 +164,7 @@ class FieldResource extends BaseResource
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 TextInput::make('help')
-                                    ->helperText('ModelLike this text, this is a short description that should help the user fill out the field.')
+                                    ->helperText('A short description shown under the field to help the member fill it out.')
                                     ->nullable()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
@@ -174,7 +180,7 @@ class FieldResource extends BaseResource
                                     ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_BOOLEAN),
                             ]),
                         Tab::make('Validation')
-                            ->icon('heroicon-o-shield-check')
+                            ->icon(Heroicon::OutlinedShieldCheck)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('rules')
@@ -185,15 +191,15 @@ class FieldResource extends BaseResource
                                     ->helperText('The field will be required to be filled out.')
                                     ->required(),
                                 Toggle::make('readonly')
-                                    ->helperText('A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it). Useful in combination with a placeholder.')
+                                    ->helperText('A readonly input field cannot be modified (however, a member can tab to it, highlight it, and copy the text from it). Useful in combination with a placeholder.')
                                     ->required(),
                             ]),
                         Tab::make('Visibility')
-                            ->icon('heroicon-o-eye')
+                            ->icon(Heroicon::OutlinedEye)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 Toggle::make('hidden')
-                                    ->helperText('The field will only be shown if the user has editable permissions.')
+                                    ->helperText('The field will only be shown if the member has editable permissions.')
                                     ->required(),
                             ]),
                     ]),
@@ -204,9 +210,9 @@ class FieldResource extends BaseResource
     {
         return $table
             ->heading('Manage Fields')
-            ->description('Create custom fields to attach to resources such as records, users, forms etc. providing custom data collection.')
+            ->description('Create custom fields to attach to resources such as records, members, forms etc. providing custom data collection.')
             ->emptyStateIcon(Heroicon::OutlinedPencil)
-            ->emptyStateDescription('There are no custom fields to view. Create one to get started.')
+            ->emptyStateDescription('Custom fields capture extra details on members, records and forms. Add one to start collecting it.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -223,7 +229,7 @@ class FieldResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()
@@ -270,7 +276,7 @@ class FieldResource extends BaseResource
             ])
             ->headerActions([
                 AttachAction::make()
-                    ->label('Add field')
+                    ->label('Add Field')
                     ->modalHeading('Add Field')
                     ->modalWidth(Width::TwoExtraLarge)
                     ->modalSubmitActionLabel('Add')
@@ -282,7 +288,7 @@ class FieldResource extends BaseResource
             ->recordActions([
                 DetachAction::make()
                     ->modalHeading('Remove Field')
-                    ->label('Remove field'),
+                    ->label('Remove Field'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -293,9 +299,9 @@ class FieldResource extends BaseResource
             ->reorderable('order')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New field')
+                    ->label('New Field')
                     ->openUrlInNewTab()
-                    ->url(FieldResource::getUrl('create'))
+                    ->url(self::getUrl('create'))
                     ->button(),
             ]);
     }

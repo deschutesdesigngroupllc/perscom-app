@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportTokenResource\Pages\CreatePassportToken;
 use App\Filament\App\Resources\PassportTokenResource\Pages\EditPassportToken;
 use App\Filament\App\Resources\PassportTokenResource\Pages\ListPassportTokens;
@@ -31,6 +32,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Laravel\Passport\Passport;
 use UnitEnum;
 
@@ -38,11 +40,13 @@ class PassportTokenResource extends BaseResource
 {
     protected static ?string $model = PassportToken::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 9;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 11;
 
     protected static ?string $pluralModelLabel = 'API keys';
 
@@ -71,7 +75,7 @@ class PassportTokenResource extends BaseResource
                                     ->multiple()
                                     ->live()
                                     ->disabled(fn ($operation): bool => $operation !== 'create')
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->options(fn (): Collection => Passport::scopes()->pluck('id', 'id')->sort())
                                     ->hidden(fn (Get $get): mixed => $get('all_scopes')),
                                 Checkbox::make('all_scopes')
                                     ->visibleOn('create')
@@ -97,7 +101,7 @@ class PassportTokenResource extends BaseResource
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('expires_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -105,7 +109,7 @@ class PassportTokenResource extends BaseResource
                                     }))
                                     ->dateTime(),
                                 TextEntry::make('token')
-                                    ->label('API key')
+                                    ->label('API Key')
                                     ->wrap()
                                     ->badge()
                                     ->color('gray')
@@ -139,7 +143,7 @@ class PassportTokenResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('expires_at')
                     ->label('Expires')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -166,7 +170,14 @@ class PassportTokenResource extends BaseResource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereDoesntHave('client', fn (Builder $query) => $query->where('name', '<>', PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT));
+            ->whereDoesntHave(
+                'client',
+                fn (Builder $query): Builder => $query->where(
+                    'name',
+                    '<>',
+                    PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT,
+                ),
+            );
     }
 
     /**

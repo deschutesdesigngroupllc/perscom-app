@@ -20,11 +20,15 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
 class ModelNotification
 {
     /**
+     * Build the notification settings section for a model form.
+     *
      * @param  array<string, mixed>|null  $defaults
      */
     public static function make(?string $description = null, string|HtmlString|Closure|null $alert = null, ?array $defaults = null, ?string $statePath = null): Section
@@ -45,20 +49,21 @@ class ModelNotification
                     ->default(data_get($defaults, 'enabled', false))
                     ->helperText($description ?? 'Enable to send notifications.'),
                 Tabs::make()
+                    ->key('model_notification_tabs')
                     ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Recipients')
-                            ->visible(fn (Get $get): mixed => $get('enabled'))
-                            ->icon('heroicon-o-users')
+                            ->visible(fn (Get $get): bool => $get->boolean('enabled'))
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('groups')
-                                    ->helperText('Send the notification to a group(s).')
+                                    ->helperText('Send the notification to everyone in the selected groups.')
                                     ->default(data_get($defaults, 'groups'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => Group::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => Group::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -67,12 +72,12 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('units')
-                                    ->helperText('Send the notification to a unit(s).')
+                                    ->helperText('Send the notification to everyone in the selected units.')
                                     ->default(data_get($defaults, 'units'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => Unit::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => Unit::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -81,12 +86,12 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('users')
-                                    ->helperText('Send the notification to a user(s).')
+                                    ->helperText('Send the notification to specific members.')
                                     ->default(data_get($defaults, 'users'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => User::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -96,15 +101,15 @@ class ModelNotification
                                     ]),
                             ]),
                         Tab::make('Notification')
-                            ->visible(fn (Get $get): mixed => $get('enabled'))
-                            ->icon('heroicon-o-bell')
+                            ->visible(fn (Get $get): bool => $get->boolean('enabled'))
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 TextInput::make('subject')
                                     ->default(data_get($defaults, 'subject'))
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')
@@ -125,7 +130,7 @@ class ModelNotification
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')
@@ -149,10 +154,10 @@ class ModelNotification
                                     ])
                                     ->searchable()
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())
+                                    ->descriptions(fn (): array => collect(NotificationChannel::cases())
                                         ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->all())
-                                    ->options(fn () => collect(NotificationChannel::cases())
+                                    ->options(fn (): array => collect(NotificationChannel::cases())
                                         ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
                                         ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->all()),

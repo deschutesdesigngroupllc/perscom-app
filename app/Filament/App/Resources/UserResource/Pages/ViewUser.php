@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\Pages;
 
+use App\Filament\Actions\ArchiveMemberAction;
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\DeleteMemberAction;
+use App\Filament\Actions\MemberRecordActions;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
@@ -18,49 +21,66 @@ use App\Services\ServiceProfileService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use Filament\Actions\Action;
-use Filament\Actions\DeleteAction;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Components\ViewComponent;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
-use Illuminate\Support\Traits\Conditionable;
+
+use function in_array;
 
 class ViewUser extends ViewRecord
 {
-    use Conditionable;
-
     protected static string $resource = UserResource::class;
 
-    public function getRelationManagers(): array
+    /**
+     * Get the record tabs the organization shows on member profiles, in order.
+     *
+     * @return array<int, class-string<RelationManager>>
+     */
+    public static function profileRelationManagers(): array
     {
-        $relationManagers = collect();
-
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
-        $this->unless(in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(AssignmentRecordsRelationManager::class));
-        $this->unless(in_array('award_records', $hiddenFields), fn () => $relationManagers->push(AwardRecordsRelationManager::class));
-        $this->unless(in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(CombatRecordsRelationManager::class));
-        $this->unless(in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(QualificationRecordsRelationManager::class));
-        $this->unless(in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RankRecordsRelationManager::class));
-        $this->unless(in_array('service_records', $hiddenFields), fn () => $relationManagers->push(ServiceRecordsRelationManager::class));
-        $this->unless(in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
-
-        return $relationManagers->toArray();
+        return collect([
+            'assignment_records' => AssignmentRecordsRelationManager::class,
+            'award_records' => AwardRecordsRelationManager::class,
+            'combat_records' => CombatRecordsRelationManager::class,
+            'qualification_records' => QualificationRecordsRelationManager::class,
+            'rank_records' => RankRecordsRelationManager::class,
+            'service_records' => ServiceRecordsRelationManager::class,
+            'training_records' => TrainingRecordsRelationManager::class,
+        ])
+            ->reject(fn (string $relationManager, string $field): bool => in_array($field, $hiddenFields, true))
+            ->values()
+            ->all();
     }
 
     public function getSubheading(): string|Htmlable|null
     {
         return new Stringable()
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
+            ->when($this->getRecord()->rank, fn (Stringable $str): Stringable => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
+            ->when($this->getRecord()->position, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->position->name))
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
+            ->when($this->getRecord()->unit, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->unit->name))
             ->wrap('<div class="fi-header-subheading">', '</div>')
             ->toHtmlString();
+    }
+
+    /**
+     * Get the profile record tabs; Filament drops those the viewer cannot see.
+     *
+     * @return array<int, class-string<RelationManager>>
+     */
+    protected function getAllRelationManagers(): array
+    {
+        return static::profileRelationManagers();
     }
 
     /**
@@ -69,11 +89,14 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            MemberRecordActions::group()
+                ->icon(Heroicon::OutlinedPlus)
+                ->button(),
             ClaimInviteAction::make()
                 ->color('gray'),
             Action::make('publicProfile')
                 ->label('Public Profile')
-                ->icon('heroicon-o-globe-alt')
+                ->icon(Heroicon::OutlinedGlobeAlt)
                 ->color('gray')
                 ->visible(fn (?User $record): bool => $record instanceof User && ServiceProfileService::isPublic($record))
                 ->url(fn (User $record): string => ServiceProfileService::url($record))
@@ -83,9 +106,18 @@ class ViewUser extends ViewRecord
                 ->color('gray')
                 ->url(fn (?User $record): string => 'mailto:'.$record->email)
                 ->openUrlInNewTab()
-                ->tooltip(fn (?User $record) => $record->email),
-            EditAction::make(),
-            DeleteAction::make(),
+                ->tooltip(fn (?User $record): ?string => $record->email),
+            EditAction::make()
+                ->color('gray'),
+            ActionGroup::make([
+                ArchiveMemberAction::make(),
+                DeleteMemberAction::make(),
+            ])
+                ->tooltip('More')
+                ->color('gray')
+                ->button()
+                ->label('More')
+                ->icon(Heroicon::OutlinedEllipsisHorizontal),
         ];
     }
 }

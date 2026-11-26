@@ -51,15 +51,17 @@ use Illuminate\Support\Str;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
+use function in_array;
+
 class AutomationResource extends BaseResource
 {
     protected static ?string $model = Automation::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Admin';
 
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {
@@ -121,7 +123,7 @@ class AutomationResource extends BaseResource
                                     ->hintActions([
                                         Action::make('testCondition')
                                             ->label('Test')
-                                            ->icon('heroicon-o-play')
+                                            ->icon(Heroicon::OutlinedPlay)
                                             ->color('success')
                                             ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('condition')))
                                             ->action(function (Get $get, Action $action): void {
@@ -150,7 +152,7 @@ class AutomationResource extends BaseResource
                                             }),
                                         Action::make('viewAvailableFunctions')
                                             ->label('View Functions')
-                                            ->icon('heroicon-o-command-line')
+                                            ->icon(Heroicon::OutlinedCommandLine)
                                             ->modalHeading('Available Functions')
                                             ->modalDescription('Use these functions in your condition expressions.')
                                             ->modalSubmitAction(false)
@@ -164,7 +166,7 @@ class AutomationResource extends BaseResource
                                             ]),
                                         Action::make('viewAvailableFieldsCondition')
                                             ->label('View Context')
-                                            ->icon('heroicon-o-code-bracket')
+                                            ->icon(Heroicon::OutlinedCodeBracket)
                                             ->modalHeading('Available Condition Fields')
                                             ->modalDescription('Use these field paths in your condition. E.g., model["status"] !== "active"')
                                             ->modalSubmitAction(false)
@@ -176,7 +178,7 @@ class AutomationResource extends BaseResource
                                                     ->grammar(Grammar::Json)
                                                     ->state(json_encode(
                                                         AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                        JSON_PRETTY_PRINT
+                                                        JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                     )),
                                             ]),
                                     ])
@@ -211,7 +213,7 @@ class AutomationResource extends BaseResource
                                             ->hintActions([
                                                 Action::make('previewWebhookPayload')
                                                     ->label('Preview')
-                                                    ->icon('heroicon-o-eye')
+                                                    ->icon(Heroicon::OutlinedEye)
                                                     ->color('success')
                                                     ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('webhook_payload_template')))
                                                     ->modalHeading('Payload Preview')
@@ -234,12 +236,12 @@ class AutomationResource extends BaseResource
                                                                     return 'Error: '.$result['error'];
                                                                 }
 
-                                                                return json_encode($result['result'], JSON_PRETTY_PRINT);
+                                                                return json_encode($result['result'], JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR);
                                                             }),
                                                     ]),
                                                 Action::make('viewAvailableFields')
                                                     ->label('View Context')
-                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->icon(Heroicon::OutlinedCodeBracket)
                                                     ->modalHeading('Available Template Fields')
                                                     ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
                                                     ->modalSubmitAction(false)
@@ -251,12 +253,12 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                                 Action::make('viewAvailableFilters')
                                                     ->label('View Filters')
-                                                    ->icon('heroicon-o-funnel')
+                                                    ->icon(Heroicon::OutlinedFunnel)
                                                     ->modalHeading('Available Twig Filters')
                                                     ->modalDescription('Use these filters with the pipe syntax: {{ value | filter }}')
                                                     ->modalSubmitAction(false)
@@ -264,7 +266,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
+                                                            ->state(collect(self::getAvailableTwigFilters())->implode("\n")),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -282,7 +284,7 @@ class AutomationResource extends BaseResource
                                             ->hintActions([
                                                 Action::make('previewMessageContent')
                                                     ->label('Preview')
-                                                    ->icon('heroicon-o-eye')
+                                                    ->icon(Heroicon::OutlinedEye)
                                                     ->color('success')
                                                     ->visible(fn (Get $get): bool => filled($get('trigger')) && filled($get('message_content')))
                                                     ->modalHeading('Message Preview')
@@ -310,7 +312,7 @@ class AutomationResource extends BaseResource
                                                     ]),
                                                 Action::make('viewAvailableFieldsMessage')
                                                     ->label('View Context')
-                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->icon(Heroicon::OutlinedCodeBracket)
                                                     ->modalHeading('Available Template Fields')
                                                     ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
                                                     ->modalSubmitAction(false)
@@ -322,12 +324,12 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                                 Action::make('viewAvailableFiltersMessage')
                                                     ->label('View Filters')
-                                                    ->icon('heroicon-o-funnel')
+                                                    ->icon(Heroicon::OutlinedFunnel)
                                                     ->modalHeading('Available Twig Filters')
                                                     ->modalDescription('Use these filters with the pipe syntax: {{ value | filter }}')
                                                     ->modalSubmitAction(false)
@@ -335,7 +337,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
+                                                            ->state(collect(self::getAvailableTwigFilters())->implode("\n")),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -375,7 +377,7 @@ class AutomationResource extends BaseResource
                                             ->hintActions([
                                                 Action::make('viewAvailableFieldsLookup')
                                                     ->label('View Context')
-                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->icon(Heroicon::OutlinedCodeBracket)
                                                     ->modalHeading('Available Fields')
                                                     ->modalDescription('Use these field paths in your expression.')
                                                     ->modalSubmitAction(false)
@@ -387,7 +389,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                             ])
@@ -413,7 +415,7 @@ class AutomationResource extends BaseResource
                                             ->hintActions([
                                                 Action::make('viewUpdatableFields')
                                                     ->label('View Updatable Fields')
-                                                    ->icon('heroicon-o-list-bullet')
+                                                    ->icon(Heroicon::OutlinedListBullet)
                                                     ->modalHeading('Updatable Fields')
                                                     ->modalDescription('These fields can be updated on the selected resource.')
                                                     ->modalSubmitAction(false)
@@ -450,7 +452,7 @@ class AutomationResource extends BaseResource
                                                     ]),
                                                 Action::make('viewAvailableFieldsUpdate')
                                                     ->label('View Context')
-                                                    ->icon('heroicon-o-code-bracket')
+                                                    ->icon(Heroicon::OutlinedCodeBracket)
                                                     ->modalHeading('Available Context Fields')
                                                     ->modalDescription('Use these field paths in your template with {{ field.path }} syntax.')
                                                     ->modalSubmitAction(false)
@@ -462,7 +464,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                             ])
@@ -482,7 +484,7 @@ class AutomationResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Automation')
-                            ->icon('heroicon-o-bolt')
+                            ->icon(Heroicon::OutlinedBolt)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('description')
@@ -504,7 +506,7 @@ class AutomationResource extends BaseResource
                                     ->color('gray'),
                             ]),
                         Tab::make('2. Condition')
-                            ->icon('heroicon-o-funnel')
+                            ->icon(Heroicon::OutlinedFunnel)
                             ->schema([
                                 TextEntry::make('condition')
                                     ->label('Condition Expression')
@@ -512,7 +514,7 @@ class AutomationResource extends BaseResource
                                     ->copyable(),
                             ]),
                         Tab::make('3. Action')
-                            ->icon('heroicon-o-play')
+                            ->icon(Heroicon::OutlinedPlay)
                             ->schema([
                                 TextEntry::make('action_type')
                                     ->label('Action')
@@ -566,7 +568,7 @@ class AutomationResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->toggleable(),
@@ -638,6 +640,8 @@ class AutomationResource extends BaseResource
     }
 
     /**
+     * Get the Twig filters available to automation templates.
+     *
      * @return list<string>
      */
     private static function getAvailableTwigFilters(): array

@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Models\Award;
 use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @extends Factory<Image>
@@ -15,7 +16,7 @@ class ImageFactory extends Factory
 {
     public function configure(): static
     {
-        return $this->afterMaking(fn (Image $image) => $image->model()->associate(Award::factory()->create()));
+        return $this->afterMaking(fn (Image $image): Model => $image->model()->associate(Award::factory()->create()));
     }
 
     public function definition(): array

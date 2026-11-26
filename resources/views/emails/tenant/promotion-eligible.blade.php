@@ -1,10 +1,9 @@
 @component('mail::message')
-# Hello,
+# You're Eligible for Promotion
 
 You now meet the requirements for promotion to **{{ $rank }}**.
 
 Your leadership can see your eligibility on the promotion board.
 
-Thanks,<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

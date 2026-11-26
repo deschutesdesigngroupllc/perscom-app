@@ -9,10 +9,6 @@ use App\Support\Slack\SlackBlocks;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Notifications\Notification;
 
-/**
- * Posts organization-wide notifications to the connected Slack channel, reusing the notification's
- * Discord embed so both services stay in step.
- */
 class SlackPublicChannel
 {
     /**

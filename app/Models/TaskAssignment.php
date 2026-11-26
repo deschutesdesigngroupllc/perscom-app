@@ -10,7 +10,10 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,6 +66,22 @@ use Illuminate\Support\Facades\DB;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TaskAssignmentObserver::class)]
+#[Appends([
+    'expired',
+    'past_due',
+    'status',
+])]
+#[Fillable([
+    'task_id',
+    'assigned_by_id',
+    'assigned_at',
+    'due_at',
+    'completed_at',
+    'expires_at',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'users_tasks')]
 class TaskAssignment extends Pivot
 {
     use ClearsApiCache;
@@ -70,24 +89,23 @@ class TaskAssignment extends Pivot
     use HasFactory;
     use HasUser;
 
-    protected $table = 'users_tasks';
-
-    protected $fillable = [
-        'task_id',
-        'assigned_by_id',
-        'assigned_at',
-        'due_at',
-        'completed_at',
-        'expires_at',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $appends = [
-        'expired',
-        'past_due',
-        'status',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'completed_at' => 'datetime',
+            'assigned_at' => 'datetime',
+            'due_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'expired' => 'boolean',
+            'past_due' => 'boolean',
+            'complete' => 'boolean',
+        ];
+    }
 
     public function complete(?CarbonInterface $completedAt = null): bool
     {
@@ -192,23 +210,5 @@ class TaskAssignment extends Pivot
         return Attribute::make(get: fn (): bool => $this->due_at &&
                ((! $this->complete && Date::parse($this->due_at)->isPast()) ||
                 ($this->complete && Date::parse($this->due_at)->isBefore($this->completed_at))));
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'completed_at' => 'datetime',
-            'assigned_at' => 'datetime',
-            'due_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'expired' => 'boolean',
-            'past_due' => 'boolean',
-            'complete' => 'boolean',
-        ];
     }
 }

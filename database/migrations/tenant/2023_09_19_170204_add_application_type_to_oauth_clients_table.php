@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->string('type')->default('authorization_code')->nullable()->after('description');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->dropColumn('type');
         });
     }

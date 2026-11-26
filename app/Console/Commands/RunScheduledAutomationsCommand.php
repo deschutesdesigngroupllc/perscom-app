@@ -8,15 +8,15 @@ use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\NotifyPromotionEligibleMembers;
 use App\Jobs\Tenant\ProcessExpiringRecords;
 use App\Jobs\Tenant\RunDailyUserReview;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Throwable;
 
+#[Description('Process expiring records, run the daily user review automations and notify members newly eligible for promotion.')]
+#[Signature('perscom:scheduled-automations')]
 class RunScheduledAutomationsCommand extends Command
 {
-    protected $signature = 'perscom:scheduled-automations';
-
-    protected $description = 'Process expiring records, run the daily user review automations and notify members newly eligible for promotion.';
-
     /**
      * @throws Throwable
      */

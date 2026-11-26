@@ -10,7 +10,7 @@ class CreateTagTables extends Migration
 {
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table): void {
             $table->id();
             $table->json('name');
             $table->json('slug');
@@ -19,7 +19,7 @@ class CreateTagTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('taggables', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->morphs('taggable');
@@ -29,7 +29,7 @@ class CreateTagTables extends Migration
 
     public function down()
     {
-        Schema::table('taggables', function (Blueprint $table) {
+        Schema::table('taggables', function (Blueprint $table): void {
             $table->dropForeign(['tag_id']);
             $table->dropIfExists();
         });

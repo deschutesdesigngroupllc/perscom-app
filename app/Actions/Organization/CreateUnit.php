@@ -33,7 +33,7 @@ class CreateUnit
                 ->whereRaw('LOWER(name) = ?', [Str::lower($validated['name'])])
                 ->first() ?? Unit::create($validated);
 
-            if ($group instanceof Group && ! $unit->groups()->whereKey($group->getKey())->exists()) {
+            if ($group instanceof Group && $unit->groups()->whereKey($group->getKey())->doesntExist()) {
                 $unit->groups()->attach($group->getKey());
             }
 

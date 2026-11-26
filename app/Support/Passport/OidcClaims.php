@@ -7,6 +7,8 @@ namespace App\Support\Passport;
 use App\Models\User;
 use Illuminate\Support\Arr;
 
+use function in_array;
+
 class OidcClaims
 {
     /**

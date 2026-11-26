@@ -14,8 +14,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
-            $table->after('options', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
+            $table->after('options', function (Blueprint $table): void {
                 $table->string('options_type')->default(FieldOptionsType::ARRAY->value)->nullable();
                 $table->string('options_model')->nullable();
             });
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropColumn(['options_type', 'options_model']);
         });
     }

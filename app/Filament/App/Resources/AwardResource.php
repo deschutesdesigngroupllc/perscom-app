@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\AwardResource\Pages\CreateAward;
 use App\Filament\App\Resources\AwardResource\Pages\EditAward;
 use App\Filament\App\Resources\AwardResource\Pages\ListAwards;
+use App\Filament\App\Resources\AwardResource\RelationManagers\HoldersRelationManager;
 use App\Filament\App\Resources\Categories\Schemas\CategoryForm;
 use App\Filament\Exports\AwardExporter;
 use App\Models\Award;
@@ -39,11 +40,11 @@ class AwardResource extends BaseResource
 {
     protected static ?string $model = Award::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-trophy';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTrophy;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 8;
 
     public static function form(Schema $schema): Schema
     {
@@ -54,7 +55,7 @@ class AwardResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Award')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the award.')
@@ -81,7 +82,7 @@ class AwardResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -108,7 +109,7 @@ class AwardResource extends BaseResource
     {
         return $table
             ->emptyStateIcon(Heroicon::OutlinedTrophy)
-            ->emptyStateDescription('There are no awards to view. Create one to get started.')
+            ->emptyStateDescription('Awards recognize members for service and achievement. Add your first award.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()
@@ -118,7 +119,7 @@ class AwardResource extends BaseResource
                     ->label('Image'),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable(),
@@ -135,7 +136,7 @@ class AwardResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Award $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Award $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),
@@ -144,7 +145,7 @@ class AwardResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AwardExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
@@ -152,6 +153,16 @@ class AwardResource extends BaseResource
             ->defaultGroup('categoryPivot.category_id')
             ->defaultSort('order')
             ->reorderable('order');
+    }
+
+    /**
+     * @return array<int, class-string>
+     */
+    public static function getRelations(): array
+    {
+        return [
+            HoldersRelationManager::class,
+        ];
     }
 
     /**

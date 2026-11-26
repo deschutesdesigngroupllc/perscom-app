@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Mcp\Tools\Concerns;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use JsonException;
 use Laravel\Mcp\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
+
+use function sprintf;
 
 trait RespondsWithApiResults
 {
@@ -18,8 +22,12 @@ trait RespondsWithApiResults
     {
         $status = $response->getStatusCode();
 
-        /** @var array<string, mixed>|null $payload */
-        $payload = json_decode((string) $response->getContent(), true);
+        try {
+            /** @var array<string, mixed>|null $payload */
+            $payload = json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            $payload = null;
+        }
 
         if ($status >= 200 && $status < 300) {
             return Response::json($payload ?? []);
@@ -32,9 +40,18 @@ trait RespondsWithApiResults
                 ? sprintf('You do not have permission to view this. The connection needs the "%s" scope and your account must be allowed to access it.', $scope)
                 : 'You do not have permission to view this.',
             HttpResponse::HTTP_NOT_FOUND => 'The requested record could not be found.',
-            HttpResponse::HTTP_UNPROCESSABLE_ENTITY => trim('The request was invalid. '.collect(Arr::flatten((array) data_get($payload, 'error.errors', [])))->join(' ')),
+            HttpResponse::HTTP_UNPROCESSABLE_ENTITY => Str::trim(
+                'The request was invalid. '
+                    .collect(Arr::flatten((array) data_get($payload, 'error.errors', [])))->join(' '),
+            ),
             HttpResponse::HTTP_TOO_MANY_REQUESTS => 'Too many requests were made. Wait a minute before trying again.',
-            default => trim(sprintf('PERSCOM returned an unexpected error (HTTP %d). %s', $status, data_get($payload, 'error.message', ''))),
+            default => Str::trim(
+                sprintf(
+                    'PERSCOM returned an unexpected error (HTTP %d). %s',
+                    $status,
+                    data_get($payload, 'error.message', ''),
+                ),
+            ),
         });
     }
 }

@@ -15,6 +15,10 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Ai\Responses\StructuredAgentResponse;
 
+use function in_array;
+use function is_array;
+use function sprintf;
+
 class OrganizationBlueprintService
 {
     /**
@@ -41,7 +45,7 @@ class OrganizationBlueprintService
     {
         AiUsageService::ensureWithinLimit();
 
-        $prompt = "Design the complete organizational structure for the following organization:\n\n".trim($description);
+        $prompt = "Design the complete organizational structure for the following organization:\n\n".Str::trim($description);
 
         if (filled($preset)) {
             $prompt .= sprintf(
@@ -67,7 +71,7 @@ class OrganizationBlueprintService
         return static::prompt(sprintf(
             "Here is the current organization blueprint as JSON:\n\n%s\n\nApply the following change and return the complete updated blueprint, keeping everything that was not asked to change:\n\n%s",
             $current->toJson(),
-            trim($instruction),
+            Str::trim($instruction),
         ));
     }
 
@@ -86,7 +90,7 @@ class OrganizationBlueprintService
         $blueprint = static::prompt(sprintf(
             "The organization already has the following structure. Never repeat any of these names:\n\n%s\n\nPropose only the new entities needed for this request. Units may be placed in an existing group by using that group's exact name:\n\n%s",
             static::summarize($existing),
-            trim($instruction),
+            Str::trim($instruction),
         ));
 
         return static::withoutExisting($blueprint, $existing);
@@ -200,6 +204,8 @@ class OrganizationBlueprintService
     }
 
     /**
+     * Prompt the agent for an organization blueprint.
+     *
      * @throws ValidationException
      */
     protected static function prompt(string $prompt): OrganizationBlueprintData

@@ -55,8 +55,8 @@ class DocumentTest extends ApiResourceTestCase
     {
         return [
             'author_id' => User::factory()->createQuietly()->getKey(),
-            'name' => $this->faker->word,
-            'content' => $this->faker->paragraph,
+            'name' => $this->faker->word(),
+            'content' => $this->faker->paragraph(),
         ];
     }
 
@@ -66,7 +66,7 @@ class DocumentTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'content' => $this->faker->paragraph,
+            'content' => $this->faker->paragraph(),
         ];
     }
 }

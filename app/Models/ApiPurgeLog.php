@@ -68,6 +68,8 @@ class ApiPurgeLog extends Activity
     use HasJsonRelationships;
 
     /**
+     * Get the API request that triggered the purge.
+     *
      * @return BelongsToJson<ApiLog, $this>
      */
     public function apiLog(): BelongsToJson
@@ -76,6 +78,8 @@ class ApiPurgeLog extends Activity
     }
 
     /**
+     * Get the purge status as a headline.
+     *
      * @return Attribute<string, never>
      */
     protected function status(): Attribute
@@ -86,6 +90,8 @@ class ApiPurgeLog extends Activity
     }
 
     /**
+     * Get the cache tags that were purged.
+     *
      * @return Attribute<array, never>
      */
     protected function tags(): Attribute
@@ -96,6 +102,8 @@ class ApiPurgeLog extends Activity
     }
 
     /**
+     * Get the ID of the request that triggered the purge.
+     *
      * @return Attribute<?string, never>
      */
     protected function requestId(): Attribute
@@ -106,6 +114,8 @@ class ApiPurgeLog extends Activity
     }
 
     /**
+     * Get the trace ID of the request that triggered the purge.
+     *
      * @return Attribute<?string, never>
      */
     protected function traceId(): Attribute

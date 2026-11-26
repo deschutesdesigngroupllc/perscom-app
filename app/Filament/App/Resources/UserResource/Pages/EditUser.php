@@ -5,41 +5,48 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Pages;
 
 use App\Filament\Actions\ClaimInviteAction;
+use App\Filament\Actions\DeleteMemberAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\FieldsRelationManager;
 use App\Filament\App\Resources\UserResource\RelationManagers\RolesRelationManager;
 use Filament\Actions\Action;
-use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Stringable;
 
 class EditUser extends EditRecord
 {
+    protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
+
     protected static string $resource = UserResource::class;
 
-    public function getRelationManagers(): array
+    public function getSubheading(): string|Htmlable|null
+    {
+        return new Stringable()
+            /** @phpstan-ignore-next-line property.notFound */
+            ->when($this->getRecord()->rank, fn (Stringable $str): Stringable => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
+            /** @phpstan-ignore-next-line property.notFound */
+            ->when($this->getRecord()->position, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->position->name))
+            /** @phpstan-ignore-next-line property.notFound */
+            ->when($this->getRecord()->unit, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->unit->name))
+            ->wrap('<div class="fi-header-subheading">', '</div>')
+            ->toHtmlString();
+    }
+
+    /**
+     * @return array<int, class-string<RelationManager>>
+     */
+    protected function getAllRelationManagers(): array
     {
         return [
             AttachmentsRelationManager::class,
             FieldsRelationManager::class,
             RolesRelationManager::class,
         ];
-    }
-
-    public function getSubheading(): string|Htmlable|null
-    {
-        return new Stringable()
-            /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
-            /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
-            /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
-            ->wrap('<div class="fi-header-subheading">', '</div>')
-            ->toHtmlString();
     }
 
     /**
@@ -51,7 +58,7 @@ class EditUser extends EditRecord
             ClaimInviteAction::make()
                 ->color('gray'),
             ViewAction::make(),
-            DeleteAction::make(),
+            DeleteMemberAction::make(),
         ];
     }
 }

@@ -25,9 +25,14 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
+
+use function in_array;
+use function is_array;
+use function is_string;
 
 class NewModelNotification extends Notification implements ShouldQueue
 {
@@ -121,7 +126,7 @@ class NewModelNotification extends Notification implements ShouldQueue
             ->title($this->subject)
             ->description($message)
             ->url($this->getModelUrl())
-            ->color(is_string($color) && str_starts_with($color, '#') ? $color : '#64748b')
+            ->color(is_string($color) && Str::startsWith($color, '#') ? $color : '#64748b')
             ->timestamp(now());
 
         return DiscordMessage::create(body: '', embed: $embed->toArray());

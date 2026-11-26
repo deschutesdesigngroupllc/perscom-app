@@ -10,6 +10,8 @@ use App\Models\Enums\CopilotOperationType;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Stringable;
 
+use function sprintf;
+
 class ProposeAwardRecords extends ProposalTool
 {
     public function description(): Stringable|string

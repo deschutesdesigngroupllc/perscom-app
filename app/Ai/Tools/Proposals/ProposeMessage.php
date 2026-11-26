@@ -12,6 +12,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Stringable;
 
+use function sprintf;
+
 class ProposeMessage extends ProposalTool
 {
     /**

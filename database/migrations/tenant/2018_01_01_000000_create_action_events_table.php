@@ -17,7 +17,7 @@ class CreateActionEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('action_events', function (Blueprint $table) {
+        Schema::create('action_events', function (Blueprint $table): void {
             $table->id();
             $table->char('batch_id', 36);
             $table->foreignIdFor(User::class, 'user_id')->index();

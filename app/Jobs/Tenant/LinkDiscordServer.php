@@ -14,11 +14,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 
-/**
- * Records the Discord server organizations picked before servers were linked through the install
- * flow, so slash commands work without reconnecting. A server already claimed by another
- * organization is left for that organization.
- */
 class LinkDiscordServer implements RequiresTenancy, RunsPerTenant, ShouldQueue
 {
     use Batchable;

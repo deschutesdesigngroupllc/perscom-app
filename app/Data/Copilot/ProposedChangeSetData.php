@@ -30,6 +30,8 @@ class ProposedChangeSetData extends Data
     }
 
     /**
+     * Get the summary of each proposed operation.
+     *
      * @return array<int, string>
      */
     public function summaries(): array

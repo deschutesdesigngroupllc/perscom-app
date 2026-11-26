@@ -10,6 +10,7 @@ use App\Models\RankRecord;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Database\Eloquent\Builder;
+use JsonException;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
@@ -46,21 +47,60 @@ class SearchMembers implements Tool
             ->with(static::RELATIONS)
             ->select('users.*')
             ->selectSub($lastRankRecordAt, 'last_rank_record_at')
-            ->when($filters->get('name'), fn (Builder $query, string $name) => $query->where('name', 'like', '%'.$name.'%'))
-            ->when($filters->get('unit_id'), fn (Builder $query, int $id) => $query->where('unit_id', $id))
-            ->when($filters->get('rank_id'), fn (Builder $query, int $id) => $query->where('rank_id', $id))
-            ->when($filters->get('position_id'), fn (Builder $query, int $id) => $query->where('position_id', $id))
-            ->when($filters->get('specialty_id'), fn (Builder $query, int $id) => $query->where('specialty_id', $id))
-            ->when($filters->get('status_id'), fn (Builder $query, int $id) => $query->where('status_id', $id))
-            ->when($filters->get('min_days_in_grade'), fn (Builder $query, int $days) => $query->where(clone $lastRankRecordAt, '<=', now()->subDays($days)))
-            ->when($filters->get('max_days_in_grade'), fn (Builder $query, int $days) => $query->where(clone $lastRankRecordAt, '>=', now()->subDays($days)))
-            ->when($filters->get('has_qualification_id'), fn (Builder $query, int $id) => $query->whereHas('qualification_records', fn (Builder $query) => $query->where('qualification_id', $id)))
-            ->when($filters->get('missing_qualification_id'), fn (Builder $query, int $id) => $query->whereDoesntHave('qualification_records', fn (Builder $query) => $query->where('qualification_id', $id)))
-            ->when($filters->get('last_seen_before'), fn (Builder $query, string $date) => $query->where(fn (Builder $query) => $query->whereNull('last_seen_at')->orWhere('last_seen_at', '<', $date)))
-            ->when($filters->get('last_seen_after'), fn (Builder $query, string $date) => $query->where('last_seen_at', '>', $date))
-            ->when($filters->has('min_events_attended'), fn (Builder $query) => $query->whereHas(
+            ->when(
+                $filters->get('name'),
+                fn (Builder $query, string $name): Builder => $query->where('name', 'like', '%'.$name.'%'),
+            )
+            ->when($filters->get('unit_id'), fn (Builder $query, int $id): Builder => $query->where('unit_id', $id))
+            ->when($filters->get('rank_id'), fn (Builder $query, int $id): Builder => $query->where('rank_id', $id))
+            ->when(
+                $filters->get('position_id'),
+                fn (Builder $query, int $id): Builder => $query->where('position_id', $id),
+            )
+            ->when(
+                $filters->get('specialty_id'),
+                fn (Builder $query, int $id): Builder => $query->where('specialty_id', $id),
+            )
+            ->when($filters->get('status_id'), fn (Builder $query, int $id): Builder => $query->where('status_id', $id))
+            ->when(
+                $filters->get('min_days_in_grade'),
+                fn (Builder $query, int $days): Builder => $query
+                    ->where(clone $lastRankRecordAt, '<=', now()->subDays($days)),
+            )
+            ->when(
+                $filters->get('max_days_in_grade'),
+                fn (Builder $query, int $days): Builder => $query
+                    ->where(clone $lastRankRecordAt, '>=', now()->subDays($days)),
+            )
+            ->when(
+                $filters->get('has_qualification_id'),
+                fn (Builder $query, int $id): Builder => $query->whereHas(
+                    'qualification_records',
+                    fn (Builder $query): Builder => $query->where('qualification_id', $id),
+                ),
+            )
+            ->when(
+                $filters->get('missing_qualification_id'),
+                fn (Builder $query, int $id): Builder => $query->whereDoesntHave(
+                    'qualification_records',
+                    fn (Builder $query): Builder => $query->where('qualification_id', $id),
+                ),
+            )
+            ->when(
+                $filters->get('last_seen_before'),
+                fn (Builder $query, string $date): Builder => $query->where(
+                    fn (Builder $query): Builder => $query
+                        ->whereNull('last_seen_at')
+                        ->orWhere('last_seen_at', '<', $date),
+                ),
+            )
+            ->when(
+                $filters->get('last_seen_after'),
+                fn (Builder $query, string $date): Builder => $query->where('last_seen_at', '>', $date),
+            )
+            ->when($filters->has('min_events_attended'), fn (Builder $query): Builder => $query->whereHas(
                 'eventRegistrations',
-                fn (Builder $query) => $query
+                fn (Builder $query): Builder => $query
                     ->where('status', EventRegistrationStatus::ATTENDED->value)
                     ->whereRaw('COALESCE(checked_in_at, updated_at) >= ?', [now()->subDays((int) $filters->get('attended_within_days', 30))]),
                 '>=',
@@ -74,6 +114,11 @@ class SearchMembers implements Tool
         return "Search the organization's members. All filters are optional and combined with AND. Returns at most ".static::LIMIT.' members with their id, rank, unit, position, status, days in grade and when they were last seen.';
     }
 
+    /**
+     * Return the members matching the request's filters as JSON.
+     *
+     * @throws JsonException when the members cannot be encoded
+     */
     public function handle(Request $request): Stringable|string
     {
         if (! $this->actor->can('viewAny', User::class)) {
@@ -85,10 +130,10 @@ class SearchMembers implements Tool
             ->get()
             ->map(fn (User $user): array => $this->describeMember($user));
 
-        return (string) json_encode([
+        return json_encode([
             'count' => $members->count(),
             'members' => $members->all(),
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 
     /**

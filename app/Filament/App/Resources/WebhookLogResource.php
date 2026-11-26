@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\WebhookLogResource\Pages\ListWebhookLogs;
 use App\Filament\App\Resources\WebhookLogResource\Pages\ViewWebhookLog;
 use App\Models\Enums\WebhookEvent;
@@ -21,6 +22,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -30,20 +32,25 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
+
+use function sprintf;
 
 class WebhookLogResource extends BaseResource
 {
     protected static ?string $model = WebhookLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected static ?string $navigationParentItem = 'Webhooks';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
+    protected static ?string $cluster = Integrations::class;
 
-    protected static ?int $navigationSort = 9;
+    protected static string|UnitEnum|null $navigationGroup = 'Developers';
+
+    protected static ?int $navigationSort = 15;
 
     protected static ?string $navigationLabel = 'Logs';
 
@@ -52,7 +59,7 @@ class WebhookLogResource extends BaseResource
         return $table
             ->emptyStateActions([
                 Action::make('new')
-                    ->label('New webhook')
+                    ->label('New Webhook')
                     ->url(WebhookResource::getUrl('create')),
             ])
             ->emptyStateDescription('There are no webhook logs to view. Create your first webhook to start sending real-time notifications.')
@@ -67,9 +74,9 @@ class WebhookLogResource extends BaseResource
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (WebhookLog $record) => $record->resource_url),
+                    ->url(fn (WebhookLog $record): ?string => $record->resource_url),
                 TextColumn::make('description')
                     ->placeholder('No Description')
                     ->label('Webhook')
@@ -86,6 +93,7 @@ class WebhookLogResource extends BaseResource
                     ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                     ->color(fn ($state): string => match (true) {
                         (int) $state >= 200 && (int) $state < 300 => 'success',
+                        (int) $state >= 100 && (int) $state < 400 => 'warning',
                         default => 'danger'
                     }),
                 TextColumn::make('created_at')
@@ -104,17 +112,17 @@ class WebhookLogResource extends BaseResource
                         ->when(
                             filled(data_get($data, 'values')),
                             function (Builder $query) use ($data): void {
-                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->payload->event', $event)));
+                                $query->where(fn (Builder $query): Collection => collect(data_get($data, 'values'))->each(fn (string $event): Builder => $query->orWhereJsonContains('properties->payload->event', $event)));
                             },
                         )),
                 QueryBuilder::make()
                     ->constraints([
                         Constraint::make('request_id')
                             ->label('Request ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -136,10 +144,10 @@ class WebhookLogResource extends BaseResource
                             ]),
                         Constraint::make('trace_id')
                             ->label('Trace ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -183,7 +191,7 @@ class WebhookLogResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Webhook')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->schema([
                                 TextEntry::make('request_id')
                                     ->copyable()
@@ -197,6 +205,7 @@ class WebhookLogResource extends BaseResource
                                     ->formatStateUsing(fn (WebhookLog $record, string $state): string => sprintf('%s %s', $state, $record->reason_phrase))
                                     ->color(fn ($state): string => match (true) {
                                         (int) $state >= 200 && (int) $state < 300 => 'success',
+                                        (int) $state >= 100 && (int) $state < 400 => 'warning',
                                         default => 'danger'
                                     }),
                                 TextEntry::make('created_at')
@@ -206,9 +215,9 @@ class WebhookLogResource extends BaseResource
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
-                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (WebhookLog $record) => $record->resource_url),
+                                    ->url(fn (WebhookLog $record): ?string => $record->resource_url),
                                 TextEntry::make('description')
                                     ->label('Webhook')
                                     ->badge()
@@ -218,7 +227,7 @@ class WebhookLogResource extends BaseResource
                                     ->color('gray'),
                             ]),
                         Tab::make('Payload')
-                            ->icon('heroicon-o-code-bracket')
+                            ->icon(Heroicon::OutlinedCodeBracket)
                             ->schema([
                                 CodeEntry::make('payload')
                                     ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))

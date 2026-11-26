@@ -25,7 +25,7 @@ class MessageFactory extends Factory
 
     public function withSchedule(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'repeats' => true,
             ];

@@ -7,13 +7,14 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\App\Resources\FieldResource;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
 class FieldsRelationManager extends RelationManager
 {
     protected static string $relationship = 'fields';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-pencil';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedPencil;
 
     public function table(Table $table): Table
     {

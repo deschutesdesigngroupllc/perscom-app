@@ -23,6 +23,9 @@ use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+use function sprintf;
+
 class RosterTest extends TenantTestCase
 {
     protected Group $group;
@@ -53,6 +56,46 @@ class RosterTest extends TenantTestCase
         Livewire::test(Roster::class)
             ->assertOk()
             ->assertSeeInOrder(['Alpha Company', 'Company Commander', 'First Platoon', 'Platoon Leader']);
+    }
+
+    public function test_member_counts_include_sub_units_and_empty_units_stay_quiet(): void
+    {
+        User::factory()->count(2)->createQuietly(['unit_id' => $this->platoon->getKey()]);
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertSeeInOrder(['Alpha Company', '2 members', 'First Platoon'])
+            ->assertDontSee('No personnel assigned');
+    }
+
+    public function test_the_list_prints_as_a_table_with_one_block_per_unit(): void
+    {
+        User::factory()->createQuietly(['name' => 'Platoon Leader', 'unit_id' => $this->platoon->getKey()]);
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertSeeHtml('roster-print-table')
+            ->assertSeeInOrder(['Rank', 'Name', 'Position', 'Specialty', 'Status', 'Alpha Company', 'No members assigned', 'First Platoon', '1 member', 'Platoon Leader']);
+    }
+
+    public function test_the_print_table_drops_columns_hidden_in_settings(): void
+    {
+        DashboardSettings::fake(['user_hidden_fields' => ['specialty_id']]);
+        SettingsService::flush(DashboardSettings::class);
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertDontSeeHtml('roster-print-col-specialty')
+            ->assertSeeHtml('roster-print-col-status');
+    }
+
+    public function test_an_empty_unit_says_it_has_no_members(): void
+    {
+        $this->group->units()->detach($this->platoon->getKey());
+
+        Livewire::test(Roster::class)
+            ->assertOk()
+            ->assertSee('No members assigned to this unit.');
     }
 
     public function test_search_only_shows_matching_members(): void

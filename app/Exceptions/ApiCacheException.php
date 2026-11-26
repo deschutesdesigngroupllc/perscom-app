@@ -15,7 +15,7 @@ class ApiCacheException extends Exception
 
     public function context(): array
     {
-        if (is_null($this->body)) {
+        if ($this->body === null) {
             return [];
         }
 

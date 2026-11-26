@@ -6,6 +6,8 @@ namespace App\Exceptions;
 
 use Exception;
 
+use function sprintf;
+
 class IntegrationConnectionException extends Exception
 {
     public static function discordServerAlreadyConnected(): self

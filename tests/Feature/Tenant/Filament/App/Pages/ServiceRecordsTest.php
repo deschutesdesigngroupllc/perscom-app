@@ -1,0 +1,103 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Tenant\Filament\App\Pages;
+
+use App\Filament\App\Clusters\Integrations;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
+use App\Filament\App\Clusters\Integrations\Pages\ConnectedServices;
+use App\Filament\App\Pages\PromotionBoard;
+use App\Filament\App\Pages\Readiness;
+use App\Filament\App\Pages\ServiceRecords;
+use App\Filament\App\Pages\Widgets;
+use App\Filament\App\Resources\ApiLogResource;
+use App\Filament\App\Resources\AwardRecordResource;
+use App\Filament\App\Resources\PassportClientResource;
+use App\Filament\App\Resources\PassportTokenResource;
+use App\Filament\App\Resources\RankRecordResource;
+use App\Filament\App\Resources\SubmissionResource;
+use App\Filament\App\Resources\WebhookLogResource;
+use App\Filament\App\Resources\WebhookResource;
+use App\Models\AwardRecord;
+use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Facades\Filament;
+use Livewire\Livewire;
+use Tests\Feature\Tenant\TenantTestCase;
+
+use function count;
+
+class ServiceRecordsTest extends TenantTestCase
+{
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Filament::setCurrentPanel('app');
+
+        $admin = User::factory()->createQuietly();
+        $admin->assignRole(Utils::getSuperAdminName());
+        $this->actingAs($admin);
+    }
+
+    public function test_it_summarizes_each_record_type_with_links(): void
+    {
+        AwardRecord::factory()->count(2)->createQuietly(['created_at' => now()->subDays(3)]);
+
+        $types = collect((new ServiceRecords)->getRecordTypes())->keyBy('label');
+
+        $this->assertCount(count(ServiceRecords::RECORD_RESOURCES), $types);
+        $this->assertGreaterThanOrEqual(2, $types[AwardRecordResource::getTitleCasePluralModelLabel()]['recent']);
+
+        Livewire::test(ServiceRecords::class)
+            ->assertSee(AwardRecordResource::getTitleCasePluralModelLabel())
+            ->assertSee(AwardRecordResource::getUrl('index'));
+    }
+
+    public function test_detail_pages_nest_under_their_parents_in_the_sidebar(): void
+    {
+        $this->assertSame('Records', RankRecordResource::getNavigationParentItem());
+        $this->assertSame('Forms', SubmissionResource::getNavigationParentItem());
+        $this->assertSame('Members', PromotionBoard::getNavigationParentItem());
+        $this->assertSame('Members', Readiness::getNavigationParentItem());
+    }
+
+    public function test_integrations_live_in_one_cluster(): void
+    {
+        foreach ([ConnectedServices::class, ConnectAiTools::class] as $page) {
+            $this->assertSame(Integrations::class, $page::getCluster(), $page);
+            $this->assertSame('Services', $page::getNavigationGroup(), $page);
+        }
+
+        foreach ([PassportTokenResource::class, ApiLogResource::class, PassportClientResource::class, WebhookResource::class, WebhookLogResource::class, Widgets::class] as $component) {
+            $this->assertSame(Integrations::class, $component::getCluster(), $component);
+            $this->assertSame('Developers', $component::getNavigationGroup(), $component);
+        }
+
+        $this->assertNull(PassportClientResource::getNavigationParentItem());
+        $this->assertSame('API Keys', ApiLogResource::getNavigationParentItem());
+        $this->assertSame('Webhooks', WebhookLogResource::getNavigationParentItem());
+    }
+
+    public function test_it_is_reachable_at_its_own_url(): void
+    {
+        $this->get(ServiceRecords::getUrl())
+            ->assertOk()
+            ->assertSee('Records');
+    }
+
+    public function test_every_app_page_resolves_to_a_route(): void
+    {
+        collect(Filament::getPanel('app')->getPages())
+            ->reject(fn (string $page): bool => str_contains($page::getSlug(), '{'))
+            ->each(fn (string $page) => $this->assertNotEmpty($page::getUrl(), "{$page} has no route."));
+    }
+
+    public function test_members_without_record_access_cannot_open_it(): void
+    {
+        $this->actingAs(User::factory()->withoutRoles()->createQuietly());
+
+        $this->assertFalse(ServiceRecords::canAccess());
+    }
+}

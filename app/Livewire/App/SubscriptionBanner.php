@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
+use function sprintf;
+
 class SubscriptionBanner extends Component
 {
     public ?string $message = null;
@@ -32,7 +34,7 @@ class SubscriptionBanner extends Component
 
         $this->returnUrl = url()->current();
 
-        $timezone = UserSettingsService::get('timezone', function () {
+        $timezone = UserSettingsService::get('timezone', function (): string {
             /** @var OrganizationSettings $settings */
             $settings = resolve(OrganizationSettings::class);
 

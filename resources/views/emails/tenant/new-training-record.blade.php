@@ -1,7 +1,7 @@
 @component('mail::message')
-# Hello,
+# Training Recorded
 
-{{ __('A new training record has been added to your personnel file.') }}
+A training record was added to your profile.
 
 @if ($event)
   **Event**: {{ $event }}<br>
@@ -21,6 +21,5 @@
   View Record
 @endcomponent
 
-{{ __('Thanks,') }}<br>
-{{ config('app.name') }}
+@include('emails.partials.sign-off')
 @endcomponent

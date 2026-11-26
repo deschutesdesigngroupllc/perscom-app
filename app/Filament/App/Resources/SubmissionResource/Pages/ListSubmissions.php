@@ -11,6 +11,7 @@ use App\Models\Submission;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListSubmissions extends ListRecords
@@ -34,24 +35,24 @@ class ListSubmissions extends ListRecords
         $views = [
             PresetView::make('read')
                 ->label('Read')
-                ->modifyQueryUsing(fn (Submission|Builder $query) => $query->read())
+                ->modifyQueryUsing(fn (Submission|Builder $query): Builder => $query->read())
                 ->favorite()
-                ->icon('heroicon-o-envelope'),
+                ->icon(Heroicon::OutlinedEnvelope),
             PresetView::make('unread')
                 ->default()
                 ->label('Unread')
-                ->modifyQueryUsing(fn (Submission|Builder $query) => $query->unread())
+                ->modifyQueryUsing(fn (Submission|Builder $query): Builder => $query->unread())
                 ->badge(fn (): ?string => $count > 0 ? (string) $count : null)
                 ->favorite()
-                ->icon('heroicon-o-envelope-open'),
+                ->icon(Heroicon::OutlinedEnvelopeOpen),
         ];
 
         return array_merge($views, Form::all()->mapWithKeys(fn (Form $form): array => [
             $form->id => PresetView::make()
                 ->label($form->name)
-                ->modifyQueryUsing(fn (Submission|Builder $query) => $query->whereBelongsTo($form))
+                ->modifyQueryUsing(fn (Submission|Builder $query): Builder => $query->whereBelongsTo($form))
                 ->favorite()
-                ->icon('heroicon-o-pencil-square'),
+                ->icon(Heroicon::OutlinedPencilSquare),
         ])->toArray());
     }
 

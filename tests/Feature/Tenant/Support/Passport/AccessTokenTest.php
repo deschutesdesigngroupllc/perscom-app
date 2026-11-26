@@ -11,6 +11,8 @@ use Lcobucci\JWT\Token\Plain;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function in_array;
+
 class AccessTokenTest extends TenantTestCase
 {
     public function test_it_errors_on_incorrect_claims(): void
@@ -19,8 +21,8 @@ class AccessTokenTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $user->createToken($this->faker->word, [
-            $this->faker->word,
+        $user->createToken($this->faker->word(), [
+            $this->faker->word(),
         ]);
     }
 
@@ -28,7 +30,7 @@ class AccessTokenTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $result = $user->createToken($this->faker->word, [
+        $result = $user->createToken($this->faker->word(), [
             'view:user',
             'create:user',
         ]);
@@ -47,7 +49,7 @@ class AccessTokenTest extends TenantTestCase
         $this->assertSame($user->email, data_get($claims, 'preferred_username'));
         $this->assertSame($user->url, data_get($claims, 'profile'));
         $this->assertSame($user->email, data_get($claims, 'email'));
-        $this->assertSame(! is_null($user->email_verified_at), data_get($claims, 'email_verified'));
+        $this->assertSame($user->email_verified_at !== null, data_get($claims, 'email_verified'));
         $this->assertSame($user->profile_photo_url, data_get($claims, 'picture'));
         $this->assertSame((string) $this->tenant->getKey(), data_get($claims, 'tenant'));
         $this->assertSame(config('app.locale'), data_get($claims, 'locale'));

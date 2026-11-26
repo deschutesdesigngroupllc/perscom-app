@@ -54,7 +54,7 @@ class SlotTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test Slot',
-            'description' => $this->faker->sentence,
+            'description' => $this->faker->sentence(),
         ];
     }
 
@@ -64,7 +64,7 @@ class SlotTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 }

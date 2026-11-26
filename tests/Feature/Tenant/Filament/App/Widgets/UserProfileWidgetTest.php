@@ -17,6 +17,8 @@ use App\Settings\DashboardSettings;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class UserProfileWidgetTest extends TenantTestCase
 {
     public function test_it_shows_the_members_service_summary(): void
@@ -84,6 +86,7 @@ class UserProfileWidgetTest extends TenantTestCase
         $this->hideProfileRecords(['assignment_records', 'combat_records']);
 
         $user = User::factory()->createQuietly();
+        $user->givePermissionTo(['view_any_award_record', 'view_any_rank_record', 'view_any_assignment_record']);
         $this->actingAs($user);
 
         Livewire::test(UserProfileWidget::class)
@@ -91,6 +94,18 @@ class UserProfileWidgetTest extends TenantTestCase
             ->assertSee(sprintf('users/%d?relation=0', $user->getKey()), false)
             ->assertSee('View Rank Records')
             ->assertSee(sprintf('users/%d?relation=2', $user->getKey()), false)
+            ->assertDontSee('View Assignment Records');
+    }
+
+    public function test_record_links_are_hidden_from_members_who_cannot_open_those_tabs(): void
+    {
+        $user = User::factory()->createQuietly();
+        $user->givePermissionTo('view_any_rank_record');
+        $this->actingAs($user);
+
+        Livewire::test(UserProfileWidget::class)
+            ->assertSee('View Rank Records')
+            ->assertDontSee('View Award Records')
             ->assertDontSee('View Assignment Records');
     }
 

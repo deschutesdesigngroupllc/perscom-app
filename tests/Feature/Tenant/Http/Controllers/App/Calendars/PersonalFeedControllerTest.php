@@ -46,7 +46,7 @@ class PersonalFeedControllerTest extends TenantTestCase
 
     public function test_members_who_cannot_view_events_are_refused(): void
     {
-        $user = User::factory()->createQuietly();
+        $user = User::factory()->createQuietly()->syncRoles([]);
 
         $this->get(CalendarFeedService::personalFeedUrl($user))
             ->assertForbidden();

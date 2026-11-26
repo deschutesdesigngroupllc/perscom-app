@@ -2,7 +2,7 @@
 
 @php
   $starts = $occurrence->localStarts();
-  $color = $occurrence->event->calendar?->color ?: '#2563eb';
+  $color = $occurrence->event->calendar?->color ?: \App\Support\Brand::PRIMARY_HEX;
 @endphp
 
 <div

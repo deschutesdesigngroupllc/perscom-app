@@ -20,6 +20,7 @@ use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -88,7 +89,7 @@ class AcceptInvite extends SimplePage
 
         Filament::auth()->login($user);
 
-        session()->regenerate();
+        Session::regenerate();
 
         $this->redirect(Filament::getUrl());
     }

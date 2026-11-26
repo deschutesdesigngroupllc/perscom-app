@@ -23,6 +23,8 @@ class MailObserver
      */
     public function updated(Mail $mail): void
     {
-        DispatchTenantMassEmails::handle($mail);
+        if ($mail->wasChanged(['send_now', 'send_at'])) {
+            DispatchTenantMassEmails::handle($mail);
+        }
     }
 }

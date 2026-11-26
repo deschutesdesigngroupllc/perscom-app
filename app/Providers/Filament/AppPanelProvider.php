@@ -14,8 +14,9 @@ use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
-use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
+use App\Filament\App\Widgets\LaunchPlanWidget;
+use App\Filament\App\Widgets\NeedsAttentionWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Filament\App\Widgets\RecentRecordsWidget;
 use App\Filament\App\Widgets\UpcomingEventsWidget;
@@ -30,6 +31,8 @@ use App\Http\Middleware\PreventAccessFromCentralDomains;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\SocialiteUser;
+use App\Settings\RegistrationSettings;
+use App\Support\Brand;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
@@ -41,17 +44,19 @@ use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
@@ -69,6 +74,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('app')
+            ->darkMode(isForced: true)
             ->login(Login::class)
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->registration(Register::class))
             ->unless($isDemo, fn (Panel $panel): Panel => $panel->passwordReset(RequestPasswordReset::class))
@@ -84,9 +90,9 @@ class AppPanelProvider extends PanelProvider
                 ], isRequired: true)
                 ->multiFactorAuthenticationRequiredMiddlewareName(EnsureMultiFactorAuthenticationIsRequired::class))
             ->renderHook(PanelsRenderHook::USER_MENU_BEFORE, fn (): Factory|View => view('filament.render-hooks.user-menu-before.copilot'))
-            ->colors([
-                'primary' => Color::Blue,
-            ])
+            ->colors(Brand::colors())
+            ->favicon(fn (): string => asset('favicon.svg'))
+            ->sidebarWidth('17rem')
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -97,9 +103,10 @@ class AppPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->discoverClusters(in: app_path('Filament/App/Clusters'), for: 'App\\Filament\\App\\Clusters')
             ->widgets([
+                LaunchPlanWidget::class,
+                NeedsAttentionWidget::class,
                 ConnectAiAgentWidget::class,
                 OrganizationInfoWidget::class,
-                AccountWidget::class,
                 UserProfileWidget::class,
                 UpcomingEventsWidget::class,
                 RecentRecordsWidget::class,
@@ -143,29 +150,25 @@ class AppPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
                     ->navigationSort(22)
-                    ->navigationIcon('heroicon-o-shield-check')
-                    ->activeNavigationIcon('heroicon-o-shield-check'),
+                    ->navigationIcon(Heroicon::OutlinedShieldCheck)
+                    ->activeNavigationIcon(Heroicon::OutlinedShieldCheck),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
-                    ->registration()
+                    ->registration(fn (): bool => RegistrationSettings::isOpen())
                     ->slug('app')
-                    ->providers($isDemo ? [] : [
-                        Provider::make('google')
-                            ->label('Google')
-                            ->icon('fab-google')
+                    ->providers($isDemo ? [] : collect([
+                        'google' => ['Google', 'fab-google'],
+                        'discord' => ['Discord', 'fab-discord'],
+                        'github' => ['GitHub', 'fab-github'],
+                    ])
+                        ->filter(fn (array $provider, string $name): bool => filled(config("services.{$name}.client_id")) && filled(config("services.{$name}.client_secret")))
+                        ->map(fn (array $provider, string $name): Provider => Provider::make($name)
+                            ->label($provider[0])
+                            ->icon($provider[1])
                             ->stateless()
-                            ->outlined(false),
-                        Provider::make('discord')
-                            ->label('Discord')
-                            ->icon('fab-discord')
-                            ->stateless()
-                            ->outlined(false),
-                        Provider::make('github')
-                            ->label('GitHub')
-                            ->icon('fab-github')
-                            ->stateless()
-                            ->outlined(false),
-                    ]),
+                            ->outlined(false))
+                        ->values()
+                        ->all()),
             ])
             ->when(class_exists(AdvancedTablesPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
                 AdvancedTablesPlugin::make()
@@ -176,30 +179,37 @@ class AppPanelProvider extends PanelProvider
             ))
             ->when(class_exists(DataLensPlugin::class), fn (Panel $panel): Panel => $panel->plugin(
                 DataLensPlugin::make()
-                    ->navigationGroup('Reporting')
+                    ->navigationGroup('Admin')
                     ->navigationLabel('Custom Reports')
-                    ->navigationSort(10)
+                    ->navigationSort(13)
             ))
             ->databaseNotifications()
+            ->navigationGroups([
+                NavigationGroup::make('People'),
+                NavigationGroup::make('Records'),
+                NavigationGroup::make('Communications'),
+                NavigationGroup::make('Structure')->collapsed(),
+                NavigationGroup::make('Admin')->collapsed(),
+            ])
             ->sidebarCollapsibleOnDesktop()
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->action(fn () => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
+                    ->action(fn (): ?RedirectResponse => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
-                    ->icon('heroicon-o-currency-dollar'),
+                    ->icon(Heroicon::OutlinedCurrencyDollar),
                 Action::make('docs')
                     ->label('Documentation')
                     ->url('https://docs.perscom.io', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-book-open'),
+                    ->icon(Heroicon::OutlinedBookOpen),
                 Action::make('support')
                     ->label('Support')
                     ->url('https://perscom.io/slack', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-question-mark-circle'),
+                    ->icon(Heroicon::OutlinedQuestionMarkCircle),
                 Action::make('status')
                     ->label('System Status')
                     ->url('https://status.perscom.io', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-command-line'),
+                    ->icon(Heroicon::OutlinedCommandLine),
             ]);
     }
 }

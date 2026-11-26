@@ -13,111 +13,111 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('calendars', function (Blueprint $table) {
+        Schema::table('calendars', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('events', function (Blueprint $table) {
+        Schema::table('events', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('forms', function (Blueprint $table) {
+        Schema::table('forms', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('submissions', function (Blueprint $table) {
+        Schema::table('submissions', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('mail', function (Blueprint $table) {
+        Schema::table('mail', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('documents', function (Blueprint $table) {
+        Schema::table('documents', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('groups', function (Blueprint $table) {
+        Schema::table('groups', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('positions', function (Blueprint $table) {
+        Schema::table('positions', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('qualifications', function (Blueprint $table) {
+        Schema::table('qualifications', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('specialties', function (Blueprint $table) {
+        Schema::table('specialties', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('statuses', function (Blueprint $table) {
+        Schema::table('statuses', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('tasks', function (Blueprint $table) {
+        Schema::table('tasks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('units', function (Blueprint $table) {
+        Schema::table('units', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_awards', function (Blueprint $table) {
+        Schema::table('records_awards', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_combat', function (Blueprint $table) {
+        Schema::table('records_combat', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_qualifications', function (Blueprint $table) {
+        Schema::table('records_qualifications', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_ranks', function (Blueprint $table) {
+        Schema::table('records_ranks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('records_service', function (Blueprint $table) {
+        Schema::table('records_service', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('webhooks', function (Blueprint $table) {
+        Schema::table('webhooks', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('attachments', function (Blueprint $table) {
+        Schema::table('attachments', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->softDeletes();
         });
 
-        Schema::table('images', function (Blueprint $table) {
+        Schema::table('images', function (Blueprint $table): void {
             $table->softDeletes();
         });
     }
