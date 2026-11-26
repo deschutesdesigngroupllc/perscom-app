@@ -7,9 +7,6 @@ namespace App\Support;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
-/**
- * Write field, entry, column, and filter labels in Title Case.
- */
 class Label
 {
     /**

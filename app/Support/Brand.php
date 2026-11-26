@@ -6,11 +6,6 @@ namespace App\Support;
 
 use Filament\Support\Colors\Color;
 
-/**
- * The single source of PERSCOM's visual identity, matched to perscom.io: brand blue (Tailwind blue)
- * with a brass accent. Panels, widgets, public profiles, emails and bot messages read their colors
- * from here so the brand can change in one place.
- */
 class Brand
 {
     /**

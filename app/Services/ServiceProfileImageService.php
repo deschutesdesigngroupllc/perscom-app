@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 
-/**
- * Renders the 1200×630 share preview shown when a service profile link is posted to Discord,
- * Slack, Reddit or X. Only raster insignia and ribbons can be drawn; SVG artwork is skipped.
- */
 class ServiceProfileImageService
 {
     public const int WIDTH = 1200;

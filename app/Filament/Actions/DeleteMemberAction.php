@@ -9,10 +9,6 @@ use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Str;
 
-/**
- * Deleting a member also deletes every record in their service history, so the confirmation states
- * what will be lost, points to archiving instead, and requires typing the member's name.
- */
 class DeleteMemberAction extends DeleteAction
 {
     protected function setUp(): void

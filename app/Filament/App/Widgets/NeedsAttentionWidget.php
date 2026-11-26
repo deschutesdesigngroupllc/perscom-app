@@ -19,10 +19,6 @@ use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-/**
- * The admin's to-do list: each item appears only when something is outstanding and the viewer can act
- * on it, and links straight to the page where it gets handled.
- */
 class NeedsAttentionWidget extends Widget
 {
     protected static ?int $sort = -20;

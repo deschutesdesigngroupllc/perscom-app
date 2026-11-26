@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-/**
- * Discord and Slack send every organization back to one central redirect URL. The OAuth state
- * carries the organization so the central callback can hand off to it, and a session nonce proves
- * the install was started by the administrator who finishes it.
- */
 class IntegrationInstallService
 {
     public static function state(string $provider): string

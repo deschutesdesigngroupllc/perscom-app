@@ -10,10 +10,6 @@ use App\Models\Tenant;
 use App\Settings\OrganizationSettings;
 use Illuminate\Http\JsonResponse;
 
-/**
- * OAuth 2.0 Protected Resource Metadata (RFC 9728) for the tenant's MCP server, which MCP
- * clients use to discover the tenant's authorization server.
- */
 class ProtectedResourceMetadataController extends Controller
 {
     public function __invoke(): JsonResponse

@@ -13,10 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
-/**
- * Give a single member an award. Works from a member's profile, their row in the members table, or a
- * relation manager on their profile, and applies the same audited change set as AwardUsersBulkAction.
- */
 class AwardMemberAction extends Action
 {
     use AppliesChangeSets;

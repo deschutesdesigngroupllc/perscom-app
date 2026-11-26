@@ -16,11 +16,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use XMLWriter;
 
-/**
- * Build private RSS 2.0 feeds of the organization's announcements and newsfeed.
- *
- * Links carry the member's calendar feed token, so resetting it revokes both.
- */
 class RssFeedService
 {
     public const int LIMIT = 25;

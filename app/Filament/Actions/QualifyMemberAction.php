@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
-/**
- * Record a qualification for one member through the same audited change set as Promote and Award.
- */
 class QualifyMemberAction extends Action
 {
     use AppliesChangeSets;

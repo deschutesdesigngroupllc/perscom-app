@@ -14,10 +14,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
-/**
- * The standard way to pick members. It searches on the server instead of preloading everyone, and
- * labels each person with rank and unit so two members with the same name can be told apart.
- */
 class MemberSelect extends Select
 {
     public const int SEARCH_LIMIT = 50;

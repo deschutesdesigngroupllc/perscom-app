@@ -15,10 +15,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
-/**
- * Promote a single member, defaulting to the next rank above their current one. Works from a member's profile, their row in the members table, or a
- * relation manager on their profile, and applies the same audited change set as PromoteUsersBulkAction.
- */
 class PromoteMemberAction extends Action
 {
     use AppliesChangeSets;

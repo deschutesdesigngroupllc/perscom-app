@@ -34,11 +34,6 @@ use App\Http\Controllers\Api\Users\UsersController;
 use Orion\Http\Controllers\Controller;
 use ReflectionClass;
 
-/**
- * The REST API resources exposed to MCP clients. Every MCP read is executed against these
- * endpoints, so the API's scopes, policies, validation and serialization stay the single
- * source of truth.
- */
 class ApiResourceRegistry
 {
     /**

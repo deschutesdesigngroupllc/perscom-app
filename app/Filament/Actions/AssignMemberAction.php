@@ -13,10 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
-/**
- * Assign a single member to a unit, position and specialty. Works from a member's profile, their row in the members table, or a
- * relation manager on their profile, and applies the same audited change set as AssignUsersBulkAction.
- */
 class AssignMemberAction extends Action
 {
     use AppliesChangeSets;

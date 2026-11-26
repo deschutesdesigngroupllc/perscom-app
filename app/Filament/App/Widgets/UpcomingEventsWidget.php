@@ -30,9 +30,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 
-/**
- * The signed-in member's next event and their agenda for the coming week, with RSVP and check-in.
- */
 class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
 {
     use HasWidgetShield;

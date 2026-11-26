@@ -16,10 +16,6 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
-/**
- * Retire a member without losing their service history: their status changes through the same audited
- * change set as every other status record, and the profile and all of its records are kept.
- */
 class ArchiveMemberAction extends Action
 {
     use AppliesChangeSets;

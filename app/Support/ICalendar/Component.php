@@ -9,9 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 
-/**
- * An iCalendar (RFC 5545) component such as a VEVENT, holding content lines and nested components.
- */
 class Component
 {
     use Conditionable;

@@ -17,10 +17,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
-/**
- * One entry in the sidebar for every kind of service record. Each record type nests under it, and the
- * page itself shows how many of each exist and how many were added in the last 30 days.
- */
 class ServiceRecords extends Page
 {
     /**

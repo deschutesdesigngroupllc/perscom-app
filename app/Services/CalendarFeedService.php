@@ -20,9 +20,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use RRule\RRule;
 
-/**
- * Personal calendar subscription feeds (iCalendar) and "add to calendar" links for events.
- */
 class CalendarFeedService
 {
     /**

@@ -18,10 +18,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-/**
- * Finishes an OAuth install for Discord or Slack. Every outcome lands the admin back on the
- * Integrations page with a message that says what happened and what to do, never a bare error page.
- */
 trait CompletesIntegrationInstall
 {
     /**

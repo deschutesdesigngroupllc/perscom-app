@@ -21,10 +21,6 @@ use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * The signed-in member's service record: rank, assignment, awards and progress toward their next
- * promotion.
- */
 class UserProfileWidget extends Widget
 {
     use HasWidgetShield;

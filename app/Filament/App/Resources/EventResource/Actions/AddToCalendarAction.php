@@ -13,10 +13,6 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Support\Icons\Heroicon;
 
-/**
- * "Add to Calendar" menu for an event occurrence: download an .ics file or open a pre-filled
- * Google Calendar event. Defaults to the occurrence nearest to now.
- */
 class AddToCalendarAction extends ActionGroup
 {
     protected OccurrenceData|Closure|null $occurrence = null;

@@ -6,10 +6,6 @@ namespace App\Models\Enums;
 
 use Filament\Support\Contracts\HasLabel;
 
-/**
- * What kind of organization signed up. Types with a matching blueprint in resources/blueprints get
- * that structure applied when the organization is set up.
- */
 enum OrganizationType: string implements HasLabel
 {
     case MILITARY = 'military';

@@ -36,11 +36,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
-/**
- * Adding a member is two short steps: who they are, then where they serve. Their starting rank,
- * assignment and status are saved as records through the audited change set, so their service history
- * and time in grade start on day one instead of being written straight onto the profile.
- */
 class CreateUser extends CreateRecord
 {
     use HasContainedWizard;

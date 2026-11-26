@@ -18,9 +18,6 @@ use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-/**
- * Show the latest posts, featuring the newest and opening each in a modal.
- */
 abstract class RecentPostsWidget extends Widget implements HasActions, HasSchemas
 {
     use InteractsWithActions;

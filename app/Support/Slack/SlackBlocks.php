@@ -6,10 +6,6 @@ namespace App\Support\Slack;
 
 use Illuminate\Support\Str;
 
-/**
- * Turns the Discord embeds every notification already builds into Slack Block Kit, so both
- * services show the same title, details, image and link.
- */
 final class SlackBlocks
 {
     /**

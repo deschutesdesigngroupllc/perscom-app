@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 /**
- * A conversation thread for an event: comments listed oldest first with an inline composer.
- *
  * @property-read Schema $form
  */
 class EventDiscussion extends Component implements HasActions, HasSchemas

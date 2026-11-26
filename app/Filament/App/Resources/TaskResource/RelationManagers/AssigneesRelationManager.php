@@ -20,9 +20,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Who a task is assigned to, when it's due and whether they finished it.
- */
 class AssigneesRelationManager extends RelationManager
 {
     protected static string $relationship = 'users';

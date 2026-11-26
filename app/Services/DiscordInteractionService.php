@@ -23,11 +23,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
-/**
- * Answers Discord slash commands. Every command runs inside the organization that owns the server
- * it was used in, and acts as the PERSCOM member linked to the Discord account that used it, so the
- * same permissions apply as in the dashboard.
- */
 class DiscordInteractionService
 {
     public const int TYPE_PING = 1;

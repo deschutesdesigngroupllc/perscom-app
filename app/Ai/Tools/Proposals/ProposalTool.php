@@ -13,10 +13,6 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
-/**
- * Proposal tools never write to the database. They add an operation to the change set,
- * which the user reviews and explicitly applies afterwards.
- */
 abstract class ProposalTool implements Tool
 {
     public const int MAX_MEMBERS = 200;

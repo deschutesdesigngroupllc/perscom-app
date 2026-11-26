@@ -8,10 +8,6 @@ use Filament\Resources\Pages\CreateRecord\Concerns\HasWizard;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Wizard;
 
-/**
- * Filament renders create wizards uncontained, which leaves the step header in a card and the
- * fields and buttons floating on the page beneath it. Keep the whole wizard in one card instead.
- */
 trait HasContainedWizard
 {
     use HasWizard;

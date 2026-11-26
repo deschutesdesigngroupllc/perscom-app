@@ -26,11 +26,6 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * A short, live checklist that takes a new organization from an empty account to a working roster.
- * Every step is worked out from real data rather than ticked by hand, and the card disappears once
- * everything is done or the owner hides it.
- */
 class LaunchPlanWidget extends Widget
 {
     public const string DISMISSED_KEY = 'launch_plan';

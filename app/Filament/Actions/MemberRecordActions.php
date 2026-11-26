@@ -20,11 +20,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
-/**
- * The "Add Record" menu for a member: one entry per record type. Promote, Award, Assign and Qualify
- * open a short dialog; training, combat and service records have richer forms, so those open the full
- * form with the member already filled in.
- */
 class MemberRecordActions
 {
     /**

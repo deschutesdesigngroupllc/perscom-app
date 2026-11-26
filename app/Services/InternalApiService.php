@@ -13,11 +13,6 @@ use JsonException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Executes requests against the REST API from inside the application, on behalf of the caller
- * of the current request. The caller's bearer token is forwarded, so the API's authentication,
- * scopes, policies, validation and serialization apply exactly as they do for external clients.
- */
 class InternalApiService
 {
     /**

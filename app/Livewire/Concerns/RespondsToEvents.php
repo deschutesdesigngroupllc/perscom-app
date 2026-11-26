@@ -15,10 +15,6 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
-/**
- * Lets a Livewire component record the signed-in member's RSVP to an occurrence, as used by
- * the x-events.rsvp-buttons component.
- */
 trait RespondsToEvents
 {
     public function respondToEvent(int $eventId, int $starts, string $status, bool $wholeSeries = false): void

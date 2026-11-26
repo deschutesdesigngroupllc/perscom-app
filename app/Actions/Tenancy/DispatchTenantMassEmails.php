@@ -12,10 +12,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-/**
- * Sends an operator mass-email to tenants. This only applies to the multi-tenant
- * SaaS deployment; self-hosted installs have no tenant audience.
- */
 class DispatchTenantMassEmails
 {
     /**

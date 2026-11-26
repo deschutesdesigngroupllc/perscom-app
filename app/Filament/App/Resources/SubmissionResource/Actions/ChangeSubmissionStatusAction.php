@@ -12,10 +12,6 @@ use Filament\Forms\Components\Textarea;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Gate;
 
-/**
- * Decide on a submission from its page: pick the new status and, optionally, a note that is kept in
- * the submission's status history.
- */
 class ChangeSubmissionStatusAction extends Action
 {
     protected function setUp(): void

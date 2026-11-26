@@ -11,10 +11,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-/**
- * Keeps a member's Discord roles and nickname in step with their PERSCOM rank and unit. PERSCOM
- * creates one role per rank and per unit and only ever adds or removes the roles it created.
- */
 class DiscordRoleSyncService
 {
     public static function isEnabled(): bool

@@ -9,10 +9,6 @@ use Illuminate\Http\Request;
 use SodiumException;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Discord signs every interaction with the application's Ed25519 key and requires endpoints to
- * reject anything that does not verify.
- */
 class VerifyDiscordSignature
 {
     public function handle(Request $request, Closure $next): Response

@@ -9,10 +9,6 @@ use Filament\Clusters\Cluster;
 use Filament\Support\Icons\Heroicon;
 use UnitEnum;
 
-/**
- * Everything that connects PERSCOM to other services: chat and SSO providers, AI tools,
- * and the developer surface (API keys, OAuth apps, webhooks and embeddable widgets).
- */
 class Integrations extends Cluster
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPuzzlePiece;

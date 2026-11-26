@@ -17,10 +17,6 @@ use Filament\Schemas\Components\View;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Lets the signed-in member subscribe to the organization's events from Google, Apple or Outlook
- * calendars using their personal feed link.
- */
 class SubscribeToCalendarAction extends Action
 {
     protected function setUp(): void

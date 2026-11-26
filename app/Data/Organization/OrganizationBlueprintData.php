@@ -10,11 +10,6 @@ use InvalidArgumentException;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 
-/**
- * Describes the full structure of an organization. List order is significant:
- * ranks are listed from most senior to most junior, and every other list is
- * listed in the order it should be displayed.
- */
 class OrganizationBlueprintData extends Data
 {
     /**
