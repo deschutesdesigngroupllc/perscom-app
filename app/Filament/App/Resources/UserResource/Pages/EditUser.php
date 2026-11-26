@@ -13,6 +13,7 @@ use App\Filament\App\Resources\UserResource\RelationManagers\RolesRelationManage
 use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\Width;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Stringable;
@@ -22,15 +23,6 @@ class EditUser extends EditRecord
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;
 
     protected static string $resource = UserResource::class;
-
-    public function getRelationManagers(): array
-    {
-        return [
-            AttachmentsRelationManager::class,
-            FieldsRelationManager::class,
-            RolesRelationManager::class,
-        ];
-    }
 
     public function getSubheading(): string|Htmlable|null
     {
@@ -43,6 +35,18 @@ class EditUser extends EditRecord
             ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
             ->wrap('<div class="fi-header-subheading">', '</div>')
             ->toHtmlString();
+    }
+
+    /**
+     * @return array<int, class-string<RelationManager>>
+     */
+    protected function getAllRelationManagers(): array
+    {
+        return [
+            AttachmentsRelationManager::class,
+            FieldsRelationManager::class,
+            RolesRelationManager::class,
+        ];
     }
 
     /**

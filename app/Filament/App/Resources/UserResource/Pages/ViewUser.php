@@ -24,34 +24,39 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Components\ViewComponent;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
-use Illuminate\Support\Traits\Conditionable;
 
 class ViewUser extends ViewRecord
 {
-    use Conditionable;
-
     protected static string $resource = UserResource::class;
 
-    public function getRelationManagers(): array
+    /**
+     * The record tabs the organization shows on member profiles, in order. Filament keeps these keys when it
+     * drops the tabs a viewer may not see, so a tab's key is stable for linking.
+     *
+     * @return array<int, class-string<RelationManager>>
+     */
+    public static function profileRelationManagers(): array
     {
-        $relationManagers = collect();
-
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
-        $this->unless(in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(AssignmentRecordsRelationManager::class));
-        $this->unless(in_array('award_records', $hiddenFields), fn () => $relationManagers->push(AwardRecordsRelationManager::class));
-        $this->unless(in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(CombatRecordsRelationManager::class));
-        $this->unless(in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(QualificationRecordsRelationManager::class));
-        $this->unless(in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RankRecordsRelationManager::class));
-        $this->unless(in_array('service_records', $hiddenFields), fn () => $relationManagers->push(ServiceRecordsRelationManager::class));
-        $this->unless(in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
-
-        return $relationManagers->toArray();
+        return collect([
+            'assignment_records' => AssignmentRecordsRelationManager::class,
+            'award_records' => AwardRecordsRelationManager::class,
+            'combat_records' => CombatRecordsRelationManager::class,
+            'qualification_records' => QualificationRecordsRelationManager::class,
+            'rank_records' => RankRecordsRelationManager::class,
+            'service_records' => ServiceRecordsRelationManager::class,
+            'training_records' => TrainingRecordsRelationManager::class,
+        ])
+            ->reject(fn (string $relationManager, string $field): bool => in_array($field, $hiddenFields, true))
+            ->values()
+            ->all();
     }
 
     public function getSubheading(): string|Htmlable|null
@@ -65,6 +70,16 @@ class ViewUser extends ViewRecord
             ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
             ->wrap('<div class="fi-header-subheading">', '</div>')
             ->toHtmlString();
+    }
+
+    /**
+     * Filament filters these by what the viewer may see, so members never load a tab that would be refused.
+     *
+     * @return array<int, class-string<RelationManager>>
+     */
+    protected function getAllRelationManagers(): array
+    {
+        return static::profileRelationManagers();
     }
 
     /**
