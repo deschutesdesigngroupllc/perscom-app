@@ -233,7 +233,7 @@ and so does a `LogicException` for a state only a bug can reach.
 ## Docblocks
 
 The PHP guidelines in `CLAUDE.md` prefer a docblock over an inline comment. This is the shape one
-takes.
+takes; the `docblocks` skill is the fuller judgment guide.
 
 - **A method docblock opens with a one-line title.** Imperative, verb-first, ending in a period,
   within 80 columns: `Resolve the member's private feed token.` If it wraps, tighten it or extract
@@ -245,6 +245,12 @@ takes.
 - **Then the tags**, after a blank line: `@template`, `@param`, `@return`, a blank line, `@throws`.
   Tag descriptions start lowercase and take no trailing period. A tag that only repeats the
   signature is dropped.
+- **No docblock when the signature says it all.** A docblock that only echoes typed parameters
+  and returns is deleted, not titled. A method overriding a documented parent or contract method
+  gets none; tools inherit the parent's.
+- **A class docblock carries tags only** (`@mixin`, `@template`, `@property`, `@method`,
+  `@phpstan-type`). A new class gets no prose summary, and an existing one is trimmed when a change
+  touches the class.
 - **Properties and methods use the multi-line form.** The inline `/** @var … */` form is only for
   a variable inside a method or closure.
 - **Short class names, not FQCNs**, in every tag. Pint imports the class.

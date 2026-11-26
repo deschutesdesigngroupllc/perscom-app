@@ -6,7 +6,7 @@ paths:
 # Models
 
 ## Allow-list mass assignment
-Declare a protected $fillable allow-list on models. Do not use $guarded.
+Declare the mass-assignable allow-list with the #[Fillable([...])] attribute on the model. Do not use a $fillable property or $guarded.
 
 ## Query scopes: global via #[ScopedBy], local via scopeXxx
 Register global scopes with the #[ScopedBy] attribute pointing to a dedicated class in app/Models/Scopes. Write query-specific local scopes as scopeXxx() methods (no #[Scope] attribute).
