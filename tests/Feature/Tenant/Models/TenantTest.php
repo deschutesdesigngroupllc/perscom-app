@@ -7,6 +7,8 @@ namespace Tests\Feature\Tenant\Models;
 use App\Models\Tenant;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class TenantTest extends TenantTestCase
 {
     public function test_custom_domain_attribute_is_returned(): void

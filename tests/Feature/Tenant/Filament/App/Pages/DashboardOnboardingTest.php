@@ -22,6 +22,8 @@ use Livewire\Livewire;
 use Tests\Feature\Tenant\Services\Ai\OrganizationBlueprintServiceTest;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+
 class DashboardOnboardingTest extends TenantTestCase
 {
     public function test_onboarding_action_is_visible_for_super_admin_when_accessible(): void

@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+use function in_array;
+
 class RosterService
 {
     /**

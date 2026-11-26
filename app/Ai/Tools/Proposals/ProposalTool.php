@@ -13,6 +13,9 @@ use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
 
+use function count;
+use function sprintf;
+
 abstract class ProposalTool implements Tool
 {
     public const int MAX_MEMBERS = 200;

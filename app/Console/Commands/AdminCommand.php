@@ -17,6 +17,7 @@ use function Laravel\Prompts\password;
 use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
+use function sprintf;
 
 #[Description('Performs common actions on a admin user.')]
 #[Signature('perscom:admin')]

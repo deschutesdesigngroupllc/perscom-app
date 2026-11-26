@@ -79,14 +79,28 @@ class Invite extends Model
 
     public const int EXPIRATION_DAYS = 7;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => InviteType::class,
+            'sent_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'accepted_at' => 'datetime',
+            'revoked_at' => 'datetime',
+        ];
+    }
+
     public static function hashToken(#[SensitiveParameter] string $token): string
     {
         return hash('sha256', $token);
     }
 
-    public static function findByToken(#[SensitiveParameter] string $token): ?Invite
+    public static function findByToken(#[SensitiveParameter] string $token): ?self
     {
-        return Invite::query()->where('token', Invite::hashToken($token))->first();
+        return self::query()->where('token', self::hashToken($token))->first();
     }
 
     /**
@@ -98,9 +112,9 @@ class Invite extends Model
         $token = Str::random(64);
 
         $this->forceFill([
-            'token' => Invite::hashToken($token),
+            'token' => self::hashToken($token),
             'sent_at' => now(),
-            'expires_at' => now()->addDays(Invite::EXPIRATION_DAYS),
+            'expires_at' => now()->addDays(self::EXPIRATION_DAYS),
         ])->save();
 
         return $token;
@@ -162,19 +176,5 @@ class Invite extends Model
                 default => InviteStatus::PENDING,
             }
         );
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'type' => InviteType::class,
-            'sent_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'accepted_at' => 'datetime',
-            'revoked_at' => 'datetime',
-        ];
     }
 }

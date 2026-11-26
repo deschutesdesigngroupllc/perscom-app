@@ -61,7 +61,7 @@ class SearchResourceTool extends Tool
                     'operator' => $filter['operator'] ?? '=',
                     'value' => $filter['value'] ?? null,
                     'type' => $filter['type'] ?? null,
-                ])->reject(fn (mixed $value): bool => is_null($value))->all())
+                ])->reject(fn (mixed $value): bool => $value === null)->all())
                 ->all(),
             'search' => filled($validated['search'] ?? null) ? ['value' => $validated['search']] : null,
             'sort' => collect($validated['sort'] ?? [])

@@ -323,6 +323,21 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     use SocialRelationships;
 
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'approved' => 'boolean',
+            'email_verified_at' => 'datetime',
+            'hide_public_profile' => 'boolean',
+            'last_seen_at' => 'datetime',
+            'notes_updated_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    /**
      * @throws Exception
      */
     /**
@@ -581,20 +596,5 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     protected function getDefaultGuardName(): string
     {
         return 'web';
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'approved' => 'boolean',
-            'email_verified_at' => 'datetime',
-            'hide_public_profile' => 'boolean',
-            'last_seen_at' => 'datetime',
-            'notes_updated_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 }

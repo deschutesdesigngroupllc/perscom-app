@@ -19,6 +19,8 @@ use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
+use function sprintf;
+
 #[Name('get_resource')]
 #[Title('Get Resource')]
 #[Description('Get a single PERSCOM record by its ID, optionally expanding related data with include.')]

@@ -7,6 +7,8 @@ namespace Tests\Feature\Tenant\Traits;
 use App\Models\Event;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class HasResourceUrlTest extends TenantTestCase
 {
     public function test_an_event_without_a_link_falls_back_to_its_resource_url(): void

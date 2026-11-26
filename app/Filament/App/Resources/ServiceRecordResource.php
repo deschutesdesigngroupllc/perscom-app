@@ -48,6 +48,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class ServiceRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;

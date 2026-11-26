@@ -15,6 +15,10 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Ai\Responses\StructuredAgentResponse;
 
+use function in_array;
+use function is_array;
+use function sprintf;
+
 class OrganizationBlueprintService
 {
     /**

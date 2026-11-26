@@ -81,6 +81,7 @@ use Padmission\DataLens\Models\CustomReport;
 use Spatie\Backup\Commands\BackupCommand as BaseBackupCommand;
 use Spatie\Backup\Config\Config;
 
+use function sprintf;
 use function tenant;
 
 class AppServiceProvider extends ServiceProvider

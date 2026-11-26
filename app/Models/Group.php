@@ -106,7 +106,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     protected function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->unless(is_null($groupId), fn (Builder $query): Builder => $query->where('groups.id', $groupId))
+            ->unless($groupId === null, fn (Builder $query): Builder => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
                     /** @var User $query */
@@ -141,7 +141,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     protected function scopeForManualRoster(Builder $query, ?string $groupId = null): void
     {
         $query
-            ->unless(is_null($groupId), fn (Builder $query): Builder => $query->where('groups.id', $groupId))
+            ->unless($groupId === null, fn (Builder $query): Builder => $query->where('groups.id', $groupId))
             ->with([
                 'units.slots.users' => function ($query): void {
                     /** @var User $query */

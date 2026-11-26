@@ -11,6 +11,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
+use function sprintf;
+
 class TenantSetupFailedMail extends Mailable implements ShouldQueue
 {
     use Queueable;

@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
+use function sprintf;
+
 class ApplyChangeSet
 {
     /**

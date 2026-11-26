@@ -31,6 +31,8 @@ use App\Notifications\Tenant\UpcomingEvent;
 use Illuminate\Support\Facades\Storage;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class DiscordEmbedNotificationTest extends TenantTestCase
 {
     public function test_rank_record_notification_sends_rich_embed(): void

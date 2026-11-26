@@ -16,6 +16,8 @@ use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+use function is_array;
+
 /**
  * @mixin CreateRecord
  * @mixin EditRecord

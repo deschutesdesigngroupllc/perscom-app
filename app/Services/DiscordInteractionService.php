@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class DiscordInteractionService
 {
     public const int TYPE_PING = 1;
@@ -103,20 +105,20 @@ class DiscordInteractionService
         $guildId = (string) data_get($payload, 'guild_id');
 
         if (blank($guildId)) {
-            return DiscordInteractionService::reply('PERSCOM commands only work inside your organization’s Discord server.');
+            return self::reply('PERSCOM commands only work inside your organization’s Discord server.');
         }
 
-        $initialized = DiscordInteractionService::initializeOrganization($guildId);
+        $initialized = self::initializeOrganization($guildId);
 
         if ($initialized === null) {
-            return DiscordInteractionService::reply('This Discord server is not connected to a PERSCOM organization. An administrator can connect it from Settings → Integrations.');
+            return self::reply('This Discord server is not connected to a PERSCOM organization. An administrator can connect it from Settings → Integrations.');
         }
 
         try {
             return match ($type) {
-                self::TYPE_COMMAND => DiscordInteractionService::command($payload),
-                self::TYPE_AUTOCOMPLETE => DiscordInteractionService::autocomplete($payload),
-                default => DiscordInteractionService::reply('That interaction is not supported.'),
+                self::TYPE_COMMAND => self::command($payload),
+                self::TYPE_AUTOCOMPLETE => self::autocomplete($payload),
+                default => self::reply('That interaction is not supported.'),
             };
         } finally {
             Auth::forgetGuards();
@@ -163,14 +165,14 @@ class DiscordInteractionService
      */
     protected static function command(array $payload): array
     {
-        $invoker = DiscordInteractionService::invoker($payload);
+        $invoker = self::invoker($payload);
 
         return match ((string) data_get($payload, 'data.name')) {
-            'profile' => DiscordInteractionService::profile($payload, $invoker),
-            'roster' => DiscordInteractionService::roster($payload, $invoker),
-            'events' => DiscordInteractionService::events($invoker),
-            'rsvp' => DiscordInteractionService::rsvp($payload, $invoker),
-            default => DiscordInteractionService::reply('That command is not supported.'),
+            'profile' => self::profile($payload, $invoker),
+            'roster' => self::roster($payload, $invoker),
+            'events' => self::events($invoker),
+            'rsvp' => self::rsvp($payload, $invoker),
+            default => self::reply('That command is not supported.'),
         };
     }
 
@@ -182,18 +184,18 @@ class DiscordInteractionService
      */
     protected static function profile(array $payload, ?User $invoker): array
     {
-        $discordId = (string) (DiscordInteractionService::option($payload, 'member') ?? data_get($payload, 'member.user.id'));
+        $discordId = (string) (self::option($payload, 'member') ?? data_get($payload, 'member.user.id'));
         $member = User::query()->where('discord_user_id', $discordId)->first();
 
         if (! $member instanceof User) {
-            return DiscordInteractionService::reply('That Discord account is not linked to a member. Members can link Discord from their PERSCOM profile.');
+            return self::reply('That Discord account is not linked to a member. Members can link Discord from their PERSCOM profile.');
         }
 
         $isPublic = ServiceProfileService::isPublic($member);
         $canView = $isPublic || ($invoker instanceof User && ($invoker->is($member) || $invoker->can('view', $member)));
 
         if (! $canView) {
-            return DiscordInteractionService::reply('That member’s service profile is private.');
+            return self::reply('That member’s service profile is private.');
         }
 
         $profile = ServiceProfileService::build($member);
@@ -201,7 +203,7 @@ class DiscordInteractionService
         $embed = DiscordEmbed::make()
             ->title($member->name)
             ->url($isPublic ? $profile->url : null)
-            ->color(DiscordInteractionService::BRAND_COLOR)
+            ->color(self::BRAND_COLOR)
             ->author($profile->showsRank ? $member->rank?->name : null)
             ->field('Position', $profile->showsAssignment ? $member->position?->name : null)
             ->field('Unit', $profile->showsAssignment ? $member->unit?->name : null)
@@ -212,7 +214,7 @@ class DiscordInteractionService
             ->image($isPublic ? $profile->imageUrl : null)
             ->footer($profile->organization);
 
-        return DiscordInteractionService::reply(embeds: [$embed->toArray()], ephemeral: ! $isPublic);
+        return self::reply(embeds: [$embed->toArray()], ephemeral: ! $isPublic);
     }
 
     /**
@@ -223,18 +225,18 @@ class DiscordInteractionService
      */
     protected static function roster(array $payload, ?User $invoker): array
     {
-        if (! $invoker instanceof User || ! DiscordInteractionService::canViewRoster($invoker)) {
-            return DiscordInteractionService::notAllowed($invoker);
+        if (! $invoker instanceof User || ! self::canViewRoster($invoker)) {
+            return self::notAllowed($invoker);
         }
 
-        $unitId = DiscordInteractionService::option($payload, 'unit');
+        $unitId = self::option($payload, 'unit');
         $organization = (string) SettingsService::get(OrganizationSettings::class, 'name', config('app.name'));
 
         if (filled($unitId)) {
             $unit = Unit::query()->find($unitId);
 
             if (! $unit instanceof Unit) {
-                return DiscordInteractionService::reply('That unit could not be found.');
+                return self::reply('That unit could not be found.');
             }
 
             $members = User::query()
@@ -253,11 +255,11 @@ class DiscordInteractionService
 
             $embed = DiscordEmbed::make()
                 ->title($unit->name)
-                ->color(DiscordInteractionService::BRAND_COLOR)
+                ->color(self::BRAND_COLOR)
                 ->description($lines->isEmpty() ? 'No members are assigned to this unit.' : $lines->implode("\n"))
                 ->footer(sprintf('%s · %d %s', $organization, $members->count(), Str::plural('member', $members->count())));
 
-            return DiscordInteractionService::reply(embeds: [$embed->toArray()]);
+            return self::reply(embeds: [$embed->toArray()]);
         }
 
         $units = Unit::query()
@@ -268,13 +270,13 @@ class DiscordInteractionService
 
         $embed = DiscordEmbed::make()
             ->title(sprintf('%s Roster', $organization))
-            ->color(DiscordInteractionService::BRAND_COLOR)
+            ->color(self::BRAND_COLOR)
             ->description($units->isEmpty()
                 ? 'No units have been created yet.'
                 : $units->map(fn (Unit $unit): string => sprintf('**%s** · %d %s', $unit->name, $unit->users_count, Str::plural('member', (int) $unit->users_count)))->implode("\n"))
             ->footer('Use /roster unit:<name> to see a unit’s members.');
 
-        return DiscordInteractionService::reply(embeds: [$embed->toArray()]);
+        return self::reply(embeds: [$embed->toArray()]);
     }
 
     /**
@@ -285,23 +287,23 @@ class DiscordInteractionService
     protected static function events(?User $invoker): array
     {
         if (! $invoker instanceof User || ! $invoker->can('view', Event::class)) {
-            return DiscordInteractionService::notAllowed($invoker);
+            return self::notAllowed($invoker);
         }
 
-        $occurrences = DiscordInteractionService::upcomingOccurrences()
+        $occurrences = self::upcomingOccurrences()
             ->filter(fn (OccurrenceData $occurrence): bool => $invoker->can('view', $occurrence->event))
             ->take(10)
             ->values();
 
         if ($occurrences->isEmpty()) {
-            return DiscordInteractionService::reply('There are no upcoming events.');
+            return self::reply('There are no upcoming events.');
         }
 
         $responses = EventCalendarService::responses($occurrences, $invoker);
 
         $embed = DiscordEmbed::make()
             ->title('Upcoming Events')
-            ->color(DiscordInteractionService::BRAND_COLOR)
+            ->color(self::BRAND_COLOR)
             ->footer('Use /rsvp to respond.');
 
         $occurrences->each(function (OccurrenceData $occurrence) use ($embed, $responses): void {
@@ -317,7 +319,7 @@ class DiscordInteractionService
             );
         });
 
-        return DiscordInteractionService::reply(embeds: [$embed->toArray()]);
+        return self::reply(embeds: [$embed->toArray()]);
     }
 
     /**
@@ -329,10 +331,10 @@ class DiscordInteractionService
     protected static function rsvp(array $payload, ?User $invoker): array
     {
         if (! $invoker instanceof User || ! $invoker->can('view', Event::class)) {
-            return DiscordInteractionService::notAllowed($invoker);
+            return self::notAllowed($invoker);
         }
 
-        [$eventId, $starts] = Str::of((string) DiscordInteractionService::option($payload, 'event'))
+        [$eventId, $starts] = Str::of((string) self::option($payload, 'event'))
             ->explode('|', 2)
             ->pad(2, null)
             ->all();
@@ -340,29 +342,29 @@ class DiscordInteractionService
         $event = Event::query()->find($eventId);
 
         if (! $event instanceof Event || ! $invoker->can('view', $event)) {
-            return DiscordInteractionService::reply('That event could not be found.');
+            return self::reply('That event could not be found.');
         }
 
-        $occurrence = DiscordInteractionService::rsvpOccurrence($event, $starts);
+        $occurrence = self::rsvpOccurrence($event, $starts);
 
         if (! $occurrence instanceof OccurrenceData) {
-            return DiscordInteractionService::reply(sprintf('%s has no upcoming dates to RSVP to.', $event->name));
+            return self::reply(sprintf('%s has no upcoming dates to RSVP to.', $event->name));
         }
 
-        $statusOption = DiscordInteractionService::option($payload, 'status');
+        $statusOption = self::option($payload, 'status');
         $status = filled($statusOption) ? EventRegistrationStatus::tryFrom((string) $statusOption) : EventRegistrationStatus::GOING;
 
         if (! $status instanceof EventRegistrationStatus) {
-            return DiscordInteractionService::reply(EventRegistrationException::invalidResponse()->getMessage());
+            return self::reply(EventRegistrationException::invalidResponse()->getMessage());
         }
 
         try {
             EventRegistrationService::respond($occurrence, $invoker, $status);
         } catch (EventRegistrationException $eventRegistrationException) {
-            return DiscordInteractionService::reply($eventRegistrationException->getMessage());
+            return self::reply($eventRegistrationException->getMessage());
         }
 
-        return DiscordInteractionService::reply(sprintf(
+        return self::reply(sprintf(
             'You’re marked **%s** for **%s**%s.',
             Str::lower($status->getLabel()),
             $event->name,
@@ -395,17 +397,17 @@ class DiscordInteractionService
     {
         $focused = collect((array) data_get($payload, 'data.options'))->firstWhere('focused', true);
         $search = (string) data_get($focused, 'value');
-        $invoker = DiscordInteractionService::invoker($payload);
+        $invoker = self::invoker($payload);
 
         $choices = match (true) {
             ! $invoker instanceof User => collect(),
-            data_get($focused, 'name') === 'unit' && DiscordInteractionService::canViewRoster($invoker) => Unit::query()
+            data_get($focused, 'name') === 'unit' && self::canViewRoster($invoker) => Unit::query()
                 ->when(filled($search), fn (Builder $query): Builder => $query->where('name', 'like', '%'.$search.'%'))
                 ->orderBy('order')
                 ->limit(25)
                 ->get()
                 ->map(fn (Unit $unit): array => ['name' => Str::limit($unit->name, 97), 'value' => (string) $unit->getKey()]),
-            data_get($focused, 'name') === 'event' && $invoker->can('view', Event::class) => DiscordInteractionService::upcomingOccurrences($search)
+            data_get($focused, 'name') === 'event' && $invoker->can('view', Event::class) => self::upcomingOccurrences($search)
                 ->filter(fn (OccurrenceData $occurrence): bool => $invoker->can('view', $occurrence->event))
                 ->take(25)
                 ->map(fn (OccurrenceData $occurrence): array => [
@@ -433,7 +435,7 @@ class DiscordInteractionService
             fn (Builder $query): Builder => $query->where('name', 'like', '%'.$search.'%'),
         );
 
-        return EventOccurrenceService::between(now(), now()->addDays(DiscordInteractionService::UPCOMING_DAYS), $query)
+        return EventOccurrenceService::between(now(), now()->addDays(self::UPCOMING_DAYS), $query)
             ->reject(fn (OccurrenceData $occurrence): bool => $occurrence->isCancelled() || $occurrence->hasEnded())
             ->values();
     }
@@ -473,7 +475,7 @@ class DiscordInteractionService
      */
     protected static function notAllowed(?User $invoker): array
     {
-        return DiscordInteractionService::reply($invoker instanceof User
+        return self::reply($invoker instanceof User
             ? 'You do not have permission to do that in PERSCOM.'
             : 'Link your Discord account from your PERSCOM profile to use this command.');
     }

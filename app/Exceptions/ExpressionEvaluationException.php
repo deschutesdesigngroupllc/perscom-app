@@ -7,6 +7,8 @@ namespace App\Exceptions;
 use Exception;
 use Throwable;
 
+use function sprintf;
+
 class ExpressionEvaluationException extends Exception
 {
     public function __construct(string $expression, string $message, ?Throwable $previous = null)

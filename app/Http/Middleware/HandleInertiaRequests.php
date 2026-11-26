@@ -11,6 +11,8 @@ use Inertia\Inertia;
 use Inertia\Middleware;
 use Symfony\Component\HttpFoundation\Response;
 
+use function is_string;
+
 class HandleInertiaRequests extends Middleware
 {
     protected $rootView = 'components.layouts.landing';

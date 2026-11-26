@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 
+use function is_string;
+
 class ViewPassportClient extends ViewRecord
 {
     public const string PLAIN_SECRET_SESSION_KEY = 'passport_client_plain_secret';

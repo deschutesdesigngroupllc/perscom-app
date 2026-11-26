@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
+use function is_array;
+use function sprintf;
+
 class IntegrationInstallService
 {
     public static function state(string $provider): string
     {
         $nonce = Str::random(40);
 
-        Session::put(IntegrationInstallService::sessionKey($provider), $nonce);
+        Session::put(self::sessionKey($provider), $nonce);
 
         /** @var ?Tenant $tenant */
         $tenant = tenant();
@@ -53,8 +56,8 @@ class IntegrationInstallService
 
     public static function verify(string $provider, ?string $state): bool
     {
-        $payload = IntegrationInstallService::decode($state);
-        $nonce = Session::pull(IntegrationInstallService::sessionKey($provider));
+        $payload = self::decode($state);
+        $nonce = Session::pull(self::sessionKey($provider));
 
         /** @var ?Tenant $tenant */
         $tenant = tenant();

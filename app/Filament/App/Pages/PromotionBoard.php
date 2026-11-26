@@ -35,6 +35,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use UnitEnum;
 
+use function sprintf;
+
 class PromotionBoard extends Page implements HasTable
 {
     use InteractsWithTable;

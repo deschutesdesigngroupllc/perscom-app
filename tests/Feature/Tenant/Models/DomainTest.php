@@ -8,6 +8,8 @@ use App\Models\Domain;
 use App\Models\Tenant;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class DomainTest extends TenantTestCase
 {
     public function test_url_attribute_properly_returns_url(): void

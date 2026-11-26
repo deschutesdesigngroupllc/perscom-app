@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
+use function sprintf;
+
 class SubscriptionBanner extends Component
 {
     public ?string $message = null;

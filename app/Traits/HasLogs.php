@@ -15,6 +15,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 use function activity;
+use function sprintf;
 
 /**
  * @mixin Eloquent

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
+use function in_array;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\table;
 

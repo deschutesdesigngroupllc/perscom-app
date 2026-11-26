@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class ApiCacheService
 {
     public function __construct(protected ?Tenant $tenant = null)
@@ -102,7 +104,7 @@ class ApiCacheService
 
     public function getTenantCacheTag(): string
     {
-        if (is_null($this->tenant)) {
+        if (! $this->tenant instanceof Tenant) {
             return '';
         }
 

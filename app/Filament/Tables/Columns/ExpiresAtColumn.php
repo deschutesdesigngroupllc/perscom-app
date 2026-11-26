@@ -11,6 +11,8 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class ExpiresAtColumn extends TextColumn
 {
     /**

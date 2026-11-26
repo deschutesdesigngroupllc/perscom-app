@@ -53,14 +53,14 @@ class Brand
             'gray' => Color::Zinc,
             'info' => Color::Sky,
             'success' => Color::Emerald,
-            'warning' => Color::hex(Brand::ACCENT_HEX),
+            'warning' => Color::hex(self::ACCENT_HEX),
             'danger' => Color::Red,
-            'brass' => Color::hex(Brand::ACCENT_HEX),
+            'brass' => Color::hex(self::ACCENT_HEX),
         ];
     }
 
     public static function categoryColor(string $category): string
     {
-        return Brand::CATEGORY_COLORS[$category] ?? Brand::NEUTRAL_HEX;
+        return self::CATEGORY_COLORS[$category] ?? self::NEUTRAL_HEX;
     }
 }

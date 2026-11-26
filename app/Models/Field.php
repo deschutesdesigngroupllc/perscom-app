@@ -115,6 +115,20 @@ class Field extends Model implements HasLabel, Hideable
     use HasResourceLabel;
     use HasResourceUrl;
 
+    /**
+     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'readonly' => 'boolean',
+            'required' => 'boolean',
+            'type' => FieldType::class,
+            'options_type' => FieldOptionsType::class,
+            'options_model' => FieldOptionsModel::class,
+        ];
+    }
+
     public function forms(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
@@ -179,19 +193,5 @@ class Field extends Model implements HasLabel, Hideable
                     : null;
             }
         )->shouldCache();
-    }
-
-    /**
-     * @return array<string, class-string<FieldType>|class-string<FieldOptionsType>|class-string<FieldOptionsModel>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'readonly' => 'boolean',
-            'required' => 'boolean',
-            'type' => FieldType::class,
-            'options_type' => FieldOptionsType::class,
-            'options_model' => FieldOptionsModel::class,
-        ];
     }
 }

@@ -27,7 +27,7 @@ class UserSettingsService
         $settings->$key = data_set($previous, $user->getKey(), $value);
         $settings->save();
 
-        UserSettingsService::flush();
+        self::flush();
 
         return true;
     }
@@ -40,7 +40,7 @@ class UserSettingsService
             return value($default);
         }
 
-        $cacheKey = UserSettingsService::$cacheKey.('_'.$user->getKey());
+        $cacheKey = self::$cacheKey.('_'.$user->getKey());
 
         if ($flush) {
             Cache::forget($cacheKey);
@@ -65,7 +65,7 @@ class UserSettingsService
             return null;
         }
 
-        $cacheKey = UserSettingsService::$cacheKey.('_'.$user->getKey());
+        $cacheKey = self::$cacheKey.('_'.$user->getKey());
 
         return Cache::forget($cacheKey);
     }
@@ -75,6 +75,6 @@ class UserSettingsService
      */
     public static function timezone(?User $user = null): string
     {
-        return UserSettingsService::get('timezone', fn (): string => ScheduleService::timezone(), user: $user) ?? ScheduleService::timezone();
+        return self::get('timezone', fn (): string => ScheduleService::timezone(), user: $user) ?? ScheduleService::timezone();
     }
 }

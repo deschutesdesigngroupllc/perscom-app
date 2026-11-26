@@ -18,7 +18,7 @@ class RegistrationSettings extends Settings
     public static function isOpen(): bool
     {
         /** @var RegistrationSettings $settings */
-        $settings = resolve(RegistrationSettings::class);
+        $settings = resolve(self::class);
 
         return $settings->enabled;
     }

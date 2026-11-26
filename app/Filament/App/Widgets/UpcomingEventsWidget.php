@@ -30,6 +30,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 
+use function is_string;
+use function sprintf;
+
 class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
 {
     use HasWidgetShield;

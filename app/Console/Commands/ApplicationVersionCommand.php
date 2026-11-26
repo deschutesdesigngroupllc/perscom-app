@@ -11,6 +11,9 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 
+use function in_array;
+use function sprintf;
+
 #[Description('Retrieves or sets the current application version.')]
 #[Signature('perscom:version
                             {--set= : Set the current application version}')]

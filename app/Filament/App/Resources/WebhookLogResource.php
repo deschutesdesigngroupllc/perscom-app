@@ -36,6 +36,8 @@ use Illuminate\Support\Collection;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
+use function sprintf;
+
 class WebhookLogResource extends BaseResource
 {
     protected static ?string $model = WebhookLog::class;

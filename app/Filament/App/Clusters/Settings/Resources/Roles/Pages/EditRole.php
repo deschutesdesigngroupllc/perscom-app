@@ -12,6 +12,8 @@ use Filament\Support\Enums\Width;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
+use function in_array;
+
 class EditRole extends EditRecord
 {
     public Collection $permissions;

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+use function sprintf;
+
 trait AppliesChangeSets
 {
     protected function applyOperation(Action $action, ProposedOperationData $operation, string $source = 'bulk action'): void

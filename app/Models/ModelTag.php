@@ -29,6 +29,13 @@ class ModelTag extends Model
 {
     use Sushi;
 
+    protected function casts(): array
+    {
+        return [
+            'type' => ModelTagType::class,
+        ];
+    }
+
     protected function getRows(): array
     {
         return [
@@ -237,13 +244,6 @@ class ModelTag extends Model
                 'description' => "The author's name if linked to a resource.",
                 'type' => ModelTagType::USER,
             ],
-        ];
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => ModelTagType::class,
         ];
     }
 }

@@ -16,6 +16,8 @@ use Tests\TestCase;
 use Tests\Traits\TenantHelpers;
 use Throwable;
 
+use function sprintf;
+
 class TenantTestCase extends TestCase
 {
     use TenantHelpers;

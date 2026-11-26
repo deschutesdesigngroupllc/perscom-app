@@ -26,6 +26,9 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
 
+use function in_array;
+use function sprintf;
+
 class LaunchPlanWidget extends Widget
 {
     public const string DISMISSED_KEY = 'launch_plan';

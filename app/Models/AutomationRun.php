@@ -45,6 +45,16 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class AutomationRun extends Model
 {
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'run_on' => 'date',
+        ];
+    }
+
+    /**
      * Get the automation the run belongs to.
      *
      * @return BelongsTo<Automation, $this>
@@ -70,15 +80,5 @@ class AutomationRun extends Model
         return $query
             ->where('subject_type', $subject::class)
             ->where('subject_id', $subject->getKey());
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'run_on' => 'date',
-        ];
     }
 }

@@ -80,6 +80,21 @@ class AutomationLog extends Model
     use HasFactory;
 
     /**
+     * @return array<string, class-string<AutomationTrigger>|class-string<AutomationLogStatus>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'trigger' => AutomationTrigger::class,
+            'status' => AutomationLogStatus::class,
+            'condition_result' => 'boolean',
+            'context' => 'array',
+            'action_payload' => 'array',
+            'execution_time_ms' => 'integer',
+        ];
+    }
+
+    /**
      * Get the automation the log belongs to.
      *
      * @return BelongsTo<Automation, $this>
@@ -107,20 +122,5 @@ class AutomationLog extends Model
     public function causer(): MorphTo
     {
         return $this->morphTo();
-    }
-
-    /**
-     * @return array<string, class-string<AutomationTrigger>|class-string<AutomationLogStatus>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'trigger' => AutomationTrigger::class,
-            'status' => AutomationLogStatus::class,
-            'condition_result' => 'boolean',
-            'context' => 'array',
-            'action_payload' => 'array',
-            'execution_time_ms' => 'integer',
-        ];
     }
 }

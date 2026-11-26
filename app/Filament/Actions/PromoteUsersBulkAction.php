@@ -18,6 +18,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 
+use function sprintf;
+
 class PromoteUsersBulkAction extends BulkAction
 {
     use AppliesChangeSets;

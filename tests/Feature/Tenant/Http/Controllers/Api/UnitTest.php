@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\Units\UnitsController;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function sprintf;
+
 class UnitTest extends ApiResourceTestCase
 {
     public function endpoint(): string

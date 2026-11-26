@@ -111,6 +111,16 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
     use HasResourceUrl;
     use HasUser;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'expires_at' => 'datetime',
+        ];
+    }
+
     public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class);
@@ -146,15 +156,5 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
     protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'expires_at' => 'datetime',
-        ];
     }
 }

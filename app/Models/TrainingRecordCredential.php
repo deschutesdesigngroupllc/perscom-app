@@ -48,6 +48,17 @@ class TrainingRecordCredential extends Pivot
     public $incrementing = true;
 
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'issued_at' => 'datetime',
+            'expires_at' => 'datetime',
+        ];
+    }
+
+    /**
      * Get the training record the credential was issued on.
      *
      * @return BelongsTo<TrainingRecord, $this>
@@ -77,16 +88,5 @@ class TrainingRecordCredential extends Pivot
     protected function expired(Builder $query): Builder
     {
         return $query->where('expires_at', '<=', now());
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'issued_at' => 'datetime',
-            'expires_at' => 'datetime',
-        ];
     }
 }

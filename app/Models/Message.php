@@ -80,14 +80,6 @@ class Message extends Model implements HasLabel
         'recipients' => null,
     ];
 
-    protected function status(): Attribute
-    {
-        return Attribute::get(fn (): MessageStatus => match (true) {
-            isset($this->sent_at) => MessageStatus::SENT,
-            default => MessageStatus::PENDING,
-        });
-    }
-
     /**
      * @return array<string, string>
      */
@@ -100,5 +92,13 @@ class Message extends Model implements HasLabel
             'send_at' => 'datetime',
             'sent_at' => 'datetime',
         ];
+    }
+
+    protected function status(): Attribute
+    {
+        return Attribute::get(fn (): MessageStatus => match (true) {
+            isset($this->sent_at) => MessageStatus::SENT,
+            default => MessageStatus::PENDING,
+        });
     }
 }

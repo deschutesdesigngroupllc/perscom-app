@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+use function count;
+use function sprintf;
+
 class InviteAction extends Action
 {
     public const int MAX_INVITES = 50;
@@ -58,7 +61,7 @@ class InviteAction extends Action
                         SendInvite::handle(type: InviteType::CREATE, email: $email, invitedBy: Auth::user());
                         $sent++;
                     } catch (ValidationException $validationException) {
-                        $skipped->push(sprintf('%s (%s)', $email, rtrim(Str::lcfirst((string) $validationException->validator->errors()->first()), '.')));
+                        $skipped->push(sprintf('%s (%s)', $email, mb_rtrim(Str::lcfirst((string) $validationException->validator->errors()->first()), '.')));
                     }
                 });
 

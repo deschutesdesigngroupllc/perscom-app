@@ -13,6 +13,8 @@ use JsonException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 
+use function sprintf;
+
 class InternalApiService
 {
     /**
@@ -52,7 +54,7 @@ class InternalApiService
     {
         $original = request();
 
-        $uri = sprintf('%s/%s/%s', rtrim((string) config('api.url'), '/'), config('api.version'), ltrim($path, '/'));
+        $uri = sprintf('%s/%s/%s', mb_rtrim((string) config('api.url'), '/'), config('api.version'), mb_ltrim($path, '/'));
 
         if (filled($query)) {
             $uri .= '?'.http_build_query($query);

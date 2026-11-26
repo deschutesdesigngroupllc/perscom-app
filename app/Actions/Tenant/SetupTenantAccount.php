@@ -25,6 +25,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 use Illuminate\Validation\ValidationException;
 
+use function array_key_exists;
+
 class SetupTenantAccount
 {
     use Conditionable;
@@ -190,7 +192,7 @@ class SetupTenantAccount
         ]);
 
         $tenant = $this->tenant->refresh();
-        $setPasswordUrl = rtrim((string) $tenant->url, '/').route('app.invites.accept', ['token' => $invite->refreshToken()], false);
+        $setPasswordUrl = mb_rtrim((string) $tenant->url, '/').route('app.invites.accept', ['token' => $invite->refreshToken()], false);
 
         Mail::to($user)->send(new NewTenantMail($tenant, $user, $setPasswordUrl));
     }

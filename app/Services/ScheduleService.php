@@ -85,15 +85,15 @@ class ScheduleService
             return $repeatable->until;
         }
 
-        $rule = ScheduleService::generateRecurringRule($repeatable);
+        $rule = self::generateRecurringRule($repeatable);
 
-        if (is_null($rule) || blank($repeatable->count)) {
+        if (! $rule instanceof RRule || blank($repeatable->count)) {
             return null;
         }
 
         $lastOccurrence = collect($rule->getOccurrences())->last();
 
-        if (is_null($lastOccurrence)) {
+        if ($lastOccurrence === null) {
             return null;
         }
 
@@ -102,9 +102,9 @@ class ScheduleService
 
     public static function nextOccurrence(Schedule $repeatable): ?Carbon
     {
-        $rule = ScheduleService::generateRecurringRule($repeatable);
+        $rule = self::generateRecurringRule($repeatable);
 
-        if (is_null($rule)) {
+        if (! $rule instanceof RRule) {
             return null;
         }
 
@@ -112,7 +112,7 @@ class ScheduleService
         // comparisons to now without it being kicked to the next occurrence.
         $nextOccurrence = collect($rule->getOccurrencesAfter(now()->subMinute(), true, 1))->first();
 
-        if (is_null($nextOccurrence)) {
+        if ($nextOccurrence === null) {
             return null;
         }
 
@@ -124,7 +124,7 @@ class ScheduleService
      */
     public static function previousOccurrence(Schedule $schedule, CarbonInterface $at): ?Carbon
     {
-        $occurrence = collect(ScheduleService::generateRecurringRule($schedule)?->getOccurrencesBefore($at, true, 1) ?? [])->last();
+        $occurrence = collect(self::generateRecurringRule($schedule)?->getOccurrencesBefore($at, true, 1) ?? [])->last();
 
         return $occurrence instanceof DateTimeInterface ? static::toApplicationTime($occurrence) : null;
     }
@@ -134,7 +134,7 @@ class ScheduleService
      */
     public static function followingOccurrence(Schedule $schedule, CarbonInterface $at): ?Carbon
     {
-        $occurrence = collect(ScheduleService::generateRecurringRule($schedule)?->getOccurrencesAfter($at, false, 1) ?? [])->first();
+        $occurrence = collect(self::generateRecurringRule($schedule)?->getOccurrencesAfter($at, false, 1) ?? [])->first();
 
         return $occurrence instanceof DateTimeInterface ? static::toApplicationTime($occurrence) : null;
     }
@@ -147,9 +147,9 @@ class ScheduleService
      */
     public static function occurrencesAround(Schedule $schedule, CarbonInterface $at, int $before, int $after): array
     {
-        $rule = ScheduleService::generateRecurringRule($schedule);
+        $rule = self::generateRecurringRule($schedule);
 
-        if (is_null($rule)) {
+        if (! $rule instanceof RRule) {
             return [];
         }
 
@@ -167,20 +167,20 @@ class ScheduleService
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
     {
-        $rule = ScheduleService::generateRecurringRule($schedule);
+        $rule = self::generateRecurringRule($schedule);
 
-        if (is_null($rule)) {
+        if (! $rule instanceof RRule) {
             return null;
         }
 
-        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => static::toApplicationTime($dateTime))->toArray();
+        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTimeInterface $dateTime): Carbon => static::toApplicationTime($dateTime))->toArray();
     }
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
     {
-        $rule = ScheduleService::generateRecurringRule($schedule);
+        $rule = self::generateRecurringRule($schedule);
 
-        if (is_null($rule)) {
+        if (! $rule instanceof RRule) {
             return null;
         }
 

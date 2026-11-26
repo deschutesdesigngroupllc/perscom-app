@@ -10,6 +10,8 @@ use App\Models\Tenant;
 use App\Settings\OrganizationSettings;
 use Illuminate\Http\JsonResponse;
 
+use function sprintf;
+
 class ProtectedResourceMetadataController extends Controller
 {
     public function __invoke(): JsonResponse

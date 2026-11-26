@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 
+use function sprintf;
+
 /**
  * @property int $id
  * @property int|null $user_id
@@ -133,6 +135,13 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
         'type' => AssignmentRecordType::PRIMARY,
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'type' => AssignmentRecordType::class,
+        ];
+    }
+
     public function headlineForNewsfeedItem(): string
     {
         return 'An assignment record has been added for '.$this->user->name;
@@ -185,12 +194,5 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
                 ]);
             }
         });
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => AssignmentRecordType::class,
-        ];
     }
 }

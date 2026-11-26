@@ -94,6 +94,16 @@ class ApiLog extends Activity
     use HasJsonRelationships;
     use Metable;
 
+    protected function casts(): array
+    {
+        return array_merge(parent::casts(), parent::getCasts(), [
+            'request_headers' => 'array',
+            'response_headers' => 'array',
+            'duration' => 'integer',
+            'status' => 'integer',
+        ]);
+    }
+
     /**
      * Get the cache purges triggered by the request.
      *
@@ -234,15 +244,5 @@ class ApiLog extends Activity
         return Attribute::make(
             get: fn (): ?string => $this->getMeta('trace_id')
         )->shouldCache();
-    }
-
-    protected function casts(): array
-    {
-        return array_merge(parent::casts(), parent::getCasts(), [
-            'request_headers' => 'array',
-            'response_headers' => 'array',
-            'duration' => 'integer',
-            'status' => 'integer',
-        ]);
     }
 }

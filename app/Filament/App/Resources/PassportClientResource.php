@@ -42,6 +42,8 @@ use Illuminate\Support\Collection;
 use Laravel\Passport\Passport;
 use UnitEnum;
 
+use function in_array;
+
 class PassportClientResource extends BaseResource
 {
     protected static ?string $model = PassportClient::class;

@@ -8,6 +8,8 @@ use App\Settings\IntegrationSettings;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\Discord;
 
+use function count;
+
 class DiscordPublicChannel
 {
     public function __construct(protected Discord $discord) {}

@@ -17,6 +17,8 @@ use App\Settings\DashboardSettings;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class UserProfileWidgetTest extends TenantTestCase
 {
     public function test_it_shows_the_members_service_summary(): void

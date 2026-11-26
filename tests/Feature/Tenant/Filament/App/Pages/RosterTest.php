@@ -23,6 +23,9 @@ use Livewire\Livewire;
 use Spatie\Permission\Models\Permission;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+use function sprintf;
+
 class RosterTest extends TenantTestCase
 {
     protected Group $group;

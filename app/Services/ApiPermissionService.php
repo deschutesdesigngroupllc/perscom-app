@@ -14,6 +14,9 @@ use Illuminate\Support\Str;
 use Laravel\Passport\Guards\TokenGuard;
 use PHPOpenSourceSaver\JWTAuth\JWT;
 
+use function in_array;
+use function sprintf;
+
 class ApiPermissionService
 {
     /**

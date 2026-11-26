@@ -50,6 +50,20 @@ class RankRequirement extends Model
     use HasFactory;
 
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'min_days_in_grade' => 'integer',
+            'min_days_in_service' => 'integer',
+            'min_events_attended_90d' => 'integer',
+            'required_qualification_ids' => 'array',
+            'required_credential_ids' => 'array',
+        ];
+    }
+
+    /**
      * Get the rank the requirements belong to.
      *
      * @return BelongsTo<Rank, $this>
@@ -66,19 +80,5 @@ class RankRequirement extends Model
             || filled($this->min_events_attended_90d)
             || filled($this->required_qualification_ids)
             || filled($this->required_credential_ids);
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'min_days_in_grade' => 'integer',
-            'min_days_in_service' => 'integer',
-            'min_events_attended_90d' => 'integer',
-            'required_qualification_ids' => 'array',
-            'required_credential_ids' => 'array',
-        ];
     }
 }

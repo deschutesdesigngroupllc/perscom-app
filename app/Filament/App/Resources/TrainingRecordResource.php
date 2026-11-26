@@ -51,6 +51,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class TrainingRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;

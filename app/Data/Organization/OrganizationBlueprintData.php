@@ -10,6 +10,9 @@ use InvalidArgumentException;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
 
+use function array_key_exists;
+use function sprintf;
+
 class OrganizationBlueprintData extends Data
 {
     /**

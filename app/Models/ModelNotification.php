@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
+use function is_int;
+use function is_string;
+
 /**
  * @property int $id
  * @property string $model_type
@@ -74,6 +77,16 @@ use Illuminate\Support\Collection;
 #[Table(name: 'model_has_notifications')]
 class ModelNotification extends MorphPivot
 {
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'channels' => AsEnumCollection::of(NotificationChannel::class),
+        ];
+    }
+
     /**
      * Build the attributes for a notification sent to a user.
      *
@@ -189,15 +202,5 @@ class ModelNotification extends MorphPivot
         }
 
         return collect();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'channels' => AsEnumCollection::of(NotificationChannel::class),
-        ];
     }
 }

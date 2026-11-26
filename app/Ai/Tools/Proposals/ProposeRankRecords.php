@@ -12,6 +12,8 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Validation\Rule;
 use Stringable;
 
+use function sprintf;
+
 class ProposeRankRecords extends ProposalTool
 {
     public function description(): Stringable|string

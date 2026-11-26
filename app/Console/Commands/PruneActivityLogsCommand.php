@@ -30,7 +30,7 @@ class PruneActivityLogsCommand extends Command
             return Command::FAILURE;
         }
 
-        $days = intval($this->option('days') ?? 30);
+        $days = (int) ($this->option('days') ?? 30);
 
         if ($days < 0) {
             $this->components->error('The days argument must not be negative.');

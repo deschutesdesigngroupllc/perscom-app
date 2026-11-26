@@ -14,6 +14,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class MemberSelect extends Select
 {
     public const int SEARCH_LIMIT = 50;
@@ -74,12 +76,12 @@ class MemberSelect extends Select
      */
     public static function searchMembers(string $search): array
     {
-        return MemberSelect::labelsFor(User::query()
+        return self::labelsFor(User::query()
             ->where(fn (Builder $query): Builder => $query
                 ->where('name', 'like', sprintf('%%%s%%', $search))
                 ->orWhere('email', 'like', sprintf('%%%s%%', $search)))
             ->orderBy('name')
-            ->limit(MemberSelect::SEARCH_LIMIT)
+            ->limit(self::SEARCH_LIMIT)
             ->get());
     }
 

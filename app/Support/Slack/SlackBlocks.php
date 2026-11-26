@@ -6,6 +6,9 @@ namespace App\Support\Slack;
 
 use Illuminate\Support\Str;
 
+use function count;
+use function sprintf;
+
 final class SlackBlocks
 {
     /**
@@ -23,7 +26,7 @@ final class SlackBlocks
         $blocks = collect();
 
         if (filled($author)) {
-            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => SlackBlocks::escape((string) $author)]]]);
+            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => self::escape((string) $author)]]]);
         }
 
         if (filled($title)) {
@@ -32,7 +35,7 @@ final class SlackBlocks
 
         $section = collect([
             'type' => 'section',
-            'text' => filled($description) ? ['type' => 'mrkdwn', 'text' => Str::limit(SlackBlocks::markdown($description), 2997)] : null,
+            'text' => filled($description) ? ['type' => 'mrkdwn', 'text' => Str::limit(self::markdown($description), 2997)] : null,
             'fields' => collect((array) data_get($embed, 'fields', []))
                 ->take(10)
                 ->map(fn (array $field): array => [
@@ -63,7 +66,7 @@ final class SlackBlocks
         }
 
         if (filled(data_get($embed, 'footer.text'))) {
-            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => SlackBlocks::escape((string) data_get($embed, 'footer.text'))]]]);
+            $blocks->push(['type' => 'context', 'elements' => [['type' => 'mrkdwn', 'text' => self::escape((string) data_get($embed, 'footer.text'))]]]);
         }
 
         return [
@@ -77,7 +80,7 @@ final class SlackBlocks
      */
     public static function markdown(string $text): string
     {
-        return Str::of(SlackBlocks::escape($text))
+        return Str::of(self::escape($text))
             ->replaceMatches('/\*\*(.+?)\*\*/s', '*$1*')
             ->replaceMatches('/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/', '<$2|$1>')
             ->toString();

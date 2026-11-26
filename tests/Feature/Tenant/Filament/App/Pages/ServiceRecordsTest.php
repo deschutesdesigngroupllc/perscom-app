@@ -26,6 +26,8 @@ use Filament\Facades\Filament;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+
 class ServiceRecordsTest extends TenantTestCase
 {
     protected function setUp(): void

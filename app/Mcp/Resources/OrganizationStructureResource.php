@@ -61,7 +61,7 @@ class OrganizationStructureResource extends Resource
                     ->values()
                     ->all();
             })
-            ->reject(fn (?array $section): bool => is_null($section))
+            ->reject(fn (?array $section): bool => $section === null)
             ->all();
 
         return Response::json($structure);

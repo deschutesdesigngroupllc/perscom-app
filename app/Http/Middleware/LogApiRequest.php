@@ -17,6 +17,8 @@ use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Activitylog\Exceptions\InvalidConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 
+use function is_array;
+
 class LogApiRequest
 {
     /**

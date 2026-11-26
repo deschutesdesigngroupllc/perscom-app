@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Tests\Contracts\ApiResourceTestContract;
 
+use function count;
+use function sprintf;
+
 abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTestContract
 {
     public int $expectedIndexCount;

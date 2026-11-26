@@ -9,6 +9,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Traits\Conditionable;
 
+use function count;
+use function sprintf;
+
 class Component
 {
     use Conditionable;
@@ -48,7 +51,7 @@ class Component
      */
     public static function fold(string $line): string
     {
-        if (strlen($line) <= 75) {
+        if (mb_strlen($line, '8bit') <= 75) {
             return $line;
         }
 
@@ -56,7 +59,7 @@ class Component
             $limit = count($carry) === 1 ? 75 : 74;
             $current = (string) end($carry);
 
-            if (strlen($current) + strlen($character) > $limit) {
+            if (mb_strlen($current, '8bit') + mb_strlen($character, '8bit') > $limit) {
                 $carry[] = $character;
             } else {
                 $carry[array_key_last($carry)] = $current.$character;
@@ -128,7 +131,7 @@ class Component
         return $this->property($name, static::formatDate($value), ['VALUE' => 'DATE']);
     }
 
-    public function component(Component $component): static
+    public function component(self $component): static
     {
         $this->components[] = $component;
 

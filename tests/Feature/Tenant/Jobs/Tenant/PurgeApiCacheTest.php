@@ -10,6 +10,8 @@ use App\Services\ApiCacheService;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function in_array;
+
 class PurgeApiCacheTest extends TenantTestCase
 {
     public function test_creating_a_model_dispatches_the_job(): void

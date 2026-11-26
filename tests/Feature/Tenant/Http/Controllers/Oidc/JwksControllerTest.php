@@ -33,7 +33,7 @@ class JwksControllerTest extends TenantTestCase
         $details = openssl_pkey_get_details(openssl_pkey_get_public((string) file_get_contents(storage_path('oauth-public.key'))));
 
         $this->assertSame(
-            rtrim(strtr(base64_encode($details['rsa']['n']), '+/', '-_'), '='),
+            mb_rtrim(strtr(base64_encode($details['rsa']['n']), '+/', '-_'), '='),
             JsonWebKey::publicKey()['n'],
         );
     }

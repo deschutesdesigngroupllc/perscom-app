@@ -20,6 +20,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use RRule\RRule;
 
+use function is_string;
+use function sprintf;
+
 class CalendarFeedService
 {
     /**

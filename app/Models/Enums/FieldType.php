@@ -169,7 +169,7 @@ enum FieldType: string implements HasColor, HasLabel
             default => null,
         };
 
-        if (is_null($filament)) {
+        if ($filament === null) {
             return null;
         }
 

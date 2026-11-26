@@ -19,6 +19,9 @@ use Filament\Schemas\Components\Utilities\Get;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Validation\ValidationException;
 
+use function count;
+use function is_array;
+
 class OrganizationBlueprint
 {
     /**

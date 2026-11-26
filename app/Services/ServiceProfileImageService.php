@@ -27,38 +27,38 @@ class ServiceProfileImageService
         imagealphablending($canvas, true);
         imagesavealpha($canvas, true);
 
-        ServiceProfileImageService::background($canvas);
+        self::background($canvas);
 
         $user = $profile->user;
         $left = self::PADDING;
 
-        $insignia = $profile->showsRank ? ServiceProfileImageService::load($user->rank?->image) : null;
+        $insignia = $profile->showsRank ? self::load($user->rank?->image) : null;
 
         if ($insignia instanceof GdImage) {
-            ServiceProfileImageService::paste($canvas, $insignia, $left, 150, 150, 150);
+            self::paste($canvas, $insignia, $left, 150, 150, 150);
             $left += 190;
         } elseif ($profile->showsRank && filled($user->rank?->abbreviation)) {
-            ServiceProfileImageService::badge($canvas, (string) $user->rank->abbreviation, $left, 165);
+            self::badge($canvas, (string) $user->rank->abbreviation, $left, 165);
             $left += 190;
         }
 
         $textWidth = self::WIDTH - $left - self::PADDING;
 
         if ($profile->showsRank && filled($user->rank?->name)) {
-            ServiceProfileImageService::text($canvas, Str::upper((string) $user->rank->name), 22, $left, 178, '#60a5fa', bold: true, maxWidth: $textWidth);
+            self::text($canvas, Str::upper((string) $user->rank->name), 22, $left, 178, '#60a5fa', bold: true, maxWidth: $textWidth);
         }
 
-        ServiceProfileImageService::text($canvas, $user->name, 64, $left, 252, '#ffffff', bold: true, maxWidth: $textWidth);
+        self::text($canvas, $user->name, 64, $left, 252, '#ffffff', bold: true, maxWidth: $textWidth);
 
         $assignment = $profile->showsAssignment
             ? collect([$user->position?->name, $user->unit?->name])->filter()->implode('  ·  ')
             : null;
 
         if (filled($assignment)) {
-            ServiceProfileImageService::text($canvas, $assignment, 26, $left, 302, '#cbd5e1', maxWidth: $textWidth);
+            self::text($canvas, $assignment, 26, $left, 302, '#cbd5e1', maxWidth: $textWidth);
         }
 
-        ServiceProfileImageService::ribbons($canvas, $profile, self::PADDING, 372);
+        self::ribbons($canvas, $profile, self::PADDING, 372);
 
         $stats = collect([
             filled($profile->timeInService) ? $profile->timeInService.' in service' : null,
@@ -67,12 +67,12 @@ class ServiceProfileImageService
         ])->filter()->implode('   ·   ');
 
         if (filled($stats)) {
-            ServiceProfileImageService::text($canvas, $stats, 24, self::PADDING, 490, '#94a3b8', maxWidth: self::WIDTH - (self::PADDING * 2));
+            self::text($canvas, $stats, 24, self::PADDING, 490, '#94a3b8', maxWidth: self::WIDTH - (self::PADDING * 2));
         }
 
-        imagefilledrectangle($canvas, 0, 548, self::WIDTH, self::HEIGHT, ServiceProfileImageService::color($canvas, '#020617'));
-        ServiceProfileImageService::text($canvas, $profile->organization, 24, self::PADDING, 600, '#e2e8f0', bold: true, maxWidth: 700);
-        ServiceProfileImageService::text($canvas, 'PERSCOM', 24, self::WIDTH - self::PADDING - ServiceProfileImageService::width('PERSCOM', 24, true), 600, '#60a5fa', bold: true);
+        imagefilledrectangle($canvas, 0, 548, self::WIDTH, self::HEIGHT, self::color($canvas, '#020617'));
+        self::text($canvas, $profile->organization, 24, self::PADDING, 600, '#e2e8f0', bold: true, maxWidth: 700);
+        self::text($canvas, 'PERSCOM', 24, self::WIDTH - self::PADDING - self::width('PERSCOM', 24, true), 600, '#60a5fa', bold: true);
 
         ob_start();
         imagepng($canvas, null, 6);
@@ -99,7 +99,7 @@ class ServiceProfileImageService
             imageline($canvas, 0, $y, self::WIDTH, $y, $color);
         });
 
-        imagefilledrectangle($canvas, 0, 0, self::WIDTH, 8, ServiceProfileImageService::color($canvas, Brand::PRIMARY_HEX));
+        imagefilledrectangle($canvas, 0, 0, self::WIDTH, 8, self::color($canvas, Brand::PRIMARY_HEX));
     }
 
     protected static function ribbons(GdImage $canvas, ServiceProfileData $profile, int $x, int $y): void
@@ -126,35 +126,35 @@ class ServiceProfileImageService
 
     protected static function badge(GdImage $canvas, string $label, int $x, int $y): void
     {
-        imagefilledrectangle($canvas, $x, $y, $x + 150, $y + 120, ServiceProfileImageService::color($canvas, '#1e293b'));
-        imagerectangle($canvas, $x, $y, $x + 150, $y + 120, ServiceProfileImageService::color($canvas, '#334155'));
+        imagefilledrectangle($canvas, $x, $y, $x + 150, $y + 120, self::color($canvas, '#1e293b'));
+        imagerectangle($canvas, $x, $y, $x + 150, $y + 120, self::color($canvas, '#334155'));
 
         $size = 40;
-        while ($size > 14 && ServiceProfileImageService::width($label, $size, true) > 130) {
+        while ($size > 14 && self::width($label, $size, true) > 130) {
             $size -= 2;
         }
 
-        ServiceProfileImageService::text($canvas, $label, $size, $x + (int) ((150 - ServiceProfileImageService::width($label, $size, true)) / 2), $y + 60 + (int) ($size / 2), '#ffffff', bold: true);
+        self::text($canvas, $label, $size, $x + (int) ((150 - self::width($label, $size, true)) / 2), $y + 60 + (int) ($size / 2), '#ffffff', bold: true);
     }
 
     protected static function text(GdImage $canvas, string $text, int $size, int $x, int $y, string $color, bool $bold = false, ?int $maxWidth = null): void
     {
         if ($maxWidth !== null) {
-            while ($size > 14 && ServiceProfileImageService::width($text, $size, $bold) > $maxWidth) {
+            while ($size > 14 && self::width($text, $size, $bold) > $maxWidth) {
                 $size -= 2;
             }
 
-            while (mb_strlen($text) > 1 && ServiceProfileImageService::width($text, $size, $bold) > $maxWidth) {
-                $text = rtrim(mb_substr($text, 0, -2)).'…';
+            while (mb_strlen($text) > 1 && self::width($text, $size, $bold) > $maxWidth) {
+                $text = mb_rtrim(mb_substr($text, 0, -2)).'…';
             }
         }
 
-        imagettftext($canvas, $size, 0, $x, $y, ServiceProfileImageService::color($canvas, $color), ServiceProfileImageService::font($bold), $text);
+        imagettftext($canvas, $size, 0, $x, $y, self::color($canvas, $color), self::font($bold), $text);
     }
 
     protected static function width(string $text, int $size, bool $bold = false): int
     {
-        $box = imagettfbbox($size, 0, ServiceProfileImageService::font($bold), $text);
+        $box = imagettfbbox($size, 0, self::font($bold), $text);
 
         return $box === false ? 0 : abs($box[2] - $box[0]);
     }
@@ -166,7 +166,7 @@ class ServiceProfileImageService
 
     protected static function color(GdImage $canvas, string $hex): int
     {
-        [$red, $green, $blue] = sscanf(ltrim($hex, '#'), '%02x%02x%02x');
+        [$red, $green, $blue] = sscanf(mb_ltrim($hex, '#'), '%02x%02x%02x');
 
         return (int) imagecolorallocate($canvas, (int) $red, (int) $green, (int) $blue);
     }

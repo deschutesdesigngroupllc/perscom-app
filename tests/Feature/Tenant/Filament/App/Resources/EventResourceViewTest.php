@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class EventResourceViewTest extends TenantTestCase
 {
     public function test_it_renders_the_hero_briefing_and_whos_going_for_a_one_time_event(): void

@@ -27,6 +27,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 
+use function in_array;
+use function is_string;
+
 class Schedule
 {
     public static function make(bool $startHidden = false, bool $allDay = false, bool $shiftScheduleTimezone = false): Section

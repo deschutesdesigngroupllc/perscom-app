@@ -52,7 +52,7 @@ class ServiceRecords extends Page
 
     public static function canAccess(): bool
     {
-        return collect(ServiceRecords::RECORD_RESOURCES)->contains(fn (string $resource): bool => $resource::canViewAny());
+        return collect(self::RECORD_RESOURCES)->contains(fn (string $resource): bool => $resource::canViewAny());
     }
 
     /**
@@ -62,7 +62,7 @@ class ServiceRecords extends Page
      */
     public function getRecordTypes(): array
     {
-        return collect(ServiceRecords::RECORD_RESOURCES)
+        return collect(self::RECORD_RESOURCES)
             ->filter(fn (string $resource): bool => $resource::canViewAny())
             ->map(fn (string $resource): array => [
                 'label' => $resource::getTitleCasePluralModelLabel(),

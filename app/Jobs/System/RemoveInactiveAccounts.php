@@ -44,7 +44,7 @@ class RemoveInactiveAccounts implements RequiresTenancy, ShouldQueue
      */
     public static function deletionDate(Tenant $tenant): string
     {
-        return (RemoveInactiveAccounts::lastActivityDate($tenant) ?? now())->copy()->addMonths(2)->toFormattedDateString();
+        return (self::lastActivityDate($tenant) ?? now())->copy()->addMonths(2)->toFormattedDateString();
     }
 
     /**

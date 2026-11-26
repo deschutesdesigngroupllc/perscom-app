@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
+use function in_array;
+
 enum AutomationTrigger: string implements HasLabel
 {
     case ASSIGNMENT_RECORD_CREATED = 'assignmentrecord.created';

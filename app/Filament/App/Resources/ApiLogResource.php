@@ -38,6 +38,9 @@ use Phiki\Grammar\Grammar;
 use Symfony\Component\HttpFoundation\Response;
 use UnitEnum;
 
+use function in_array;
+use function sprintf;
+
 class ApiLogResource extends BaseResource
 {
     protected static ?string $model = ApiLog::class;

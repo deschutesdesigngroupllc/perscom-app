@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Testing\TestResponse;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function sprintf;
+
 class DiscordInteractionsControllerTest extends TenantTestCase
 {
     protected string $secretKey;

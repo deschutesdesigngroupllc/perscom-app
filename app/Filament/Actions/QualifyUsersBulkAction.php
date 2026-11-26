@@ -17,6 +17,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 
+use function sprintf;
+
 class QualifyUsersBulkAction extends BulkAction
 {
     use AppliesChangeSets;

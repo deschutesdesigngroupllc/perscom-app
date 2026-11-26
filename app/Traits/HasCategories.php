@@ -52,7 +52,7 @@ trait HasCategories
             default => null,
         };
 
-        if (! is_null($using)) {
+        if ($using !== null) {
             return $relationship->as($using);
         }
 

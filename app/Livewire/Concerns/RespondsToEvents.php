@@ -15,6 +15,8 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
+use function sprintf;
+
 trait RespondsToEvents
 {
     public function respondToEvent(int $eventId, int $starts, string $status, bool $wholeSeries = false): void

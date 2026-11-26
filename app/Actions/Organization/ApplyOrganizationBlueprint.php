@@ -27,6 +27,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
+use function in_array;
+
 class ApplyOrganizationBlueprint
 {
     public const array SECTIONS = [

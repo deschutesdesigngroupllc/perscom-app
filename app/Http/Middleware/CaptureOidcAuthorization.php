@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
+use function is_string;
+
 class CaptureOidcAuthorization
 {
     /**

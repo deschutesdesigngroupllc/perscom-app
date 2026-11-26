@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
+use function sprintf;
+
 class QualifyMemberAction extends Action
 {
     use AppliesChangeSets;

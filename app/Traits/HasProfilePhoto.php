@@ -33,7 +33,7 @@ trait HasProfilePhoto
 
     public function deleteProfilePhoto(): void
     {
-        if (is_null($this->profile_photo)) {
+        if ($this->profile_photo === null) {
             return;
         }
 

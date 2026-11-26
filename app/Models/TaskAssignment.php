@@ -89,6 +89,24 @@ class TaskAssignment extends Pivot
     use HasFactory;
     use HasUser;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'completed_at' => 'datetime',
+            'assigned_at' => 'datetime',
+            'due_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'expired' => 'boolean',
+            'past_due' => 'boolean',
+            'complete' => 'boolean',
+        ];
+    }
+
     public function complete(?CarbonInterface $completedAt = null): bool
     {
         return $this->update([
@@ -192,23 +210,5 @@ class TaskAssignment extends Pivot
         return Attribute::make(get: fn (): bool => $this->due_at &&
                ((! $this->complete && Date::parse($this->due_at)->isPast()) ||
                 ($this->complete && Date::parse($this->due_at)->isBefore($this->completed_at))));
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-            'completed_at' => 'datetime',
-            'assigned_at' => 'datetime',
-            'due_at' => 'datetime',
-            'expires_at' => 'datetime',
-            'expired' => 'boolean',
-            'past_due' => 'boolean',
-            'complete' => 'boolean',
-        ];
     }
 }

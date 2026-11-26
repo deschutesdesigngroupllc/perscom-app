@@ -12,6 +12,8 @@ use Filament\Widgets\Widget;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
+use function in_array;
+
 class ConnectAiAgentWidget extends Widget
 {
     public const string DISMISSED_KEY = 'connect_ai_agent';

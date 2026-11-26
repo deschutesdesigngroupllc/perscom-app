@@ -8,6 +8,8 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 /**
  * @mixin Eloquent
  */

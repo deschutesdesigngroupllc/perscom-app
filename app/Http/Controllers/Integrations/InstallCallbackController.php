@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Spatie\Url\Url;
 
+use function sprintf;
+
 class InstallCallbackController
 {
     /**
@@ -28,7 +30,7 @@ class InstallCallbackController
             ? IntegrationInstallService::returnUrlFor($payload, Tenant::query()->findOrFail(data_get($payload, 'tenant')))
             : config('app.url');
 
-        return redirect()->to(Url::fromString(rtrim((string) $base, '/').$path)
+        return redirect()->to(Url::fromString(mb_rtrim((string) $base, '/').$path)
             ->withQueryParameters($request->query->all())
             ->__toString());
     }

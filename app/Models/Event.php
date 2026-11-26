@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
+use function call_user_func;
+
 /**
  * @property int $id
  * @property string $name
@@ -154,6 +156,32 @@ class Event extends Model implements HasLabel
         'notifications_enabled' => true,
     ];
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        $casts = [
+            'all_day' => 'boolean',
+            'starts' => 'datetime',
+            'ends' => 'datetime',
+            'repeats' => 'boolean',
+            'registration_enabled' => 'boolean',
+            'registration_deadline' => 'datetime',
+            'creates_training_record' => 'boolean',
+            'notifications_enabled' => 'boolean',
+            'notifications_interval' => 'array',
+            'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),
+        ];
+
+        if ($this->all_day) {
+            $casts['starts'] = 'date';
+            $casts['ends'] = 'date';
+        }
+
+        return $casts;
+    }
+
     public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
@@ -220,31 +248,5 @@ class Event extends Model implements HasLabel
 
             return call_user_func($this->resourceUrl()->get, $value, $this->attributes);
         })->shouldCache();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        $casts = [
-            'all_day' => 'boolean',
-            'starts' => 'datetime',
-            'ends' => 'datetime',
-            'repeats' => 'boolean',
-            'registration_enabled' => 'boolean',
-            'registration_deadline' => 'datetime',
-            'creates_training_record' => 'boolean',
-            'notifications_enabled' => 'boolean',
-            'notifications_interval' => 'array',
-            'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),
-        ];
-
-        if ($this->all_day) {
-            $casts['starts'] = 'date';
-            $casts['ends'] = 'date';
-        }
-
-        return $casts;
     }
 }

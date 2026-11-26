@@ -36,6 +36,9 @@ use Illuminate\Support\Facades\Date;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 
+use function is_string;
+use function sprintf;
+
 class ViewEvent extends ViewRecord
 {
     use RespondsToEvents;

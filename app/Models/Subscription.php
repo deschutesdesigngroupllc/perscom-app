@@ -15,6 +15,8 @@ use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
+use function sprintf;
+
 /**
  * @property int $id
  * @property int $tenant_id

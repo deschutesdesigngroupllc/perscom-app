@@ -43,6 +43,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
+use function sprintf;
+
 class SubmissionResource extends BaseResource
 {
     use BuildsCustomFieldComponents;

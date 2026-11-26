@@ -17,6 +17,8 @@ use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 
+use function sprintf;
+
 class DiscordService
 {
     /**
@@ -41,7 +43,7 @@ class DiscordService
             ->withQueryParameters([
                 'client_id' => config('services.discord.client_id'),
                 'scope' => 'bot applications.commands',
-                'permissions' => DiscordService::BOT_PERMISSIONS,
+                'permissions' => self::BOT_PERMISSIONS,
             ])
             ->__toString();
     }
@@ -56,9 +58,9 @@ class DiscordService
             ->withQueryParameters([
                 'client_id' => config('services.discord.client_id'),
                 'scope' => 'bot applications.commands',
-                'permissions' => DiscordService::BOT_PERMISSIONS,
+                'permissions' => self::BOT_PERMISSIONS,
                 'response_type' => 'code',
-                'redirect_uri' => DiscordService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
                 'state' => $state,
             ])
             ->__toString();
@@ -85,7 +87,7 @@ class DiscordService
                 'client_secret' => config('services.discord.client_secret'),
                 'grant_type' => 'authorization_code',
                 'code' => $code,
-                'redirect_uri' => DiscordService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
             ]);
 
         if (! $response->successful() || blank($response->json('guild.id'))) {
@@ -93,7 +95,7 @@ class DiscordService
                 'status' => $response->status(),
                 'error' => $response->json('error'),
                 'error_description' => $response->json('error_description'),
-                'redirect_uri' => DiscordService::installRedirectUri(),
+                'redirect_uri' => self::installRedirectUri(),
             ]);
 
             return null;
@@ -114,7 +116,7 @@ class DiscordService
      */
     public static function registerCommands(array $commands): bool
     {
-        return DiscordService::send('put', sprintf('applications/%s/commands', config('services.discord.client_id')), $commands)?->successful() ?? false;
+        return self::send('put', sprintf('applications/%s/commands', config('services.discord.client_id')), $commands)?->successful() ?? false;
     }
 
     /**
@@ -126,7 +128,7 @@ class DiscordService
      */
     public static function getRoles(string $guildId): array
     {
-        return (array) DiscordService::send('get', sprintf('guilds/%s/roles', $guildId))?->json();
+        return (array) self::send('get', sprintf('guilds/%s/roles', $guildId))?->json();
     }
 
     /**
@@ -136,7 +138,7 @@ class DiscordService
      */
     public static function createRole(string $guildId, string $name): ?string
     {
-        $response = DiscordService::send('post', sprintf('guilds/%s/roles', $guildId), [
+        $response = self::send('post', sprintf('guilds/%s/roles', $guildId), [
             'name' => Str::limit($name, 97),
             'mentionable' => true,
         ]);
@@ -153,7 +155,7 @@ class DiscordService
      */
     public static function getMember(string $guildId, string $userId): ?array
     {
-        $response = DiscordService::send('get', sprintf('guilds/%s/members/%s', $guildId, $userId));
+        $response = self::send('get', sprintf('guilds/%s/members/%s', $guildId, $userId));
 
         return $response?->successful() ? (array) $response->json() : null;
     }
@@ -165,7 +167,7 @@ class DiscordService
      */
     public static function addMemberRole(string $guildId, string $userId, string $roleId): bool
     {
-        return DiscordService::send('put', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
+        return self::send('put', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
     }
 
     /**
@@ -175,7 +177,7 @@ class DiscordService
      */
     public static function removeMemberRole(string $guildId, string $userId, string $roleId): bool
     {
-        return DiscordService::send('delete', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
+        return self::send('delete', sprintf('guilds/%s/members/%s/roles/%s', $guildId, $userId, $roleId))?->successful() ?? false;
     }
 
     /**
@@ -185,7 +187,7 @@ class DiscordService
      */
     public static function setNickname(string $guildId, string $userId, string $nickname): bool
     {
-        return DiscordService::send('patch', sprintf('guilds/%s/members/%s', $guildId, $userId), [
+        return self::send('patch', sprintf('guilds/%s/members/%s', $guildId, $userId), [
             'nick' => Str::limit($nickname, 29),
         ])?->successful() ?? false;
     }
@@ -197,7 +199,7 @@ class DiscordService
      */
     public static function leaveServer(string $guildId): bool
     {
-        return DiscordService::send('delete', sprintf('users/@me/guilds/%s', $guildId))?->successful() ?? false;
+        return self::send('delete', sprintf('users/@me/guilds/%s', $guildId))?->successful() ?? false;
     }
 
     /**
@@ -318,7 +320,7 @@ class DiscordService
             } catch (DiscordRateLimitException $exception) {
                 $retryCount++;
 
-                Sleep::until(Date::now()->addMilliseconds(DiscordService::retryDelayInMilliseconds($exception->getData())));
+                Sleep::until(Date::now()->addMilliseconds(self::retryDelayInMilliseconds($exception->getData())));
             }
         }
 

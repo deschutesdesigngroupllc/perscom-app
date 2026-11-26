@@ -79,14 +79,6 @@ class Admin extends Authenticatable implements FilamentUser, HasAppAuthenticatio
     use Notifiable;
 
     /**
-     * @throws Exception
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $panel->getId() === 'admin';
-    }
-
-    /**
      * @return array<string, string>
      */
     protected function casts(): array
@@ -94,5 +86,13 @@ class Admin extends Authenticatable implements FilamentUser, HasAppAuthenticatio
         return [
             'email_verified_at' => 'datetime',
         ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $panel->getId() === 'admin';
     }
 }

@@ -21,6 +21,8 @@ use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 use UnitEnum;
 
+use function in_array;
+
 class Roster extends Page
 {
     use HasPageShield;

@@ -18,6 +18,10 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use LogicException;
 use SensitiveParameter;
 
+use function in_array;
+use function is_array;
+use function is_string;
+
 class IdTokenResponse extends BearerTokenResponse
 {
     /**

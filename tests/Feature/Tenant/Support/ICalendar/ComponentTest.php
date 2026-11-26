@@ -23,8 +23,8 @@ class ComponentTest extends TenantTestCase
         $parts = explode("\r\n", $folded);
 
         $this->assertCount(3, $parts);
-        $this->assertSame(75, strlen($parts[0]));
-        $this->assertSame(75, strlen($parts[1]));
+        $this->assertSame(75, mb_strlen($parts[0], '8bit'));
+        $this->assertSame(75, mb_strlen($parts[1], '8bit'));
         $this->assertStringStartsWith(' ', $parts[1]);
         $this->assertSame($line, str_replace("\r\n ", '', $folded));
     }
@@ -34,7 +34,7 @@ class ComponentTest extends TenantTestCase
         $line = 'SUMMARY:'.str_repeat('é', 100);
 
         collect(explode("\r\n", Component::fold($line)))->each(function (string $part): void {
-            $this->assertLessThanOrEqual(75, strlen($part));
+            $this->assertLessThanOrEqual(75, mb_strlen($part, '8bit'));
             $this->assertTrue(mb_check_encoding($part, 'UTF-8'));
         });
     }

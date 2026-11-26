@@ -62,16 +62,6 @@ class Registration extends Model
     use CentralConnection;
     use Notifiable;
 
-    public function tenant(): BelongsTo
-    {
-        return $this->belongsTo(Tenant::class);
-    }
-
-    public function routeNotificationForMail(): string
-    {
-        return $this->email;
-    }
-
     /**
      * @return array<string, string>
      */
@@ -81,5 +71,15 @@ class Registration extends Model
             'verified_at' => 'datetime',
             'organization_type' => OrganizationType::class,
         ];
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+
+    public function routeNotificationForMail(): string
+    {
+        return $this->email;
     }
 }

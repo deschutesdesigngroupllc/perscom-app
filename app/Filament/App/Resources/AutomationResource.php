@@ -51,6 +51,8 @@ use Illuminate\Support\Str;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
+use function in_array;
+
 class AutomationResource extends BaseResource
 {
     protected static ?string $model = Automation::class;

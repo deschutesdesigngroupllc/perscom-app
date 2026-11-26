@@ -101,7 +101,7 @@ class SocialiteUser extends BaseSocialiteUser
      *
      * @throws ImplementationException
      */
-    protected static function updateUser(string $provider, SocialiteUserContract $oauthUser, SocialiteUser $socialiteUser): void
+    protected static function updateUser(string $provider, SocialiteUserContract $oauthUser, self $socialiteUser): void
     {
         $column = static::getProviderColumn($provider);
 

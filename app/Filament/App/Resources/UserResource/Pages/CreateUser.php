@@ -40,6 +40,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
+use function sprintf;
+
 class CreateUser extends CreateRecord
 {
     use HasContainedWizard;

@@ -25,6 +25,8 @@ use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
+use function sprintf;
+
 class NewTrainingRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;

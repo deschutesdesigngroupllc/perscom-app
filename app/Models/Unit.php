@@ -128,7 +128,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Unit::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
 
     /**
@@ -138,7 +138,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
      */
     public function children(): HasMany
     {
-        return $this->hasMany(Unit::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     /**
@@ -152,7 +152,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         $frontier = [(int) $this->getKey()];
 
         while (filled($frontier)) {
-            $frontier = Unit::query()
+            $frontier = self::query()
                 ->withoutGlobalScopes()
                 ->whereIn('parent_id', $frontier)
                 ->whereNotIn('id', [...$descendants, (int) $this->getKey()])

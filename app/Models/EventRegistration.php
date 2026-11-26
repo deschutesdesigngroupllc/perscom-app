@@ -19,6 +19,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 
+use function in_array;
+use function sprintf;
+
 /**
  * App\Models\EventRegistration
  *
@@ -66,6 +69,19 @@ class EventRegistration extends Pivot
 
     public $incrementing = true;
 
+    /**
+     * @return array<string, class-string<EventRegistrationStatus>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => EventRegistrationStatus::class,
+            'checked_in_at' => 'datetime',
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
+    }
+
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
@@ -112,18 +128,5 @@ class EventRegistration extends Pivot
             /** @phpstan-ignore-next-line **/
             $query->future();
         });
-    }
-
-    /**
-     * @return array<string, class-string<EventRegistrationStatus>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'status' => EventRegistrationStatus::class,
-            'checked_in_at' => 'datetime',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
     }
 }

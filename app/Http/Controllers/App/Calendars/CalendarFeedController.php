@@ -11,6 +11,8 @@ use App\Services\CalendarFeedService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class CalendarFeedController
 {
     public function __invoke(string $token, Calendar $calendar): Response

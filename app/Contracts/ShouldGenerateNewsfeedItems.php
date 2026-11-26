@@ -17,5 +17,5 @@ interface ShouldGenerateNewsfeedItems
 
     public function recipientForNewsfeedItem(): ?User;
 
-    public function generateCreatedNewsfeedItem(ShouldGenerateNewsfeedItems $model): ?ActivityContract;
+    public function generateCreatedNewsfeedItem(self $model): ?ActivityContract;
 }

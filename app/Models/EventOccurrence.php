@@ -66,6 +66,18 @@ class EventOccurrence extends Model
     use ClearsResponseCache;
     use HasFactory;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'starts' => 'datetime',
+            'ends' => 'datetime',
+            'cancelled_at' => 'datetime',
+        ];
+    }
+
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
@@ -97,17 +109,5 @@ class EventOccurrence extends Model
     protected function isCancelled(): Attribute
     {
         return Attribute::get(fn (): bool => filled($this->cancelled_at));
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'starts' => 'datetime',
-            'ends' => 'datetime',
-            'cancelled_at' => 'datetime',
-        ];
     }
 }

@@ -9,6 +9,9 @@ use App\Models\Rank;
 use App\Services\ApiCacheService;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function in_array;
+use function sprintf;
+
 class ApiCacheServiceTest extends TenantTestCase
 {
     public function test_tag_for_model_is_correctly_generated(): void

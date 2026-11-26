@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
+use function sprintf;
+
 class Fields extends SettingsPage
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;

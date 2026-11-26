@@ -12,6 +12,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
 
+use function sprintf;
+
 class ContextServiceProvider extends ServiceProvider
 {
     public function boot(): void

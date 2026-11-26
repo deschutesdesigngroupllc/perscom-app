@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use Laravel\Passport\Token;
 use Tests\Feature\Tenant\Mcp\McpTestCase;
 
+use function sprintf;
+
 class PerscomServerTest extends McpTestCase
 {
     public function test_unauthenticated_requests_are_rejected_with_discovery_metadata(): void

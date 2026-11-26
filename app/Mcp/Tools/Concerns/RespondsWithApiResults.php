@@ -10,6 +10,8 @@ use JsonException;
 use Laravel\Mcp\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
+use function sprintf;
+
 trait RespondsWithApiResults
 {
     /**

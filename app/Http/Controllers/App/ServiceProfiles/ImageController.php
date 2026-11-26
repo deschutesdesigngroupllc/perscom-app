@@ -10,6 +10,8 @@ use App\Services\ServiceProfileService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
 
+use function sprintf;
+
 class ImageController
 {
     public function __invoke(string $handle): Response

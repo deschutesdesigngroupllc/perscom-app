@@ -15,6 +15,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
+use function is_array;
+
 class CreateAutomation extends CreateRecord
 {
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;

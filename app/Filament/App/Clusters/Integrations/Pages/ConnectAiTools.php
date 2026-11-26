@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Auth;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
+use function sprintf;
+
 class ConnectAiTools extends Page
 {
     public string $serverUrl = '';

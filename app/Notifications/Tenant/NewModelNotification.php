@@ -30,6 +30,10 @@ use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
+use function in_array;
+use function is_array;
+use function is_string;
+
 class NewModelNotification extends Notification implements ShouldQueue
 {
     use Queueable;

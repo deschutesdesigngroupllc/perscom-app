@@ -8,6 +8,8 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Str;
 
+use function in_array;
+
 enum EventRegistrationStatus: string implements HasColor, HasLabel
 {
     case GOING = 'going';

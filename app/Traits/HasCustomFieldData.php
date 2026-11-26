@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Stancl\VirtualColumn\VirtualColumn;
 
+use function is_string;
+
 /**
  * @mixin Eloquent|Model
  */
@@ -68,7 +70,7 @@ trait HasCustomFieldData
             default => null,
         };
 
-        if (is_null($fields)) {
+        if ($fields === null) {
             return;
         }
 

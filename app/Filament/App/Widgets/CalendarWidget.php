@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Livewire\Attributes\Locked;
 
+use function in_array;
+use function sprintf;
+
 class CalendarWidget extends BaseCalendarWidget
 {
     use HasWidgetShield;

@@ -12,6 +12,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
+use function is_string;
+
 class PersonalFeedController
 {
     public function __invoke(Request $request, string $token): Response

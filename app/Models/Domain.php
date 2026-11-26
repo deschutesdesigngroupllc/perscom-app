@@ -60,6 +60,16 @@ class Domain extends BaseDomain
     use ClearsResponseCache;
     use HasFactory;
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_custom_subdomain' => 'boolean',
+        ];
+    }
+
     public static function generateSubdomain(): string
     {
         return Str::lower(Str::random(8));
@@ -73,7 +83,7 @@ class Domain extends BaseDomain
     protected function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => optional($this->host, static fn (string $host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
+            get: fn (): string => optional($this->host, static fn (string $host): string => mb_rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
         )->shouldCache();
     }
 
@@ -89,15 +99,5 @@ class Domain extends BaseDomain
                 ? $domain
                 : $domain.config('app.base_url'))->__toString())
         )->shouldCache();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'is_custom_subdomain' => 'boolean',
-        ];
     }
 }

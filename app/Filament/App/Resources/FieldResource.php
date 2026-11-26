@@ -301,7 +301,7 @@ class FieldResource extends BaseResource
                 Action::make('create')
                     ->label('New Field')
                     ->openUrlInNewTab()
-                    ->url(FieldResource::getUrl('create'))
+                    ->url(self::getUrl('create'))
                     ->button(),
             ]);
     }

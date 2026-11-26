@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
+use function array_key_exists;
+
 /**
  * @property int $id
  * @property string|null $log_name

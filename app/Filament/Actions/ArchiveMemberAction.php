@@ -16,6 +16,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class ArchiveMemberAction extends Action
 {
     use AppliesChangeSets;

@@ -66,6 +66,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function is_string;
+
 class EventResource extends BaseResource
 {
     protected static ?string $model = Event::class;

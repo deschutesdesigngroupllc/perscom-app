@@ -28,6 +28,12 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
 
+use function in_array;
+use function is_array;
+use function is_float;
+use function is_string;
+use function sprintf;
+
 class AutomationService
 {
     public function __construct(

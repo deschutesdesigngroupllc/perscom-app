@@ -34,6 +34,8 @@ use Illuminate\Validation\Rule;
 use Throwable;
 use UnitEnum;
 
+use function sprintf;
+
 class Dashboard extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
@@ -205,7 +207,7 @@ class Dashboard extends SettingsPage
         /** @var ?Tenant $tenant */
         $tenant = tenant();
 
-        if (is_null($tenant)) {
+        if ($tenant === null) {
             return;
         }
 

@@ -72,6 +72,14 @@ class Credential extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
 
+    protected function casts(): array
+    {
+        return [
+            'type' => CredentialType::class,
+            'validity_days' => 'integer',
+        ];
+    }
+
     public function issuer(): BelongsTo
     {
         return $this->belongsTo(Issuer::class);
@@ -82,13 +90,5 @@ class Credential extends Model implements HasLabel, Sortable
         return $this->belongsToMany(TrainingRecord::class, TrainingRecordCredential::class)
             ->using(TrainingRecordCredential::class)
             ->withPivot(['id', 'issued_at', 'expires_at']);
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => CredentialType::class,
-            'validity_days' => 'integer',
-        ];
     }
 }

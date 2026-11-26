@@ -41,6 +41,8 @@ use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class MessageResource extends BaseResource
 {
     protected static ?string $model = Message::class;
@@ -125,7 +127,7 @@ class MessageResource extends BaseResource
                 SelectFilter::make('channels')
                     ->options(NotificationChannel::class)
                     ->modifyQueryUsing(fn (Builder $query, $data): Builder => $query
-                        ->unless(is_null(data_get($data, 'value')))
+                        ->unless(data_get($data, 'value') === null)
                         ->whereJsonContains('channels', data_get($data, 'value'))),
                 TernaryFilter::make('repeats'),
             ])

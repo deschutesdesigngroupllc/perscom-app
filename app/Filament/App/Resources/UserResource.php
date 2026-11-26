@@ -64,6 +64,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
 
+use function in_array;
+use function sprintf;
+
 class UserResource extends BaseResource
 {
     use BuildsCustomFieldComponents;

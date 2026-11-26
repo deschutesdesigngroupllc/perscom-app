@@ -9,6 +9,8 @@ use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Str;
 
+use function sprintf;
+
 class DeleteMemberAction extends DeleteAction
 {
     protected function setUp(): void

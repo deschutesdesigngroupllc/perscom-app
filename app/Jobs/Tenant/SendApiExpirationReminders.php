@@ -33,7 +33,7 @@ class SendApiExpirationReminders implements RunsPerTenant, ShouldQueue
         $recipient = tenant() ?? config('mail.from.address');
 
         PassportToken::query()->whereDate('expires_at', now()->addMonth()->toDateString())->each(function (PassportToken $passportToken) use ($recipient): void {
-            if (! is_null($passportToken->expires_at)) {
+            if ($passportToken->expires_at !== null) {
                 Mail::to($recipient)->send(new ApiExpirationReminder(
                     name: $passportToken->name,
                     expiresAt: $passportToken->expires_at
@@ -42,7 +42,7 @@ class SendApiExpirationReminders implements RunsPerTenant, ShouldQueue
         });
 
         PassportToken::query()->whereDate('expires_at', now()->addDay()->toDateString())->each(function (PassportToken $passportToken) use ($recipient): void {
-            if (! is_null($passportToken->expires_at)) {
+            if ($passportToken->expires_at !== null) {
                 Mail::to($recipient)->send(new ApiExpirationReminder(
                     name: $passportToken->name,
                     expiresAt: $passportToken->expires_at

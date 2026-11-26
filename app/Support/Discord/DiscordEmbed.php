@@ -7,6 +7,10 @@ namespace App\Support\Discord;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 
+use function count;
+use function is_scalar;
+use function is_string;
+
 final class DiscordEmbed
 {
     public const int TITLE_LIMIT = 256;
@@ -86,7 +90,7 @@ final class DiscordEmbed
      */
     public static function imageUrl(?string $url): ?string
     {
-        $url = DiscordEmbed::absoluteUrl($url);
+        $url = self::absoluteUrl($url);
 
         $path = Str::lower((string) parse_url((string) $url, PHP_URL_PATH));
 
@@ -109,7 +113,7 @@ final class DiscordEmbed
 
     public function url(?string $url): static
     {
-        $this->url = DiscordEmbed::absoluteUrl($url);
+        $this->url = self::absoluteUrl($url);
 
         return $this;
     }
@@ -120,7 +124,7 @@ final class DiscordEmbed
     public function color(int|string|null $color): static
     {
         $this->color = is_string($color)
-            ? (int) hexdec(ltrim($color, '#'))
+            ? (int) hexdec(mb_ltrim($color, '#'))
             : $color;
 
         return $this;
@@ -137,14 +141,14 @@ final class DiscordEmbed
 
     public function thumbnail(?string $url): static
     {
-        $this->thumbnail = DiscordEmbed::imageUrl($url);
+        $this->thumbnail = self::imageUrl($url);
 
         return $this;
     }
 
     public function image(?string $url): static
     {
-        $this->image = DiscordEmbed::imageUrl($url);
+        $this->image = self::imageUrl($url);
 
         return $this;
     }
@@ -153,8 +157,8 @@ final class DiscordEmbed
     {
         $this->author = blank($name) ? null : collect([
             'name' => Str::limit($name, self::AUTHOR_NAME_LIMIT - 3),
-            'url' => DiscordEmbed::absoluteUrl($url),
-            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
+            'url' => self::absoluteUrl($url),
+            'icon_url' => self::imageUrl($iconUrl),
         ])->filter(filled(...))->all();
 
         return $this;
@@ -164,7 +168,7 @@ final class DiscordEmbed
     {
         $this->footer = blank($text) ? null : collect([
             'text' => Str::limit($text, self::FOOTER_TEXT_LIMIT - 3),
-            'icon_url' => DiscordEmbed::imageUrl($iconUrl),
+            'icon_url' => self::imageUrl($iconUrl),
         ])->filter(filled(...))->all();
 
         return $this;

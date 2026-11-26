@@ -11,23 +11,23 @@ class SettingsService
 {
     public static function all(string $class): mixed
     {
-        return SettingsService::withCache($class);
+        return self::withCache($class);
     }
 
     public static function get(string $class, string $key, mixed $default = null, bool $flush = false): mixed
     {
         if ($flush) {
-            SettingsService::flush($class);
+            self::flush($class);
         }
 
-        $settings = SettingsService::withCache($class);
+        $settings = self::withCache($class);
 
         return data_get($settings, $key, value($default));
     }
 
     public static function flush(string $class): ?bool
     {
-        return Cache::forget(SettingsService::cacheKey($class));
+        return Cache::forget(self::cacheKey($class));
     }
 
     protected static function cacheKey(string $class): string
@@ -37,7 +37,7 @@ class SettingsService
 
     protected static function withCache(string $class): mixed
     {
-        return Cache::remember(SettingsService::cacheKey($class), now()->addHour(), function () use ($class): array {
+        return Cache::remember(self::cacheKey($class), now()->addHour(), function () use ($class): array {
             /** @var Settings $settings */
             $settings = resolve($class);
 

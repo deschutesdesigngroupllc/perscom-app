@@ -27,6 +27,8 @@ use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Throwable;
 
+use function sprintf;
+
 class Copilot extends Component implements HasActions, HasSchemas
 {
     use InteractsWithActions;

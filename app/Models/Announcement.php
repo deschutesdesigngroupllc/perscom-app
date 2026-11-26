@@ -83,6 +83,17 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         'global' => false,
     ];
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'global' => 'boolean',
+            'expires_at' => 'datetime',
+        ];
+    }
+
     protected function scopeGlobal(Builder $query): void
     {
         $query->where('global', true);
@@ -106,16 +117,5 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
                 },
             },
         );
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'global' => 'boolean',
-            'expires_at' => 'datetime',
-        ];
     }
 }

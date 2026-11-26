@@ -19,6 +19,8 @@ use Livewire\Livewire;
 use Tests\Feature\Tenant\Services\Ai\OrganizationBlueprintServiceTest;
 use Tests\Feature\Tenant\TenantTestCase;
 
+use function count;
+
 class OrganizationBuilderTest extends TenantTestCase
 {
     protected function setUp(): void

@@ -34,6 +34,9 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 use Stancl\Tenancy\Database\TenantCollection;
 
+use function array_key_exists;
+use function in_array;
+
 /**
  * @property int $id
  * @property string $name
@@ -137,6 +140,19 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     use Notifiable;
 
     /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'setup_complete' => 'boolean',
+            'trial_ends_at' => 'datetime',
+            'setup_completed_at' => 'datetime',
+            'last_login_at' => 'datetime',
+        ];
+    }
+
+    /**
      * @return array<int, string>
      */
     public static function getCustomColumns(): array
@@ -197,7 +213,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return $this->url.route($name, $parameters, false);
     }
 
-    public function resolveRouteBinding($value, $field = null): Tenant|Model|null
+    public function resolveRouteBinding($value, $field = null): self|Model|null
     {
         /** @var Domain $domain */
         $domain = Domain::query()->where('domain', $value)->first();
@@ -273,7 +289,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 
     protected function setupCompleted(): Attribute
     {
-        return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
+        return Attribute::get(fn (): bool => $this->setup_completed_at !== null)
             ->shouldCache();
     }
 
@@ -347,18 +363,5 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             return SubscriptionStatus::from($subscription->stripe_status);
 
         })->shouldCache();
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'setup_complete' => 'boolean',
-            'trial_ends_at' => 'datetime',
-            'setup_completed_at' => 'datetime',
-            'last_login_at' => 'datetime',
-        ];
     }
 }

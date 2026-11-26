@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
 
+use function in_array;
+use function sprintf;
+
 class PromotionEligibilityService
 {
     /**

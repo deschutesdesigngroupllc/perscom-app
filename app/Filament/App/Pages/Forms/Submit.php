@@ -70,7 +70,7 @@ class Submit extends Page implements HasForms
     {
         return $schema
             ->statePath('data')
-            ->components(Submit::buildCustomFieldInputs($this->submissionForm->fields));
+            ->components(self::buildCustomFieldInputs($this->submissionForm->fields));
     }
 
     public function submit(): void

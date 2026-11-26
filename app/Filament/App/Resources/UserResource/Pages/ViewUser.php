@@ -31,6 +31,8 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Stringable;
 
+use function in_array;
+
 class ViewUser extends ViewRecord
 {
     protected static string $resource = UserResource::class;

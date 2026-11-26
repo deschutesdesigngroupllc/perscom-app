@@ -14,6 +14,8 @@ use Illuminate\Support\Collection;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Twilio\TwilioChannel;
 
+use function in_array;
+
 enum NotificationChannel: string implements HasDescription, HasLabel
 {
     case BROADCAST = 'broadcast';

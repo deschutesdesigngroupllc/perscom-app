@@ -7,6 +7,8 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Support\Number;
 
+use function sprintf;
+
 class AiUsageLimitExceededException extends Exception
 {
     public function __construct(int $limit)

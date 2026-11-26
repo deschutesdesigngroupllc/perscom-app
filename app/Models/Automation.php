@@ -108,6 +108,25 @@ class Automation extends Model
         'run_limit' => 'always',
     ];
 
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'trigger' => AutomationTrigger::class,
+            'action_type' => AutomationActionType::class,
+            'webhook_payload_template' => 'array',
+            'message_channels' => AsEnumCollection::of(NotificationChannel::class),
+            'model_update_lookup_type' => ModelUpdateLookupType::class,
+            'model_update_lookup_conditions' => 'array',
+            'model_update_fields' => 'array',
+            'enabled' => 'boolean',
+            'priority' => 'integer',
+            'run_limit' => AutomationRunLimit::class,
+        ];
+    }
+
     public function webhook(): BelongsTo
     {
         return $this->belongsTo(Webhook::class);
@@ -190,24 +209,5 @@ class Automation extends Model
     protected function scopeModelUpdateActions(Builder $query): Builder
     {
         return $query->where('action_type', AutomationActionType::MODEL_UPDATE);
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'trigger' => AutomationTrigger::class,
-            'action_type' => AutomationActionType::class,
-            'webhook_payload_template' => 'array',
-            'message_channels' => AsEnumCollection::of(NotificationChannel::class),
-            'model_update_lookup_type' => ModelUpdateLookupType::class,
-            'model_update_lookup_conditions' => 'array',
-            'model_update_fields' => 'array',
-            'enabled' => 'boolean',
-            'priority' => 'integer',
-            'run_limit' => AutomationRunLimit::class,
-        ];
     }
 }

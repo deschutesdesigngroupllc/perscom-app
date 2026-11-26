@@ -19,7 +19,7 @@ class SendMessage
      */
     public static function handle(Message $message, ?CarbonInterface $sendAt = null): void
     {
-        if (! SendMessage::canSendNotification($message)) {
+        if (! self::canSendNotification($message)) {
             return;
         }
 

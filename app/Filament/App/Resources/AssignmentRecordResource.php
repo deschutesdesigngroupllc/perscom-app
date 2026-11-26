@@ -52,6 +52,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class AssignmentRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;
@@ -207,16 +209,16 @@ class AssignmentRecordResource extends BaseResource
                                     ->badge(),
                                 TextEntry::make('position.name')
                                     ->label('Position')
-                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->position)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => $record->position === null),
                                 TextEntry::make('specialty.name')
                                     ->label('Specialty')
-                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->specialty)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => $record->specialty === null),
                                 TextEntry::make('unit.name')
                                     ->label('Unit')
-                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->unit)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => $record->unit === null),
                                 TextEntry::make('status.name')
                                     ->label('Status')
-                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->status)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => $record->status === null),
                                 TextEntry::make('text')
                                     ->html()
                                     ->prose()

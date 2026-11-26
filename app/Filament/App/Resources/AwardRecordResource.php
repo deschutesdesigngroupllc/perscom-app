@@ -50,6 +50,8 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use UnitEnum;
 
+use function sprintf;
+
 class AwardRecordResource extends BaseResource
 {
     use BuildsCustomFieldComponents;

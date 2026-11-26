@@ -11,6 +11,8 @@ use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Date;
 use Throwable;
 
+use function is_bool;
+
 class CreateEvent extends CreateRecord
 {
     protected Width|string|null $maxContentWidth = Width::SevenExtraLarge;

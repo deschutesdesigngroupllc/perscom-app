@@ -10,6 +10,8 @@ use App\Models\Qualification;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Stringable;
 
+use function sprintf;
+
 class ProposeQualificationRecords extends ProposalTool
 {
     public function description(): Stringable|string

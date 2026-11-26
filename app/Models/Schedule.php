@@ -100,6 +100,27 @@ class Schedule extends MorphPivot
         'duration' => 0,
     ];
 
+    /**
+     * @return array<string, class-string<ScheduleFrequency>|class-string<ScheduleEndType>|string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'start' => 'datetime',
+            'duration' => 'integer',
+            'frequency' => ScheduleFrequency::class,
+            'interval' => 'integer',
+            'end_type' => ScheduleEndType::class,
+            'count' => 'integer',
+            'until' => 'datetime',
+            'by_day' => 'collection',
+            'by_month_day' => 'collection',
+            'by_month' => 'collection',
+            'next_occurrence' => 'datetime',
+            'last_occurrence' => 'datetime',
+        ];
+    }
+
     public function repeatable(): MorphTo
     {
         return $this->morphTo();
@@ -151,26 +172,5 @@ class Schedule extends MorphPivot
     {
         return Attribute::get(fn (): CarbonInterval => $this->start->diff($this->start->copy()->addHours($this->duration)))
             ->shouldCache();
-    }
-
-    /**
-     * @return array<string, class-string<ScheduleFrequency>|class-string<ScheduleEndType>|string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'start' => 'datetime',
-            'duration' => 'integer',
-            'frequency' => ScheduleFrequency::class,
-            'interval' => 'integer',
-            'end_type' => ScheduleEndType::class,
-            'count' => 'integer',
-            'until' => 'datetime',
-            'by_day' => 'collection',
-            'by_month_day' => 'collection',
-            'by_month' => 'collection',
-            'next_occurrence' => 'datetime',
-            'last_occurrence' => 'datetime',
-        ];
     }
 }

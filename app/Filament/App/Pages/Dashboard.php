@@ -44,6 +44,9 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
+use function array_key_exists;
+use function sprintf;
+
 class Dashboard extends BaseDashboard
 {
     use GeneratesOrganizationBlueprints;
@@ -77,7 +80,7 @@ class Dashboard extends BaseDashboard
      */
     public function mount(): void
     {
-        if (Session::has(Dashboard::ONBOARDING_SHOWN_SESSION_KEY)) {
+        if (Session::has(self::ONBOARDING_SHOWN_SESSION_KEY)) {
             $this->defaultAction = null;
 
             return;
@@ -90,7 +93,7 @@ class Dashboard extends BaseDashboard
         }
 
         if ($this->shouldShowOnboarding()) {
-            Session::put(Dashboard::ONBOARDING_SHOWN_SESSION_KEY, true);
+            Session::put(self::ONBOARDING_SHOWN_SESSION_KEY, true);
         }
     }
 

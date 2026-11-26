@@ -113,6 +113,13 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
         'type' => RankRecordType::PROMOTION,
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'type' => RankRecordType::class,
+        ];
+    }
+
     public function headlineForNewsfeedItem(): string
     {
         return 'A rank record has been added for '.$this->user->name;
@@ -131,12 +138,5 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
     public function recipientForNewsfeedItem(): ?User
     {
         return $this->user;
-    }
-
-    protected function casts(): array
-    {
-        return [
-            'type' => RankRecordType::class,
-        ];
     }
 }

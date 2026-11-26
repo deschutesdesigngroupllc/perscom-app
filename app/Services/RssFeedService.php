@@ -16,6 +16,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use XMLWriter;
 
+use function sprintf;
+
 class RssFeedService
 {
     public const int LIMIT = 25;

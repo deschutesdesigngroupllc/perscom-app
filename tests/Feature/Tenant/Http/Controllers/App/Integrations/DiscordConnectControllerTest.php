@@ -50,7 +50,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
         $location = (string) $response->headers->get('Location');
 
-        $this->assertStringStartsWith(rtrim((string) $this->tenant->url, '/').'/integrations/discord/connect', $location);
+        $this->assertStringStartsWith(mb_rtrim((string) $this->tenant->url, '/').'/integrations/discord/connect', $location);
         $this->assertStringContainsString('code=abc', $location);
     }
 
@@ -159,12 +159,12 @@ class DiscordConnectControllerTest extends TenantTestCase
     {
         $this->tenant->forceFill(['custom_url' => 'https://roster.example.test'])->saveQuietly();
 
-        $state = Crypt::encrypt(['provider' => 'discord', 'tenant' => $this->tenant->getKey(), 'nonce' => 'n', 'origin' => rtrim((string) $this->tenant->fallback_url, '/')]);
+        $state = Crypt::encrypt(['provider' => 'discord', 'tenant' => $this->tenant->getKey(), 'nonce' => 'n', 'origin' => mb_rtrim((string) $this->tenant->fallback_url, '/')]);
 
         $response = $this->get(route('integrations.install.callback', ['provider' => 'discord', 'state' => $state, 'code' => 'abc']))
             ->assertRedirect();
 
-        $this->assertStringStartsWith(rtrim((string) $this->tenant->fallback_url, '/').'/integrations/discord/connect', (string) $response->headers->get('Location'));
+        $this->assertStringStartsWith(mb_rtrim((string) $this->tenant->fallback_url, '/').'/integrations/discord/connect', (string) $response->headers->get('Location'));
     }
 
     public function test_the_callback_ignores_an_origin_outside_the_organization(): void

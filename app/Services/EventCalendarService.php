@@ -18,6 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
+use function in_array;
+
 class EventCalendarService
 {
     /**

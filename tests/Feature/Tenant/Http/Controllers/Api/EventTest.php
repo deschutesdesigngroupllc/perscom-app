@@ -10,6 +10,8 @@ use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+use function sprintf;
+
 class EventTest extends ApiResourceTestCase
 {
     public function endpoint(): string

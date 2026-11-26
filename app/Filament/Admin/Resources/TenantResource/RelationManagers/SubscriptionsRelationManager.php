@@ -18,6 +18,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
+use function sprintf;
+
 class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';

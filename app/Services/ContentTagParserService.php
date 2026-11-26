@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
+use function in_array;
+use function is_string;
+use function sprintf;
+
 class ContentTagParserService
 {
     public function parse(string $content, ?User $user = null, ?Model $attachedModel = null): ?string

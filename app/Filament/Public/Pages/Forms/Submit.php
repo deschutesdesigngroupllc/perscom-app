@@ -21,6 +21,8 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+use function sprintf;
+
 /**
  * @property Schema $form
  */

@@ -17,6 +17,8 @@ use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Str;
 
+use function in_array;
+
 class ServiceProfileService
 {
     public static function isEnabled(): bool
@@ -30,14 +32,14 @@ class ServiceProfileService
      */
     public static function isPublic(User $user): bool
     {
-        return ServiceProfileService::isEnabled()
+        return self::isEnabled()
             && ! $user->hide_public_profile
             && $user->approved;
     }
 
     public static function url(User $user): string
     {
-        return ServiceProfileService::absoluteUrl(route('app.service-profiles.show', ['handle' => ServiceProfileService::handle($user)], absolute: false));
+        return self::absoluteUrl(route('app.service-profiles.show', ['handle' => self::handle($user)], absolute: false));
     }
 
     /**
@@ -46,7 +48,7 @@ class ServiceProfileService
      */
     public static function handle(User $user): string
     {
-        return collect([Str::slug($user->name), ServiceProfileService::key($user)])->filter()->implode('-');
+        return collect([Str::slug($user->name), self::key($user)])->filter()->implode('-');
     }
 
     public static function key(User $user): string
@@ -74,8 +76,8 @@ class ServiceProfileService
      */
     public static function imageUrl(User $user, string $version): string
     {
-        return ServiceProfileService::absoluteUrl(route('app.service-profiles.image', [
-            'handle' => ServiceProfileService::handle($user),
+        return self::absoluteUrl(route('app.service-profiles.image', [
+            'handle' => self::handle($user),
             'v' => $version,
         ], absolute: false));
     }
@@ -114,7 +116,7 @@ class ServiceProfileService
     {
         $user->loadMissing(['rank.image', 'position', 'specialty', 'unit', 'status']);
 
-        $hidden = ServiceProfileService::hiddenFields();
+        $hidden = self::hiddenFields();
 
         $awards = in_array('award_records', $hidden, true)
             ? collect()
@@ -152,18 +154,18 @@ class ServiceProfileService
         $profile = new ServiceProfileData(
             user: $user,
             organization: (string) SettingsService::get(OrganizationSettings::class, 'name', config('app.name')),
-            timeInService: in_array('time_in_service', $hidden, true) ? null : ServiceProfileService::humanize($user->time_in_service),
-            timeInGrade: in_array('time_in_grade', $hidden, true) ? null : ServiceProfileService::humanize($user->time_in_grade),
+            timeInService: in_array('time_in_service', $hidden, true) ? null : self::humanize($user->time_in_service),
+            timeInGrade: in_array('time_in_grade', $hidden, true) ? null : self::humanize($user->time_in_grade),
             awards: $awards,
             promotions: $promotions,
             qualifications: $qualifications,
             showsRank: ! in_array('rank_id', $hidden, true) && filled($user->rank),
             showsAssignment: ! in_array('assignment', $hidden, true),
-            url: ServiceProfileService::url($user),
+            url: self::url($user),
             imageUrl: '',
         );
 
-        $profile->imageUrl = ServiceProfileService::imageUrl($user, ServiceProfileService::imageVersion($profile));
+        $profile->imageUrl = self::imageUrl($user, self::imageVersion($profile));
 
         return $profile;
     }
@@ -182,7 +184,7 @@ class ServiceProfileService
         $tenant = tenant();
 
         if ($tenant instanceof Tenant && filled($tenant->url)) {
-            return rtrim((string) $tenant->url, '/').$path;
+            return mb_rtrim((string) $tenant->url, '/').$path;
         }
 
         return url($path);

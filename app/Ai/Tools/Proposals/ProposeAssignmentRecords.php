@@ -13,6 +13,8 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Validation\Rule;
 use Stringable;
 
+use function sprintf;
+
 class ProposeAssignmentRecords extends ProposalTool
 {
     public function description(): Stringable|string

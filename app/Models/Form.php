@@ -88,16 +88,6 @@ class Form extends Model implements HasLabel
     use HasResourceUrl;
     use HasTags;
 
-    public function submissions(): HasMany
-    {
-        return $this->hasMany(Submission::class);
-    }
-
-    public function submission_status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
-    }
-
     /**
      * @return array<string, string>
      */
@@ -106,5 +96,15 @@ class Form extends Model implements HasLabel
         return [
             'is_public' => 'boolean',
         ];
+    }
+
+    public function submissions(): HasMany
+    {
+        return $this->hasMany(Submission::class);
+    }
+
+    public function submission_status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 }

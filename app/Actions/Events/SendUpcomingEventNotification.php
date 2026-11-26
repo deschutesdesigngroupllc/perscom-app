@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
+use function in_array;
+
 class SendUpcomingEventNotification
 {
     /**
@@ -26,11 +28,11 @@ class SendUpcomingEventNotification
      */
     public static function handle(Event $event, NotificationInterval $interval, ?CarbonInterface $sendAt = null): void
     {
-        if (! SendUpcomingEventNotification::canSendNotification($event)) {
+        if (! self::canSendNotification($event)) {
             return;
         }
 
-        Notification::send(SendUpcomingEventNotification::recipients($event), new UpcomingEvent($event, $interval, $sendAt));
+        Notification::send(self::recipients($event), new UpcomingEvent($event, $interval, $sendAt));
 
         NotificationChannel::organizationWide($event->notifications_channels)->each(
             fn (NotificationChannel $channel): null => Notification::sendNow(
@@ -57,7 +59,7 @@ class SendUpcomingEventNotification
             && filled($event->notifications_interval)
             && $event->registration_enabled
             && $event->notifications_enabled
-            && SendUpcomingEventNotification::recipients($event)->isNotEmpty();
+            && self::recipients($event)->isNotEmpty();
     }
 
     /**

@@ -53,16 +53,6 @@ class AiUsage extends Model
     use HasFactory;
 
     /**
-     * Get the user who incurred the usage.
-     *
-     * @return BelongsTo<User, $this>
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
      * @return array<string, string>
      */
     protected function casts(): array
@@ -71,5 +61,15 @@ class AiUsage extends Model
             'input_tokens' => 'integer',
             'output_tokens' => 'integer',
         ];
+    }
+
+    /**
+     * Get the user who incurred the usage.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
