@@ -252,3 +252,9 @@
   --font-sans:
     var(--font-family), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+/* The main element takes tabindex="-1" as the skip-link target, so clicking a disabled input
+   focuses it instead and a keypress outlines the whole content pane. It is never tabbed to. */
+#fi-main-content:focus {
+  outline: none;
+}
