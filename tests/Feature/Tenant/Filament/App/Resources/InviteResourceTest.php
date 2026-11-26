@@ -13,7 +13,6 @@ use App\Models\Enums\InviteType;
 use App\Models\Invite;
 use App\Models\User;
 use App\Notifications\User\Invited;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
@@ -216,15 +215,5 @@ class InviteResourceTest extends TenantTestCase
         $this->actingAs(User::factory()->createQuietly());
 
         $this->get(ListInvites::getUrl())->assertForbidden();
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

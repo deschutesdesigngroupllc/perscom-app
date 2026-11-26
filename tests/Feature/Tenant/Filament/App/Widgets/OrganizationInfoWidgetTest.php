@@ -8,7 +8,6 @@ use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Session;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -104,15 +103,5 @@ class OrganizationInfoWidgetTest extends TenantTestCase
         Livewire::test(OrganizationInfoWidget::class)
             ->call('resumeOnboarding')
             ->assertRedirect(Dashboard::getUrl());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

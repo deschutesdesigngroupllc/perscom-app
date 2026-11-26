@@ -13,7 +13,6 @@ use App\Models\TrainingRecord;
 use App\Models\User;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -82,14 +81,6 @@ class ViewUserTest extends TenantTestCase
 
         Livewire::test(ViewUser::class, ['record' => $member->getKey()])
             ->assertActionVisible('publicProfile');
-    }
-
-    protected function actingAsSuperAdmin(): void
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
     }
 
     /**

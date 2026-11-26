@@ -13,7 +13,6 @@ use App\Models\Group;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Laravel\Ai\Prompts\AgentPrompt;
 use Livewire\Livewire;
@@ -141,15 +140,5 @@ class OrganizationBuilderTest extends TenantTestCase
         Livewire::test(OrganizationBuilder::class)
             ->callAction('exportBlueprint')
             ->assertFileDownloaded('organization-blueprint.json');
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

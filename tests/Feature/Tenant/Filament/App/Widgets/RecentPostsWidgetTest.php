@@ -11,7 +11,6 @@ use App\Models\Newsfeed;
 use App\Models\User;
 use App\Services\RssFeedService;
 use App\Support\Brand;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterface;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
@@ -139,15 +138,5 @@ class RecentPostsWidgetTest extends TenantTestCase
             'created_at' => $createdAt ?? now(),
             'properties' => ['headline' => $headline, 'text' => $text],
         ]);
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

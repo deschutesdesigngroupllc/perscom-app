@@ -7,8 +7,6 @@ namespace Tests\Feature\Tenant\Filament\App\Resources;
 use App\Filament\App\Resources\RankResource\Pages\EditRank;
 use App\Models\Qualification;
 use App\Models\Rank;
-use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -49,13 +47,5 @@ class RankRequirementTest extends TenantTestCase
             ->assertHasNoFormErrors();
 
         $this->assertNull($rank->fresh()->requirement);
-    }
-
-    protected function actingAsSuperAdmin(): void
-    {
-        $admin = User::factory()->createQuietly();
-        $admin->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($admin);
     }
 }

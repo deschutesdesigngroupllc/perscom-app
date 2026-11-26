@@ -8,7 +8,6 @@ use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Widgets\NeedsAttentionWidget;
 use App\Models\Submission;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -49,15 +48,5 @@ class NeedsAttentionWidgetTest extends TenantTestCase
         $this->actingAs(User::factory()->withoutRoles()->createQuietly());
 
         $this->assertFalse(NeedsAttentionWidget::canView());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

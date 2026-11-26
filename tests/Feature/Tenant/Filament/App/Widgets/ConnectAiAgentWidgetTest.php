@@ -8,7 +8,6 @@ use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Filament\App\Widgets\ConnectAiAgentWidget;
 use App\Models\PassportToken;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -77,15 +76,5 @@ class ConnectAiAgentWidgetTest extends TenantTestCase
         PassportToken::factory()->createQuietly(['user_id' => $user->getKey(), 'scopes' => ['view:user']]);
 
         $this->assertTrue(ConnectAiAgentWidget::canView());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

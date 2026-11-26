@@ -19,7 +19,6 @@ use App\Models\User;
 use App\Notifications\Tenant\EventOccurrenceCancelled;
 use App\Services\EventCalendarService;
 use App\Services\UserSettingsService;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Guava\Calendar\Enums\CalendarViewType;
 use Illuminate\Support\Facades\Date;
@@ -387,15 +386,5 @@ class CalendarTest extends TenantTestCase
         Schedule::factory()->for($event, 'repeatable')->createQuietly(['start' => $start, 'duration' => 2, 'frequency' => ScheduleFrequency::WEEKLY, 'interval' => 1, 'end_type' => ScheduleEndType::NEVER]);
 
         return $event->refresh();
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

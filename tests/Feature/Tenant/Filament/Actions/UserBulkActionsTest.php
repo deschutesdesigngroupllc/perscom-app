@@ -11,7 +11,6 @@ use App\Models\Permission;
 use App\Models\Rank;
 use App\Models\Unit;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -83,15 +82,5 @@ class UserBulkActionsTest extends TenantTestCase
             ->assertActionHidden(TestAction::make('promote')->table()->bulk())
             ->assertActionHidden(TestAction::make('assign')->table()->bulk())
             ->assertActionHidden(TestAction::make('award')->table()->bulk());
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

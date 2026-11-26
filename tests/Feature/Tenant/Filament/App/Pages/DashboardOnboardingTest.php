@@ -16,7 +16,6 @@ use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use App\Settings\OnboardingSettings;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Laravel\Ai\Prompts\AgentPrompt;
 use Livewire\Livewire;
@@ -300,15 +299,5 @@ class DashboardOnboardingTest extends TenantTestCase
             'dismissed' => false,
             'completed_at' => null,
         ]);
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }

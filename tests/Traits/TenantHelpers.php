@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Traits;
 
+use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
@@ -49,5 +51,18 @@ trait TenantHelpers
         $this->tenant->forceFill([
             'trial_ends_at' => $trialExpiresAt ?? Date::now()->addDays(7),
         ])->save();
+    }
+
+    /**
+     * Sign in as a new member holding the super admin role.
+     */
+    public function actingAsSuperAdmin(): User
+    {
+        $user = User::factory()->createQuietly();
+        $user->assignRole(Utils::getSuperAdminName());
+
+        $this->actingAs($user);
+
+        return $user;
     }
 }

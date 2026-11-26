@@ -17,7 +17,6 @@ use App\Models\Schedule;
 use App\Models\User;
 use App\Services\EventOccurrenceService;
 use App\Services\EventRegistrationService;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
@@ -255,16 +254,6 @@ class EventResourceViewTest extends TenantTestCase
         ]);
 
         return $event->refresh();
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 
     private function actingAsMember(): User

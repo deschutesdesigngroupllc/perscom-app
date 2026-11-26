@@ -13,7 +13,6 @@ use App\Models\EventOccurrence;
 use App\Models\Permission;
 use App\Models\Schedule;
 use App\Models\User;
-use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Date;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -154,15 +153,5 @@ class EventResourceAttendanceTest extends TenantTestCase
         Livewire::test(ViewEvent::class, ['record' => $event->getKey()])
             ->assertActionHidden('takeAttendance')
             ->assertActionHidden('checkInLink');
-    }
-
-    private function actingAsSuperAdmin(): User
-    {
-        $user = User::factory()->createQuietly();
-        $user->assignRole(Utils::getSuperAdminName());
-
-        $this->actingAs($user);
-
-        return $user;
     }
 }
