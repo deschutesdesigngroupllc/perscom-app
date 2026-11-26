@@ -18,9 +18,11 @@ use App\Notifications\User\Invited;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use ReflectionMethod;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class AddMemberWizardTest extends TenantTestCase
@@ -126,5 +128,34 @@ class AddMemberWizardTest extends TenantTestCase
             ->fillForm(['name' => 'Someone', 'email' => 'taken@example.test'])
             ->call('create')
             ->assertHasFormErrors(['email' => 'unique']);
+    }
+
+    public function test_placement_fields_are_hidden_from_creators_who_cannot_record_them(): void
+    {
+        $creator = User::factory()->createQuietly()->syncRoles([])->givePermissionTo(['view_any_user', 'create_user']);
+        $this->actingAs($creator);
+
+        Livewire::test(CreateUser::class)
+            ->assertFormFieldHidden('rank_id')
+            ->assertFormFieldHidden('status_id')
+            ->assertFormFieldHidden('unit_id')
+            ->assertFormFieldHidden('position_id');
+    }
+
+    public function test_no_member_is_created_when_their_starting_records_are_refused(): void
+    {
+        $creator = User::factory()->createQuietly()->syncRoles([])->givePermissionTo(['view_any_user', 'create_user']);
+        $this->actingAs($creator);
+        $rank = Rank::factory()->createQuietly();
+
+        $page = Livewire::test(CreateUser::class)->instance();
+        $create = new ReflectionMethod($page, 'handleRecordCreation');
+
+        try {
+            $create->invoke($page, ['name' => 'New Recruit', 'email' => 'recruit@example.test', 'rank_id' => $rank->getKey()]);
+            $this->fail('Creating the rank record should have been refused.');
+        } catch (AuthorizationException) {
+            $this->assertDatabaseMissing(User::class, ['email' => 'recruit@example.test']);
+        }
     }
 }

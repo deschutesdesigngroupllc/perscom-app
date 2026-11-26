@@ -103,9 +103,12 @@ activity log entry, and the usual record observers run.
   separately. The assignment operation is built by `AssignUsersBulkAction::operationFor()` and is
   only added when a slot or unit is chosen, so a position or specialty without a unit is dropped.
 - A rank becomes a `PROMOTION` rank record.
-- The app panel does not enable database transactions, so the user row is saved before
-  `ApplyChangeSet` validates and authorizes. A creator who lacks a record permission gets an
-  exception after the member already exists.
+- Each placement field shows only when the creator may record it: the slot, unit, position, and
+  specialty need `create` on `AssignmentRecord`, the rank `create` on `RankRecord`, and the status
+  `update` on `User`, the same checks `ApplyChangeSet` makes.
+- The member and their records are created in one transaction (`createMemberWithRecords()`), so a
+  record `ApplyChangeSet` refuses rolls the member back too. The invite is sent after the
+  transaction commits.
 - `send_invite` is `dehydrated(false)` and read from `getRawState()`. It only applies when the
   creator can `create` `Invite::class`; a `SendInvite` validation failure becomes a warning
   notification instead of failing the page.

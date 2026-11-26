@@ -11,6 +11,7 @@ use App\Data\Copilot\ProposedOperationData;
 use App\Filament\Actions\AssignUsersBulkAction;
 use App\Filament\App\Resources\UserResource;
 use App\Filament\Concerns\HasContainedWizard;
+use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\CopilotOperationType;
 use App\Models\Enums\InviteType;
@@ -18,6 +19,7 @@ use App\Models\Enums\RankRecordType;
 use App\Models\Invite;
 use App\Models\Position;
 use App\Models\Rank;
+use App\Models\RankRecord;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
@@ -31,8 +33,10 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
@@ -88,30 +92,32 @@ class CreateUser extends CreateRecord
                                 ->filter()
                                 ->all())
                             ->searchable()
-                            ->visible(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
+                            ->visible(fn (): bool => AssignUsersBulkAction::usesManualRoster() && $this->canRecordAssignments()),
                         Select::make('unit_id')
                             ->label('Unit')
                             ->options(fn (): array => Unit::query()->orderBy('order')->pluck('name', 'id')->all())
                             ->searchable()
-                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster() || ! $this->canRecordAssignments()),
                         Select::make('position_id')
                             ->label('Position')
                             ->options(fn (): array => Position::query()->orderBy('order')->pluck('name', 'id')->all())
                             ->searchable()
-                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster() || ! $this->canRecordAssignments()),
                         Select::make('specialty_id')
                             ->label('Specialty')
                             ->options(fn (): array => Specialty::query()->orderBy('order')->pluck('name', 'id')->all())
                             ->searchable()
-                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster()),
+                            ->hidden(fn (): bool => AssignUsersBulkAction::usesManualRoster() || ! $this->canRecordAssignments()),
                         Select::make('rank_id')
                             ->label('Rank')
                             ->options(fn (): array => Rank::query()->orderBy('order')->pluck('name', 'id')->all())
-                            ->searchable(),
+                            ->searchable()
+                            ->visible(fn (): bool => Gate::check('create', RankRecord::class)),
                         Select::make('status_id')
                             ->label('Status')
                             ->options(fn (): array => Status::query()->orderBy('order')->pluck('name', 'id')->all())
-                            ->searchable(),
+                            ->searchable()
+                            ->visible(fn (): bool => Gate::check('update', User::class)),
                     ]),
                 ]),
         ];
@@ -121,6 +127,33 @@ class CreateUser extends CreateRecord
      * @param  array<string, mixed>  $data
      */
     protected function handleRecordCreation(array $data): Model
+    {
+        $user = DB::transaction(fn (): User => $this->createMemberWithRecords($data));
+
+        if (data_get($this->form->getRawState(), 'send_invite') && Gate::check('create', Invite::class)) {
+            try {
+                SendInvite::handle(type: InviteType::CLAIM, email: $user->email, user: $user, invitedBy: Auth::user());
+            } catch (ValidationException $validationException) {
+                Notification::make()
+                    ->warning()
+                    ->title('Invitation Not Sent')
+                    ->body(collect($validationException->errors())->flatten()->first())
+                    ->send();
+            }
+        }
+
+        return $user->refresh();
+    }
+
+    /**
+     * Create the member together with their starting assignment, rank, and status.
+     *
+     * @param  array<string, mixed>  $data
+     *
+     * @throws AuthorizationException when the creator may not record one of the starting records
+     * @throws ValidationException when a starting record refers to something that no longer exists
+     */
+    protected function createMemberWithRecords(array $data): User
     {
         $user = User::create([
             'name' => $data['name'],
@@ -155,19 +188,12 @@ class CreateUser extends CreateRecord
             ApplyChangeSet::handle(new ProposedChangeSetData($operations), Auth::user(), 'add member');
         }
 
-        if (data_get($this->form->getRawState(), 'send_invite') && Gate::check('create', Invite::class)) {
-            try {
-                SendInvite::handle(type: InviteType::CLAIM, email: $user->email, user: $user, invitedBy: Auth::user());
-            } catch (ValidationException $validationException) {
-                Notification::make()
-                    ->warning()
-                    ->title('Invitation Not Sent')
-                    ->body(collect($validationException->errors())->flatten()->first())
-                    ->send();
-            }
-        }
+        return $user;
+    }
 
-        return $user->refresh();
+    protected function canRecordAssignments(): bool
+    {
+        return Gate::check('create', AssignmentRecord::class);
     }
 
     protected function getCreatedNotificationTitle(): ?string
