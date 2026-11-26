@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\IntegrationInstallService;
 use App\Settings\IntegrationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Notifications\NotificationMailbox;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
@@ -178,7 +179,10 @@ class DiscordConnectControllerTest extends TenantTestCase
 
     protected function assertNotificationBodyContains(string $text): void
     {
-        $bodies = collect(session('filament.notifications', []))->pluck('body')->implode(' ');
+        $mailbox = app(NotificationMailbox::class);
+        $mailbox->flush();
+
+        $bodies = collect($mailbox->pull())->pluck('body')->implode(' ');
 
         $this->assertStringContainsString($text, $bodies);
     }
