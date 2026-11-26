@@ -8,6 +8,7 @@ use App\Filament\App\Clusters\Integrations;
 use App\Filament\App\Resources\PassportTokenResource;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Pages\Page;
@@ -22,6 +23,8 @@ use UnitEnum;
 
 class ConnectAiTools extends Page
 {
+    public string $serverUrl = '';
+
     protected static ?string $cluster = Integrations::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cpu-chip';
@@ -43,20 +46,25 @@ class ConnectAiTools extends Page
             && ! App::isDemo();
     }
 
+    public function mount(): void
+    {
+        $this->serverUrl = route('mcp.server');
+    }
+
     public function content(Schema $schema): Schema
     {
-        $url = route('mcp.server');
+        $url = $this->serverUrl;
 
         return $schema
             ->components([
                 Section::make('MCP Server')
                     ->description('This connection is read-only. AI tools can look up members, the organization structure and personnel records, but cannot change anything.')
                     ->schema([
-                        TextEntry::make('url')
+                        TextInput::make('serverUrl')
                             ->label('Server URL')
-                            ->state($url)
-                            ->copyable()
-                            ->fontFamily('mono'),
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->copyable(copyMessage: 'Copied'),
                         TextEntry::make('access')
                             ->hiddenLabel()
                             ->state('Each person signs in with their own PERSCOM account. They only see what their account is allowed to see and what they approve when connecting.'),

@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Filament\App\Clusters\Integrations\Pages;
 use App\Filament\App\Clusters\Integrations\Pages\ConnectAiTools;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Forms\Components\TextInput;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -21,6 +22,8 @@ class ConnectAiToolsTest extends TenantTestCase
 
         Livewire::test(ConnectAiTools::class)
             ->assertSuccessful()
+            ->assertSet('serverUrl', route('mcp.server'))
+            ->assertSchemaComponentExists('serverUrl', checkComponentUsing: fn (TextInput $field): bool => $field->isDisabled() && $field->isCopyable())
             ->assertSee(route('mcp.server'))
             ->assertSee('claude mcp add --transport http perscom')
             ->assertSee('read-only')
