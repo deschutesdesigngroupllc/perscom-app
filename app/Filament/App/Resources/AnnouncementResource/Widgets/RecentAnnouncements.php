@@ -4,59 +4,95 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\AnnouncementResource\Widgets;
 
+use App\Filament\App\Resources\AnnouncementResource;
+use App\Filament\App\Widgets\RecentPostsWidget;
 use App\Models\Announcement;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
-use Filament\Actions\ViewAction;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Support\Colors\Color;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\Layout\Stack;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
-use Filament\Widgets\TableWidget as BaseWidget;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Database\Eloquent\Model;
 
-class RecentAnnouncements extends BaseWidget
+class RecentAnnouncements extends RecentPostsWidget
 {
     use HasWidgetShield;
 
     protected static ?int $sort = -2;
 
-    protected int|string|array $columnSpan = 'full';
-
-    public function table(Table $table): Table
+    public function heading(): string
     {
-        return $table
-            ->description("View you organization's most recent announcements.")
-            ->emptyStateHeading('No recent announcements')
-            ->emptyStateDescription('There are no recent announcements to show.')
-            ->emptyStateIcon('heroicon-o-megaphone')
-            ->query(Announcement::query()->latest()->limit(5))
-            ->recordAction('view')
-            ->paginated(false)
-            ->columns([
-                Stack::make([
-                    TextColumn::make('title')
-                        ->toggleable(false)
-                        ->weight(FontWeight::Bold),
-                    TextColumn::make('content')
-                        ->toggleable(false)
-                        ->html()
-                        ->wrap(),
-                    TextColumn::make('created_at')
-                        ->toggleable(false)
-                        ->color(Color::Gray),
-                ]),
-            ])
-            ->recordActions([
-                ViewAction::make()
-                    ->icon(null)
-                    ->hiddenLabel()
-                    ->modalHeading(fn (Announcement $record): string => $record->title)
-                    ->schema([
-                        TextEntry::make('content')
-                            ->hiddenLabel()
-                            ->html(),
-                    ]),
-            ]);
+        return 'Recent Announcements';
+    }
+
+    public function description(): string
+    {
+        return 'What leadership wants everyone to know.';
+    }
+
+    public function icon(): string|BackedEnum
+    {
+        return Heroicon::OutlinedMegaphone;
+    }
+
+    public function emptyHeading(): string
+    {
+        return 'No announcements yet';
+    }
+
+    public function emptyDescription(): string
+    {
+        return 'Announcements from your organization will show up here.';
+    }
+
+    public function allPostsLabel(): string
+    {
+        return 'View All Announcements';
+    }
+
+    public function allPostsUrl(): ?string
+    {
+        return AnnouncementResource::canViewAny() ? AnnouncementResource::getUrl() : null;
+    }
+
+    /**
+     * @return array<int, Model>
+     */
+    protected function records(): array
+    {
+        return Announcement::query()->latest()->limit(static::LIMIT)->get()->all();
+    }
+
+    protected function findRecord(mixed $key): ?Model
+    {
+        return Announcement::query()->find($key);
+    }
+
+    protected function titleFor(Model $record): string
+    {
+        /** @var Announcement $record */
+        return $record->title;
+    }
+
+    protected function bodyFor(Model $record): string
+    {
+        /** @var Announcement $record */
+        return $record->content;
+    }
+
+    protected function colorFor(Model $record): string
+    {
+        /** @var Announcement $record */
+        return $record->color;
+    }
+
+    protected function noteFor(Model $record): ?string
+    {
+        /** @var Announcement $record */
+        if (! $record->expires_at) {
+            return null;
+        }
+
+        return $record->expires_at->isPast()
+            ? 'Expired '.$record->expires_at->diffForHumans()
+            : 'Expires '.$record->expires_at->diffForHumans();
     }
 }
