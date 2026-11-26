@@ -21,7 +21,7 @@
           </span>
         @endif
         @if ($needsResponse && !$occurrence->isCancelled())
-          <x-filament::badge color="primary" size="xs">
+          <x-filament::badge color="primary" size="sm">
             <span class="me-0.5 inline-block size-1.5 rounded-full bg-primary-500 align-middle"></span> Respond
           </x-filament::badge>
         @endif
