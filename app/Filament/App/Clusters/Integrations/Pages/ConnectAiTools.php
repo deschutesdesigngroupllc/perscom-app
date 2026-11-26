@@ -74,6 +74,7 @@ class ConnectAiTools extends Page
                     ->persistTabInQueryString()
                     ->tabs([
                         Tab::make('Claude')
+                            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                             ->schema([
                                 $this->steps('claude_steps', [
                                     'Open Claude on the web, desktop or mobile and go to Settings, then Connectors.',
@@ -83,11 +84,13 @@ class ConnectAiTools extends Page
                                 $this->note('claude_note', 'Organization owners on Team and Enterprise plans add custom connectors for everyone from the organization settings.'),
                             ]),
                         Tab::make('Claude Code')
+                            ->icon(Heroicon::OutlinedCommandLine)
                             ->schema([
                                 $this->note('claude_code_note', 'Run this in your terminal, then use /mcp inside Claude Code to sign in.'),
                                 $this->code('claude_code', sprintf('claude mcp add --transport http perscom %s', $url), Grammar::Shellscript),
                             ]),
                         Tab::make('ChatGPT')
+                            ->icon(Heroicon::OutlinedChatBubbleOvalLeft)
                             ->schema([
                                 $this->steps('chatgpt_steps', [
                                     'In ChatGPT, open Settings, then Apps, then Advanced settings, and turn on Developer Mode.',
@@ -97,11 +100,13 @@ class ConnectAiTools extends Page
                                 $this->note('chatgpt_note', 'Custom apps are only offered on some ChatGPT plans, and the settings menu may be named Connectors in older versions.'),
                             ]),
                         Tab::make('Gemini')
+                            ->icon(Heroicon::OutlinedSparkles)
                             ->schema([
                                 $this->note('gemini_note', 'Add PERSCOM to Gemini CLI in ~/.gemini/settings.json, or .gemini/settings.json in a project. Gemini CLI opens a browser to sign in the first time PERSCOM is used, or run /mcp auth perscom.'),
                                 $this->code('gemini', $this->configJson(['httpUrl' => $url]), Grammar::Json),
                             ]),
                         Tab::make('Grok')
+                            ->icon(Heroicon::OutlinedBolt)
                             ->schema([
                                 $this->steps('grok_steps', [
                                     'Go to grok.com/connectors and choose New Connector, then Custom.',
@@ -116,11 +121,13 @@ class ConnectAiTools extends Page
                                 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR), Grammar::Json),
                             ]),
                         Tab::make('Cursor')
+                            ->icon(Heroicon::OutlinedCursorArrowRays)
                             ->schema([
                                 $this->note('cursor_note', 'Add this to .cursor/mcp.json in your project, or ~/.cursor/mcp.json for every project. Cursor asks you to sign in the first time PERSCOM is used.'),
                                 $this->code('cursor', $this->configJson(['url' => $url]), Grammar::Json),
                             ]),
                         Tab::make('VS Code')
+                            ->icon(Heroicon::OutlinedCodeBracket)
                             ->schema([
                                 $this->note('vscode_note', 'Add this to .vscode/mcp.json, or run MCP: Add Server from the Command Palette and choose HTTP. GitHub Copilot asks you to sign in the first time PERSCOM is used.'),
                                 $this->code('vscode', (string) json_encode(
@@ -129,6 +136,7 @@ class ConnectAiTools extends Page
                                 ), Grammar::Json),
                             ]),
                         Tab::make('Other Tools')
+                            ->icon(Heroicon::OutlinedWrenchScrewdriver)
                             ->schema([
                                 $this->note('other_note', "Any tool that supports remote MCP servers over Streamable HTTP can connect with the server URL. Tools that sign in with OAuth discover PERSCOM's sign-in automatically."),
                                 $this->note('other_api_key', 'For tools that cannot sign in, create an API key with the view scopes you want to share and send it as a bearer token in the Authorization header.'),
