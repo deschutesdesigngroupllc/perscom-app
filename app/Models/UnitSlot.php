@@ -8,6 +8,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasSlot;
 use App\Traits\HasUnit;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,7 +30,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|UnitSlot newQuery()
  * @method static Builder<static>|UnitSlot query()
  * @method static Builder<static>|UnitSlot slot(\App\Models\Slot $slot)
- * @method static Builder<static>|UnitSlot unit(\App\Models\Unit $unit)
  * @method static Builder<static>|UnitSlot whereCreatedAt($value)
  * @method static Builder<static>|UnitSlot whereId($value)
  * @method static Builder<static>|UnitSlot whereSlotId($value)
@@ -38,14 +38,13 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Table(name: 'units_slots')]
 class UnitSlot extends Pivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasSlot;
     use HasUnit;
-
-    protected $table = 'units_slots';
 
     public function assignment_records(): HasMany
     {

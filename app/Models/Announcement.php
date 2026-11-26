@@ -15,6 +15,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
@@ -58,6 +59,14 @@ use Illuminate\Support\Str;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'title',
+    'content',
+    'global',
+    'expires_at',
+    'created_at',
+    'updated_at',
+])]
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
     use CanBeEnabled;
@@ -74,21 +83,14 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         'global' => false,
     ];
 
-    protected $fillable = [
-        'title',
-        'content',
-        'global',
-        'expires_at',
-        'created_at',
-        'updated_at',
-    ];
-
     protected function scopeGlobal(Builder $query): void
     {
         $query->where('global', true);
     }
 
     /**
+     * Resolve the announcement color to a hex value.
+     *
      * @return Attribute<string, never>
      */
     protected function color(): Attribute

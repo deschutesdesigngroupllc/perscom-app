@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->integer(Archilex\AdvancedTables\Support\Config::getTenantColumn())->nullable()->after('user_id');
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->dropColumn(Archilex\AdvancedTables\Support\Config::getTenantColumn());
         });
     }

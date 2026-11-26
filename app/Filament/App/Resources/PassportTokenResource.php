@@ -32,6 +32,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Laravel\Passport\Passport;
 use UnitEnum;
 
@@ -74,7 +75,7 @@ class PassportTokenResource extends BaseResource
                                     ->multiple()
                                     ->live()
                                     ->disabled(fn ($operation): bool => $operation !== 'create')
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->options(fn (): Collection => Passport::scopes()->pluck('id', 'id')->sort())
                                     ->hidden(fn (Get $get): mixed => $get('all_scopes')),
                                 Checkbox::make('all_scopes')
                                     ->visibleOn('create')
@@ -100,7 +101,7 @@ class PassportTokenResource extends BaseResource
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('expires_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -142,7 +143,7 @@ class PassportTokenResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('expires_at')
                     ->label('Expires')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -169,7 +170,14 @@ class PassportTokenResource extends BaseResource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereDoesntHave('client', fn (Builder $query) => $query->where('name', '<>', PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT));
+            ->whereDoesntHave(
+                'client',
+                fn (Builder $query): Builder => $query->where(
+                    'name',
+                    '<>',
+                    PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT,
+                ),
+            );
     }
 
     /**

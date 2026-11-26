@@ -16,6 +16,7 @@ use App\Filament\Exports\AssignmentRecordExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
 use App\Models\AssignmentRecord;
+use App\Models\Document;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\RosterMode;
 use App\Models\Field;
@@ -154,7 +155,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
-                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->all()),
+                                    ->options(fn (): array => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->all()),
                                 Select::make('status_id')
                                     ->helperText('If selected, the members will be assigned the status when the record is created.')
                                     ->preload()
@@ -281,22 +282,22 @@ class AssignmentRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (AssignmentRecord $record) => $record->document)
-                            ->user(fn (AssignmentRecord $record) => $record->user)
+                            ->document(fn (AssignmentRecord $record): ?Document => $record->document)
+                            ->user(fn (AssignmentRecord $record): ?User => $record->user)
                             ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (AssignmentRecord $record) => $record->text),
+                            ->html(fn (AssignmentRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')

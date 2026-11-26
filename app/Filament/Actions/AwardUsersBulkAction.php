@@ -34,10 +34,15 @@ class AwardUsersBulkAction extends BulkAction
             ->visible(fn (): bool => Gate::check('create', AwardRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema(static::formSchema())
-            ->action(fn (BulkAction $action, Collection $records, array $data) => $this->applyOperation($action, static::operationFor($records, $data)));
+            ->action(fn (BulkAction $action, Collection $records, array $data): null => $this->applyOperation(
+                $action,
+                static::operationFor($records, $data),
+            ));
     }
 
     /**
+     * Build the form that collects the award details.
+     *
      * @return array<int, \Filament\Schemas\Components\Component|\Filament\Forms\Components\Field>
      */
     public static function formSchema(): array
@@ -56,6 +61,8 @@ class AwardUsersBulkAction extends BulkAction
     }
 
     /**
+     * Build the award operation for the selected members.
+     *
      * @param  Collection<int, User>  $users
      * @param  array<string, mixed>  $data
      */

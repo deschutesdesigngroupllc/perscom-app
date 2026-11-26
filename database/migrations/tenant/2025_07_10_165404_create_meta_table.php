@@ -16,7 +16,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create(config('meta.tables.default', 'meta'), function (Blueprint $table) {
+        Schema::create(config('meta.tables.default', 'meta'), function (Blueprint $table): void {
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
             $table->increments('id');
@@ -31,7 +31,7 @@ return new class extends Migration
         });
         if (! is_null(config('meta.tables.custom')) && is_array(config('meta.tables.custom'))) {
             foreach (config('meta.tables.custom') as $customTable) {
-                Schema::create($customTable, function (Blueprint $table) {
+                Schema::create($customTable, function (Blueprint $table): void {
                     $table->charset = 'utf8';
                     $table->collation = 'utf8_unicode_ci';
                     $table->increments('id');

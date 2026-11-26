@@ -6,15 +6,15 @@ namespace App\Console\Commands;
 
 use App\Services\DiscordInteractionService;
 use App\Services\DiscordService;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Http\Client\ConnectionException;
 
+#[Description('Register the PERSCOM slash commands with Discord.')]
+#[Signature('perscom:discord-register-commands')]
 class DiscordRegisterCommandsCommand extends Command
 {
-    protected $signature = 'perscom:discord-register-commands';
-
-    protected $description = 'Register the PERSCOM slash commands with Discord.';
-
     /**
      * @throws ConnectionException
      */

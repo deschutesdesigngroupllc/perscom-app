@@ -8,6 +8,7 @@ use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
+use App\Models\Document;
 use App\Models\TrainingRecord;
 use App\Models\User;
 use BackedEnum;
@@ -47,13 +48,13 @@ class TrainingRecordsRelationManager extends RelationManager
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (TrainingRecord $record) => $record->text),
+                            ->html(fn (TrainingRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
@@ -61,8 +62,8 @@ class TrainingRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (TrainingRecord $record) => $record->document)
-                            ->user(fn (TrainingRecord $record) => $record->user)
+                            ->document(fn (TrainingRecord $record): ?Document => $record->document)
+                            ->user(fn (TrainingRecord $record): ?User => $record->user)
                             ->attached(fn (TrainingRecord $record): TrainingRecord => $record),
                     ),
             ])

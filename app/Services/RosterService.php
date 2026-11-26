@@ -123,11 +123,13 @@ class RosterService
     }
 
     /**
+     * Determine whether any roster filter is applied.
+     *
      * @param  array{search?: ?string, rank_id?: mixed, status_id?: mixed, position_id?: mixed, unit_id?: mixed, online?: bool}  $filters
      */
     public static function isFiltering(array $filters): bool
     {
-        return filled(trim((string) ($filters['search'] ?? '')))
+        return filled(Str::trim((string) ($filters['search'] ?? '')))
             || filled($filters['rank_id'] ?? null)
             || filled($filters['status_id'] ?? null)
             || filled($filters['position_id'] ?? null)
@@ -135,11 +137,13 @@ class RosterService
     }
 
     /**
+     * Determine whether the member matches the roster filters.
+     *
      * @param  array{search?: ?string, rank_id?: mixed, status_id?: mixed, position_id?: mixed, unit_id?: mixed, online?: bool}  $filters
      */
     public static function matches(User $user, array $filters): bool
     {
-        $search = Str::lower(trim((string) ($filters['search'] ?? '')));
+        $search = Str::lower(Str::trim((string) ($filters['search'] ?? '')));
 
         if (filled($search)) {
             $position = $user->getAttribute('position');
@@ -155,7 +159,7 @@ class RosterService
                 data_get($specialty, 'abbreviation'),
             ])->filter()->implode(' '));
 
-            if (! Str::contains($haystack, $search)) {
+            if (Str::doesntContain($haystack, $search)) {
                 return false;
             }
         }
@@ -251,50 +255,66 @@ class RosterService
     }
 
     /**
+     * Merge secondary assignment members into each unit of an automatic roster.
+     *
      * @param  Collection<int, Group>  $groups
      */
     public static function mergeSecondaryAssignmentRecordsForAutomaticRoster(Collection $groups): Collection
     {
-        return $groups->map(fn (Group $group) => tap($group, function (Group $group): void {
-            data_set($group, 'units', $group->units->map(fn (Unit $unit) => tap($unit, function (Unit $unit): void {
-                data_set($unit, 'users', RosterService::sortUsers($unit->users->merge(
-                    $unit->secondary_assignment_records->loadMissing(['position', 'specialty'])->map(function (AssignmentRecord $record) {
-                        $user = $record->user;
+        return $groups->map(fn (Group $group): Group => tap($group, function (Group $group): void {
+            data_set($group, 'units', $group->units->map(
+                fn (Unit $unit): Unit => tap($unit, function (Unit $unit): void {
+                    data_set($unit, 'users', RosterService::sortUsers($unit->users->merge(
+                        $unit->secondary_assignment_records
+                            ->loadMissing(['position', 'specialty'])
+                            ->map(function (AssignmentRecord $record): User {
+                                $user = $record->user;
 
-                        data_set($user, 'position', $record->position);
-                        data_set($user, 'specialty', $record->specialty);
+                                data_set($user, 'position', $record->position);
+                                data_set($user, 'specialty', $record->specialty);
 
-                        return $user;
-                    })
-                )));
-            })));
+                                return $user;
+                            })
+                    )));
+                }),
+            ));
         }));
     }
 
     /**
+     * Merge secondary assignment members into each slot of a manual roster.
+     *
      * @param  Collection<int, Group>  $groups
      */
     public static function mergeSecondaryAssignmentRecordsForManualRoster(Collection $groups): Collection
     {
-        return $groups->map(fn (Group $group) => tap($group, function (Group $group): void {
-            data_set($group, 'units', $group->units->map(fn (Unit $unit) => tap($unit, function (Unit $unit): void {
-                data_set($unit, 'slots', $unit->slots->map(fn (Slot $slot) => tap($slot, function (Slot $slot): void {
-                    data_set($slot, 'users', RosterService::sortUsers($slot->users->merge(
-                        $slot->secondary_assignment_records->loadMissing(['position', 'specialty'])->map(function (AssignmentRecord $record) use ($slot) {
-                            $user = $record->user;
+        return $groups->map(fn (Group $group): Group => tap($group, function (Group $group): void {
+            data_set($group, 'units', $group->units->map(
+                fn (Unit $unit): Unit => tap($unit, function (Unit $unit): void {
+                    data_set($unit, 'slots', $unit->slots->map(
+                        fn (Slot $slot): Slot => tap($slot, function (Slot $slot): void {
+                            data_set($slot, 'users', RosterService::sortUsers($slot->users->merge(
+                                $slot->secondary_assignment_records
+                                    ->loadMissing(['position', 'specialty'])
+                                    ->map(function (AssignmentRecord $record) use ($slot): User {
+                                        $user = $record->user;
 
-                            data_set($user, 'position', $slot->position);
-                            data_set($user, 'specialty', $slot->specialty);
+                                        data_set($user, 'position', $slot->position);
+                                        data_set($user, 'specialty', $slot->specialty);
 
-                            return $user;
-                        })
-                    )));
-                })));
-            })));
+                                        return $user;
+                                    })
+                            )));
+                        }),
+                    ));
+                }),
+            ));
         }));
     }
 
     /**
+     * Sort the members by the configured roster sort order.
+     *
      * @param  Collection<int, User>  $users
      */
     public static function sortUsers(Collection $users): Collection
@@ -302,8 +322,12 @@ class RosterService
         $settings = resolve(DashboardSettings::class);
 
         $order = Collection::wrap($settings->roster_sort_order)
-            ->map(fn ($property) => Str::replaceMatches('/^[^.]+/', fn (array $matches) => Str::singular($matches[0]), $property))
-            ->map(fn ($property): array => [$property, 'asc'])
+            ->map(fn (string $property): string => Str::replaceMatches(
+                '/^[^.]+/',
+                fn (array $matches): string => Str::singular($matches[0]),
+                $property,
+            ))
+            ->map(fn (string $property): array => [$property, 'asc'])
             ->all();
 
         return $users->sortBy($order)->values();

@@ -121,7 +121,13 @@ class FieldResource extends BaseResource
                                 KeyValue::make('options')
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
-                                    ->formatStateUsing(fn (?Field $record, $state): mixed => filled($record?->getRawOriginal('options')) ? json_decode((string) $record->getRawOriginal('options'), true) : null)
+                                    ->formatStateUsing(fn (?Field $record, $state): mixed => filled(
+                                        $record?->getRawOriginal('options'),
+                                    ) ? json_decode(
+                                        (string) $record->getRawOriginal('options'),
+                                        true,
+                                        flags: JSON_THROW_ON_ERROR,
+                                    ) : null)
                                     ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_SELECT && $get('options_type') === FieldOptionsType::ARRAY)
                                     ->required(fn (Get $get): bool => $get('options_type') === FieldOptionsType::ARRAY)
                                     ->dehydrateStateUsing(fn ($state): string => Collection::wrap($state)->filter()->toJson()),
@@ -223,7 +229,7 @@ class FieldResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()

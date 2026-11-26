@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Admin;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\Hash;
@@ -16,12 +18,10 @@ use function Laravel\Prompts\search;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
+#[Description('Performs common actions on a admin user.')]
+#[Signature('perscom:admin')]
 class AdminCommand extends Command implements PromptsForMissingInput
 {
-    protected $signature = 'perscom:admin';
-
-    protected $description = 'Performs common actions on a admin user.';
-
     public function handle(): int
     {
         if (! config('tenancy.enabled')) {
@@ -89,7 +89,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
     {
         $id = search(
             label: 'Please select the admin:',
-            options: fn ($value) => filled($value)
+            options: fn (string $value): array => filled($value)
                 ? Admin::where('name', 'like', sprintf('%%%s%%', $value))->pluck('name', 'id')->all()
                 : []
         );
@@ -116,7 +116,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
     {
         $id = search(
             label: 'Please select the admin:',
-            options: fn ($value) => filled($value)
+            options: fn (string $value): array => filled($value)
                 ? Admin::where('name', 'like', sprintf('%%%s%%', $value))->pluck('name', 'id')->all()
                 : []
         );

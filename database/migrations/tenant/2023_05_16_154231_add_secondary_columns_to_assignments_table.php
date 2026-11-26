@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->json('secondary_position_ids')->nullable()->after('position_id');
             $table->json('secondary_specialty_ids')->nullable()->after('specialty_id');
             $table->json('secondary_unit_ids')->nullable()->after('unit_id');
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropColumn(['secondary_position_ids', 'secondary_specialty_ids', 'secondary_unit_ids']);
         });
     }

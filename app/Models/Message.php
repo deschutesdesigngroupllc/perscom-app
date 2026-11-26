@@ -13,6 +13,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
@@ -56,6 +57,16 @@ use Illuminate\Support\Collection;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(MessageObserver::class)]
+#[Fillable([
+    'message',
+    'channels',
+    'recipients',
+    'repeats',
+    'send_at',
+    'sent_at',
+    'created_at',
+    'updated_at',
+])]
 class Message extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -67,17 +78,6 @@ class Message extends Model implements HasLabel
 
     protected $attributes = [
         'recipients' => null,
-    ];
-
-    protected $fillable = [
-        'message',
-        'channels',
-        'recipients',
-        'repeats',
-        'send_at',
-        'sent_at',
-        'created_at',
-        'updated_at',
     ];
 
     protected function status(): Attribute

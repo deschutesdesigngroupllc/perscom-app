@@ -10,6 +10,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 
 class TenantLoginAction extends Action
 {
@@ -18,7 +19,7 @@ class TenantLoginAction extends Action
         parent::setUp();
 
         $this->color('gray');
-        $this->visible(fn (Tenant $record) => $record->setup_completed);
+        $this->visible(fn (Tenant $record): bool => $record->setup_completed);
 
         $this->modalHeading('Login to Tenant');
         $this->modalDescription('Login to the tenant using the user below.');
@@ -28,11 +29,11 @@ class TenantLoginAction extends Action
             Select::make('user')
                 ->searchable()
                 ->helperText('Select the user to login as.')
-                ->options(fn (Tenant $record) => $record->run(fn () => User::query()->orderBy('name')->whereHas('roles', fn (Builder $query) => $query->where('name', Utils::getSuperAdminName()))->get()->pluck('name', 'id')->toArray()))
+                ->options(fn (Tenant $record): array => $record->run(fn (): array => User::query()->orderBy('name')->whereHas('roles', fn (Builder $query): Builder => $query->where('name', Utils::getSuperAdminName()))->get()->pluck('name', 'id')->toArray()))
                 ->required(),
         ]);
 
-        $this->action(function (TenantLoginAction $action, Tenant $record, array $data) {
+        $this->action(function (TenantLoginAction $action, Tenant $record, array $data): RedirectResponse {
             // @phpstan-ignore-next-line
             $token = tenancy()->impersonate($record, data_get($data, 'user'), $record->url, 'web');
 

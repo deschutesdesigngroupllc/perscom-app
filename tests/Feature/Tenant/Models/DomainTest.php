@@ -13,7 +13,7 @@ class DomainTest extends TenantTestCase
     public function test_url_attribute_properly_returns_url(): void
     {
         $domain = Domain::factory()->create([
-            'domain' => $word = $this->faker->domainWord,
+            'domain' => $word = $this->faker->domainWord(),
             'tenant_id' => Tenant::factory()->createQuietly()->getKey(),
         ]);
 
@@ -26,7 +26,7 @@ class DomainTest extends TenantTestCase
     public function test_host_attribute_properly_returns(): void
     {
         $domain = Domain::factory()->create([
-            'domain' => $word = $this->faker->domainWord,
+            'domain' => $word = $this->faker->domainWord(),
             'tenant_id' => Tenant::factory()->createQuietly()->getKey(),
         ]);
 

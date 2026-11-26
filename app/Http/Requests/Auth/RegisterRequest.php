@@ -9,6 +9,7 @@ use App\Models\Registration;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
 use App\Rules\TurnstileRule;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +23,18 @@ class RegisterRequest extends FormRequest
         $rules = [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'name' => ['required', 'string', 'max:255'],
-            'subdomain' => ['nullable', 'string', 'min:3', 'max:63', 'regex:/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/', Rule::unique('mysql.domains', 'domain'), Rule::unique(Registration::class, 'subdomain')->where(fn ($query) => $query->where('email', '!=', (string) $this->input('email'))), new SubdomainRule],
+            'subdomain' => [
+                'nullable',
+                'string',
+                'min:3',
+                'max:63',
+                'regex:/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/',
+                Rule::unique('mysql.domains', 'domain'),
+                Rule::unique(Registration::class, 'subdomain')
+                    ->where(fn (Builder $query): Builder => $query
+                        ->where('email', '!=', (string) $this->input('email'))),
+                new SubdomainRule,
+            ],
             'organization_type' => ['nullable', Rule::enum(OrganizationType::class)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
             'privacy' => ['required', 'boolean'],

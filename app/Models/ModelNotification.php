@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -55,26 +57,26 @@ use Illuminate\Support\Collection;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'model_type',
+    'model_id',
+    'group_type',
+    'group_id',
+    'unit_type',
+    'unit_id',
+    'user_type',
+    'user_id',
+    'event',
+    'subject',
+    'message',
+    'channels',
+])]
+#[Table(name: 'model_has_notifications')]
 class ModelNotification extends MorphPivot
 {
-    protected $table = 'model_has_notifications';
-
-    protected $fillable = [
-        'model_type',
-        'model_id',
-        'group_type',
-        'group_id',
-        'unit_type',
-        'unit_id',
-        'user_type',
-        'user_id',
-        'event',
-        'subject',
-        'message',
-        'channels',
-    ];
-
     /**
+     * Build the attributes for a notification sent to a user.
+     *
      * @param  array<NotificationChannel|string>  $channels
      * @return array<string, mixed>
      */
@@ -95,6 +97,8 @@ class ModelNotification extends MorphPivot
     }
 
     /**
+     * Build the attributes for a notification sent to a group.
+     *
      * @param  array<NotificationChannel|string>  $channels
      * @return array<string, mixed>
      */
@@ -115,6 +119,8 @@ class ModelNotification extends MorphPivot
     }
 
     /**
+     * Build the attributes for a notification sent to a unit.
+     *
      * @param  array<NotificationChannel|string>  $channels
      * @return array<string, mixed>
      */
@@ -155,6 +161,8 @@ class ModelNotification extends MorphPivot
     }
 
     /**
+     * Get the users who receive the notification.
+     *
      * @return Collection<int, User>
      */
     public function getRecipients(): Collection

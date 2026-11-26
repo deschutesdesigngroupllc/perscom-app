@@ -65,6 +65,8 @@ use Illuminate\Support\Collection;
 class WebhookLog extends Activity
 {
     /**
+     * Get the payload sent with the webhook.
+     *
      * @return Attribute<mixed, never>
      */
     protected function payload(): Attribute
@@ -75,6 +77,8 @@ class WebhookLog extends Activity
     }
 
     /**
+     * Get the event that triggered the webhook.
+     *
      * @return Attribute<?WebhookEvent, never>
      */
     protected function event(): Attribute
@@ -85,6 +89,8 @@ class WebhookLog extends Activity
     }
 
     /**
+     * Get the request ID from the payload.
+     *
      * @return Attribute<?string, never>
      */
     protected function requestId(): Attribute
@@ -95,6 +101,8 @@ class WebhookLog extends Activity
     }
 
     /**
+     * Get the trace ID from the payload.
+     *
      * @return Attribute<?string, never>
      */
     protected function traceId(): Attribute
@@ -135,6 +143,8 @@ class WebhookLog extends Activity
     }
 
     /**
+     * Get the response status code.
+     *
      * @return Attribute<mixed, never>
      */
     protected function statusCode(): Attribute
@@ -145,6 +155,8 @@ class WebhookLog extends Activity
     }
 
     /**
+     * Get the response reason phrase.
+     *
      * @return Attribute<mixed, never>
      */
     protected function reasonPhrase(): Attribute

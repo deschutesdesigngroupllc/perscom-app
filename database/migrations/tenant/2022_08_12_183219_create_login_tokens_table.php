@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('login_tokens', function (Blueprint $table) {
+        Schema::create('login_tokens', function (Blueprint $table): void {
             $table->string('token')->primary();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

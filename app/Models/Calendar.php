@@ -13,6 +13,7 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property string $color
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Collection<int, \Illuminate\Support\Facades\Event> $events
+ * @property-read Collection<int, Event> $events
  * @property-read int|null $events_count
  * @property-read string $label
  * @property-read string|null $relative_url
@@ -50,6 +51,12 @@ use Illuminate\Support\Carbon;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(CalendarObserver::class)]
+#[Fillable([
+    'name',
+    'description',
+    'created_at',
+    'updated_at',
+])]
 class Calendar extends Model implements HasColor, HasLabel
 {
     use ClearsApiCache;
@@ -59,13 +66,6 @@ class Calendar extends Model implements HasColor, HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
     use HasTags;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'created_at',
-        'updated_at',
-    ];
 
     public function events(): HasMany
     {

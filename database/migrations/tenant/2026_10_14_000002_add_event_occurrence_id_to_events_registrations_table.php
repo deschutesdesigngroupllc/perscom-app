@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->foreignId('event_occurrence_id')->nullable()->after('event_id')->constrained('events_occurrences')->cascadeOnDelete();
 
             $table->unique(['event_id', 'user_id', 'event_occurrence_id']);
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->dropUnique(['event_id', 'user_id', 'event_occurrence_id']);
             $table->dropConstrainedForeignId('event_occurrence_id');
         });

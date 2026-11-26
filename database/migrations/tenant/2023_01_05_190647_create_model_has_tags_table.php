@@ -22,12 +22,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('forms_tags', function (Blueprint $table) {
+        Schema::create('forms_tags', function (Blueprint $table): void {
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('form_id');
         });
 
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::table('tags', function (Blueprint $table): void {
             $table->string('name')->change();
             $table->dropColumn('slug', 'type', 'order_column');
         });
@@ -44,14 +44,14 @@ return new class extends Migration
     {
         Schema::dropIfExists('forms_tags');
 
-        Schema::table('tags', function (Blueprint $table) {
+        Schema::table('tags', function (Blueprint $table): void {
             $table->json('name')->change();
             $table->json('slug');
             $table->string('type')->nullable();
             $table->integer('order_column')->nullable();
         });
 
-        Schema::create('taggables', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->morphs('taggable');

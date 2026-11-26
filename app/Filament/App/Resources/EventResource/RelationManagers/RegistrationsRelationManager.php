@@ -55,7 +55,7 @@ class RegistrationsRelationManager extends RelationManager
                     ->badge(),
                 TextColumn::make('registration.created_at')
                     ->label('Registered')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -65,7 +65,7 @@ class RegistrationsRelationManager extends RelationManager
                 TextColumn::make('registration.checked_in_at')
                     ->label('Checked In')
                     ->placeholder('Not checked in')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

@@ -127,6 +127,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the recent occurrence options for a repeating event.
+     *
      * @return array<string, string>
      */
     protected static function occurrenceOptions(Event $record): array
@@ -179,6 +181,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the registrations for the occurrence.
+     *
      * @return Collection<int, EventRegistration>
      */
     protected static function registrants(?OccurrenceData $occurrence): Collection
@@ -187,6 +191,8 @@ class TakeAttendanceAction extends Action
     }
 
     /**
+     * Get the IDs of the members marked attended for the occurrence.
+     *
      * @return array<int, int>
      */
     protected static function attendedUserIds(?OccurrenceData $occurrence): array

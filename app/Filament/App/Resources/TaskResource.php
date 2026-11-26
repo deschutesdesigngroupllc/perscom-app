@@ -93,7 +93,7 @@ class TaskResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()

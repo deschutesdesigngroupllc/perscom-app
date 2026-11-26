@@ -34,10 +34,10 @@ class AddToCalendarAction extends ActionGroup
             Action::make('downloadIcs')
                 ->label('Download .ics')
                 ->icon(Heroicon::OutlinedArrowDownTray)
-                ->url(fn (Event $record): string => route('app.events.calendar', array_filter([
+                ->url(fn (Event $record): string => route('app.events.calendar', collect([
                     'event' => $record->getKey(),
                     'occurrence' => $this->resolveOccurrence($record)?->starts->getTimestamp(),
-                ]))),
+                ])->filter()->all())),
             Action::make('googleCalendar')
                 ->label('Google Calendar')
                 ->icon(Heroicon::OutlinedArrowTopRightOnSquare)

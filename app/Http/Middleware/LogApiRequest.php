@@ -81,6 +81,8 @@ class LogApiRequest
     }
 
     /**
+     * Capture the request body for the API log.
+     *
      * @throws JsonException
      */
     private function captureRequestBody(Request $request): mixed

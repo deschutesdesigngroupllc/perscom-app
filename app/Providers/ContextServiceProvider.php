@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Psr\Http\Message\RequestInterface;
 
 class ContextServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,7 @@ class ContextServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, fn (): string => sprintf('<meta name="perscom_trace_id" content="%s"/>', $traceId));
 
-        Http::globalRequestMiddleware(fn ($request) => $request->withHeader(
+        Http::globalRequestMiddleware(fn (RequestInterface $request): RequestInterface => $request->withHeader(
             'X-Perscom-Trace-Id', $traceId
         ));
     }

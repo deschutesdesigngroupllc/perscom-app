@@ -56,6 +56,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
@@ -194,7 +195,7 @@ class AppPanelProvider extends PanelProvider
             ->userMenuItems([
                 Action::make('billing')
                     ->label('Billing')
-                    ->action(fn () => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
+                    ->action(fn (): ?RedirectResponse => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
                     ->icon(Heroicon::OutlinedCurrencyDollar),
                 Action::make('docs')

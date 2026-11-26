@@ -131,7 +131,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
     public function test_an_unreachable_discord_is_reported_instead_of_erroring(): void
     {
-        Http::fake(fn () => throw new ConnectionException('timed out'));
+        Http::fake(fn (): never => throw new ConnectionException('timed out'));
 
         $this->actingAs($this->admin());
 

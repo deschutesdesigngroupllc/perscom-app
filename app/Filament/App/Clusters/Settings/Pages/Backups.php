@@ -78,7 +78,7 @@ class Backups extends Page implements HasTable
                 Action::make('download')
                     ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->openUrlInNewTab()
-                    ->url(fn (Backup $record) => $record->url),
+                    ->url(fn (Backup $record): ?string => $record->url),
             ]);
     }
 

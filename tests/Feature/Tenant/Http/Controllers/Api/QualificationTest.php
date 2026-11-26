@@ -54,7 +54,7 @@ class QualificationTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test Qualification',
-            'description' => $this->faker->sentence,
+            'description' => $this->faker->sentence(),
         ];
     }
 
@@ -64,7 +64,7 @@ class QualificationTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 }

@@ -16,7 +16,7 @@ trait HasCustomFields
 {
     public function fields(): MorphToMany
     {
-        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
+        return $this->morphToMany(Field::class, 'model', Element::class)
             ->using(Element::class)
             ->as('fields')
             ->withPivot(['order'])

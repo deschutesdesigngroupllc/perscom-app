@@ -57,6 +57,8 @@ class Readiness extends Page implements HasTable
     }
 
     /**
+     * Get the readiness summary of each unit.
+     *
      * @return Collection<int, UnitReadinessData>
      */
     public function getSummaries(): Collection

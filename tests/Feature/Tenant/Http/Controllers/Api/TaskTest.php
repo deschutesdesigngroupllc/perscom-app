@@ -54,8 +54,8 @@ class TaskTest extends ApiResourceTestCase
     {
         return [
             'title' => 'Test Task',
-            'description' => $this->faker->sentence,
-            'instructions' => $this->faker->sentence,
+            'description' => $this->faker->sentence(),
+            'instructions' => $this->faker->sentence(),
         ];
     }
 
@@ -65,7 +65,7 @@ class TaskTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'title' => $this->faker->name,
+            'title' => $this->faker->name(),
         ];
     }
 }

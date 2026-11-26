@@ -6,7 +6,6 @@ namespace App\Traits;
 
 use App\Models\Status;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,11 +16,6 @@ trait HasStatus
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
-    }
-
-    protected function scopeStatus(Builder $query, Status $status): void
-    {
-        $query->whereBelongsTo($status);
     }
 
     protected function initializeHasStatus(): void

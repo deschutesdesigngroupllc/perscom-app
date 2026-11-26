@@ -25,8 +25,10 @@ use App\Traits\HasStatus;
 use App\Traits\HasUnit;
 use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,7 +59,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  * @property-read string $label
  * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
@@ -77,11 +79,7 @@ use Illuminate\Support\Carbon;
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|AssignmentRecord newModelQuery()
  * @method static Builder<static>|AssignmentRecord newQuery()
- * @method static Builder<static>|AssignmentRecord position(\App\Models\Position $position)
  * @method static Builder<static>|AssignmentRecord query()
- * @method static Builder<static>|AssignmentRecord specialty(\App\Models\Specialty $specialty)
- * @method static Builder<static>|AssignmentRecord status(\App\Models\Status $status)
- * @method static Builder<static>|AssignmentRecord unit(\App\Models\Unit $unit)
  * @method static Builder<static>|AssignmentRecord user(\App\Models\User $user)
  * @method static Builder<static>|AssignmentRecord whereAuthorId($value)
  * @method static Builder<static>|AssignmentRecord whereCreatedAt($value)
@@ -102,6 +100,15 @@ use Illuminate\Support\Carbon;
  */
 #[ObservedBy(AssignmentRecordObserver::class)]
 #[ScopedBy(AssignmentRecordScope::class)]
+#[Fillable([
+    'id',
+    'unit_slot_id',
+    'type',
+    'text',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'records_assignments')]
 class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
@@ -122,19 +129,8 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
     use HasUnit;
     use HasUser;
 
-    protected $table = 'records_assignments';
-
     protected $attributes = [
         'type' => AssignmentRecordType::PRIMARY,
-    ];
-
-    protected $fillable = [
-        'id',
-        'unit_slot_id',
-        'type',
-        'text',
-        'created_at',
-        'updated_at',
     ];
 
     public function headlineForNewsfeedItem(): string
@@ -149,13 +145,19 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
 
     public function itemForNewsfeedItem(): ?string
     {
-        $position = optional($this->position, fn (Position $position) => $position->name) ?? 'No Position Assigned';
+        $position = optional(
+            $this->position,
+            fn (Position $position): ?string => $position->name,
+        ) ?? 'No Position Assigned';
 
-        $specialty = optional($this->specialty, fn (Specialty $specialty) => $specialty->name) ?? 'No Specialty Assigned';
+        $specialty = optional(
+            $this->specialty,
+            fn (Specialty $specialty): ?string => $specialty->name,
+        ) ?? 'No Specialty Assigned';
 
-        $unit = optional($this->unit, fn (Unit $unit) => $unit->name) ?? 'No Unit Assigned';
+        $unit = optional($this->unit, fn (Unit $unit): ?string => $unit->name) ?? 'No Unit Assigned';
 
-        $status = optional($this->status, fn (Status $status) => $status->name) ?? 'No Status Assigned';
+        $status = optional($this->status, fn (Status $status): ?string => $status->name) ?? 'No Status Assigned';
 
         return sprintf('Position: %s<br> Specialty: %s<br> Unit: %s<br>Status: %s<br>', $position, $specialty, $unit, $status);
     }

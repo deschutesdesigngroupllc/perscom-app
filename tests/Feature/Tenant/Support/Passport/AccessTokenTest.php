@@ -19,8 +19,8 @@ class AccessTokenTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $user->createToken($this->faker->word, [
-            $this->faker->word,
+        $user->createToken($this->faker->word(), [
+            $this->faker->word(),
         ]);
     }
 
@@ -28,7 +28,7 @@ class AccessTokenTest extends TenantTestCase
     {
         $user = User::factory()->createQuietly();
 
-        $result = $user->createToken($this->faker->word, [
+        $result = $user->createToken($this->faker->word(), [
             'view:user',
             'create:user',
         ]);

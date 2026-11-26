@@ -24,12 +24,18 @@ class SendMessage
         }
 
         $recipients = filled($message->recipients)
-            ? $message->recipients->map(fn ($id) => User::find($id))
+            ? $message->recipients->map(fn ($id): ?User => User::find($id))
             : User::all();
 
         Notification::send($recipients, new NewMessage($message, $sendAt));
 
-        NotificationChannel::organizationWide($message->channels)->each(fn (NotificationChannel $channel) => Notification::sendNow(User::first(), new NewMessage($message, $sendAt), [$channel->getChannel()]));
+        NotificationChannel::organizationWide($message->channels)->each(
+            fn (NotificationChannel $channel): null => Notification::sendNow(
+                User::first(),
+                new NewMessage($message, $sendAt),
+                [$channel->getChannel()],
+            ),
+        );
     }
 
     public static function canSendNotification(Message $message): bool

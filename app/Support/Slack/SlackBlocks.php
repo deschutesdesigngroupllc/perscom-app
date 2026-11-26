@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 final class SlackBlocks
 {
     /**
+     * Convert a Discord embed into a Slack Block Kit message.
+     *
      * @param  array<string, mixed>  $embed
      * @return array{text: string, blocks: array<int, array<string, mixed>>}
      */
@@ -32,7 +34,7 @@ final class SlackBlocks
             $blocks->push(['type' => 'header', 'text' => ['type' => 'plain_text', 'text' => Str::limit($title, 147), 'emoji' => true]]);
         }
 
-        $section = array_filter([
+        $section = collect([
             'type' => 'section',
             'text' => filled($description) ? ['type' => 'mrkdwn', 'text' => Str::limit(SlackBlocks::markdown($description), 2997)] : null,
             'fields' => collect((array) data_get($embed, 'fields', []))
@@ -46,7 +48,7 @@ final class SlackBlocks
             'accessory' => filled(data_get($embed, 'thumbnail.url'))
                 ? ['type' => 'image', 'image_url' => data_get($embed, 'thumbnail.url'), 'alt_text' => Str::limit($title ?: 'Image', 1997)]
                 : null,
-        ]);
+        ])->filter()->all();
 
         if (count($section) > 1) {
             $blocks->push($section);
@@ -87,6 +89,6 @@ final class SlackBlocks
 
     public static function escape(string $text): string
     {
-        return str_replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
+        return Str::replace(['&', '<', '>'], ['&amp;', '&lt;', '&gt;'], $text);
     }
 }

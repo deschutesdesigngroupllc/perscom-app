@@ -15,7 +15,7 @@ class CreateRecordsAwardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records_awards', function (Blueprint $table) {
+        Schema::create('records_awards', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('award_id');

@@ -52,7 +52,7 @@ class AdminResource extends Resource
                             ->revealable()
                             ->confirmed()
                             ->maxLength(255)
-                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->dehydrateStateUsing(fn ($state): string => Hash::make($state))
                             ->dehydrated(fn ($state): bool => filled($state))
                             ->required(fn (string $context): bool => $context === 'create')
                             ->live(),

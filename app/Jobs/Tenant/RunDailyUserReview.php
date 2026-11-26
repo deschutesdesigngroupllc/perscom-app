@@ -58,15 +58,17 @@ class RunDailyUserReview implements RunsPerTenant, ShouldQueue
 
     public function work(): void
     {
-        if (! Automation::query()->enabled()->forTrigger(AutomationTrigger::USER_DAILY_REVIEW)->exists()) {
+        if (Automation::query()->enabled()->forTrigger(AutomationTrigger::USER_DAILY_REVIEW)->doesntExist()) {
             return;
         }
 
-        User::query()->chunkById(100, fn (Collection $users) => $users->each(fn (User $user) => event(new ScheduledTriggerFired(
-            subject: $user,
-            trigger: AutomationTrigger::USER_DAILY_REVIEW,
-            additionalContext: static::contextFor($user),
-        ))));
+        User::query()->chunkById(100, fn (Collection $users): Collection => $users->each(
+            fn (User $user): ?array => event(new ScheduledTriggerFired(
+                subject: $user,
+                trigger: AutomationTrigger::USER_DAILY_REVIEW,
+                additionalContext: static::contextFor($user),
+            )),
+        ));
     }
 
     protected static function countRecentRegistrations(User $user, EventRegistrationStatus $status): int

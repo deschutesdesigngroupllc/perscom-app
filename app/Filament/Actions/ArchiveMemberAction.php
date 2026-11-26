@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 /**
  * Retire a member without losing their service history: their status changes through the same audited
@@ -74,7 +75,8 @@ class ArchiveMemberAction extends Action
     {
         return Status::query()
             ->get(['id', 'name'])
-            ->first(fn (Status $status): bool => collect(ArchiveMemberAction::LEAVING_STATUS_KEYWORDS)->contains(fn (string $keyword): bool => str_contains(strtolower($status->name), $keyword)))
+            ->first(fn (Status $status): bool => collect(ArchiveMemberAction::LEAVING_STATUS_KEYWORDS)
+                ->contains(fn (string $keyword): bool => Str::contains(Str::lower($status->name), $keyword)))
             ?->getKey();
     }
 }

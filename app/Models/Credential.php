@@ -11,6 +11,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -55,6 +56,13 @@ use Spatie\EloquentSortable\Sortable;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'description',
+    'type',
+    'issuer_id',
+    'validity_days',
+])]
 class Credential extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
@@ -64,14 +72,6 @@ class Credential extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'type',
-        'issuer_id',
-        'validity_days',
-    ];
-
     public function issuer(): BelongsTo
     {
         return $this->belongsTo(Issuer::class);
@@ -79,7 +79,7 @@ class Credential extends Model implements HasLabel, Sortable
 
     public function training_records(): BelongsToMany
     {
-        return $this->belongsToMany(TrainingRecord::class, 'records_trainings_credentials')
+        return $this->belongsToMany(TrainingRecord::class, TrainingRecordCredential::class)
             ->using(TrainingRecordCredential::class)
             ->withPivot(['id', 'issued_at', 'expires_at']);
     }

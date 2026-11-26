@@ -77,20 +77,20 @@ class SubscriptionsRelationManager extends RelationManager
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color(Color::generateV3Palette('#5167FC'))
                     ->openUrlInNewTab()
-                    ->url(fn (Subscription $record) => $record->stripe_url),
+                    ->url(fn (Subscription $record): ?string => $record->stripe_url),
                 DeleteAction::make(),
             ])
             ->headerActions([
                 Action::make('billing')
                     ->color(Color::generateV3Palette('#5167FC'))
-                    ->visible(function () {
+                    ->visible(function (): bool {
                         /** @var Tenant $tenant */
                         $tenant = $this->getOwnerRecord();
 
                         return $tenant->hasStripeId();
                     })
                     ->openUrlInNewTab()
-                    ->url(function () {
+                    ->url(function (): string {
                         /** @var Tenant $tenant */
                         $tenant = $this->getOwnerRecord();
 

@@ -9,12 +9,14 @@ use App\Events\ApiPurgedSuccessful;
 use App\Http\Resources\Api\ApiResource;
 use App\Http\Resources\Api\ApiResourceCollection;
 use App\Models\Tenant;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class ApiCacheService
 {
@@ -75,7 +77,7 @@ class ApiCacheService
             'Fastly-Soft-Purge' => 1,
         ];
 
-        $responses = Http::pool(fn (Pool $pool) => $tags->map(fn (string $tag) => $pool
+        $responses = Http::pool(fn (Pool $pool): array => $tags->map(fn (string $tag): PromiseInterface|Response => $pool
             ->baseUrl($url)
             ->withHeaders($headers)
             ->post($tag)
@@ -132,7 +134,7 @@ class ApiCacheService
             return class_basename($model);
         }
 
-        return strtolower($this->tenant->getKey().':'.class_basename($model));
+        return Str::lower($this->tenant->getKey().':'.class_basename($model));
     }
 
     protected function resolveRelationName(Model $model, string $relationName): ?string

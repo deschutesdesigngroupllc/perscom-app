@@ -28,6 +28,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -115,7 +116,7 @@ class ConnectedServices extends SettingsPage
                                     ->label('Channel')
                                     ->searchable()
                                     ->preload()
-                                    ->options(function () {
+                                    ->options(function (): array|Collection {
                                         $guildId = data_get(resolve(IntegrationSettings::class)->discord_settings, 'discord_server');
 
                                         if (blank($guildId)) {

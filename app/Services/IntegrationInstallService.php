@@ -35,6 +35,8 @@ class IntegrationInstallService
     }
 
     /**
+     * Decode the OAuth state into its install payload.
+     *
      * @return array{provider: string, tenant: int|string|null, nonce: string, origin?: string}|null
      */
     public static function decode(?string $state): ?array

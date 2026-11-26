@@ -31,7 +31,7 @@ class HandleInertiaRequests extends Middleware
 
         if (is_string($location) && $response->isRedirection() && $request->inertia()) {
             $host = parse_url($location, PHP_URL_HOST);
-            if ($host && ! Str::endsWith($host, config('tenancy.central_domains'))) {
+            if ($host && Str::doesntEndWith($host, config('tenancy.central_domains'))) {
                 return Inertia::location($location);
             }
         }
@@ -46,8 +46,8 @@ class HandleInertiaRequests extends Middleware
             'tenant_id' => tenant('id'),
             'csrf_token' => csrf_token(),
             'flash' => [
-                'banner' => fn () => $request->session()->get('banner'),
-                'status' => fn () => $request->session()->get('status'),
+                'banner' => fn (): mixed => $request->session()->get('banner'),
+                'status' => fn (): mixed => $request->session()->get('status'),
             ],
         ]);
     }

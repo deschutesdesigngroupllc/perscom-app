@@ -74,6 +74,8 @@ class LaunchPlanWidget extends Widget
     }
 
     /**
+     * Get the launch plan steps and whether each one is done.
+     *
      * @return array<int, array{key: string, label: string, description: string, done: bool, action: string, url: string}>
      */
     public function getSteps(): array

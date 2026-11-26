@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -26,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $notes
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Support\Facades\Event $event
+ * @property-read Event $event
  * @property-read bool $is_cancelled
  * @property-read \Illuminate\Database\Eloquent\Collection<int, EventRegistration> $registrations
  * @property-read int|null $registrations_count
@@ -48,23 +50,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'event_id',
+    'starts',
+    'ends',
+    'cancelled_at',
+    'notes',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'events_occurrences')]
 class EventOccurrence extends Model
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
-
-    protected $table = 'events_occurrences';
-
-    protected $fillable = [
-        'event_id',
-        'starts',
-        'ends',
-        'cancelled_at',
-        'notes',
-        'created_at',
-        'updated_at',
-    ];
 
     public function event(): BelongsTo
     {
@@ -90,6 +90,8 @@ class EventOccurrence extends Model
     }
 
     /**
+     * Determine whether the occurrence is cancelled.
+     *
      * @return Attribute<bool, never>
      */
     protected function isCancelled(): Attribute

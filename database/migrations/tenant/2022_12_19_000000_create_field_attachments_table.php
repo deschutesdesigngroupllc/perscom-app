@@ -18,7 +18,7 @@ class CreateFieldAttachmentsTable extends Migration
         if (Schema::hasTable('nova_pending_trix_attachments')) {
             Schema::rename('nova_pending_trix_attachments', 'nova_pending_field_attachments');
         } else {
-            Schema::create('nova_pending_field_attachments', function (Blueprint $table) {
+            Schema::create('nova_pending_field_attachments', function (Blueprint $table): void {
                 $table->increments('id');
                 $table->string('draft_id')->index();
                 $table->string('attachment');
@@ -30,7 +30,7 @@ class CreateFieldAttachmentsTable extends Migration
         if (Schema::hasTable('nova_trix_attachments')) {
             Schema::rename('nova_trix_attachments', 'nova_field_attachments');
         } else {
-            Schema::create('nova_field_attachments', function (Blueprint $table) {
+            Schema::create('nova_field_attachments', function (Blueprint $table): void {
                 $table->increments('id');
                 $table->morphs('attachable');
                 $table->string('attachment');

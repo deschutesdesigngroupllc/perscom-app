@@ -21,7 +21,6 @@ use Carbon\CarbonInterface;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Date;
@@ -60,7 +59,7 @@ class ProcessExpiringRecords implements RunsPerTenant, ShouldQueue
         TrainingRecordCredential::query()
             ->with(['credential', 'training_record'])
             ->whereBetween('expires_at', [today(), today()->addDays(self::LOOKAHEAD_DAYS)->endOfDay()])
-            ->chunkById(100, fn (Collection $credentials) => $credentials->each(function (TrainingRecordCredential $pivot): void {
+            ->eachById(function (TrainingRecordCredential $pivot): void {
                 $credential = $pivot->credential;
                 $trainingRecord = $pivot->training_record;
                 $user = $trainingRecord?->user;
@@ -90,7 +89,7 @@ class ProcessExpiringRecords implements RunsPerTenant, ShouldQueue
                         url: TrainingRecordResource::getUrl('view', ['record' => $trainingRecord], panel: 'app'),
                     ));
                 }
-            }));
+            }, 100);
     }
 
     protected function processQualifications(): void
@@ -99,7 +98,7 @@ class ProcessExpiringRecords implements RunsPerTenant, ShouldQueue
             ->withoutGlobalScope(QualificationRecordScope::class)
             ->with('qualification')
             ->whereBetween('expires_at', [today(), today()->addDays(self::LOOKAHEAD_DAYS)->endOfDay()])
-            ->chunkById(100, fn (Collection $records) => $records->each(function (QualificationRecord $record): void {
+            ->eachById(function (QualificationRecord $record): void {
                 $qualification = $record->qualification;
                 $user = $record->user;
 
@@ -128,7 +127,7 @@ class ProcessExpiringRecords implements RunsPerTenant, ShouldQueue
                         url: QualificationRecordResource::getUrl('view', ['record' => $record], panel: 'app'),
                     ));
                 }
-            }));
+            }, 100);
     }
 
     /**

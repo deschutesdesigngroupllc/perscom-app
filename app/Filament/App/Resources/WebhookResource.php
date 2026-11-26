@@ -86,7 +86,11 @@ class WebhookResource extends BaseResource
                                 Select::make('events')
                                     ->helperText('The events that will trigger the webhook. Leave empty if using only with automations.')
                                     ->multiple()
-                                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->all()),
+                                    ->options(fn (): array => collect(WebhookEvent::cases())
+                                        ->mapWithKeys(fn (WebhookEvent $event): array => [
+                                            $event->value => $event->value,
+                                        ])
+                                        ->all()),
                                 TextInput::make('secret')
                                     ->revealable()
                                     ->default(Str::random(32))
@@ -126,7 +130,9 @@ class WebhookResource extends BaseResource
                                     ->expandableLimitedList()
                                     ->badge(),
                                 TextEntry::make('secret')
-                                    ->formatStateUsing(fn ($state): string => str_repeat('*', strlen((string) $state)))
+                                    ->formatStateUsing(
+                                        fn ($state): string => Str::repeat('*', Str::length((string) $state)),
+                                    )
                                     ->helperText('Edit the webhook to view the secret.'),
                             ]),
                     ]),
@@ -143,7 +149,7 @@ class WebhookResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap(),

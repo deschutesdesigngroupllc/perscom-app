@@ -10,6 +10,8 @@ use App\Services\ScheduleService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,34 +72,32 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'start',
+    'duration',
+    'frequency',
+    'interval',
+    'end_type',
+    'count',
+    'until',
+    'by_day',
+    'by_month',
+    'by_set_position',
+    'by_month_day',
+    'by_year_day',
+    'rrule',
+    'next_occurrence',
+    'last_occurrence',
+])]
+#[Table(name: 'schedules')]
 class Schedule extends MorphPivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
 
-    protected $table = 'schedules';
-
     protected $attributes = [
         'duration' => 0,
-    ];
-
-    protected $fillable = [
-        'start',
-        'duration',
-        'frequency',
-        'interval',
-        'end_type',
-        'count',
-        'until',
-        'by_day',
-        'by_month',
-        'by_set_position',
-        'by_month_day',
-        'by_year_day',
-        'rrule',
-        'next_occurrence',
-        'last_occurrence',
     ];
 
     public function repeatable(): MorphTo
@@ -123,6 +123,8 @@ class Schedule extends MorphPivot
     }
 
     /**
+     * Determine whether the schedule has passed.
+     *
      * @return Attribute<bool, never>
      */
     protected function hasPassed(): Attribute
@@ -141,6 +143,8 @@ class Schedule extends MorphPivot
     }
 
     /**
+     * Get the length of each occurrence.
+     *
      * @return Attribute<CarbonInterval, never>
      */
     protected function length(): Attribute

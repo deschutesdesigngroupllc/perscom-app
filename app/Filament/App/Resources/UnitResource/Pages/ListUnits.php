@@ -30,12 +30,12 @@ class ListUnits extends ListRecords
         return [
             PresetView::make('visible')
                 ->label('Visible')
-                ->modifyQueryUsing(fn (Unit|Builder $query) => $query->where('hidden', false))
+                ->modifyQueryUsing(fn (Unit|Builder $query): Builder => $query->where('hidden', false))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEye),
             PresetView::make('hidden')
                 ->label('Hidden')
-                ->modifyQueryUsing(fn (Unit|Builder $query) => $query->where('hidden', true))
+                ->modifyQueryUsing(fn (Unit|Builder $query): Builder => $query->where('hidden', true))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEyeSlash),
         ];

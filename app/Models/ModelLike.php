@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -38,13 +39,12 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Table(name: 'model_has_likes')]
 class ModelLike extends MorphPivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasUser;
-
-    protected $table = 'model_has_likes';
 
     public function model(): MorphTo
     {

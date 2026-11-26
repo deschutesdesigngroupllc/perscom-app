@@ -20,7 +20,9 @@ class DiscordConnectController
         return $this->completeInstall($request, 'discord', 'Discord', function (string $code): string {
             $guild = DiscordService::exchangeInstallCode($code);
 
-            throw_unless($guild, IntegrationConnectionException::authorizationFailed('Discord'));
+            if (blank($guild)) {
+                throw IntegrationConnectionException::authorizationFailed('Discord');
+            }
 
             ConnectDiscordServer::handle($guild['id'], $guild['name']);
 

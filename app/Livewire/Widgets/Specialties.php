@@ -54,7 +54,9 @@ class Specialties extends Component implements HasActions, HasForms, HasTable
                 Group::make('categoryPivot.category_id')
                     ->titlePrefixedWithLabel(false)
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Specialty $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(
+                        fn (Specialty $record): ?string => $record->categoryPivot?->category?->name,
+                    ),
             ])
             ->groupingSettingsHidden()
             ->defaultGroup('categoryPivot.category_id');

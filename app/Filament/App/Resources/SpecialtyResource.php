@@ -99,7 +99,7 @@ class SpecialtyResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -117,7 +117,7 @@ class SpecialtyResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Specialty $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Specialty $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),

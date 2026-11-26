@@ -47,7 +47,7 @@ class UserSettingsService
         }
 
         /** @var array<string, mixed> $settings * */
-        $settings = Cache::remember($cacheKey, now()->addHour(), function () use ($user) {
+        $settings = Cache::remember($cacheKey, now()->addHour(), function () use ($user): array {
             /** @var UserSettings $settings */
             $settings = resolve(UserSettings::class);
 

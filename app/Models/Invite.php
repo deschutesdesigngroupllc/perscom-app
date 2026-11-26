@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Enums\InviteStatus;
 use App\Models\Enums\InviteType;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -54,30 +56,28 @@ use SensitiveParameter;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'type',
+    'email',
+    'name',
+    'user_id',
+    'invited_by_id',
+    'token',
+    'sent_at',
+    'expires_at',
+    'accepted_at',
+    'revoked_at',
+    'created_at',
+    'updated_at',
+])]
+#[Hidden([
+    'token',
+])]
 class Invite extends Model
 {
     use HasFactory;
 
     public const int EXPIRATION_DAYS = 7;
-
-    protected $fillable = [
-        'type',
-        'email',
-        'name',
-        'user_id',
-        'invited_by_id',
-        'token',
-        'sent_at',
-        'expires_at',
-        'accepted_at',
-        'revoked_at',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $hidden = [
-        'token',
-    ];
 
     public static function hashToken(#[SensitiveParameter] string $token): string
     {
@@ -146,7 +146,7 @@ class Invite extends Model
         $query
             ->whereNull('accepted_at')
             ->whereNull('revoked_at')
-            ->where(fn (Builder $query) => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()));
+            ->where(fn (Builder $query): Builder => $query->whereNull('expires_at')->orWhere('expires_at', '>', now()));
     }
 
     /**

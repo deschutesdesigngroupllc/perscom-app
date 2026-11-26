@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('telescope_entries', function (Blueprint $table) {
+        Schema::create('telescope_entries', function (Blueprint $table): void {
             $table->bigIncrements('sequence');
             $table->uuid('uuid');
             $table->uuid('batch_id');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->index(['type', 'should_display_on_index']);
         });
 
-        Schema::create('telescope_entries_tags', function (Blueprint $table) {
+        Schema::create('telescope_entries_tags', function (Blueprint $table): void {
             $table->uuid('entry_uuid');
             $table->string('tag');
 
@@ -43,7 +43,7 @@ return new class extends Migration
                 ->onDelete('cascade');
         });
 
-        Schema::create('telescope_monitoring', function (Blueprint $table) {
+        Schema::create('telescope_monitoring', function (Blueprint $table): void {
             $table->string('tag')->primary();
         });
     }

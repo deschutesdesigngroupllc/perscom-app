@@ -19,11 +19,11 @@ class AssignmentRecordService
             return $record;
         }
 
-        return tap($record, function (AssignmentRecord $record) {
+        return tap($record, function (AssignmentRecord $record): void {
             $user = $record->user;
 
             if (blank($user)) {
-                return null;
+                return;
             }
 
             if (filled($record->position_id)) {

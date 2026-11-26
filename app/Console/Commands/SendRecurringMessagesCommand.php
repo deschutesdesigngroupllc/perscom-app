@@ -6,15 +6,15 @@ namespace App\Console\Commands;
 
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\SendRecurringMessages;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Throwable;
 
+#[Description('Send any recurring messages.')]
+#[Signature('perscom:recurring-messages')]
 class SendRecurringMessagesCommand extends Command
 {
-    protected $signature = 'perscom:recurring-messages';
-
-    protected $description = 'Send any recurring messages.';
-
     /**
      * @throws Throwable
      */

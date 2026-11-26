@@ -34,7 +34,10 @@ class RegisterCustomPages
 
         $pages = Page::all()->map(fn (Page $page): NavigationItem => NavigationItem::make($page->name)
             ->url(FilamentPage::getUrl(['page' => $page->slug]))
-            ->isActiveWhen(fn () => Str::is(Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(), request()->getUri()))
+            ->isActiveWhen(fn (): bool => Str::is(
+                Uri::of(FilamentPage::getUrl(['page' => $page->slug]))->toHtml(),
+                request()->getUri(),
+            ))
             ->group('Pages')
             ->icon($page->icon)
             ->sort($page->order)

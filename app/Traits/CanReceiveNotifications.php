@@ -16,7 +16,7 @@ trait CanReceiveNotifications
 {
     public function modelNotifications(): MorphToMany
     {
-        return $this->morphToMany(static::class, Str::of(class_basename(static::class))->singular()->lower()->toString(), 'model_has_notifications')
+        return $this->morphToMany(static::class, Str::of(class_basename(static::class))->singular()->lower()->toString(), ModelNotification::class)
             ->withPivot(['event', 'message'])
             ->orderByPivot('created_at')
             ->using(ModelNotification::class)

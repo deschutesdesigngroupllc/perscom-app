@@ -161,6 +161,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Dispatch the slash command to its handler.
+     *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
@@ -178,6 +180,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Reply with a member's service profile.
+     *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
@@ -217,6 +221,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Reply with the roster, or with the members of one unit.
+     *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
@@ -243,7 +249,7 @@ class DiscordInteractionService
                 ->get()
                 ->load(['rank', 'position']);
 
-            $lines = $members->map(fn (User $user): string => trim(sprintf(
+            $lines = $members->map(fn (User $user): string => Str::trim(sprintf(
                 '**%s %s**%s',
                 $user->rank?->abbreviation,
                 $user->name,
@@ -277,6 +283,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Reply with the upcoming events and the invoker's RSVPs.
+     *
      * @return array<string, mixed>
      */
     protected static function events(?User $invoker): array
@@ -318,6 +326,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Record the invoker's RSVP to an event occurrence.
+     *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
@@ -327,7 +337,10 @@ class DiscordInteractionService
             return DiscordInteractionService::notAllowed($invoker);
         }
 
-        [$eventId, $starts] = array_pad(explode('|', (string) DiscordInteractionService::option($payload, 'event'), 2), 2, null);
+        [$eventId, $starts] = Str::of((string) DiscordInteractionService::option($payload, 'event'))
+            ->explode('|', 2)
+            ->pad(2, null)
+            ->all();
 
         $event = Event::query()->find($eventId);
 
@@ -378,6 +391,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Suggest units or events for the focused command option.
+     *
      * @param  array<string, mixed>  $payload
      * @return array<string, mixed>
      */
@@ -388,7 +403,7 @@ class DiscordInteractionService
 
         $choices = match (data_get($focused, 'name')) {
             'unit' => Unit::query()
-                ->when(filled($search), fn (Builder $query) => $query->where('name', 'like', '%'.$search.'%'))
+                ->when(filled($search), fn (Builder $query): Builder => $query->where('name', 'like', '%'.$search.'%'))
                 ->orderBy('order')
                 ->limit(25)
                 ->get()
@@ -415,7 +430,10 @@ class DiscordInteractionService
      */
     protected static function upcomingOccurrences(?string $search = null): Collection
     {
-        $query = Event::query()->when(filled($search), fn (Builder $query) => $query->where('name', 'like', '%'.$search.'%'));
+        $query = Event::query()->when(
+            filled($search),
+            fn (Builder $query): Builder => $query->where('name', 'like', '%'.$search.'%'),
+        );
 
         return EventOccurrenceService::between(now(), now()->addDays(DiscordInteractionService::UPCOMING_DAYS), $query)
             ->reject(fn (OccurrenceData $occurrence): bool => $occurrence->isCancelled() || $occurrence->hasEnded())
@@ -451,6 +469,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Reply that the invoker may not use the command.
+     *
      * @return array<string, mixed>
      */
     protected static function notAllowed(?User $invoker): array
@@ -461,6 +481,8 @@ class DiscordInteractionService
     }
 
     /**
+     * Get the value of the named command option.
+     *
      * @param  array<string, mixed>  $payload
      */
     protected static function option(array $payload, string $name): mixed
@@ -479,12 +501,12 @@ class DiscordInteractionService
     {
         return [
             'type' => self::RESPONSE_MESSAGE,
-            'data' => array_filter([
+            'data' => collect([
                 'content' => $content,
                 'embeds' => $embeds,
                 'flags' => $ephemeral ? self::FLAG_EPHEMERAL : null,
                 'allowed_mentions' => ['parse' => []],
-            ], fn (mixed $value): bool => $value !== null && $value !== []),
+            ])->filter(fn (mixed $value): bool => $value !== null && $value !== [])->all(),
         ];
     }
 }

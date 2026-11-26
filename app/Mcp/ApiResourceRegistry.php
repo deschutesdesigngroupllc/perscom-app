@@ -42,6 +42,8 @@ use ReflectionClass;
 class ApiResourceRegistry
 {
     /**
+     * Get every API resource exposed to MCP clients, keyed by resource.
+     *
      * @return array<string, array{endpoint: string, controller: class-string<Controller>, description: string, scope: string}>
      */
     public static function all(): array
@@ -78,6 +80,8 @@ class ApiResourceRegistry
     }
 
     /**
+     * Find the registry entry for the given resource key.
+     *
      * @return array{endpoint: string, controller: class-string<Controller>, description: string, scope: string}|null
      */
     public static function find(string $key): ?array
@@ -86,6 +90,8 @@ class ApiResourceRegistry
     }
 
     /**
+     * Get the keys of every exposed resource.
+     *
      * @return array<int, string>
      */
     public static function keys(): array
@@ -134,6 +140,8 @@ class ApiResourceRegistry
     }
 
     /**
+     * Build the registry entry for an API resource.
+     *
      * @param  class-string<Controller>  $controller
      * @return array{endpoint: string, controller: class-string<Controller>, description: string, scope: string}
      */

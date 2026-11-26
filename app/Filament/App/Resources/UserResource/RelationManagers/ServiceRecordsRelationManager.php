@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Filament\App\Resources\ServiceRecordResource;
+use App\Models\Document;
 use App\Models\ServiceRecord;
 use App\Models\User;
 use BackedEnum;
@@ -41,13 +42,13 @@ class ServiceRecordsRelationManager extends RelationManager
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (ServiceRecord $record) => $record->text),
+                            ->html(fn (ServiceRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
@@ -55,8 +56,8 @@ class ServiceRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (ServiceRecord $record) => $record->document)
-                            ->user(fn (ServiceRecord $record) => $record->user)
+                            ->document(fn (ServiceRecord $record): ?Document => $record->document)
+                            ->user(fn (ServiceRecord $record): ?User => $record->user)
                             ->attached(fn (ServiceRecord $record): ServiceRecord => $record),
                     ),
             ])

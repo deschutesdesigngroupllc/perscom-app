@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use JsonException;
 
 class CreateForm
 {
@@ -30,6 +31,7 @@ class CreateForm
      * }  $input
      *
      * @throws ValidationException
+     * @throws JsonException when a field's options cannot be encoded
      */
     public static function handle(array $input): Form
     {
@@ -79,7 +81,7 @@ class CreateForm
                         'placeholder' => $field['placeholder'] ?? null,
                         'help' => $field['help'] ?? null,
                         'options_type' => filled($options) ? FieldOptionsType::ARRAY : null,
-                        'options' => filled($options) ? json_encode(array_values($options)) : null,
+                        'options' => filled($options) ? json_encode(array_values($options), JSON_THROW_ON_ERROR) : null,
                     ]);
 
                     $form->fields()->attach($model->getKey(), ['order' => $index + 1]);

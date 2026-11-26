@@ -78,13 +78,13 @@ class JsonService
             return mb_substr($content, 0, $this->maxInlineSize);
         }
 
-        $truncate = function ($data, int $depth = 0) use (&$truncate) {
+        $truncate = function (mixed $data, int $depth = 0) use (&$truncate): mixed {
             if ($depth > 6) {
                 return '[...]';
             }
 
             if (is_array($data)) {
-                $json = json_encode($data);
+                $json = (string) json_encode($data, JSON_PARTIAL_OUTPUT_ON_ERROR);
                 if (strlen($json) > $this->maxInlineSize) {
                     if (array_is_list($data)) {
                         $data = array_slice($data, 0, 5);

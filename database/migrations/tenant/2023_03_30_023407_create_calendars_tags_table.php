@@ -20,7 +20,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calendars_tags', function (Blueprint $table) {
+        Schema::create('calendars_tags', function (Blueprint $table): void {
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('calendar_id');
         });

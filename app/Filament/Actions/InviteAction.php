@@ -75,12 +75,14 @@ class InviteAction extends Action
     }
 
     /**
+     * Split the input into valid and invalid email addresses.
+     *
      * @return array{valid: array<int, string>, invalid: array<int, string>}
      */
     public static function parseEmails(string $input): array
     {
         $entries = collect(preg_split('/[\s,;]+/', $input) ?: [])
-            ->map(fn (string $entry): string => Str::lower(trim($entry, " \t\n\r\0\x0B<>\"'")))
+            ->map(fn (string $entry): string => Str::lower(Str::trim($entry, " \t\n\r\0\x0B<>\"'")))
             ->filter()
             ->unique()
             ->values();

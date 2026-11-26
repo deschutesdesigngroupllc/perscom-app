@@ -6,7 +6,6 @@ namespace App\Traits;
 
 use App\Models\Unit;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,11 +16,6 @@ trait HasUnit
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
-    }
-
-    protected function scopeUnit(Builder $query, Unit $unit): void
-    {
-        $query->whereBelongsTo($unit);
     }
 
     protected function initializeHasUnit(): void

@@ -32,7 +32,13 @@ class SendUpcomingEventNotification
 
         Notification::send(SendUpcomingEventNotification::recipients($event), new UpcomingEvent($event, $interval, $sendAt));
 
-        NotificationChannel::organizationWide($event->notifications_channels)->each(fn (NotificationChannel $channel) => Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [$channel->getChannel()]));
+        NotificationChannel::organizationWide($event->notifications_channels)->each(
+            fn (NotificationChannel $channel): null => Notification::sendNow(
+                User::first(),
+                new UpcomingEvent($event, $interval, $sendAt),
+                [$channel->getChannel()],
+            ),
+        );
     }
 
     public static function canSendNotification(Event $event): bool

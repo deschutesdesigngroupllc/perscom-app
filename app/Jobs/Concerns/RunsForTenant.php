@@ -35,6 +35,6 @@ trait RunsForTenant
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(fn () => $this->work());
+        Tenant::findOrFail($this->tenantKey)->run(fn (): null => $this->work());
     }
 }

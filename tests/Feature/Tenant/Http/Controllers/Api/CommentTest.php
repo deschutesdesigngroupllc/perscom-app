@@ -65,7 +65,7 @@ class CommentTest extends ApiResourceTestCase
     {
         return [
             'author_id' => User::factory()->createQuietly()->getKey(),
-            'comment' => $this->faker->paragraph,
+            'comment' => $this->faker->paragraph(),
         ];
     }
 
@@ -75,7 +75,7 @@ class CommentTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'comment' => $this->faker->paragraph,
+            'comment' => $this->faker->paragraph(),
         ];
     }
 }

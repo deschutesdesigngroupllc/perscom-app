@@ -27,7 +27,7 @@ class EditTenant extends EditRecord
                 ->color(Color::generateV3Palette('#5167FC'))
                 ->visible(fn (Tenant $record): bool => $record->hasStripeId())
                 ->openUrlInNewTab()
-                ->url(fn (Tenant $record) => $record->stripe_url),
+                ->url(fn (Tenant $record): ?string => $record->stripe_url),
             DeleteAction::make(),
         ];
     }

@@ -21,6 +21,7 @@ use App\Models\User;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
 use ReflectionClass;
 
 enum AutomationTrigger: string implements HasLabel
@@ -70,6 +71,8 @@ enum AutomationTrigger: string implements HasLabel
     case QUALIFICATION_RECORD_EXPIRED = 'qualificationrecord.expired';
 
     /**
+     * Get the trigger options grouped by model.
+     *
      * @return array<string, array<string, string|null>>
      */
     public static function groupedOptions(): array
@@ -304,6 +307,8 @@ enum AutomationTrigger: string implements HasLabel
     }
 
     /**
+     * Get an example of the context passed to the automation.
+     *
      * @return array<string, mixed>
      */
     public function getExampleContext(): array
@@ -348,8 +353,8 @@ enum AutomationTrigger: string implements HasLabel
             $name = $match[2];
 
             // Skip relationships and complex types
-            if (str_contains($type, 'Collection') || str_contains($type, '|null')) {
-                $type = str_replace('|null', '', $type);
+            if (Str::contains($type, 'Collection') || Str::contains($type, '|null')) {
+                $type = Str::replace('|null', '', $type);
             }
 
             $fields[$name] = $this->getExampleValueForType($type, $name);
@@ -360,23 +365,23 @@ enum AutomationTrigger: string implements HasLabel
 
     private function getExampleValueForType(string $type, string $name): mixed
     {
-        if ($name === 'id' || str_ends_with($name, '_id')) {
+        if ($name === 'id' || Str::endsWith($name, '_id')) {
             return 1;
         }
 
-        if (str_contains($name, 'email')) {
+        if (Str::contains($name, 'email')) {
             return 'user@example.com';
         }
 
-        if (str_contains($name, 'name')) {
+        if (Str::contains($name, 'name')) {
             return 'Example Name';
         }
 
-        if (str_contains($name, 'date') || str_contains($name, '_at')) {
+        if (Str::contains($name, ['date', '_at'])) {
             return '2026-01-14T12:00:00Z';
         }
 
-        if (str_contains($name, 'url') || str_contains($name, 'link')) {
+        if (Str::contains($name, ['url', 'link'])) {
             return 'https://example.com';
         }
 

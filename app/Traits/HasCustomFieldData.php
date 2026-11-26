@@ -51,7 +51,7 @@ trait HasCustomFieldData
     protected static function isFilePath($value): bool
     {
         return is_string($value)
-            && ! Str::startsWith($value, ['http://', 'https://'])
+            && Str::doesntStartWith($value, ['http://', 'https://'])
             && preg_match('/\.[a-zA-Z0-9]{1,10}$/', $value);
     }
 

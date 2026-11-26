@@ -31,7 +31,7 @@ class NotifyPromotionEligibleMembers implements RunsPerTenant, ShouldQueue
 
     public function work(): void
     {
-        if (! RankRequirement::query()->exists()) {
+        if (RankRequirement::query()->doesntExist()) {
             return;
         }
 

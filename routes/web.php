@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Landing\RegisterController;
 use App\Http\Controllers\Landing\VerifyController;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
@@ -31,5 +32,5 @@ Route::group(['domain' => parse_url((string) config('app.url'), PHP_URL_HOST)], 
         });
     });
 
-    Route::fallback(static fn () => to_route('web.register.index'));
+    Route::fallback(static fn (): RedirectResponse => to_route('web.register.index'));
 });

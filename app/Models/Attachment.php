@@ -11,6 +11,8 @@ use App\Traits\HasResourceUrl;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +52,18 @@ use Illuminate\Support\Facades\Storage;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Appends([
+    'attachment_url',
+])]
+#[Fillable([
+    'name',
+    'filename',
+    'model_type',
+    'model_id',
+    'path',
+    'created_at',
+    'updated_at',
+])]
 class Attachment extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -58,20 +72,6 @@ class Attachment extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'name',
-        'filename',
-        'model_type',
-        'model_id',
-        'path',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $appends = [
-        'attachment_url',
-    ];
-
     public function model(): MorphTo
     {
         return $this->morphTo('model');
@@ -79,7 +79,7 @@ class Attachment extends Model implements HasLabel
 
     protected static function booted(): void
     {
-        static::deleting(fn (Attachment $model) => Storage::delete($model->path));
+        static::deleting(fn (Attachment $model): bool => Storage::delete($model->path));
     }
 
     protected function attachmentUrl(): Attribute

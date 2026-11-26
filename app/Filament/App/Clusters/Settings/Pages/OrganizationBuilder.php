@@ -97,7 +97,9 @@ class OrganizationBuilder extends Page
                             Action::make('propose')
                                 ->label('Propose Additions')
                                 ->icon(Heroicon::OutlinedSparkles)
-                                ->action(fn () => $this->propose()),
+                                ->action(function (): void {
+                                    $this->propose();
+                                }),
                         ]),
                     ]),
                 Callout::make('AI Generation Unavailable')
@@ -116,7 +118,9 @@ class OrganizationBuilder extends Page
                                 ->label('Import Preset')
                                 ->icon(Heroicon::OutlinedArrowDownTray)
                                 ->color('gray')
-                                ->action(fn () => $this->importPreset()),
+                                ->action(function (): void {
+                                    $this->importPreset();
+                                }),
                         ]),
                     ]),
                 Section::make('Proposal')
@@ -131,7 +135,9 @@ class OrganizationBuilder extends Page
                                 ->modalHeading('Apply Proposal')
                                 ->modalDescription('Everything in the proposal will be created. Entities that already exist are skipped.')
                                 ->modalSubmitActionLabel('Apply')
-                                ->action(fn () => $this->apply()),
+                                ->action(function (): void {
+                                    $this->apply();
+                                }),
                         ]),
                     ]),
             ]);

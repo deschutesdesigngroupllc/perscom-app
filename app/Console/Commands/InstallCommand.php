@@ -15,9 +15,12 @@ use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\LawEnforcementSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
@@ -25,17 +28,15 @@ use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\table;
 
-class InstallCommand extends Command implements Isolatable
-{
-    use ConfirmableTrait;
-
-    protected $signature = 'perscom:install
+#[Description('Install the PERSCOM application.')]
+#[Signature('perscom:install
                             {--seeder=military : The seeder to use. Default: military}
                             {--no-seed : Do not seed the database}
                             {--demo : Run the demo seeder}
-                            {--force : Force the operation to run when in production}';
-
-    protected $description = 'Install the PERSCOM application.';
+                            {--force : Force the operation to run when in production}')]
+class InstallCommand extends Command implements Isolatable
+{
+    use ConfirmableTrait;
 
     /**
      * Drop a tenant's database if it exists. Tenancy is never initialized here, because connecting to the
@@ -91,6 +92,8 @@ class InstallCommand extends Command implements Isolatable
     }
 
     /**
+     * Reinstall the application, with or without tenancy.
+     *
      * @throws DatabaseManagerNotRegisteredException
      */
     protected function reinstallApplication(): int
@@ -101,6 +104,8 @@ class InstallCommand extends Command implements Isolatable
     }
 
     /**
+     * Migrate and seed the central database and the first tenant.
+     *
      * @throws DatabaseManagerNotRegisteredException
      */
     protected function reinstallApplicationWithTenancy(): int
@@ -180,7 +185,15 @@ class InstallCommand extends Command implements Isolatable
 
         $this->components->info('Available user accounts:');
 
-        table(['ID', 'Name', 'Email', 'Roles', 'Password'], Tenant::first()->run(fn () => User::all()->map(fn (User $user): array => [$user->id, $user->name, $user->email, $user->roles->map->name->implode(', '), '---'])));
+        table(['ID', 'Name', 'Email', 'Roles', 'Password'], Tenant::first()->run(fn (): Collection => User::all()->map(
+            fn (User $user): array => [
+                $user->id,
+                $user->name,
+                $user->email,
+                $user->roles->map->name->implode(', '),
+                '---',
+            ],
+        )));
 
         $this->components->info('Application URLs:');
 
@@ -286,6 +299,8 @@ class InstallCommand extends Command implements Isolatable
     }
 
     /**
+     * Truncate all application data, dropping each tenant's database.
+     *
      * @throws DatabaseManagerNotRegisteredException
      */
     protected function resetApplication(): void

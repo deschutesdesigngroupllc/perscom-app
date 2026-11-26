@@ -91,7 +91,7 @@ class AdminPanelProvider extends PanelProvider
                     ->sort(3),
                 NavigationItem::make('Telescope')
                     ->url(config('app.url').'/'.config('telescope.path'), shouldOpenInNewTab: true)
-                    ->visible(fn () => config('telescope.enabled'))
+                    ->visible(fn (): bool => (bool) config('telescope.enabled'))
                     ->icon(Heroicon::OutlinedPresentationChartLine)
                     ->group('Tools')
                     ->sort(3),

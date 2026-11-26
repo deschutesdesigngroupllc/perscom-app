@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->string('image')->after('paygrade')->nullable();
         });
     }
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('ranks', function (Blueprint $table) {
+        Schema::table('ranks', function (Blueprint $table): void {
             $table->dropColumn('image');
         });
     }

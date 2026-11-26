@@ -17,6 +17,7 @@ use Filament\Pages\Page;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Phiki\Grammar\Grammar;
@@ -110,7 +111,9 @@ class Widgets extends Page
                         ->helperText('The widget to display.')
                         ->searchable()
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        })
                         ->options(static::$widgets),
                     Select::make('api_key')
                         ->label('API Key')
@@ -118,18 +121,22 @@ class Widgets extends Page
                         ->searchable()
                         ->preload()
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        })
                         ->suffixAction(Action::make('open')
                             ->icon(Heroicon::OutlinedPlus)
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))
                         )
-                        ->options(fn () => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
+                        ->options(fn (): Collection => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
                     Checkbox::make('dark_mode')
                         ->helperText('Check to enable dark mode.')
                         ->label('Dark Mode')
                         ->live()
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set)),
+                        ->afterStateUpdated(function (Set $set, Get $get): void {
+                            $this->updateCodeSnippet($get, $set);
+                        }),
                     CodeEntry::make('widget_code')
                         ->copyable()
                         ->grammar(Grammar::Javascript)

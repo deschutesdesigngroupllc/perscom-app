@@ -51,7 +51,7 @@ class CategoriesTable
             ])
             ->groups([
                 Group::make('resource')
-                    ->getTitleFromRecordUsing(fn (Category $record) => Str::of($record->resource)->classBasename()->plural()),
+                    ->getTitleFromRecordUsing(fn (Category $record): string => Str::of($record->resource)->classBasename()->plural()->toString()),
             ])
             ->recordActions([
                 EditAction::make(),

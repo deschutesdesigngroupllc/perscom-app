@@ -28,6 +28,8 @@ use Livewire\Component;
 class MemberRecordActions
 {
     /**
+     * Build the record actions for a single member.
+     *
      * @return array<int, Action>
      */
     public static function make(): array
@@ -70,6 +72,8 @@ class MemberRecordActions
     }
 
     /**
+     * Build an action that opens a record's create form for the member.
+     *
      * @param  class-string<Model>  $recordModel
      * @param  callable(int): string  $url
      */
@@ -87,6 +91,8 @@ class MemberRecordActions
     }
 
     /**
+     * Build a bulk action that opens a record's create form for the members.
+     *
      * @param  class-string<Model>  $recordModel
      * @param  callable(array<int, int>): string  $url
      */
@@ -96,6 +102,8 @@ class MemberRecordActions
             ->label($label)
             ->icon($icon)
             ->visible(fn (): bool => Gate::check('create', $recordModel))
-            ->action(fn (BulkAction $action, Collection $records) => $action->redirect($url($records->map(fn (User $user): int => $user->getKey())->sort()->values()->all())));
+            ->action(function (BulkAction $action, Collection $records) use ($url): void {
+                $action->redirect($url($records->map(fn (User $user): int => $user->getKey())->sort()->values()->all()));
+            });
     }
 }

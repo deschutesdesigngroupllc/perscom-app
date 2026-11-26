@@ -131,7 +131,7 @@ class AttachmentResource extends BaseResource
                                 TextEntry::make('name'),
                                 TextEntry::make('attachment_url')
                                     ->label('URL')
-                                    ->url(fn ($state) => $state)
+                                    ->url(fn (?string $state): ?string => $state)
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
@@ -146,7 +146,7 @@ class AttachmentResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (Attachment $record) => $record->model_url),
+                                    ->url(fn (Attachment $record): ?string => $record->model_url),
                             ]),
                     ]),
             ]);
@@ -169,7 +169,7 @@ class AttachmentResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('attachment_url')
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn (?string $state): ?string => $state)
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
@@ -181,7 +181,7 @@ class AttachmentResource extends BaseResource
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (Attachment $record) => $record->model_url),
+                    ->url(fn (Attachment $record): ?string => $record->model_url),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -191,7 +191,7 @@ class AttachmentResource extends BaseResource
                 Action::make('download')
                     ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->color('gray')
-                    ->url(fn (?Attachment $record) => $record->attachment_url)
+                    ->url(fn (?Attachment $record): ?string => $record->attachment_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),
@@ -223,7 +223,7 @@ class AttachmentResource extends BaseResource
                     ->limit()
                     ->wrap()
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn (?string $state): ?string => $state)
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
@@ -236,7 +236,7 @@ class AttachmentResource extends BaseResource
                 Action::make('download')
                     ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->color('gray')
-                    ->url(fn (?Attachment $record) => $record->attachment_url)
+                    ->url(fn (?Attachment $record): ?string => $record->attachment_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),

@@ -15,6 +15,7 @@ use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\CommentsRe
 use App\Filament\Exports\ServiceRecordExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\ServiceRecord;
 use App\Models\User;
@@ -191,22 +192,22 @@ class ServiceRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (ServiceRecord $record) => $record->document)
-                            ->user(fn (ServiceRecord $record) => $record->user)
+                            ->document(fn (ServiceRecord $record): ?Document => $record->document)
+                            ->user(fn (ServiceRecord $record): ?User => $record->user)
                             ->attached(fn (ServiceRecord $record): ServiceRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (ServiceRecord $record) => $record->text),
+                            ->html(fn (ServiceRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')

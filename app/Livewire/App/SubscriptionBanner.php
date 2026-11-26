@@ -32,7 +32,7 @@ class SubscriptionBanner extends Component
 
         $this->returnUrl = url()->current();
 
-        $timezone = UserSettingsService::get('timezone', function () {
+        $timezone = UserSettingsService::get('timezone', function (): string {
             /** @var OrganizationSettings $settings */
             $settings = resolve(OrganizationSettings::class);
 

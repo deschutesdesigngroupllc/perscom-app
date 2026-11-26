@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('registrations', function (Blueprint $table) {
+        Schema::table('registrations', function (Blueprint $table): void {
             $table->string('name')->nullable()->after('organization');
             $table->string('subdomain')->nullable()->after('email');
             $table->string('organization_type')->nullable()->after('subdomain');
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('registrations', function (Blueprint $table) {
+        Schema::table('registrations', function (Blueprint $table): void {
             $table->dropColumn(['name', 'subdomain', 'organization_type']);
         });
     }

@@ -35,10 +35,13 @@ use App\Models\Task;
 use App\Models\TrainingRecord;
 use App\Models\Unit;
 use App\Models\User;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use JsonException;
 
 class MilitarySeeder extends Seeder
 {
@@ -56,6 +59,12 @@ class MilitarySeeder extends Seeder
         'ODA 5112, A Co, 1st Btn, 5th SFG' => 'Alpha Company, 1st Btn, 5th SFG',
     ];
 
+    /**
+     * Seed the military demo organization.
+     *
+     * @throws FileNotFoundException when a bundled image cannot be read
+     * @throws JsonException when the field options cannot be encoded
+     */
     public function run(): void
     {
         $user = User::first() ?? User::factory()->create();
@@ -244,20 +253,16 @@ class MilitarySeeder extends Seeder
                 ],
             )
             ->create()
-            ->each(function (Award $award) {
+            ->each(function (Award $award): void {
                 $path = "awards/$award->name.png";
                 $image = storage_path("app/images/awards/$award->name.png");
 
                 if (! Storage::exists($path)) {
-                    if (! file_exists($image)) {
+                    if (File::missing($image)) {
                         return;
                     }
 
-                    $file = file_get_contents($image);
-
-                    if ($file === false) {
-                        return;
-                    }
+                    $file = File::get($image);
 
                     Storage::put(
                         path: $path,
@@ -334,20 +339,16 @@ class MilitarySeeder extends Seeder
                 ],
             )
             ->create()
-            ->each(function (Qualification $qualification) {
+            ->each(function (Qualification $qualification): void {
                 $path = "qualifications/$qualification->name.png";
                 $image = storage_path("app/images/qualifications/$qualification->name.png");
 
                 if (! Storage::exists($path)) {
-                    if (! file_exists($image)) {
+                    if (File::missing($image)) {
                         return;
                     }
 
-                    $file = file_get_contents($image);
-
-                    if ($file === false) {
-                        return;
-                    }
+                    $file = File::get($image);
 
                     Storage::put(
                         path: $path,
@@ -404,20 +405,16 @@ class MilitarySeeder extends Seeder
                 ],
             )
             ->create()
-            ->each(function (Rank $rank) {
+            ->each(function (Rank $rank): void {
                 $path = "ranks/military/$rank->abbreviation.svg";
                 $image = storage_path("app/images/ranks/$rank->name.png");
 
                 if (! Storage::exists($path)) {
-                    if (! file_exists($image)) {
+                    if (File::missing($image)) {
                         return;
                     }
 
-                    $file = file_get_contents($image);
-
-                    if ($file === false) {
-                        return;
-                    }
+                    $file = File::get($image);
 
                     Storage::put(
                         path: $path,
@@ -518,7 +515,7 @@ class MilitarySeeder extends Seeder
                     ['name' => 'Rank / Grade', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. SFC / E-7'],
                     ['name' => 'DoD ID Number', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => '10-digit DoD ID'],
                     ['name' => 'Unit of Assignment', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true, 'placeholder' => 'e.g. ODA 5111, A Co, 1st Btn, 5th SFG'],
-                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Promotion', 'Reassignment', 'MOS Reclassification', 'Separation / ETS', 'Retirement', 'Name Change', 'Other'])],
+                    ['name' => 'Action Requested', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Promotion', 'Reassignment', 'MOS Reclassification', 'Separation / ETS', 'Retirement', 'Name Change', 'Other'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Effective Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Justification', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Provide a clear, concise justification for the requested action.'],
                     ['name' => 'Supporting Documentation', 'type' => FieldType::FIELD_FILE, 'cast' => FieldType::FIELD_FILE->getCast(), 'required' => false, 'help' => 'Attach memoranda, orders, or other supporting documents.'],
@@ -565,7 +562,7 @@ class MilitarySeeder extends Seeder
                     ['name' => 'Recommended Soldier - Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Recommended Soldier - Rank', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
                     ['name' => 'Recommended Soldier - DoD ID', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Award Recommended', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Bronze Star', 'Silver Star', 'Distinguished Service Cross', 'Meritorious Service Medal', 'Army Commendation Medal', 'Army Achievement Medal', 'Purple Heart'])],
+                    ['name' => 'Award Recommended', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Bronze Star', 'Silver Star', 'Distinguished Service Cross', 'Meritorious Service Medal', 'Army Commendation Medal', 'Army Achievement Medal', 'Purple Heart'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Period of Service - From', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Period of Service - To', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Proposed Citation', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Narrative-style citation, written in third person, that will appear on the certificate.'],
@@ -587,7 +584,7 @@ class MilitarySeeder extends Seeder
                 ->count(7)
                 ->sequence(
                     ['name' => 'Soldier Full Name', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast(), 'required' => true],
-                    ['name' => 'Type of Leave', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Ordinary', 'Emergency', 'Convalescent', 'Permissive TDY', 'Terminal'])],
+                    ['name' => 'Type of Leave', 'type' => FieldType::FIELD_SELECT, 'cast' => FieldType::FIELD_SELECT->getCast(), 'required' => true, 'options_type' => FieldOptionsType::ARRAY, 'options' => json_encode(['Ordinary', 'Emergency', 'Convalescent', 'Permissive TDY', 'Terminal'], JSON_THROW_ON_ERROR)],
                     ['name' => 'Departure Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Return Date', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast(), 'required' => true],
                     ['name' => 'Leave Address', 'type' => FieldType::FIELD_TEXTAREA, 'cast' => FieldType::FIELD_TEXTAREA->getCast(), 'required' => true, 'help' => 'Street address, city, state, ZIP and a daytime phone number for the leave location.'],

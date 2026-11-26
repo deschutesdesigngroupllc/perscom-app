@@ -50,13 +50,13 @@ class SetupTenantAccount
         $this->tenant = $tenant;
 
         $this->tenant->run(function (): void {
-            $this->when($this->shouldSeedSettings, fn () => $this->seedInitialSettings());
-            $this->when($this->shouldSetInitialSettings, fn () => $this->setInitialSettings());
-            $this->when($this->shouldApplyBlueprint, fn () => $this->applyOrganizationBlueprint());
-            $this->when($this->shouldCreateUser, fn () => $this->createInitialUserAccount());
-            $this->when($this->shouldCreateNewsItem, fn () => $this->createFirstNewsfeedItem());
-            $this->when($this->shouldCreateAnnouncement, fn () => $this->createAnnouncement());
-            $this->when($this->shouldCreatePages, fn () => $this->createPages());
+            $this->when($this->shouldSeedSettings, fn (): null => $this->seedInitialSettings());
+            $this->when($this->shouldSetInitialSettings, fn (): null => $this->setInitialSettings());
+            $this->when($this->shouldApplyBlueprint, fn (): null => $this->applyOrganizationBlueprint());
+            $this->when($this->shouldCreateUser, fn (): null => $this->createInitialUserAccount());
+            $this->when($this->shouldCreateNewsItem, fn (): null => $this->createFirstNewsfeedItem());
+            $this->when($this->shouldCreateAnnouncement, fn (): null => $this->createAnnouncement());
+            $this->when($this->shouldCreatePages, fn (): null => $this->createPages());
         });
 
         $this->tenant->update([

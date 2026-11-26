@@ -72,9 +72,21 @@ trait ConfiguresModelNotifications
                 ->append('.created')
                 ->toString();
 
-            collect(data_get($data, 'groups'))->each(fn (Group|string|int $groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'units'))->each(fn (Unit|string|int $unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
-            collect(data_get($data, 'users'))->each(fn (User|string|int $userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'groups'))->each(
+                fn (Group|string|int $groupId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forGroup($groupId, $event, $subject, $message, $channels),
+                ),
+            );
+            collect(data_get($data, 'units'))->each(
+                fn (Unit|string|int $unitId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forUnit($unitId, $event, $subject, $message, $channels),
+                ),
+            );
+            collect(data_get($data, 'users'))->each(
+                fn (User|string|int $userId): Model => $record->modelNotifications()->create(
+                    ModelNotification::forUser($userId, $event, $subject, $message, $channels),
+                ),
+            );
         }
     }
 

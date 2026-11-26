@@ -228,6 +228,8 @@ class Calendar extends Page
     }
 
     /**
+     * Get the active calendar filters.
+     *
      * @return array{calendars: array<int, int>, mine: bool, open: bool}
      */
     public function filters(): array
@@ -483,6 +485,8 @@ class Calendar extends Page
     }
 
     /**
+     * Build the action that cancels a single occurrence.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function makeCancelOccurrenceAction(array $arguments): Action
@@ -522,6 +526,8 @@ class Calendar extends Page
     }
 
     /**
+     * Build the action that restores a cancelled occurrence.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function makeRestoreOccurrenceAction(array $arguments): Action
@@ -556,6 +562,8 @@ class Calendar extends Page
     }
 
     /**
+     * Get the details shown for the occurrence.
+     *
      * @return array<string, mixed>
      */
     protected function occurrenceDetails(OccurrenceData $occurrence): array
@@ -588,6 +596,8 @@ class Calendar extends Page
     }
 
     /**
+     * Normalize the calendar IDs to positive integers.
+     *
      * @param  array<int, int|string>  $calendarIds
      * @return array<int, int>
      */

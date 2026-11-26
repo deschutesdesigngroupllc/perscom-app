@@ -198,7 +198,7 @@ class PromotionBoard extends Page implements HasTable
         $promotable = PromotionEligibilityService::evaluateMany($users)
             ->filter(fn (PromotionEvaluationData $evaluation): bool => $evaluation->eligible && $evaluation->nextRank instanceof Rank);
 
-        DB::transaction(fn () => $promotable->each(fn (PromotionEvaluationData $evaluation): RankRecord => RankRecord::create([
+        DB::transaction(fn (): Collection => $promotable->each(fn (PromotionEvaluationData $evaluation): RankRecord => RankRecord::create([
             'user_id' => $evaluation->user->getKey(),
             'rank_id' => $evaluation->nextRank->getKey(),
             'author_id' => Auth::id(),
@@ -212,6 +212,8 @@ class PromotionBoard extends Page implements HasTable
     }
 
     /**
+     * Get the evaluations of members who have a next rank.
+     *
      * @return Collection<int, PromotionEvaluationData>
      */
     protected function evaluations(): Collection
@@ -226,6 +228,8 @@ class PromotionBoard extends Page implements HasTable
     }
 
     /**
+     * Get the promotion requirements listed for the member on the active tab.
+     *
      * @return array<int, string>
      */
     protected function requirementsFor(User $user): array

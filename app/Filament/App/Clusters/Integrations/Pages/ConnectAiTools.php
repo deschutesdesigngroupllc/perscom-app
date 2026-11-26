@@ -113,7 +113,7 @@ class ConnectAiTools extends Page
                                     'server_label' => 'perscom',
                                     'server_url' => $url,
                                     'authorization' => 'YOUR_PERSCOM_API_KEY',
-                                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), Grammar::Json),
+                                ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR), Grammar::Json),
                             ]),
                         Tab::make('Cursor')
                             ->schema([
@@ -123,7 +123,10 @@ class ConnectAiTools extends Page
                         Tab::make('VS Code')
                             ->schema([
                                 $this->note('vscode_note', 'Add this to .vscode/mcp.json, or run MCP: Add Server from the Command Palette and choose HTTP. GitHub Copilot asks you to sign in the first time PERSCOM is used.'),
-                                $this->code('vscode', (string) json_encode(['servers' => ['perscom' => ['type' => 'http', 'url' => $url]]], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), Grammar::Json),
+                                $this->code('vscode', (string) json_encode(
+                                    ['servers' => ['perscom' => ['type' => 'http', 'url' => $url]]],
+                                    JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR,
+                                ), Grammar::Json),
                             ]),
                         Tab::make('Other Tools')
                             ->schema([
@@ -140,6 +143,8 @@ class ConnectAiTools extends Page
     }
 
     /**
+     * Build a bulleted list of setup steps.
+     *
      * @param  string[]  $steps
      */
     protected function steps(string $name, array $steps): TextEntry
@@ -169,10 +174,15 @@ class ConnectAiTools extends Page
     }
 
     /**
+     * Encode the server entry as an MCP client config file.
+     *
      * @param  array<string, mixed>  $server
      */
     protected function configJson(array $server): string
     {
-        return (string) json_encode(['mcpServers' => ['perscom' => $server]], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        return (string) json_encode(
+            ['mcpServers' => ['perscom' => $server]],
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR,
+        );
     }
 }

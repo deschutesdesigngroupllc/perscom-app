@@ -31,24 +31,24 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function configureRateLimiting(): void
     {
-        RateLimiter::for('api', fn (Request $request) => App::environment('local')
+        RateLimiter::for('api', fn (Request $request): Limit => App::environment('local')
             ? Limit::perMinute(2500)->by($request->user()?->id ?: $request->ip())
             : ($request->user()
                 ? Limit::perMinute(1000)->by($request->user()->id)
                 : Limit::perMinute(100)->by($request->ip())
             ));
 
-        RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
+        RateLimiter::for('register', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
 
-        RateLimiter::for('invites', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('invites', fn (Request $request): Limit => Limit::perMinute(10)->by($request->ip()));
 
-        RateLimiter::for('service-profiles', fn (Request $request) => Limit::perMinute(120)->by($request->ip()));
+        RateLimiter::for('service-profiles', fn (Request $request): Limit => Limit::perMinute(120)->by($request->ip()));
 
-        RateLimiter::for('calendar-feeds', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
+        RateLimiter::for('calendar-feeds', fn (Request $request): Limit => Limit::perMinute(60)->by($request->ip()));
 
         RateLimiter::for('rss-feeds', fn (Request $request): Limit => Limit::perMinute(60)->by($request->ip()));
 
-        RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
+        RateLimiter::for('sms', function (Tenant|Request|null $tenant = null): Limit|false {
             if (blank($tenant)) {
                 return false;
             }

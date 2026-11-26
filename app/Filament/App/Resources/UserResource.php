@@ -145,7 +145,7 @@ class UserResource extends BaseResource
                                     ->previewable(),
                             ]),
                         Tab::make('Assignment')
-                            ->badge(fn (?User $record) => $record?->position?->name)
+                            ->badge(fn (?User $record): ?string => $record?->position?->name)
                             ->icon(Heroicon::OutlinedRectangleStack)
                             ->columns()
                             ->schema([
@@ -188,7 +188,7 @@ class UserResource extends BaseResource
                                     ->required()
                                     ->helperText('The date the member profile was last updated.'),
                                 DateTimePicker::make('last_seen_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -197,7 +197,7 @@ class UserResource extends BaseResource
                                     ->label('Last Online')
                                     ->helperText('The date the member last logged in.'),
                                 DateTimePicker::make('email_verified_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -217,7 +217,7 @@ class UserResource extends BaseResource
                                     ->helperText('Use this optional area to keep notes on the member.'),
                             ]),
                         Tab::make('Rank')
-                            ->badge(fn (?User $record) => $record?->rank?->name)
+                            ->badge(fn (?User $record): ?string => $record?->rank?->name)
                             ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->columns()
                             ->schema([
@@ -230,7 +230,7 @@ class UserResource extends BaseResource
                                     ->createOptionForm(fn (Schema $form): Schema => RankResource::form($form)),
                             ]),
                         Tab::make('Status')
-                            ->badge(fn (?User $record) => $record?->status?->name)
+                            ->badge(fn (?User $record): ?string => $record?->status?->name)
                             ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon(Heroicon::OutlinedScale)
                             ->schema([
@@ -339,7 +339,7 @@ class UserResource extends BaseResource
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
-                                            ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline mr-1' alt='%s' />", $url, $record->rank->name)))),
+                                            ->prefix(fn (?User $record): ?HtmlString => optional($record?->rank?->image?->image_url, fn (string $url): HtmlString => new HtmlString(sprintf("<img src='%s' class='h-5 inline mr-1' alt='%s' />", $url, $record->rank->name)))),
                                         TextEntry::make('status.name')
                                             ->label('Status')
                                             ->placeholder('No Status')
@@ -442,12 +442,12 @@ class UserResource extends BaseResource
                     ->placeholder('No Profile Photo')
                     ->hidden(fn (): bool => in_array('profile_photo', $hiddenFields))
                     ->label('')
-                    ->defaultImageUrl(fn (User $record) => $record->profile_photo_url),
+                    ->defaultImageUrl(fn (User $record): string => $record->profile_photo_url),
                 TextColumn::make('display_name')
                     ->label('Name')
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
-                    ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('name', $direction))
-                    ->searchable(query: fn (Builder $query, string $search) => $query->where('name', 'like', sprintf('%%%s%%', $search)))
+                    ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy('name', $direction))
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query->where('name', 'like', sprintf('%%%s%%', $search)))
                     ->icon(function (?User $record): ?Heroicon {
                         if (! $record instanceof User || $record->approved || ! Auth::user()->can('approve', $record)) {
                             return null;

@@ -5,15 +5,22 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use JsonException;
 use Spatie\Permission\PermissionRegistrar;
 
 class ShieldSeeder extends Seeder
 {
+    /**
+     * Create the permissions that are not attached to a role.
+     *
+     * @throws JsonException when the permissions are not valid JSON
+     */
     public static function makeDirectPermissions(string $directPermissions): void
     {
-        if (! blank($permissions = json_decode($directPermissions, true))) {
-            /** @var class-string<\Illuminate\Database\Eloquent\Model> $permissionModel */
+        if (! blank($permissions = json_decode($directPermissions, true, 512, JSON_THROW_ON_ERROR))) {
+            /** @var class-string<Model> $permissionModel */
             $permissionModel = Utils::getPermissionModel();
 
             foreach ($permissions as $permission) {
@@ -27,6 +34,11 @@ class ShieldSeeder extends Seeder
         }
     }
 
+    /**
+     * Seed the default roles and their permissions.
+     *
+     * @throws JsonException when the seeded permissions are not valid JSON
+     */
     public function run(): void
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
@@ -40,12 +52,17 @@ class ShieldSeeder extends Seeder
         $this->command->info('Shield Seeding Completed.');
     }
 
+    /**
+     * Create each role and sync the permissions it is granted.
+     *
+     * @throws JsonException when the roles are not valid JSON
+     */
     protected static function makeRolesWithPermissions(string $rolesWithPermissions): void
     {
-        if (! blank($rolePlusPermissions = json_decode($rolesWithPermissions, true))) {
+        if (! blank($rolePlusPermissions = json_decode($rolesWithPermissions, true, 512, JSON_THROW_ON_ERROR))) {
             /** @var class-string<\Spatie\Permission\Models\Role> $roleModel */
             $roleModel = Utils::getRoleModel();
-            /** @var class-string<\Illuminate\Database\Eloquent\Model> $permissionModel */
+            /** @var class-string<Model> $permissionModel */
             $permissionModel = Utils::getPermissionModel();
 
             foreach ($rolePlusPermissions as $rolePlusPermission) {
@@ -56,7 +73,7 @@ class ShieldSeeder extends Seeder
 
                 if (! blank($rolePlusPermission['permissions'])) {
                     $permissionModels = collect($rolePlusPermission['permissions'])
-                        ->map(fn ($permission) => $permissionModel::firstOrCreate([
+                        ->map(fn (string $permission): Model => $permissionModel::firstOrCreate([
                             'name' => $permission,
                             'guard_name' => $rolePlusPermission['guard_name'],
                         ]))

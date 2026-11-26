@@ -96,7 +96,7 @@ class CreateAutomation extends CreateRecord
 
         $prerequisites = $template['prerequisites'] ?? [];
         if ($prerequisites !== []) {
-            $description .= '<br><br>Prerequisites:<br>• '.implode('<br>• ', $prerequisites);
+            $description .= '<br><br>Prerequisites:<br>• '.collect($prerequisites)->implode('<br>• ');
         }
 
         return $description;

@@ -57,7 +57,7 @@ class ServiceRecordTest extends ApiResourceTestCase
         return [
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 
@@ -67,7 +67,7 @@ class ServiceRecordTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 }

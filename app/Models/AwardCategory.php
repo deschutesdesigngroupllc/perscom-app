@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -31,18 +33,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'award_id',
+    'category_id',
+    'order',
+    'created_at',
+    'updated_at',
+])]
+#[Table(name: 'awards_categories')]
 class AwardCategory extends Pivot
 {
-    protected $table = 'awards_categories';
-
-    protected $fillable = [
-        'award_id',
-        'category_id',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     public function award(): BelongsTo
     {
         return $this->belongsTo(Award::class);

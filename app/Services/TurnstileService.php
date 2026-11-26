@@ -12,6 +12,8 @@ class TurnstileService
     protected static string $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
     /**
+     * Verify the Turnstile challenge response with Cloudflare.
+     *
      * @throws ConnectionException
      */
     public static function validate(string $turnstileResponse): bool

@@ -11,6 +11,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
+use Laravel\Cashier\Subscription;
 
 class SwapSubscriptionBulkAction extends BulkAction
 {
@@ -40,8 +41,8 @@ class SwapSubscriptionBulkAction extends BulkAction
         $this->action(function (SwapSubscriptionBulkAction $action, Collection $records, array $data): void {
             try {
                 match (data_get($data, 'charge_immediately', false)) {
-                    true => $records->each(fn (Tenant $record) => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
-                    default => $records->each(fn (Tenant $record) => $record->subscription()?->swap(data_get($data, 'price_id'))),
+                    true => $records->each(fn (Tenant $record): ?Subscription => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
+                    default => $records->each(fn (Tenant $record): ?Subscription => $record->subscription()?->swap(data_get($data, 'price_id'))),
                 };
             } catch (Exception $exception) {
                 $action->failureNotificationTitle($exception->getMessage());

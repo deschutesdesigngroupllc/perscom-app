@@ -54,7 +54,7 @@ class StatusTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test Status',
-            'color' => $this->faker->hexColor,
+            'color' => $this->faker->hexColor(),
         ];
     }
 
@@ -64,7 +64,7 @@ class StatusTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_set_user', function (Blueprint $table) {
+        Schema::table('filament_filter_set_user', function (Blueprint $table): void {
             $table->boolean('is_visible')->default(true);
         });
 
@@ -36,7 +36,7 @@ return new class extends Migration
         Archilex\AdvancedTables\Support\Config::getUserView()::query()
             ->withoutGlobalScope(Archilex\AdvancedTables\Models\Scopes\TenantScope::class)
             ->global()
-            ->each(function ($view) {
+            ->each(function ($view): void {
                 $view->userManagedUserViews()
                     ->syncWithPivotValues($view->user_id, [
                         'is_visible' => true,
@@ -46,7 +46,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('filament_filter_set_user', function (Blueprint $table) {
+        Schema::table('filament_filter_set_user', function (Blueprint $table): void {
             $table->dropColumn('is_visible');
         });
     }

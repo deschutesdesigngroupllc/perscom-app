@@ -70,7 +70,7 @@ class ImageTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
             'image' => UploadedFile::fake()->create('image.png', 10),
         ];
     }
@@ -81,7 +81,7 @@ class ImageTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
         ];
     }
 }

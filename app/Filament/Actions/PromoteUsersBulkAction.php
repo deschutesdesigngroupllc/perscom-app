@@ -35,10 +35,14 @@ class PromoteUsersBulkAction extends BulkAction
             ->visible(fn (): bool => Gate::check('create', RankRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema(static::formSchema())
-            ->action(fn (BulkAction $action, Collection $records, array $data) => $this->applyOperation($action, static::operationFor($records, $data)));
+            ->action(function (BulkAction $action, Collection $records, array $data): void {
+                $this->applyOperation($action, static::operationFor($records, $data));
+            });
     }
 
     /**
+     * Get the form fields for the rank record.
+     *
      * @return array<int, \Filament\Schemas\Components\Component|\Filament\Forms\Components\Field>
      */
     public static function formSchema(): array
@@ -63,6 +67,8 @@ class PromoteUsersBulkAction extends BulkAction
     }
 
     /**
+     * Build the rank record operation for the given members.
+     *
      * @param  Collection<int, User>  $users
      * @param  array<string, mixed>  $data
      */

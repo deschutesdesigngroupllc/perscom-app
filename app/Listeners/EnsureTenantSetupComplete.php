@@ -8,12 +8,11 @@ use App\Exceptions\TenantAccountSetupNotComplete;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\App;
 use Stancl\Tenancy\Events\TenancyInitialized;
-use Throwable;
 
 class EnsureTenantSetupComplete
 {
     /**
-     * @throws Throwable
+     * @throws TenantAccountSetupNotComplete when the tenant has not finished setup
      */
     public function handle(TenancyInitialized $event): void
     {
@@ -28,6 +27,11 @@ class EnsureTenantSetupComplete
             return;
         }
 
-        throw_unless($tenant->setup_completed, TenantAccountSetupNotComplete::class, 403, 'We are still working on setting up your account. We will email you when we are finished.');
+        if (! $tenant->setup_completed) {
+            throw new TenantAccountSetupNotComplete(
+                403,
+                'We are still working on setting up your account. We will email you when we are finished.',
+            );
+        }
     }
 }

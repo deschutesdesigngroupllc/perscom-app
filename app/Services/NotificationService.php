@@ -7,17 +7,20 @@ namespace App\Services;
 use App\Contracts\NotificationCanBeManaged;
 use App\Data\ManagedNotification;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 class NotificationService
 {
     /**
+     * Get the notifications members can manage, grouped by notification group.
+     *
      * @return array<string, mixed>
      */
     public static function configurableNotifications(): array
     {
-        return Cache::rememberForever('managed_notifications', function () {
+        return Cache::rememberForever('managed_notifications', function (): array {
             $finder = new Finder;
             $finder->files()->in(
                 dirs: [
@@ -31,8 +34,8 @@ class NotificationService
                     $className = basename($fileInfo->getFilename(), '.php');
 
                     $namespace = '';
-                    if (preg_match('/namespace\s+([^;]+)/', file_get_contents($fileInfo->getRealPath()), $matches)) {
-                        $namespace = trim($matches[1]);
+                    if (preg_match('/namespace\s+([^;]+)/', $fileInfo->getContents(), $matches)) {
+                        $namespace = Str::trim($matches[1]);
                     }
 
                     return filled($namespace)
@@ -52,7 +55,7 @@ class NotificationService
                     'description' => $class::notificationDescription(),
                     'notificationClass' => $class,
                 ]))
-                ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group->value)
+                ->groupBy(fn (ManagedNotification $managedNotification): string => $managedNotification->group->value)
                 ->toArray();
         });
     }

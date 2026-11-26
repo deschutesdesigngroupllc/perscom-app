@@ -16,6 +16,7 @@ use App\Filament\Exports\QualificationRecordExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\QualificationRecord;
 use App\Models\User;
@@ -218,22 +219,22 @@ class QualificationRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (QualificationRecord $record) => $record->document)
-                            ->user(fn (QualificationRecord $record) => $record->user)
+                            ->document(fn (QualificationRecord $record): ?Document => $record->document)
+                            ->user(fn (QualificationRecord $record): ?User => $record->user)
                             ->attached(fn (QualificationRecord $record): QualificationRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (QualificationRecord $record) => $record->text),
+                            ->html(fn (QualificationRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')

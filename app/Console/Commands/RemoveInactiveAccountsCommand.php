@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Jobs\System\RemoveInactiveAccounts;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
+#[Description('Remove any inactive accounts.')]
+#[Signature('perscom:inactive-accounts')]
 class RemoveInactiveAccountsCommand extends Command
 {
-    protected $signature = 'perscom:inactive-accounts';
-
-    protected $description = 'Remove any inactive accounts.';
-
     public function handle(): int
     {
         dispatch(new RemoveInactiveAccounts);

@@ -273,8 +273,8 @@ class EventResource extends BaseResource
                                     ->helperText('How the notifications should be delivered.')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
-                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
+                                    ->descriptions(fn (): array => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->all())
+                                    ->options(fn (): array => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->all()),
                             ]),
                     ]),
                 Group::make()
@@ -418,7 +418,7 @@ class EventResource extends BaseResource
     protected static function formSummary(Get $get): array
     {
         $parse = fn (mixed $value): ?CarbonInterface => filled($value) && is_string($value) ? rescue(fn (): CarbonInterface => Date::parse($value), report: false) : null;
-        $allDay = (bool) $get('all_day');
+        $allDay = $get->boolean('all_day');
         $starts = $parse($get('starts'));
 
         return [
@@ -441,8 +441,8 @@ class EventResource extends BaseResource
                 ]), $allDay), report: false)
                 : null,
             'location' => $get('location'),
-            'registrationEnabled' => (bool) $get('registration_enabled'),
-            'remindersEnabled' => (bool) $get('notifications_enabled'),
+            'registrationEnabled' => $get->boolean('registration_enabled'),
+            'remindersEnabled' => $get->boolean('notifications_enabled'),
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\CombatRecord;
+use App\Models\Document;
 use App\Models\User;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -41,13 +42,13 @@ class CombatRecordsRelationManager extends RelationManager
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (CombatRecord $record) => $record->text),
+                            ->html(fn (CombatRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
@@ -55,8 +56,8 @@ class CombatRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (CombatRecord $record) => $record->document)
-                            ->user(fn (CombatRecord $record) => $record->user)
+                            ->document(fn (CombatRecord $record): ?Document => $record->document)
+                            ->user(fn (CombatRecord $record): ?User => $record->user)
                             ->attached(fn (CombatRecord $record): CombatRecord => $record),
                     ),
             ])

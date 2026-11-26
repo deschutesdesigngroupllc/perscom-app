@@ -10,6 +10,7 @@ use App\Services\CalendarFeedService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class PersonalFeedController
 {
@@ -22,8 +23,8 @@ class PersonalFeedController
 
         $calendarIds = collect(Arr::wrap($request->query('calendars')))
             ->filter(fn (mixed $ids): bool => is_string($ids))
-            ->flatMap(fn (string $ids): array => explode(',', $ids))
-            ->map(fn (string $id): string => trim($id))
+            ->flatMap(fn (string $ids): array => Str::of($ids)->explode(',')->all())
+            ->map(fn (string $id): string => Str::trim($id))
             ->filter(fn (string $id): bool => ctype_digit($id))
             ->map(fn (string $id): int => (int) $id)
             ->values()

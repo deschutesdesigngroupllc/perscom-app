@@ -28,11 +28,11 @@ class EditUser extends EditRecord
     {
         return new Stringable()
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->rank, fn (Stringable $str) => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
+            ->when($this->getRecord()->rank, fn (Stringable $str): Stringable => $str->append(' ')->append($this->getRecord()->rank->paygrade)->append(', ')->append($this->getRecord()->rank->name))
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->position, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->position->name))
+            ->when($this->getRecord()->position, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->position->name))
             /** @phpstan-ignore-next-line property.notFound */
-            ->when($this->getRecord()->unit, fn (Stringable $str) => $str->append(', ')->append($this->getRecord()->unit->name))
+            ->when($this->getRecord()->unit, fn (Stringable $str): Stringable => $str->append(', ')->append($this->getRecord()->unit->name))
             ->wrap('<div class="fi-header-subheading">', '</div>')
             ->toHtmlString();
     }

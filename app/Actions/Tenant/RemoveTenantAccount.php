@@ -21,7 +21,7 @@ class RemoveTenantAccount
         $this->tenant = $tenant;
 
         $this->tenant->run(function (): void {
-            $this->when($this->shouldDeleteFiles, fn () => $this->deleteFiles());
+            $this->when($this->shouldDeleteFiles, fn (): null => $this->deleteFiles());
         });
     }
 

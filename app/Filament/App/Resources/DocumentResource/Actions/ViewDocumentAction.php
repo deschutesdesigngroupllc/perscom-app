@@ -27,7 +27,7 @@ class ViewDocumentAction extends Action
         $this->visible(fn (): bool => $this->getDocument() instanceof Document);
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
-        $this->modalHeading(fn () => $this->getDocument()->name ?? 'Document');
+        $this->modalHeading(fn (): string => $this->getDocument()->name ?? 'Document');
         $this->modalContent(fn (): Factory|View => view('filament.app.view-document', [
             'document' => $this->getDocument(),
             'user' => $this->getUser(),

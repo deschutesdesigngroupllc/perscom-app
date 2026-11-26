@@ -10,6 +10,7 @@ use App\Models\Enums\OrganizationType;
 use App\Models\Registration;
 use App\Notifications\Tenant\RegistrationVerificationRequired;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +32,7 @@ class RegisterController extends Controller
         ], [
             'organization' => $request->validated('organization'),
             'name' => $request->validated('name'),
-            'subdomain' => filled($request->validated('subdomain')) ? strtolower((string) $request->validated('subdomain')) : null,
+            'subdomain' => filled($request->validated('subdomain')) ? Str::lower((string) $request->validated('subdomain')) : null,
             'organization_type' => $request->validated('organization_type'),
         ]);
 

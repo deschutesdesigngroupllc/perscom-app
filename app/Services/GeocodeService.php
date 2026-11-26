@@ -6,11 +6,14 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Throwable;
 
 class GeocodeService
 {
     /**
+     * Look up the coordinates of an address.
+     *
      * @return array{lat: float, lon: float, display_name: string}|null
      */
     public static function geocode(?string $address): ?array
@@ -19,7 +22,7 @@ class GeocodeService
             return null;
         }
 
-        $key = 'geocode:'.md5(trim($address));
+        $key = 'geocode:'.md5(Str::trim($address));
 
         $cached = Cache::remember($key, now()->addDays(30), function () use ($address): array {
             try {

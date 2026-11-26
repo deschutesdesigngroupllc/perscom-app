@@ -84,7 +84,7 @@ class AnnouncementResource extends BaseResource
                                 Checkbox::make('global')
                                     ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
                                 DateTimePicker::make('expires_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                    ->timezone(UserSettingsService::get('timezone', function (): string {
                                         /** @var OrganizationSettings $settings */
                                         $settings = resolve(OrganizationSettings::class);
 
@@ -113,7 +113,7 @@ class AnnouncementResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('content')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()
@@ -127,7 +127,7 @@ class AnnouncementResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('expires_at')
                     ->label('Expires')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

@@ -34,7 +34,7 @@ class ListRankRecords extends ListRecords
                 ->icon($type->getIcon())
                 ->label($type->getLabel())
                 ->color($type->getColor())
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type', $type->value)),
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('type', $type->value)),
         ])->toArray();
     }
 

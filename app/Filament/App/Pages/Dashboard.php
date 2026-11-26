@@ -152,7 +152,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             CopyAction::make('perscom_id')
-                ->visible(fn () => config('tenancy.enabled'))
+                ->visible(fn (): bool => (bool) config('tenancy.enabled'))
                 ->label(fn (): string => 'PERSCOM ID: '.tenant('id'))
                 ->copyable((string) tenant('id'))
                 ->icon(Heroicon::OutlinedDocumentDuplicate)
@@ -181,6 +181,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Get the initial state of the onboarding form.
+     *
      * @return array<string, mixed>
      */
     protected function getOnboardingFormData(): array
@@ -206,6 +208,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Build the steps of the onboarding wizard.
+     *
      * @return Step[]
      */
     protected function getOnboardingSteps(): array
@@ -391,6 +395,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Apply the onboarding choices and mark setup as complete.
+     *
      * @param  array<string, mixed>  $data
      */
     protected function completeOnboarding(array $data): void
@@ -416,7 +422,7 @@ class Dashboard extends BaseDashboard
 
     protected function generateOnboardingBlueprint(Get $get, Set $set): void
     {
-        $description = (string) $get('builder.description');
+        $description = $get->string('builder.description');
 
         if (blank($description)) {
             Notification::make()
@@ -450,6 +456,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Apply the proposed structure when one was built.
+     *
      * @param  array<string, mixed>  $data
      *
      * @throws Halt
@@ -476,6 +484,8 @@ class Dashboard extends BaseDashboard
     }
 
     /**
+     * Create the first member when a name and email were given.
+     *
      * @param  array<string, mixed>  $data
      */
     protected function createPersonnelIfNeeded(array $data): ?User

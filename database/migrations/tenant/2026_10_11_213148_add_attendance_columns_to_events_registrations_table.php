@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->timestamp('checked_in_at')->nullable()->after('status');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('events_registrations', function (Blueprint $table) {
+        Schema::table('events_registrations', function (Blueprint $table): void {
             $table->dropColumn('checked_in_at');
         });
     }

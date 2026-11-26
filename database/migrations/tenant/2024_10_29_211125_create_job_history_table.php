@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_history', function (Blueprint $table) {
+        Schema::create('job_history', function (Blueprint $table): void {
             $table->id();
             $table->string('job');
             $table->timestamp('finished_at');

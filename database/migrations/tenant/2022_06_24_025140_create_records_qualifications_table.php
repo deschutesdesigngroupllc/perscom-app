@@ -15,7 +15,7 @@ class CreateRecordsQualificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records_qualifications', function (Blueprint $table) {
+        Schema::create('records_qualifications', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('qualification_id');

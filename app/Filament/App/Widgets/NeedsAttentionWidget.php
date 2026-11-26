@@ -45,6 +45,8 @@ class NeedsAttentionWidget extends Widget
     }
 
     /**
+     * Get the pending items that need the user's attention.
+     *
      * @return array<int, array{key: string, count: int, label: string, description: string, url: string, icon: Heroicon, color: string}>
      */
     public function getItems(): array

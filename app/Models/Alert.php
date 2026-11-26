@@ -10,6 +10,7 @@ use App\Models\Scopes\EnabledScope;
 use App\Observers\AlertObserver;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,6 +57,16 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  */
 #[ObservedBy(AlertObserver::class)]
 #[ScopedBy(EnabledScope::class)]
+#[Fillable([
+    'title',
+    'message',
+    'order',
+    'url',
+    'link_text',
+    'channels',
+    'created_at',
+    'updated_at',
+])]
 class Alert extends Model implements Enableable, Sortable
 {
     use CanBeEnabled;
@@ -65,17 +76,6 @@ class Alert extends Model implements Enableable, Sortable
 
     protected $attributes = [
         'enabled' => true,
-    ];
-
-    protected $fillable = [
-        'title',
-        'message',
-        'order',
-        'url',
-        'link_text',
-        'channels',
-        'created_at',
-        'updated_at',
     ];
 
     /**

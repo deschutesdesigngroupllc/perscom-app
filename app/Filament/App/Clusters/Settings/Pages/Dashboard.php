@@ -82,7 +82,7 @@ class Dashboard extends SettingsPage
                             ->visible(config('tenancy.enabled'))
                             ->icon(Heroicon::OutlinedGlobeAlt)
                             ->badgeColor('gray')
-                            ->badge(fn () => tenant('url'))
+                            ->badge(fn (): ?string => tenant('url'))
                             ->schema([
                                 TextEntry::make('fallback')
                                     ->state(function (): HtmlString {
@@ -103,7 +103,9 @@ class Dashboard extends SettingsPage
                                         ->color('primary')
                                         ->requiresConfirmation()
                                         ->modalDescription('Are you sure you want to reset your subdomain? This means your dashboard will no longer be accessible by your custom subdomain. You will only be able to reach your dashboard using your fallback URL from this point on.')
-                                        ->action(fn () => $this->resetTenantSubdomain())
+                                        ->action(function (): void {
+                                            $this->resetTenantSubdomain();
+                                        })
                                         ->tooltip('Reset subdomain')
                                     ),
                             ]),
@@ -219,6 +221,8 @@ class Dashboard extends SettingsPage
     }
 
     /**
+     * Point the tenant at the given subdomain and notify the user.
+     *
      * @throws Throwable
      */
     private function updateTenantSubdomain(string $subdomain): void
@@ -239,6 +243,8 @@ class Dashboard extends SettingsPage
     }
 
     /**
+     * Remove the tenant's custom subdomain and notify the user.
+     *
      * @throws Throwable
      */
     private function resetTenantSubdomain(): void

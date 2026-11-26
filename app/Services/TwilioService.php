@@ -38,13 +38,15 @@ class TwilioService
 
     public function sendSms(string $phoneNumber, string $message): MessageInstance|false
     {
-        return $this->withRateLimiter(fn () => $this->client()->messages->create($phoneNumber, [
+        return $this->withRateLimiter(fn (): MessageInstance => $this->client()->messages->create($phoneNumber, [
             'from' => config('services.twilio.from'),
             'body' => $message,
         ]));
     }
 
     /**
+     * Create a Twilio REST client from the configured credentials.
+     *
      * @throws ConfigurationException
      */
     protected function client(): Client

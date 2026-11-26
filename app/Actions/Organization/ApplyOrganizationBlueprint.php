@@ -107,7 +107,11 @@ class ApplyOrganizationBlueprint
             collect($blueprint->groups)
                 ->flatMap(fn (GroupData $groupData): array => $groupData->units)
                 ->filter(fn (UnitData $unitData): bool => filled($unitData->parent))
-                ->each(fn (UnitData $unitData) => self::nestUnit($units->get(Str::lower($unitData->name)), (string) $unitData->parent, $units));
+                ->each(fn (UnitData $unitData): null => self::nestUnit(
+                    $units->get(Str::lower($unitData->name)),
+                    (string) $unitData->parent,
+                    $units,
+                ));
 
             collect($blueprint->awards)->each(fn (AwardData $award): Model => $track('awards', CreateAward::handle($award->toArray())));
             collect($blueprint->qualifications)->each(fn (QualificationData $qualification): Model => $track('qualifications', CreateQualification::handle($qualification->toArray())));

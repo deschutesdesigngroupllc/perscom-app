@@ -21,6 +21,8 @@ trait HasColorField
     }
 
     /**
+     * Get the color, falling back to the brand's primary color.
+     *
      * @return Attribute<string, never>
      */
     protected function color(): Attribute

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -27,17 +28,16 @@ use Sushi\Sushi;
  *
  * @mixin Model
  */
+#[Fillable([
+    'name',
+    'path',
+    'size',
+    'url',
+    'created_at',
+])]
 class Backup extends Model
 {
     use Sushi;
-
-    protected $fillable = [
-        'name',
-        'path',
-        'size',
-        'url',
-        'created_at',
-    ];
 
     /**
      * @return array<string, mixed>

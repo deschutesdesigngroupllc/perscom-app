@@ -21,11 +21,14 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
 class ModelNotification
 {
     /**
+     * Build the notification settings section for a model form.
+     *
      * @param  array<string, mixed>|null  $defaults
      */
     public static function make(?string $description = null, string|HtmlString|Closure|null $alert = null, ?array $defaults = null, ?string $statePath = null): Section
@@ -60,7 +63,7 @@ class ModelNotification
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => Group::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => Group::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -74,7 +77,7 @@ class ModelNotification
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => Unit::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => Unit::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -88,7 +91,7 @@ class ModelNotification
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
-                                    ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id'))
+                                    ->options(fn (): Collection => User::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
                                         fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
@@ -151,10 +154,10 @@ class ModelNotification
                                     ])
                                     ->searchable()
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())
+                                    ->descriptions(fn (): array => collect(NotificationChannel::cases())
                                         ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->all())
-                                    ->options(fn () => collect(NotificationChannel::cases())
+                                    ->options(fn (): array => collect(NotificationChannel::cases())
                                         ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
                                         ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->all()),

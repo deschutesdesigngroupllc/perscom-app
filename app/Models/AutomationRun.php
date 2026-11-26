@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -35,16 +36,17 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'automation_id',
+    'subject_type',
+    'subject_id',
+    'run_on',
+])]
 class AutomationRun extends Model
 {
-    protected $fillable = [
-        'automation_id',
-        'subject_type',
-        'subject_id',
-        'run_on',
-    ];
-
     /**
+     * Get the automation the run belongs to.
+     *
      * @return BelongsTo<Automation, $this>
      */
     public function automation(): BelongsTo
@@ -53,6 +55,8 @@ class AutomationRun extends Model
     }
 
     /**
+     * Get the model the automation ran against.
+     *
      * @return MorphTo<Model, $this>
      */
     public function subject(): MorphTo

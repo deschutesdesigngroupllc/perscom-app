@@ -162,6 +162,8 @@ class EventCalendarService
     }
 
     /**
+     * Get the member's effective response for the occurrence.
+     *
      * @param  EloquentCollection<int, EventRegistration>  $registrations
      */
     protected static function effectiveResponse(OccurrenceData $occurrence, EloquentCollection $registrations): ?EventRegistrationStatus

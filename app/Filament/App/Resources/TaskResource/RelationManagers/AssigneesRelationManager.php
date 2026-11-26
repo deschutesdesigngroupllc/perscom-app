@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\User;
 use App\Services\UserSettingsService;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Filament\Actions\Action;
 use Filament\Actions\DetachAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -70,13 +71,13 @@ class AssigneesRelationManager extends RelationManager
                     }),
                 TextColumn::make('due')
                     ->label('Due')
-                    ->state(fn (User $record) => $record->getRelationValue('assignment')?->due_at)
+                    ->state(fn (User $record): ?CarbonInterface => $record->getRelationValue('assignment')?->due_at)
                     ->dateTime('M j, Y g:i A')
                     ->timezone(fn (): string => UserSettingsService::timezone())
                     ->placeholder('No due date'),
                 TextColumn::make('completed')
                     ->label('Completed')
-                    ->state(fn (User $record) => $record->getRelationValue('assignment')?->completed_at)
+                    ->state(fn (User $record): ?CarbonInterface => $record->getRelationValue('assignment')?->completed_at)
                     ->date()
                     ->placeholder('Not yet'),
             ])

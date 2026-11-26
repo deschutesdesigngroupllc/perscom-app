@@ -72,10 +72,10 @@ class CalendarFeedService
      */
     public static function personalFeedUrl(User $user, array $calendarIds = []): string
     {
-        return route('app.calendar-feeds.personal', array_filter([
+        return route('app.calendar-feeds.personal', collect([
             'token' => static::tokenFor($user),
-            'calendars' => implode(',', $calendarIds),
-        ], filled(...)));
+            'calendars' => collect($calendarIds)->implode(','),
+        ])->filter(filled(...))->all());
     }
 
     public static function calendarFeedUrl(User $user, Calendar $calendar): string
@@ -110,13 +110,15 @@ class CalendarFeedService
             ? sprintf('%s/%s', Component::formatDate($occurrence->localStarts()), Component::formatDate($occurrence->localEnds()->startOfDay()->addDay()))
             : sprintf('%s/%s', Component::formatUtcDateTime($occurrence->starts), Component::formatUtcDateTime($occurrence->ends));
 
-        return 'https://calendar.google.com/calendar/render?'.http_build_query(array_filter([
+        $query = collect([
             'action' => 'TEMPLATE',
             'text' => $occurrence->event->name,
             'dates' => $dates,
             'details' => static::description($occurrence->event),
             'location' => static::location($occurrence->event),
-        ], filled(...)), '', '&', PHP_QUERY_RFC3986);
+        ])->filter(filled(...))->all();
+
+        return 'https://calendar.google.com/calendar/render?'.http_build_query($query, '', '&', PHP_QUERY_RFC3986);
     }
 
     public static function personalFeedName(): string
@@ -315,7 +317,7 @@ class CalendarFeedService
     {
         $rule = Str::of($rfcString)
             ->explode("\n")
-            ->map(fn (string $line): string => trim($line))
+            ->map(fn (string $line): string => Str::trim($line))
             ->first(fn (string $line): bool => Str::startsWith($line, 'RRULE:'), '');
 
         $rule = Str::after($rule, 'RRULE:');
@@ -344,7 +346,9 @@ class CalendarFeedService
             return null;
         }
 
-        return Str::of(html_entity_decode(strip_tags(str_replace(['<br>', '<br/>', '<br />', '</p>'], "\n", $value)), ENT_QUOTES | ENT_HTML5))
+        $text = Str::of(Str::replace(['<br>', '<br/>', '<br />', '</p>'], "\n", $value))->stripTags()->toString();
+
+        return Str::of(html_entity_decode($text, ENT_QUOTES | ENT_HTML5))
             ->replaceMatches('/\n{3,}/', "\n\n")
             ->trim()
             ->toString();

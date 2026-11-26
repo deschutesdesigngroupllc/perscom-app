@@ -41,6 +41,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Stancl\Tenancy\Database\Models\ImpersonationToken;
@@ -113,7 +114,7 @@ class TenantResource extends Resource
                                     ->maxLength(255)
                                     ->label('Invoice Emails')
                                     ->helperText('Separate using a comma for multiple email addresses.')
-                                    ->dehydrateStateUsing(fn ($state): string|false => json_encode($state)),
+                                    ->dehydrateStateUsing(fn ($state): string => json_encode($state, JSON_THROW_ON_ERROR)),
                                 TextInput::make('billing_address')
                                     ->maxLength(255)
                                     ->label('Address')
@@ -184,7 +185,10 @@ class TenantResource extends Resource
                                 CodeEditor::make('data')
                                     ->dehydrated(false)
                                     ->hiddenLabel()
-                                    ->formatStateUsing(fn (?Tenant $record): string|false => json_encode(json_decode($record?->getRawOriginal('data') ?? ''), JSON_PRETTY_PRINT))
+                                    ->formatStateUsing(fn (?Tenant $record): string|false => json_encode(
+                                        json_decode($record?->getRawOriginal('data') ?? ''),
+                                        JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR,
+                                    ))
                                     ->json(),
                             ]),
                     ]),
@@ -211,7 +215,7 @@ class TenantResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->openUrlInNewTab()
-                    ->url(fn ($state) => $state),
+                    ->url(fn (?string $state): ?string => $state),
                 IconColumn::make('customer')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record): bool => $record->hasStripeId()),
@@ -272,17 +276,17 @@ class TenantResource extends Resource
                     ->icon(Heroicon::OutlinedArrowRightEndOnRectangle)
                     ->color('gray')
                     ->modalDescription('Login to the tenant using the user below.')
-                    ->visible(fn (Tenant $record) => $record->setup_completed)
+                    ->visible(fn (Tenant $record): bool => $record->setup_completed)
                     ->schema([
                         Select::make('user')
                             ->searchable()
                             ->helperText('Select the user to login as.')
-                            ->options(fn (Tenant $record) => $record->run(fn () => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
+                            ->options(fn (Tenant $record): array => $record->run(fn (): array => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
                                 $query->where('name', Utils::getSuperAdminName());
                             })->get()->pluck('name', 'id')->toArray()))
                             ->required(),
                     ])
-                    ->action(function (Action $action, Tenant $record, array $data) {
+                    ->action(function (Action $action, Tenant $record, array $data): RedirectResponse {
                         $token = ImpersonationToken::create([
                             'tenant_id' => $record->getTenantKey(),
                             'user_id' => data_get($data, 'user'),
@@ -308,7 +312,7 @@ class TenantResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): void {
                         $query->when(filled(data_get($data, 'subscription_status')), function (Builder $query) use ($data): void {
-                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
+                            $query->whereHas('subscriptions', fn (Builder $query): Builder => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
                         });
                     }),
                 Filter::make('subscription_price')
@@ -318,7 +322,7 @@ class TenantResource extends Resource
                     ])
                     ->query(function (Builder $query, array $data): void {
                         $query->when(filled(data_get($data, 'subscription_price')), function (Builder $query) use ($data): void {
-                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereHas('items', fn (Builder $query) => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
+                            $query->whereHas('subscriptions', fn (Builder $query): Builder => $query->whereHas('items', fn (Builder $query): Builder => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
                         });
                     }),
             ])
@@ -399,7 +403,7 @@ class TenantResource extends Resource
         return [
             Action::make('dashboard')
                 ->button()
-                ->url(fn () => $record->url, shouldOpenInNewTab: true),
+                ->url(fn (): ?string => $record->url, shouldOpenInNewTab: true),
         ];
     }
 }

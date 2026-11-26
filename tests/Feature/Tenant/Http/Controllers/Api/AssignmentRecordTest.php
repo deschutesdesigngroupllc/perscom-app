@@ -67,7 +67,7 @@ class AssignmentRecordTest extends ApiResourceTestCase
             'specialty_id' => Specialty::factory()->create()->getKey(),
             'status_id' => Status::factory()->create()->getKey(),
             'type' => AssignmentRecordType::PRIMARY->value,
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 
@@ -77,7 +77,7 @@ class AssignmentRecordTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 }

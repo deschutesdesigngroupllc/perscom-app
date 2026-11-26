@@ -60,6 +60,8 @@ class ServiceRecords extends Page
     }
 
     /**
+     * Get the record types the user can view, with their counts.
+     *
      * @return array<int, array{label: string, url: string, icon: mixed, total: int, recent: int}>
      */
     public function getRecordTypes(): array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,16 +30,15 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'key',
+    'count',
+    'created_at',
+])]
 class Metric extends Model
 {
     use CentralConnection;
     use HasFactory;
-
-    protected $fillable = [
-        'key',
-        'count',
-        'created_at',
-    ];
 
     /**
      * @return array<string, string>

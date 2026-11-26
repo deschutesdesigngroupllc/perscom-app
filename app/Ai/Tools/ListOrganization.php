@@ -14,6 +14,7 @@ use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\Database\Eloquent\Model;
+use JsonException;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
@@ -40,30 +41,35 @@ class ListOrganization implements Tool
         return "List the organization's ranks, units, positions, specialties, awards, qualifications or statuses with their ids. Use this to find the id of something the user mentions by name.";
     }
 
+    /**
+     * Return the records of the requested type as JSON.
+     *
+     * @throws JsonException when the records cannot be encoded
+     */
     public function handle(Request $request): Stringable|string
     {
         $model = static::TYPES[$request->string('type')->toString()] ?? null;
 
         if ($model === null) {
-            return 'Unknown type. Use one of: '.implode(', ', array_keys(static::TYPES)).'.';
+            return 'Unknown type. Use one of: '.collect(static::TYPES)->keys()->implode(', ').'.';
         }
 
         if (! $this->actor->can('viewAny', $model)) {
             return 'You are not allowed to view these.';
         }
 
-        return (string) json_encode($model::query()
+        return json_encode($model::query()
             ->orderBy('order')
             ->orderBy('name')
             ->get()
-            ->map(fn (Model $item): array => array_filter([
+            ->map(fn (Model $item): array => collect([
                 'id' => $item->getKey(),
                 'name' => $item->getAttribute('name'),
                 'abbreviation' => $item->getAttribute('abbreviation'),
                 'paygrade' => $item->getAttribute('paygrade'),
                 'order' => $item->getAttribute('order'),
-            ], filled(...)))
-            ->all());
+            ])->filter(filled(...))->all())
+            ->all(), JSON_THROW_ON_ERROR);
     }
 
     /**

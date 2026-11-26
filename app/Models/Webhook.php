@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\WebhookMethod;
 use App\Traits\HasLogs;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,20 +42,19 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'url',
+    'description',
+    'events',
+    'method',
+    'secret',
+    'created_at',
+    'updated_at',
+])]
 class Webhook extends Model
 {
     use HasFactory;
     use HasLogs;
-
-    protected $fillable = [
-        'url',
-        'description',
-        'events',
-        'method',
-        'secret',
-        'created_at',
-        'updated_at',
-    ];
 
     /**
      * @return array<string, class-string<WebhookMethod>|string>

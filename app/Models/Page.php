@@ -9,6 +9,7 @@ use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,6 +48,12 @@ use Spatie\EloquentSortable\Sortable;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'slug',
+    'description',
+    'content',
+])]
 class Page extends Model implements Hideable, Sortable
 {
     use CanBeHidden;
@@ -57,12 +64,5 @@ class Page extends Model implements Hideable, Sortable
 
     protected $attributes = [
         'hidden' => false,
-    ];
-
-    protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'content',
     ];
 }

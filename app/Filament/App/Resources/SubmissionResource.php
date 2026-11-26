@@ -77,7 +77,7 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('submission-tab')
                     ->tabs([
                         Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                            ->badge(fn (?Submission $record): ?string => $record->status->name ?? null)
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
@@ -98,7 +98,7 @@ class SubmissionResource extends BaseResource
                     ->tabs([
                         Tab::make('')
                             ->icon(Heroicon::OutlinedPencilSquare)
-                            ->label(fn (Get $get) => Form::find($get('form_id'))->name ?? 'Form')
+                            ->label(fn (Get $get): string => Form::find($get('form_id'))->name ?? 'Form')
                             ->schema(fn (Get $get): array => SubmissionResource::buildCustomFieldInputs(collect(Form::find($get('form_id'))?->fields))),
                     ]),
             ]);
@@ -113,7 +113,7 @@ class SubmissionResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Submission')
-                            ->badge(fn (?Submission $record) => $record->status->name ?? null)
+                            ->badge(fn (?Submission $record): ?string => $record->status->name ?? null)
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
                             ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
@@ -138,7 +138,7 @@ class SubmissionResource extends BaseResource
                     ->tabs([
                         Tab::make('')
                             ->icon(Heroicon::OutlinedPencilSquare)
-                            ->label(fn (Submission $record) => $record->form->name ?? 'Form')
+                            ->label(fn (Submission $record): string => $record->form->name ?? 'Form')
                             ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                     ]),
             ]);
@@ -176,7 +176,7 @@ class SubmissionResource extends BaseResource
             ->groups([
                 Group::make('form.categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Submission $record) => $record->form?->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Submission $record): ?string => $record->form?->categoryPivot?->category?->name),
             ])
             ->filters([
                 TernaryFilter::make('read_at')
@@ -190,7 +190,7 @@ class SubmissionResource extends BaseResource
                     ->label('Current Status')
                     ->options(fn (): array => Status::query()->orderBy('order')->pluck('name', 'id')->all())
                     ->multiple()
-                    ->query(fn (Builder $query, array $data): Builder => blank($data['values'] ?? null) ? $query : $query->whereHas('statuses', fn (Builder $query) => $query
+                    ->query(fn (Builder $query, array $data): Builder => blank($data['values'] ?? null) ? $query : $query->whereHas('statuses', fn (Builder $query): Builder => $query
                         ->whereIn('statuses.id', $data['values'])
                         ->whereRaw('model_has_statuses.created_at = (select max(latest.created_at) from model_has_statuses as latest where latest.model_type = model_has_statuses.model_type and latest.model_id = model_has_statuses.model_id)'))),
                 SelectFilter::make('user')

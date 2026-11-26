@@ -9,6 +9,7 @@ use App\Models\Enums\AutomationRunLimit;
 use App\Models\Enums\AutomationTrigger;
 use App\Models\Enums\ModelUpdateLookupType;
 use App\Models\Enums\NotificationChannel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Collection;
@@ -79,30 +80,29 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'description',
+    'trigger',
+    'condition',
+    'action_type',
+    'webhook_id',
+    'webhook_payload_template',
+    'message_channels',
+    'message_content',
+    'message_recipients_expression',
+    'model_update_target',
+    'model_update_lookup_type',
+    'model_update_lookup_expression',
+    'model_update_lookup_conditions',
+    'model_update_fields',
+    'enabled',
+    'priority',
+    'run_limit',
+])]
 class Automation extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'trigger',
-        'condition',
-        'action_type',
-        'webhook_id',
-        'webhook_payload_template',
-        'message_channels',
-        'message_content',
-        'message_recipients_expression',
-        'model_update_target',
-        'model_update_lookup_type',
-        'model_update_lookup_expression',
-        'model_update_lookup_conditions',
-        'model_update_fields',
-        'enabled',
-        'priority',
-        'run_limit',
-    ];
 
     protected $attributes = [
         'run_limit' => 'always',
@@ -119,6 +119,8 @@ class Automation extends Model
     }
 
     /**
+     * Get the runs of the automation.
+     *
      * @return HasMany<AutomationRun, $this>
      */
     public function runs(): HasMany

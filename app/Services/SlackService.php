@@ -33,7 +33,7 @@ class SlackService
         return Url::fromString('https://slack.com/oauth/v2/authorize')
             ->withQueryParameters([
                 'client_id' => config('services.slack.client_id'),
-                'scope' => implode(',', SlackService::SCOPES),
+                'scope' => collect(SlackService::SCOPES)->implode(','),
                 'redirect_uri' => SlackService::installRedirectUri(),
                 'state' => $state,
             ])
@@ -46,6 +46,8 @@ class SlackService
     }
 
     /**
+     * Exchange the OAuth install code for the workspace's bot token.
+     *
      * @return array{team_id: string, team_name: string, bot_token: string}|null
      *
      * @throws ConnectionException
@@ -79,6 +81,8 @@ class SlackService
     }
 
     /**
+     * Get the workspace's public channels keyed by ID.
+     *
      * @return array<string, string>
      *
      * @throws ConnectionException
@@ -110,6 +114,8 @@ class SlackService
     }
 
     /**
+     * Post the message to the configured Slack channel.
+     *
      * @param  array<string, mixed>  $message
      *
      * @throws ConnectionException
@@ -135,6 +141,8 @@ class SlackService
     }
 
     /**
+     * Revoke the stored bot token with Slack.
+     *
      * @throws ConnectionException
      */
     public static function revoke(): void

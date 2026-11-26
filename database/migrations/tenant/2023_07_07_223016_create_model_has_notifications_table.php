@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('model_has_notifications', function (Blueprint $table) {
+        Schema::create('model_has_notifications', function (Blueprint $table): void {
             $table->id();
             $table->morphs('model');
             $table->unsignedBigInteger('user_id');

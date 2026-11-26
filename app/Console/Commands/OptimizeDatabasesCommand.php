@@ -6,19 +6,19 @@ namespace App\Console\Commands;
 
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\OptimizeDatabase;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Console\Isolatable;
 use Throwable;
 
+#[Description('Optimizes all database tables.')]
+#[Signature('perscom:optimize
+                            {--force : (optional) Force the operation to run when in production.}')]
 class OptimizeDatabasesCommand extends Command implements Isolatable
 {
     use ConfirmableTrait;
-
-    protected $signature = 'perscom:optimize
-                            {--force : (optional) Force the operation to run when in production.}';
-
-    protected $description = 'Optimizes all database tables.';
 
     /**
      * @throws Throwable

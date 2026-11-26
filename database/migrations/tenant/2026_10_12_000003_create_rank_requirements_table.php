@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rank_requirements', function (Blueprint $table) {
+        Schema::create('rank_requirements', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('rank_id')->unique()->constrained()->cascadeOnDelete();
             $table->unsignedInteger('min_days_in_grade')->nullable();

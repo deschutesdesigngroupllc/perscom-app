@@ -38,7 +38,7 @@ class Component
      */
     public static function escape(string $value): string
     {
-        return str_replace(
+        return Str::replace(
             ['\\', ';', ',', "\r\n", "\r", "\n"],
             ['\\\\', '\;', '\\,', '\\n', '\\n', '\\n'],
             $value,
@@ -68,7 +68,7 @@ class Component
             return $carry;
         }, ['']);
 
-        return implode("\r\n ", $folded);
+        return collect($folded)->implode("\r\n ");
     }
 
     public static function formatUtcDateTime(CarbonInterface $value): string
@@ -139,6 +139,8 @@ class Component
     }
 
     /**
+     * Add each of the given nested components.
+     *
      * @param  iterable<int, Component>  $components
      */
     public function components(iterable $components): static
@@ -172,6 +174,8 @@ class Component
     }
 
     /**
+     * Format the parameters as a content line parameter list.
+     *
      * @param  array<string, string>  $parameters
      */
     protected static function formatParameters(array $parameters): string
@@ -181,7 +185,7 @@ class Component
             ->map(fn (string $value, string $key): string => sprintf(
                 ';%s=%s',
                 Str::upper($key),
-                Str::contains($value, [':', ';', ',']) ? '"'.str_replace('"', '', $value).'"' : $value,
+                Str::contains($value, [':', ';', ',']) ? '"'.Str::replace('"', '', $value).'"' : $value,
             ))
             ->implode('');
     }

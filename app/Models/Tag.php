@@ -8,6 +8,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,16 +32,15 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'created_at',
+    'updated_at',
+])]
 class Tag extends Model implements HasLabel
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasResourceLabel;
-
-    protected $fillable = [
-        'name',
-        'created_at',
-        'updated_at',
-    ];
 }

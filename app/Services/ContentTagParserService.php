@@ -18,7 +18,11 @@ class ContentTagParserService
 {
     public function parse(string $content, ?User $user = null, ?Model $attachedModel = null): ?string
     {
-        $result = Str::replaceMatches('/\{(.*?)}/', fn (array $matches) => $this->resolveTag($matches[0], $user, $attachedModel) ?? $matches[0], $content);
+        $result = Str::replaceMatches(
+            '/\{(.*?)}/',
+            fn (array $matches): mixed => $this->resolveTag($matches[0], $user, $attachedModel) ?? $matches[0],
+            $content,
+        );
 
         if (is_string($result)) {
             return $result;
@@ -63,7 +67,7 @@ class ContentTagParserService
 
                 $timezone = UserSettingsService::get(
                     key: 'timezone',
-                    default: function () {
+                    default: function (): ?string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -111,7 +115,9 @@ class ContentTagParserService
                 return new HtmlString(sprintf("<img src='%s' alt='%s' style='height: 40px;' />", $imageUrl, $imageName));
             },
             $tag === '{rank_record_type}' => data_get($attachedModel, 'type')->getLabel() ?? null,
-            $tag === '{training_record_credentials}' => collect(data_get($attachedModel, 'credentials'))->map(fn (Credential $credential) => $credential->name)->implode(','),
+            $tag === '{training_record_credentials}' => collect(data_get($attachedModel, 'credentials'))
+                ->map(fn (Credential $credential): string => $credential->name)
+                ->implode(','),
             $tag === '{training_record_instructor_name}' => data_get($attachedModel, 'instructor.name'),
             $tag === '{author_resource_name}' => data_get($attachedModel, 'author.name'),
             default => null

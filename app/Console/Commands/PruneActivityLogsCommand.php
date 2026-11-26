@@ -7,19 +7,19 @@ namespace App\Console\Commands;
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\PruneApiLogs;
 use App\Jobs\Tenant\PruneApiPurgeLogs;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Throwable;
 
+#[Description('Prunes the various logs for each tenant.')]
+#[Signature('perscom:prune
+                            {--days= : (optional) Records older than this number of days will be cleaned.}
+                            {--force : (optional) Force the operation to run when in production.}')]
 class PruneActivityLogsCommand extends Command
 {
     use ConfirmableTrait;
-
-    protected $signature = 'perscom:prune
-                            {--days= : (optional) Records older than this number of days will be cleaned.}
-                            {--force : (optional) Force the operation to run when in production.}';
-
-    protected $description = 'Prunes the various logs for each tenant.';
 
     /**
      * @throws Throwable

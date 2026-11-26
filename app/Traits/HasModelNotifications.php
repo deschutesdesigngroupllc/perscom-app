@@ -56,7 +56,7 @@ trait HasModelNotifications
             }
         });
 
-        static::deleting(fn ($model) => $model->modelNotifications()->delete());
+        static::deleting(fn (self $model): int => $model->modelNotifications()->delete());
     }
 
     public function modelNotifications(): MorphMany

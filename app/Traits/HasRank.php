@@ -6,7 +6,6 @@ namespace App\Traits;
 
 use App\Models\Rank;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -17,11 +16,6 @@ trait HasRank
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
-    }
-
-    protected function scopeRank(Builder $query, Rank $rank): void
-    {
-        $query->whereBelongsTo($rank);
     }
 
     protected function initializeHasRank(): void

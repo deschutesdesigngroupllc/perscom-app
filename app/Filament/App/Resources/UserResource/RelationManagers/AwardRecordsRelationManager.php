@@ -8,6 +8,8 @@ use App\Filament\Actions\AwardMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AwardRecord;
+use App\Models\Document;
+use App\Models\User;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
@@ -45,13 +47,13 @@ class AwardRecordsRelationManager extends RelationManager
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (AwardRecord $record) => $record->text),
+                            ->html(fn (AwardRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
@@ -59,8 +61,8 @@ class AwardRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (AwardRecord $record) => $record->document)
-                            ->user(fn (AwardRecord $record) => $record->user)
+                            ->document(fn (AwardRecord $record): ?Document => $record->document)
+                            ->user(fn (AwardRecord $record): ?User => $record->user)
                             ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
             ])

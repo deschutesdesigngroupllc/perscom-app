@@ -100,6 +100,8 @@ class Roster extends Page
     }
 
     /**
+     * Get the active roster filters.
+     *
      * @return array{search: string, rank_id: ?int, status_id: ?int, position_id: ?int, unit_id: ?int, online: bool}
      */
     public function filters(): array
@@ -115,6 +117,8 @@ class Roster extends Page
     }
 
     /**
+     * Collect the members of every node in the tree.
+     *
      * @param  array<int, array<string, mixed>>  $nodes
      */
     protected static function treeMembers(array $nodes): Collection

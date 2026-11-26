@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Number;
 
 class PromotionEligibilityService
 {
@@ -173,6 +174,8 @@ class PromotionEligibilityService
     }
 
     /**
+     * Get the evaluations of members eligible for promotion.
+     *
      * @return Collection<int, PromotionEvaluationData>
      */
     public static function eligible(?int $unitId = null): Collection
@@ -181,6 +184,8 @@ class PromotionEligibilityService
     }
 
     /**
+     * Get the evaluations of members not yet eligible for their next rank.
+     *
      * @return Collection<int, PromotionEvaluationData>
      */
     public static function notYetEligible(?int $unitId = null): Collection
@@ -189,6 +194,8 @@ class PromotionEligibilityService
     }
 
     /**
+     * Get every rank with its promotion requirement loaded.
+     *
      * @return EloquentCollection<int, Rank>
      */
     public static function ranks(): EloquentCollection
@@ -197,6 +204,8 @@ class PromotionEligibilityService
     }
 
     /**
+     * Evaluate each criterion of a rank requirement against a member's record.
+     *
      * @param  array<int, int>  $heldQualificationIds
      * @param  array<int, int>  $heldCredentialIds
      * @param  Collection<int, string>  $qualificationNames
@@ -217,12 +226,20 @@ class PromotionEligibilityService
             filled($requirement->min_days_in_grade) ? new RequirementResultData(
                 label: 'Time in grade',
                 met: $daysInGrade >= $requirement->min_days_in_grade,
-                detail: sprintf('%s days (%s required)', number_format($daysInGrade), number_format($requirement->min_days_in_grade)),
+                detail: sprintf(
+                    '%s days (%s required)',
+                    Number::format($daysInGrade),
+                    Number::format($requirement->min_days_in_grade),
+                ),
             ) : null,
             filled($requirement->min_days_in_service) ? new RequirementResultData(
                 label: 'Time in service',
                 met: $daysInService >= $requirement->min_days_in_service,
-                detail: sprintf('%s days (%s required)', number_format($daysInService), number_format($requirement->min_days_in_service)),
+                detail: sprintf(
+                    '%s days (%s required)',
+                    Number::format($daysInService),
+                    Number::format($requirement->min_days_in_service),
+                ),
             ) : null,
             filled($requirement->min_events_attended_90d) ? new RequirementResultData(
                 label: 'Events attended',

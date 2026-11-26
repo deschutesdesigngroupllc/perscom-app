@@ -40,7 +40,7 @@ class CreateSlot
                 ->where('specialty_id', $validated['specialty_id'] ?? null)
                 ->first() ?? Slot::create($validated);
 
-            if ($unit instanceof Unit && ! $unit->slots()->whereKey($slot->getKey())->exists()) {
+            if ($unit instanceof Unit && $unit->slots()->whereKey($slot->getKey())->doesntExist()) {
                 $unit->slots()->attach($slot->getKey());
             }
 

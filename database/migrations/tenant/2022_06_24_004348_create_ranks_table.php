@@ -15,7 +15,7 @@ class CreateRanksTable extends Migration
      */
     public function up()
     {
-        Schema::create('ranks', function (Blueprint $table) {
+        Schema::create('ranks', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();

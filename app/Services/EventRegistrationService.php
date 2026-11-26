@@ -9,6 +9,7 @@ use App\Exceptions\EventRegistrationException;
 use App\Models\Enums\EventRegistrationStatus;
 use App\Models\EventRegistration;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -31,7 +32,9 @@ class EventRegistrationService
      */
     public static function respond(OccurrenceData $occurrence, User $user, EventRegistrationStatus $status, bool $wholeSeries = false): EventRegistration
     {
-        throw_unless($status->isMemberResponse(), EventRegistrationException::invalidResponse());
+        if (! $status->isMemberResponse()) {
+            throw EventRegistrationException::invalidResponse();
+        }
 
         if (($reason = static::closedReason($occurrence)) instanceof EventRegistrationException) {
             throw $reason;
@@ -55,7 +58,7 @@ class EventRegistrationService
                     ->where('event_id', $event->getKey())
                     ->where('user_id', $user->getKey())
                     ->whereIn('status', collect(EventRegistrationStatus::memberResponses())->map->value->all())
-                    ->whereHas('occurrence', fn ($query) => $query->where('starts', '>=', now()))
+                    ->whereHas('occurrence', fn (Builder $query): Builder => $query->where('starts', '>=', now()))
                     ->get()
                     ->each->delete();
             }
@@ -83,7 +86,10 @@ class EventRegistrationService
         $users = User::query()->whereKey($registrations->keys()->all())->get()->keyBy('id');
 
         return $registrations
-            ->each(fn (EventRegistration $registration) => $registration->setRelation('user', $users->get($registration->user_id)))
+            ->each(fn (EventRegistration $registration): EventRegistration => $registration->setRelation(
+                'user',
+                $users->get($registration->user_id),
+            ))
             ->filter(fn (EventRegistration $registration): bool => $registration->getRelation('user') instanceof User)
             ->groupBy(fn (EventRegistration $registration): string => $registration->status?->value ?? EventRegistrationStatus::UNKNOWN->value);
     }

@@ -19,6 +19,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -91,6 +92,15 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(UnitScope::class)]
+#[Fillable([
+    'parent_id',
+    'name',
+    'description',
+    'empty',
+    'order',
+    'created_at',
+    'updated_at',
+])]
 class Unit extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
@@ -111,17 +121,9 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         'hidden' => false,
     ];
 
-    protected $fillable = [
-        'parent_id',
-        'name',
-        'description',
-        'empty',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
-
     /**
+     * Get the unit this unit is nested under.
+     *
      * @return BelongsTo<Unit, $this>
      */
     public function parent(): BelongsTo
@@ -130,6 +132,8 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     }
 
     /**
+     * Get the units nested directly beneath this unit.
+     *
      * @return HasMany<Unit, $this>
      */
     public function children(): HasMany
@@ -170,13 +174,15 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
 
     public function slots(): BelongsToMany
     {
-        return $this->belongsToMany(Slot::class, 'units_slots')
+        return $this->belongsToMany(Slot::class, UnitSlot::class)
             ->withPivot(['id'])
             ->using(UnitSlot::class)
             ->withTimestamps();
     }
 
     /**
+     * Get the members with a secondary assignment to the unit.
+     *
      * @return HasManyDeep<User, $this>
      */
     public function usersViaSecondaryAssignmentRecords(): HasManyDeep

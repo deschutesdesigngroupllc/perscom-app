@@ -32,7 +32,7 @@ class EventsRelationManager extends RelationManager
                     ->label('Organizer')
                     ->sortable(query: fn (Builder $query, string $direction): Builder => $query->orderBy(User::select('name')->whereColumn('users.id', 'events.author_id'), $direction)),
                 TextColumn::make('start')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -41,7 +41,7 @@ class EventsRelationManager extends RelationManager
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('end')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

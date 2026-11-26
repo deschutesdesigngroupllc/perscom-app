@@ -32,6 +32,8 @@ class SendUpcomingEventNotifications implements RunsPerTenant, ShouldQueue
     }
 
     /**
+     * Send notifications for repeating events due within the next 24 hours.
+     *
      * @throws Exception
      * @throws Throwable
      */
@@ -47,7 +49,7 @@ class SendUpcomingEventNotifications implements RunsPerTenant, ShouldQueue
                 ->groupBy('notifications_interval')
 
                 // Iterate over the collection of events for each interval
-                ->each(fn (Collection $events, $interval) => $events
+                ->each(fn (Collection $events, string $interval): Collection => $events
                     // Iterate over all the events for a given interval
                     ->each(function (Event $event) use ($interval): void {
                         $start = $event->schedule->next_occurrence ?? $event->starts ?? null;

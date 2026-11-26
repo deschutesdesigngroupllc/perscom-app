@@ -15,7 +15,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units_slots', function (Blueprint $table) {
+        Schema::create('units_slots', function (Blueprint $table): void {
             $table->id();
             $table->foreignIdFor(Unit::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Slot::class)->nullable()->constrained()->cascadeOnDelete();

@@ -13,6 +13,7 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -65,6 +66,16 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'slug',
+    'success_message',
+    'is_public',
+    'description',
+    'instructions',
+    'created_at',
+    'updated_at',
+])]
 class Form extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -76,17 +87,6 @@ class Form extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
     use HasTags;
-
-    protected $fillable = [
-        'name',
-        'slug',
-        'success_message',
-        'is_public',
-        'description',
-        'instructions',
-        'created_at',
-        'updated_at',
-    ];
 
     public function submissions(): HasMany
     {

@@ -9,6 +9,7 @@ use App\Mcp\Tools\Concerns\RespondsWithApiResults;
 use App\Services\InternalApiService;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
+use Illuminate\Support\Arr;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -32,7 +33,7 @@ class SearchResourceTool extends Tool
     public function handle(Request $request): Response
     {
         $validated = $request->validate([
-            'resource' => ['required', 'string', 'in:'.implode(',', ApiResourceRegistry::keys())],
+            'resource' => ['required', 'string', 'in:'.Arr::join(ApiResourceRegistry::keys(), ',')],
             'filters' => ['nullable', 'array'],
             'filters.*.field' => ['required', 'string'],
             'filters.*.operator' => ['nullable', 'string'],
@@ -53,14 +54,14 @@ class SearchResourceTool extends Tool
         /** @var array{endpoint: string, scope: string} $resource */
         $resource = ApiResourceRegistry::find($validated['resource']);
 
-        $body = array_filter([
+        $body = collect([
             'filters' => collect($validated['filters'] ?? [])
-                ->map(fn (array $filter): array => array_filter([
+                ->map(fn (array $filter): array => collect([
                     'field' => $filter['field'],
                     'operator' => $filter['operator'] ?? '=',
                     'value' => $filter['value'] ?? null,
                     'type' => $filter['type'] ?? null,
-                ], fn (mixed $value): bool => ! is_null($value)))
+                ])->reject(fn (mixed $value): bool => is_null($value))->all())
                 ->all(),
             'search' => filled($validated['search'] ?? null) ? ['value' => $validated['search']] : null,
             'sort' => collect($validated['sort'] ?? [])
@@ -69,13 +70,13 @@ class SearchResourceTool extends Tool
                     'direction' => $sort['direction'] ?? 'asc',
                 ])
                 ->all(),
-        ], filled(...));
+        ])->filter(fn (mixed $value): bool => filled($value))->all();
 
-        $query = array_filter([
-            'include' => filled($validated['include'] ?? null) ? implode(',', $validated['include']) : null,
+        $query = collect([
+            'include' => filled($validated['include'] ?? null) ? Arr::join($validated['include'], ',') : null,
             'page' => $validated['page'] ?? null,
             'limit' => $validated['limit'] ?? 25,
-        ], filled(...));
+        ])->filter(fn (mixed $value): bool => filled($value))->all();
 
         return $this->respondWithApiResult(
             InternalApiService::post($resource['endpoint'].'/search', $body, $query),

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->dropColumn(['channels']);
         });
     }

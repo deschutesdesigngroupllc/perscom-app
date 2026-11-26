@@ -15,7 +15,7 @@ class AddFieldsToNovaNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('nova_notifications', function (Blueprint $table) {
+        Schema::table('nova_notifications', function (Blueprint $table): void {
             $table->softDeletes();
         });
     }

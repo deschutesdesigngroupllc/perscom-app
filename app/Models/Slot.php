@@ -15,6 +15,7 @@ use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -56,9 +57,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Slot newModelQuery()
  * @method static Builder<static>|Slot newQuery()
  * @method static Builder<static>|Slot ordered(string $direction = 'asc')
- * @method static Builder<static>|Slot position(\App\Models\Position $position)
  * @method static Builder<static>|Slot query()
- * @method static Builder<static>|Slot specialty(\App\Models\Specialty $specialty)
  * @method static Builder<static>|Slot visible()
  * @method static Builder<static>|Slot whereCreatedAt($value)
  * @method static Builder<static>|Slot whereDescription($value)
@@ -74,6 +73,11 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(SlotScope::class)]
+#[Fillable([
+    'name',
+    'description',
+    'empty',
+])]
 class Slot extends Model implements Hideable, Sortable
 {
     use CanBeHidden;
@@ -86,13 +90,9 @@ class Slot extends Model implements Hideable, Sortable
     use HasSpecialty;
     use HasUsers;
 
-    protected $fillable = [
-        'name',
-        'description',
-        'empty',
-    ];
-
     /**
+     * Get the assignment records for the slot.
+     *
      * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
      */
     public function assignment_records(): HasManyThrough
@@ -101,6 +101,8 @@ class Slot extends Model implements Hideable, Sortable
     }
 
     /**
+     * Get the primary assignment records for the slot.
+     *
      * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
      */
     public function primary_assignment_records(): HasManyThrough
@@ -110,6 +112,8 @@ class Slot extends Model implements Hideable, Sortable
     }
 
     /**
+     * Get the secondary assignment records for the slot.
+     *
      * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
      */
     public function secondary_assignment_records(): HasManyThrough
@@ -120,13 +124,15 @@ class Slot extends Model implements Hideable, Sortable
 
     public function units(): BelongsToMany
     {
-        return $this->belongsToMany(Unit::class, 'units_slots')
+        return $this->belongsToMany(Unit::class, UnitSlot::class)
             ->withPivot(['id'])
             ->using(UnitSlot::class)
             ->withTimestamps();
     }
 
     /**
+     * Get the users assigned to the slot.
+     *
      * @return HasManyThrough<User, UnitSlot, $this>
      */
     public function users(): HasManyThrough

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasDocument;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -12,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $tag_id
  * @property int $document_id
  * @property-read Document $document
- * @property-read mixed $document_parsed
+ * @property-read string|null $document_parsed
  *
  * @method static Builder<static>|DocumentTag document(\App\Models\Document $document)
  * @method static Builder<static>|DocumentTag newModelQuery()
@@ -23,13 +25,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'tag_id',
+])]
+#[Table(name: 'documents_tags')]
 class DocumentTag extends Pivot
 {
     use HasDocument;
-
-    protected $table = 'documents_tags';
-
-    protected $fillable = [
-        'tag_id',
-    ];
 }

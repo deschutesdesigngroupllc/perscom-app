@@ -49,6 +49,8 @@ class ExpirationsChart extends ChartWidget
     }
 
     /**
+     * Get the monthly count of expirations for the model.
+     *
      * @param  class-string<QualificationRecord|TrainingRecordCredential>  $model
      * @return Collection<int, TrendValue>
      */

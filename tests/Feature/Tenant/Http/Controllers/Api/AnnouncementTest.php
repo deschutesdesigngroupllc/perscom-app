@@ -54,7 +54,7 @@ class AnnouncementTest extends ApiResourceTestCase
     {
         return [
             'title' => 'Test Announcement',
-            'content' => $this->faker->paragraph,
+            'content' => $this->faker->paragraph(),
             'color' => 'success',
         ];
     }
@@ -65,7 +65,7 @@ class AnnouncementTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'title' => $this->faker->name,
+            'title' => $this->faker->name(),
         ];
     }
 }

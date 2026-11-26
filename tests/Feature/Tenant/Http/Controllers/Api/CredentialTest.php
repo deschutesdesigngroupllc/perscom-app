@@ -56,7 +56,7 @@ class CredentialTest extends ApiResourceTestCase
     {
         return [
             'name' => 'Test Credential',
-            'description' => $this->faker->sentence,
+            'description' => $this->faker->sentence(),
             'issuer_id' => Issuer::factory()->create()->getKey(),
             'type' => CredentialType::OTHER->value,
         ];
@@ -68,7 +68,7 @@ class CredentialTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->name(),
         ];
     }
 }

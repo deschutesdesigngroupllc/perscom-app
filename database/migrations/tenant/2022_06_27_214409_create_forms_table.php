@@ -15,7 +15,7 @@ class CreateFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('forms', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();

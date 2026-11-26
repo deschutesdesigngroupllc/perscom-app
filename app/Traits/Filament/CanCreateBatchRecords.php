@@ -24,10 +24,10 @@ trait CanCreateBatchRecords
 
     protected function performModelCreations(array $data, ?Closure $callback = null): Collection
     {
-        return collect(data_get($data, 'user_id'))->map(function ($userId) use ($data, $callback) {
+        return collect(data_get($data, 'user_id'))->map(function ($userId) use ($data, $callback): Model {
             data_set($data, 'user_id', $userId);
 
-            return tap(parent::handleRecordCreation($data), fn ($model) => value($callback, $model));
+            return tap(parent::handleRecordCreation($data), fn (Model $model): mixed => value($callback, $model));
         });
     }
 

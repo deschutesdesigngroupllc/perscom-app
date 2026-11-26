@@ -28,6 +28,8 @@ class SendRecurringMessages implements RunsPerTenant, ShouldQueue
     }
 
     /**
+     * Send the repeating messages scheduled within the next 24 hours.
+     *
      * @throws Throwable
      */
     public function work(): void

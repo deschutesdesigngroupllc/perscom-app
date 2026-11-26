@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->string('color')->nullable()->after('indicators');
             $table->string('icon')->nullable()->after('indicators');
         });
@@ -22,7 +22,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->dropColumn('icon');
             $table->dropColumn('color');
         });

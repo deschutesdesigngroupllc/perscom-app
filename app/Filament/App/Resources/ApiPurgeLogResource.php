@@ -59,7 +59,7 @@ class ApiPurgeLogResource extends BaseResource
                     ->placeholder('No Description')
                     ->label('Event')
                     ->searchable()
-                    ->formatStateUsing(fn ($state) => Str::title($state))
+                    ->formatStateUsing(fn ($state): string => Str::title($state))
                     ->sortable(),
                 TextColumn::make('tags')
                     ->label('Cache Tags')

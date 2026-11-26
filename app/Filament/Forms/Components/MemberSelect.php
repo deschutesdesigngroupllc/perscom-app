@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 /**
  * The standard way to pick members. It searches on the server instead of preloading everyone, and
@@ -39,6 +40,8 @@ class MemberSelect extends Select
     }
 
     /**
+     * Build the member's label from rank, name, and unit.
+     *
      * @param  Collection<int, string|null>|null  $rankAbbreviations  rank abbreviations keyed by rank id, to label many members at once
      * @param  Collection<int, string|null>|null  $unitNames  unit names keyed by unit id
      */
@@ -47,12 +50,14 @@ class MemberSelect extends Select
         $rank = $rankAbbreviations instanceof Collection ? $rankAbbreviations->get($user->rank_id) : $user->rank?->abbreviation;
         $unit = $unitNames instanceof Collection ? $unitNames->get($user->unit_id) : $user->unit?->name;
 
-        $name = trim(sprintf('%s %s', $rank, $user->name));
+        $name = Str::trim(sprintf('%s %s', $rank, $user->name));
 
         return filled($unit) ? sprintf('%s · %s', $name, $unit) : $name;
     }
 
     /**
+     * Label each of the given members with rank and unit.
+     *
      * @param  EloquentCollection<int, User>  $users
      * @return array<int, string>
      */
@@ -67,12 +72,16 @@ class MemberSelect extends Select
     }
 
     /**
+     * Search members by name or email and label the matches.
+     *
      * @return array<int, string>
      */
     public static function searchMembers(string $search): array
     {
         return MemberSelect::labelsFor(User::query()
-            ->where(fn (Builder $query) => $query->where('name', 'like', sprintf('%%%s%%', $search))->orWhere('email', 'like', sprintf('%%%s%%', $search)))
+            ->where(fn (Builder $query): Builder => $query
+                ->where('name', 'like', sprintf('%%%s%%', $search))
+                ->orWhere('email', 'like', sprintf('%%%s%%', $search)))
             ->orderBy('name')
             ->limit(MemberSelect::SEARCH_LIMIT)
             ->get());

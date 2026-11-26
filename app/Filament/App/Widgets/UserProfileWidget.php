@@ -78,6 +78,8 @@ class UserProfileWidget extends Widget
     }
 
     /**
+     * Get the award records for the user.
+     *
      * @return EloquentCollection<int, AwardRecord>
      */
     public function awardRecords(): EloquentCollection
@@ -132,6 +134,8 @@ class UserProfileWidget extends Widget
     }
 
     /**
+     * Get the profile tab index of the relation manager.
+     *
      * @param  class-string<RelationManager>  $relationManager
      */
     protected function relationIndex(string $relationManager): ?int

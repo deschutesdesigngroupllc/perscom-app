@@ -33,7 +33,7 @@ class ListUsers extends ListRecords
                 ->favorite()
                 ->label($status->name)
                 ->icon($status->icon)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status_id', $status->id)),
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('status_id', $status->id)),
         ])->toArray();
     }
 

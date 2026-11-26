@@ -16,10 +16,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->nullableMorphs('owner', after: 'user_id');
 
-            $table->after('provider', function (Blueprint $table) {
+            $table->after('provider', function (Blueprint $table): void {
                 $table->text('redirect_uris')->nullable();
                 $table->text('grant_types')->nullable();
             });
@@ -27,7 +27,7 @@ return new class extends Migration
 
         /** @var PassportClient $client */
         foreach (Passport::client()->cursor() as $client) {
-            Model::withoutTimestamps(fn () => $client->forceFill([
+            Model::withoutTimestamps(fn (): bool => $client->forceFill([
                 'owner_id' => $client->user_id, // @phpstan-ignore property.notFound
                 'owner_type' => $client->user_id // @phpstan-ignore property.notFound
                     ? config('auth.providers.'.($client->provider ?: config('auth.guards.api.provider')).'.model')
@@ -37,7 +37,7 @@ return new class extends Migration
             ])->save());
         }
 
-        Schema::table('oauth_clients', function (Blueprint $table) {
+        Schema::table('oauth_clients', function (Blueprint $table): void {
             $table->dropColumn(['user_id', 'redirect', 'personal_access_client', 'password_client']);
 
             $table->text('redirect_uris')->nullable(false)->change();

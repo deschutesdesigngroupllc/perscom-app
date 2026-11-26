@@ -19,8 +19,10 @@ class PublicUrlAction extends Action
         $this->tooltip(fn (Form $record): string => route('filament.public.pages.forms.{slug}', ['slug' => $record->slug]));
         $this->openUrlInNewTab();
         $this->icon(Heroicon::OutlinedLink);
-        $this->visible(fn (Form $record) => $record->is_public);
-        $this->action(fn (Form $record) => $this->redirect(route('filament.public.pages.forms.{slug}', ['slug' => $record->slug])));
+        $this->visible(fn (Form $record): bool => $record->is_public);
+        $this->action(fn (Form $record): null => $this->redirect(
+            route('filament.public.pages.forms.{slug}', ['slug' => $record->slug]),
+        ));
     }
 
     public static function getDefaultName(): ?string

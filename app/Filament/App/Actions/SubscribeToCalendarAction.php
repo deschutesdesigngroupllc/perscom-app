@@ -84,6 +84,8 @@ class SubscribeToCalendarAction extends Action
     }
 
     /**
+     * Build the subscription links for the member's calendar feed.
+     *
      * @return array{url: string, webcalUrl: string, googleUrl: string, outlookUrl: string, qrCode: string, name: string}
      */
     public static function links(mixed $calendarId): array

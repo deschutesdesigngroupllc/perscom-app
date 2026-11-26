@@ -54,6 +54,8 @@ class CopyAction extends Action
     }
 
     /**
+     * Get the evaluated value to copy, encoded for JavaScript.
+     *
      * @throws JsonException
      */
     public function getCopyable(): Js

@@ -12,6 +12,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Locked;
 
@@ -28,7 +29,7 @@ class ViewPassportClient extends ViewRecord
     {
         parent::mount($record);
 
-        $secret = session()->pull(static::PLAIN_SECRET_SESSION_KEY);
+        $secret = Session::pull(static::PLAIN_SECRET_SESSION_KEY);
 
         if (is_string($secret) && filled($secret)) {
             $this->plainSecret = $secret;

@@ -69,10 +69,10 @@ class AlertResource extends Resource
                                     ->hiddenLabel()
                                     ->required()
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(AlertChannel::cases())
+                                    ->descriptions(fn (): array => collect(AlertChannel::cases())
                                         ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->all())
-                                    ->options(fn () => collect(AlertChannel::cases())
+                                    ->options(fn (): array => collect(AlertChannel::cases())
                                         ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->all()),
                             ]),

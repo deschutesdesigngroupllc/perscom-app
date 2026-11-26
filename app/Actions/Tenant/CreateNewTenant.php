@@ -17,13 +17,13 @@ class CreateNewTenant
      */
     public static function handle(string $organization, string $email, ?string $founderName = null, ?string $requestedSubdomain = null, ?OrganizationType $organizationType = null): Tenant
     {
-        $tenant = Tenant::create(array_filter([
+        $tenant = Tenant::create(collect([
             'name' => $organization,
             'email' => $email,
             'founder_name' => $founderName,
             'requested_subdomain' => $requestedSubdomain,
             'organization_type' => $organizationType?->value,
-        ], filled(...)));
+        ])->filter(filled(...))->all());
 
         $tenant->domains()->create([
             'domain' => Domain::generateSubdomain(),

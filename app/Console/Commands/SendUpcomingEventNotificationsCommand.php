@@ -6,15 +6,15 @@ namespace App\Console\Commands;
 
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Tenant\SendUpcomingEventNotifications;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Throwable;
 
+#[Description('Send any upcoming event notifications.')]
+#[Signature('perscom:event-notifications')]
 class SendUpcomingEventNotificationsCommand extends Command
 {
-    protected $signature = 'perscom:event-notifications';
-
-    protected $description = 'Send any upcoming event notifications.';
-
     /**
      * @throws Throwable
      */

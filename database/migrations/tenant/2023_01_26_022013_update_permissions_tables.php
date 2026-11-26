@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -16,11 +17,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('role_has_permissions', function (Blueprint $table) {
+        Schema::table('role_has_permissions', function (Blueprint $table): void {
             $query = DB::table('role_has_permissions')
                 ->leftJoin('permissions', 'role_has_permissions.permission_id', '=', 'permissions.id')
                 ->where('role_id', '=', '2')
-                ->where(function ($query) {
+                ->where(function (Builder $query): void {
                     $query->where('name', '=', 'view:form')
                         ->orWhere('name', '=', 'view:submission')
                         ->orWhere('name', '=', 'view:awardrecord')

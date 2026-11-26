@@ -38,6 +38,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Laravel\Passport\Passport;
 use UnitEnum;
 
@@ -99,7 +100,7 @@ class PassportClientResource extends BaseResource
                                     ->searchable()
                                     ->multiple()
                                     ->live()
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                                    ->options(fn (): Collection => Passport::scopes()->pluck('id', 'id')->sort())
                                     ->hidden(fn (Get $get): mixed => $get('all_scopes')),
                                 Checkbox::make('all_scopes')
                                     ->default(true)

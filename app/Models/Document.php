@@ -20,6 +20,7 @@ use App\Traits\HasServiceRecords;
 use App\Traits\HasTags;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -81,6 +82,13 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'description',
+    'content',
+    'created_at',
+    'updated_at',
+])]
 class Document extends Model implements HasLabel, Htmlable
 {
     use ClearsApiCache;
@@ -97,14 +105,6 @@ class Document extends Model implements HasLabel, Htmlable
     use HasResourceUrl;
     use HasServiceRecords;
     use HasTags;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'content',
-        'created_at',
-        'updated_at',
-    ];
 
     public function toHtml(?User $user = null, mixed $attachedModel = null): string
     {

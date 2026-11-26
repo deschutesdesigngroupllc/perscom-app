@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
 
 class HttpServiceProvider extends ServiceProvider
@@ -14,7 +15,7 @@ class HttpServiceProvider extends ServiceProvider
     {
         $userAgent = sprintf(
             '%s/%s (+%s)',
-            str_replace(' ', '-', (string) config('app.name', 'PERSCOM')),
+            Str::replace(' ', '-', (string) config('app.name', 'PERSCOM')),
             config('app.version', '1.0'),
             config('app.url'),
         );

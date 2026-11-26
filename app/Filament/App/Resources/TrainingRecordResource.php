@@ -18,6 +18,7 @@ use App\Filament\Forms\Components\MemberSelect;
 use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Forms\Components\ModelNotification;
 use App\Models\Credential;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\TrainingRecord;
 use App\Models\User;
@@ -220,22 +221,22 @@ class TrainingRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (TrainingRecord $record) => $record->document)
-                            ->user(fn (TrainingRecord $record) => $record->user)
+                            ->document(fn (TrainingRecord $record): ?Document => $record->document)
+                            ->user(fn (TrainingRecord $record): ?User => $record->user)
                             ->attached(fn (TrainingRecord $record): TrainingRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (TrainingRecord $record) => $record->text),
+                            ->html(fn (TrainingRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')

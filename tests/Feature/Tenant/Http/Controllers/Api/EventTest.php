@@ -57,7 +57,7 @@ class EventTest extends ApiResourceTestCase
         return [
             'author_id' => User::factory()->createQuietly()->getKey(),
             'calendar_id' => Calendar::factory()->create()->getKey(),
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
             'starts' => now(),
             'ends' => now()->addDay(),
             'all_day' => false,
@@ -71,7 +71,7 @@ class EventTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->paragraph(),
         ];
     }
 

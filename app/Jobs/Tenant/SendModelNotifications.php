@@ -61,7 +61,12 @@ class SendModelNotifications implements ShouldQueue
             return;
         }
 
-        NotificationChannel::organizationWide($modelNotifications->flatMap(fn (ModelNotification $notification) => Collection::wrap($notification->channels)))
-            ->each(fn (NotificationChannel $channel) => Notification::sendNow($recipients->first(), new NewModelNotification($modelNotifications->first()), [$channel->getChannel()]));
+        NotificationChannel::organizationWide($modelNotifications->flatMap(
+            fn (ModelNotification $notification): Collection => Collection::wrap($notification->channels),
+        ))->each(fn (NotificationChannel $channel): null => Notification::sendNow(
+            $recipients->first(),
+            new NewModelNotification($modelNotifications->first()),
+            [$channel->getChannel()],
+        ));
     }
 }

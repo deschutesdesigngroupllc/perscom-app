@@ -37,7 +37,7 @@ class SettingsService
 
     protected static function withCache(string $class): mixed
     {
-        return Cache::remember(SettingsService::cacheKey($class), now()->addHour(), function () use ($class) {
+        return Cache::remember(SettingsService::cacheKey($class), now()->addHour(), function () use ($class): array {
             /** @var Settings $settings */
             $settings = resolve($class);
 

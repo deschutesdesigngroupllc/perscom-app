@@ -24,6 +24,8 @@ abstract class ProposalTool implements Tool
     public function __construct(protected ProposedChangeSetData $changeSet) {}
 
     /**
+     * Build the proposed operation from the validated input.
+     *
      * @param  array<string, mixed>  $validated
      */
     abstract protected function propose(array $validated): ProposedOperationData;
@@ -53,6 +55,8 @@ abstract class ProposalTool implements Tool
     }
 
     /**
+     * Get the schema for the members the proposal applies to.
+     *
      * @return array<string, mixed>
      */
     protected function memberSchema(JsonSchema $schema): array
@@ -63,6 +67,8 @@ abstract class ProposalTool implements Tool
     }
 
     /**
+     * Name the first few members, noting how many more there are.
+     *
      * @param  array<int, int>  $userIds
      */
     protected function describeMembers(array $userIds): string

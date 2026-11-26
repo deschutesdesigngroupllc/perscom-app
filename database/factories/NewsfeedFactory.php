@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Newsfeed;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 /**
  * @extends Factory<Newsfeed>
@@ -17,11 +16,11 @@ class NewsfeedFactory extends Factory
     {
         return [
             'description' => $this->faker->text(),
-            'created_at' => Carbon::now(),
+            'created_at' => now(),
             'batch_uuid' => $this->faker->uuid(),
             'subject_id' => $this->faker->randomNumber(),
             'causer_type' => $this->faker->word(),
-            'updated_at' => Carbon::now(),
+            'updated_at' => now(),
             'subject_type' => $this->faker->word(),
             'log_name' => 'newsfeed',
             'causer_id' => $this->faker->randomNumber(),

@@ -32,6 +32,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Phiki\Grammar\Grammar;
 use UnitEnum;
 
@@ -73,7 +74,7 @@ class WebhookLogResource extends BaseResource
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (WebhookLog $record) => $record->resource_url),
+                    ->url(fn (WebhookLog $record): ?string => $record->resource_url),
                 TextColumn::make('description')
                     ->placeholder('No Description')
                     ->label('Webhook')
@@ -109,7 +110,7 @@ class WebhookLogResource extends BaseResource
                         ->when(
                             filled(data_get($data, 'values')),
                             function (Builder $query) use ($data): void {
-                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->payload->event', $event)));
+                                $query->where(fn (Builder $query): Collection => collect(data_get($data, 'values'))->each(fn (string $event): Builder => $query->orWhereJsonContains('properties->payload->event', $event)));
                             },
                         )),
                 QueryBuilder::make()
@@ -119,7 +120,7 @@ class WebhookLogResource extends BaseResource
                             ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -144,7 +145,7 @@ class WebhookLogResource extends BaseResource
                             ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
-                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse): Builder {
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
@@ -214,7 +215,7 @@ class WebhookLogResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (WebhookLog $record) => $record->resource_url),
+                                    ->url(fn (WebhookLog $record): ?string => $record->resource_url),
                                 TextEntry::make('description')
                                     ->label('Webhook')
                                     ->badge()

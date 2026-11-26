@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
-            $table->after('specialty_id', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
+            $table->after('specialty_id', function (Blueprint $table): void {
                 $table->foreignId('unit_slot_id')->nullable()->constrained('units_slots')->nullOnDelete();
             });
         });
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropForeign('records_assignments_unit_slot_id_foreign');
             $table->dropColumn('unit_slot_id');
         });

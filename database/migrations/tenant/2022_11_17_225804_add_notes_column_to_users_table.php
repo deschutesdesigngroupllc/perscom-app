@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->text('notes')->after('remember_token')->nullable();
             $table->timestamp('notes_updated_at')->after('notes')->nullable();
         });
@@ -35,7 +35,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->dropColumn('notes', 'notes_updated_at');
         });
     }

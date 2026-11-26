@@ -14,14 +14,14 @@ return new class extends Migration
             return;
         }
 
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->string('status')->after('is_global_favorite')->default('approved');
         });
     }
 
     public function down(): void
     {
-        Schema::table('filament_filter_sets', function (Blueprint $table) {
+        Schema::table('filament_filter_sets', function (Blueprint $table): void {
             $table->dropColumn('status');
         });
     }

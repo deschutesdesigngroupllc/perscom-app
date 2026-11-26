@@ -106,7 +106,7 @@ class CompetencyResource extends BaseResource
             ->groups([
                 Group::make('categoryPivot.category_id')
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Competency $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Competency $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->recordActions([
                 EditAction::make(),

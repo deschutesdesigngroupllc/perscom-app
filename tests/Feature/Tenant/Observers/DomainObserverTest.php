@@ -23,10 +23,10 @@ class DomainObserverTest extends TenantTestCase
 
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
         ]);
         $tenant->domains()->create([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
         ]);
 
         Notification::assertSentTo($tenant, DomainCreated::class);
@@ -41,10 +41,10 @@ class DomainObserverTest extends TenantTestCase
 
         $tenant = Tenant::factory()->createQuietly();
         $domain = $tenant->domains()->createQuietly([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
         ]);
         $domain->update([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
         ]);
 
         Notification::assertSentTo($tenant, DomainUpdated::class);
@@ -59,11 +59,11 @@ class DomainObserverTest extends TenantTestCase
 
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
         ]);
 
         $domain = $tenant->domains()->createQuietly([
-            'domain' => $this->faker()->unique()->domainWord,
+            'domain' => $this->faker()->unique()->domainWord(),
             'is_custom_subdomain' => true,
         ]);
         $domain->delete();

@@ -161,6 +161,8 @@ class ScheduleService
     }
 
     /**
+     * Get the schedule's occurrences between the given dates.
+     *
      * @return array<Carbon>|null
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
@@ -183,14 +185,14 @@ class ScheduleService
         }
 
         return Str::ucwords($rule->humanReadable([
-            'date_formatter' => function ($date) use ($allDay) {
+            'date_formatter' => function (DateTimeInterface $date) use ($allDay): string|false {
                 $formatter = IntlDateFormatter::create(
                     locale: config('app.locale'),
                     dateType: IntlDateFormatter::LONG,
                     timeType: $allDay
                         ? IntlDateFormatter::NONE
                         : IntlDateFormatter::MEDIUM,
-                    timezone: UserSettingsService::get('timezone', function () {
+                    timezone: UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 

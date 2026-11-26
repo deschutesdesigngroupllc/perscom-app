@@ -8,6 +8,7 @@ use App\Models\Enums\InviteType;
 use App\Models\Invite;
 use App\Models\User;
 use App\Traits\PasswordValidationRules;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -34,10 +35,9 @@ class AcceptInvite
 
             $profile = $invite->type === InviteType::CLAIM ? $invite->user : null;
 
-            throw_if(
-                ! $invite->isRedeemable(),
-                ValidationException::withMessages(['token' => 'This invitation is no longer valid.'])
-            );
+            if (! $invite->isRedeemable()) {
+                throw ValidationException::withMessages(['token' => 'This invitation is no longer valid.']);
+            }
 
             Validator::make([...$input, 'email' => $invite->email], [
                 'name' => [Rule::requiredIf($invite->type === InviteType::CREATE), 'nullable', 'string', 'max:255'],
@@ -72,7 +72,9 @@ class AcceptInvite
             Invite::query()
                 ->pending()
                 ->whereKeyNot($invite->getKey())
-                ->where(fn ($query) => $query->where('email', $invite->email)->orWhere('user_id', $user->getKey()))
+                ->where(fn (Builder $query): Builder => $query
+                    ->where('email', $invite->email)
+                    ->orWhere('user_id', $user->getKey()))
                 ->update(['revoked_at' => now()]);
 
             return $user;

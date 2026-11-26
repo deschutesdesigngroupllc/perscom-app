@@ -9,6 +9,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,9 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+])]
 class Issuer extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -41,8 +45,4 @@ class Issuer extends Model implements HasLabel
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
-
-    protected $fillable = [
-        'name',
-    ];
 }

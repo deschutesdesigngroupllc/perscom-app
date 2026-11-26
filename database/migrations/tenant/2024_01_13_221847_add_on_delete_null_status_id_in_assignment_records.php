@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropForeign('records_assignments_status_id_foreign');
             $table->foreignId('status_id')->nullable()->change()->constrained('statuses')->nullOnDelete();
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('records_assignments', function (Blueprint $table) {
+        Schema::table('records_assignments', function (Blueprint $table): void {
             $table->dropForeign('records_assignments_status_id_foreign');
             $table->foreignId('status_id')->nullable()->change()->constrained('statuses');
         });

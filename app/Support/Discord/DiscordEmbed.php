@@ -70,7 +70,7 @@ final class DiscordEmbed
 
         $url = Str::startsWith($url, '/') ? url($url) : $url;
 
-        if (! Str::startsWith($url, ['https://', 'http://'])) {
+        if (Str::doesntStartWith($url, ['https://', 'http://'])) {
             return null;
         }
 
@@ -88,7 +88,9 @@ final class DiscordEmbed
     {
         $url = DiscordEmbed::absoluteUrl($url);
 
-        return filled($url) && ! Str::endsWith(Str::lower((string) parse_url($url, PHP_URL_PATH)), '.svg') ? $url : null;
+        $path = Str::lower((string) parse_url((string) $url, PHP_URL_PATH));
+
+        return filled($url) && Str::doesntEndWith($path, '.svg') ? $url : null;
     }
 
     public function title(?string $title): static
@@ -149,21 +151,21 @@ final class DiscordEmbed
 
     public function author(?string $name, ?string $url = null, ?string $iconUrl = null): static
     {
-        $this->author = blank($name) ? null : array_filter([
+        $this->author = blank($name) ? null : collect([
             'name' => Str::limit($name, self::AUTHOR_NAME_LIMIT - 3),
             'url' => DiscordEmbed::absoluteUrl($url),
             'icon_url' => DiscordEmbed::imageUrl($iconUrl),
-        ], filled(...));
+        ])->filter(filled(...))->all();
 
         return $this;
     }
 
     public function footer(?string $text, ?string $iconUrl = null): static
     {
-        $this->footer = blank($text) ? null : array_filter([
+        $this->footer = blank($text) ? null : collect([
             'text' => Str::limit($text, self::FOOTER_TEXT_LIMIT - 3),
             'icon_url' => DiscordEmbed::imageUrl($iconUrl),
-        ], filled(...));
+        ])->filter(filled(...))->all();
 
         return $this;
     }
@@ -193,7 +195,7 @@ final class DiscordEmbed
      */
     public function toArray(): array
     {
-        return array_filter([
+        return collect([
             'title' => filled($this->title) ? Str::limit($this->title, self::TITLE_LIMIT - 3) : null,
             'description' => filled($this->description) ? Str::limit($this->description, self::DESCRIPTION_LIMIT - 3) : null,
             'url' => $this->url,
@@ -204,6 +206,6 @@ final class DiscordEmbed
             'author' => $this->author,
             'footer' => $this->footer,
             'fields' => $this->fields,
-        ], filled(...));
+        ])->filter(filled(...))->all();
     }
 }

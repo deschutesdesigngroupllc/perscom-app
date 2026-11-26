@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SpecController extends Controller
 {
     /**
+     * Proxy the published OpenAPI spec for the API.
+     *
      * @throws ConnectionException
      */
     public function index(): Response

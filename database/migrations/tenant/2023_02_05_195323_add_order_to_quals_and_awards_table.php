@@ -22,11 +22,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->integer('order')->after('description')->default(0);
         });
 
-        Schema::table('qualifications', function (Blueprint $table) {
+        Schema::table('qualifications', function (Blueprint $table): void {
             $table->integer('order')->after('description')->default(0);
         });
     }
@@ -38,11 +38,11 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('awards', function (Blueprint $table) {
+        Schema::table('awards', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
 
-        Schema::table('qualifications', function (Blueprint $table) {
+        Schema::table('qualifications', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
     }

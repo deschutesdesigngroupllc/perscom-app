@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,20 +37,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'rank_id',
+    'min_days_in_grade',
+    'min_days_in_service',
+    'min_events_attended_90d',
+    'required_qualification_ids',
+    'required_credential_ids',
+])]
 class RankRequirement extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'rank_id',
-        'min_days_in_grade',
-        'min_days_in_service',
-        'min_events_attended_90d',
-        'required_qualification_ids',
-        'required_credential_ids',
-    ];
-
     /**
+     * Get the rank the requirements belong to.
+     *
      * @return BelongsTo<Rank, $this>
      */
     public function rank(): BelongsTo

@@ -10,6 +10,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
+use Stancl\Tenancy\Contracts\Tenant;
 use Stancl\Tenancy\Events\BootstrappingTenancy;
 use Stancl\Tenancy\Events\CreatingDomain;
 use Stancl\Tenancy\Events\CreatingTenant;
@@ -60,6 +61,8 @@ class TenancyServiceProvider extends ServiceProvider
     public static string $controllerNamespace = '';
 
     /**
+     * Get the tenancy event listeners and job pipelines.
+     *
      * @return array<string, array<mixed[], mixed>>
      */
     public function events(): array
@@ -72,7 +75,7 @@ class TenancyServiceProvider extends ServiceProvider
                     MigrateDatabase::class,
                     SeedDatabase::class,
                     SetupTenantAccount::class,
-                ])->send(fn (TenantCreated $event) => $event->tenant)->shouldBeQueued(
+                ])->send(fn (TenantCreated $event): Tenant => $event->tenant)->shouldBeQueued(
                     queue: 'system'
                 ),
             ],
@@ -85,7 +88,7 @@ class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     RemoveTenantAccount::class,
                     DeleteDatabase::class,
-                ])->send(fn (TenantDeleted $event) => $event->tenant)->shouldBeQueued(
+                ])->send(fn (TenantDeleted $event): Tenant => $event->tenant)->shouldBeQueued(
                     queue: 'system'
                 ),
             ],

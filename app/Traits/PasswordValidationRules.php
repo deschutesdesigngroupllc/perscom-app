@@ -9,6 +9,8 @@ use Illuminate\Validation\Rules\Password;
 trait PasswordValidationRules
 {
     /**
+     * Get the validation rules for a new password.
+     *
      * @return array<int, mixed>
      */
     protected static function passwordRules(): array

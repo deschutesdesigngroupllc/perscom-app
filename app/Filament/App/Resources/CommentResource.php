@@ -49,7 +49,7 @@ class CommentResource extends BaseResource
             ->recordTitleAttribute('comment')
             ->columns([
                 TextColumn::make('comment')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap(),
                 TextColumn::make('author.display_name')
@@ -80,7 +80,7 @@ class CommentResource extends BaseResource
             ->columns([
                 TextColumn::make('comment')
                     ->toggleable(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap(),
                 TextColumn::make('author.display_name')

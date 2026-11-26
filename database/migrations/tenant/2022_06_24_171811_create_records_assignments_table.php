@@ -15,7 +15,7 @@ class CreateRecordsAssignmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('records_assignments', function (Blueprint $table) {
+        Schema::create('records_assignments', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('unit_id');

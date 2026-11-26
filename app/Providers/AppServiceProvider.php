@@ -55,6 +55,7 @@ use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
@@ -68,10 +69,12 @@ use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Bridge\AuthCodeRepository as PassportAuthCodeRepository;
 use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
+use Laravel\Socialite\Two\AbstractProvider;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
 use Padmission\DataLens\Models\CustomReport;
@@ -104,7 +107,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::useAuthorizationServerResponseType(new IdTokenResponse);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
-        Passport::authorizationView(fn (array $parameters) => Inertia::render('passport/Authorize', [
+        Passport::authorizationView(fn (array $parameters): InertiaResponse => Inertia::render('passport/Authorize', [
             'client' => $parameters['client']->id,
             'description' => $parameters['client']->description,
             'image' => $parameters['client']->image?->image_url,
@@ -162,9 +165,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         App::macro('isAdmin', fn (): bool => config('tenancy.enabled') && collect(config('tenancy.central_domains'))->contains(request()->getHost()));
-        App::macro('isDemo', fn () => $this->app->environment('demo'));
+        App::macro('isDemo', fn (): bool => $this->app->environment('demo'));
 
-        Auth::viaRequest('api', static fn () => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());
+        Auth::viaRequest('api', static fn (): ?Authenticatable => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());
 
         FilamentShield::buildPermissionKeyUsing(
             static fn (string $affix, string $subject): string => Str::snake($affix).'_'.Str::snake($subject)
@@ -184,7 +187,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->hideEmptyTabs();
 
-        Column::configureUsing(function (Column $field) {
+        Column::configureUsing(function (Column $field): ?Column {
             $closure = match ($field->getName()) {
                 'created_at' => function (Column $field): void {
                     /** @var TextColumn $field */
@@ -193,12 +196,12 @@ class AppServiceProvider extends ServiceProvider
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->since()
                         ->dateTimeTooltip()
-                        ->timezone(function () {
+                        ->timezone(function (): ?string {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
                             }
 
-                            return UserSettingsService::get('timezone', function () {
+                            return UserSettingsService::get('timezone', function (): ?string {
                                 /** @var OrganizationSettings $settings */
                                 $settings = resolve(OrganizationSettings::class);
 
@@ -213,12 +216,12 @@ class AppServiceProvider extends ServiceProvider
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->since()
                         ->dateTimeTooltip()
-                        ->timezone(function () {
+                        ->timezone(function (): ?string {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
                             }
 
-                            return UserSettingsService::get('timezone', function () {
+                            return UserSettingsService::get('timezone', function (): ?string {
                                 /** @var OrganizationSettings $settings */
                                 $settings = resolve(OrganizationSettings::class);
 
@@ -234,7 +237,7 @@ class AppServiceProvider extends ServiceProvider
 
         DB::prohibitDestructiveCommands(App::isProduction() && ! App::runningConsoleCommand('perscom:install'));
 
-        Entry::configureUsing(function (Entry $field) {
+        Entry::configureUsing(function (Entry $field): ?Entry {
             $closure = match ($field->getName()) {
                 'created_at' => function (Entry $field): void {
                     /** @var TextEntry $field */
@@ -242,12 +245,12 @@ class AppServiceProvider extends ServiceProvider
                         ->label('Created')
                         ->since()
                         ->dateTimeTooltip()
-                        ->timezone(function () {
+                        ->timezone(function (): ?string {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
                             }
 
-                            return UserSettingsService::get('timezone', function () {
+                            return UserSettingsService::get('timezone', function (): ?string {
                                 /** @var OrganizationSettings $settings */
                                 $settings = resolve(OrganizationSettings::class);
 
@@ -261,12 +264,12 @@ class AppServiceProvider extends ServiceProvider
                         ->label('Updated')
                         ->since()
                         ->dateTimeTooltip()
-                        ->timezone(function () {
+                        ->timezone(function (): ?string {
                             if (! tenancy()->initialized) {
                                 return config('app.timezone');
                             }
 
-                            return UserSettingsService::get('timezone', function () {
+                            return UserSettingsService::get('timezone', function (): ?string {
                                 /** @var OrganizationSettings $settings */
                                 $settings = resolve(OrganizationSettings::class);
 
@@ -282,19 +285,19 @@ class AppServiceProvider extends ServiceProvider
 
         ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
 
-        Field::configureUsing(function (Field $field) {
+        Field::configureUsing(function (Field $field): ?Field {
             $closure = match ($field->getName()) {
                 'created_at' => function (Field $field): void {
                     $field->label('Created');
 
                     if ($field instanceof DateTimePicker) {
                         $field->required()
-                            ->timezone(function () {
+                            ->timezone(function (): ?string {
                                 if (! tenancy()->initialized) {
                                     return config('app.timezone');
                                 }
 
-                                return UserSettingsService::get('timezone', function () {
+                                return UserSettingsService::get('timezone', function (): ?string {
                                     /** @var OrganizationSettings $settings */
                                     $settings = resolve(OrganizationSettings::class);
 
@@ -308,12 +311,12 @@ class AppServiceProvider extends ServiceProvider
 
                     if ($field instanceof DateTimePicker) {
                         $field->required()
-                            ->timezone(function () {
+                            ->timezone(function (): ?string {
                                 if (! tenancy()->initialized) {
                                     return config('app.timezone');
                                 }
 
-                                return UserSettingsService::get('timezone', function () {
+                                return UserSettingsService::get('timezone', function (): ?string {
                                     /** @var OrganizationSettings $settings */
                                     $settings = resolve(OrganizationSettings::class);
 
@@ -357,7 +360,7 @@ class AppServiceProvider extends ServiceProvider
             Gate::policy(CustomReport::class, CustomReportPolicy::class);
         }
 
-        Gate::before(function (Admin|User|null $user, string $ability, $model) {
+        Gate::before(function (Admin|User|null $user, string $ability, $model): ?bool {
             if ($user instanceof Admin) {
                 return true;
             }
@@ -365,6 +368,8 @@ class AppServiceProvider extends ServiceProvider
             if ($user?->hasRole(Utils::getSuperAdminName()) && ! request()->routeIs('api.*')) {
                 return true;
             }
+
+            return null;
         });
 
         Model::unguard();
@@ -380,11 +385,11 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $socialite = $this->app->make(Factory::class);
-        $socialite->extend('discord', fn () => $socialite->buildProvider(DiscordSocialiteProvider::class, config('services.discord')));
+        $socialite->extend('discord', fn (): AbstractProvider => $socialite->buildProvider(DiscordSocialiteProvider::class, config('services.discord')));
 
-        Str::macro('camelToLower', fn ($value) => Str::lower(preg_replace_callback(
+        Str::macro('camelToLower', fn (mixed $value): string => Str::lower(preg_replace_callback(
             '/([a-z])([A-Z])/',
-            fn ($matches): string => $matches[1].' '.$matches[2], (string) $value)));
+            fn (array $matches): string => $matches[1].' '.$matches[2], (string) $value)));
 
         Table::configureUsing(function (Table $table): void {
             $table

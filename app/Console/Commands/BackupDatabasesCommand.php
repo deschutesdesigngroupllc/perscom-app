@@ -7,16 +7,16 @@ namespace App\Console\Commands;
 use App\Actions\Tenancy\DispatchTenantJob;
 use App\Jobs\Central\BackupDatabase;
 use App\Jobs\Tenant\BackupDatabase as BackupTenantDatabase;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Throwable;
 
+#[Description('Backs up a all application databases.')]
+#[Signature('perscom:backup')]
 class BackupDatabasesCommand extends Command implements Isolatable
 {
-    protected $signature = 'perscom:backup';
-
-    protected $description = 'Backs up a all application databases.';
-
     /**
      * @throws Throwable
      */

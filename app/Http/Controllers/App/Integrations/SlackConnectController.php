@@ -20,7 +20,9 @@ class SlackConnectController
         return $this->completeInstall($request, 'slack', 'Slack', function (string $code): string {
             $workspace = SlackService::exchangeInstallCode($code);
 
-            throw_unless($workspace, IntegrationConnectionException::authorizationFailed('Slack'));
+            if (blank($workspace)) {
+                throw IntegrationConnectionException::authorizationFailed('Slack');
+            }
 
             ConnectSlackWorkspace::handle($workspace['team_id'], $workspace['team_name'], $workspace['bot_token']);
 

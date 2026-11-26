@@ -46,6 +46,6 @@ class AccountRequiresApproval extends SimplePage
             ->color('info')
             ->submit('logout')
             ->link()
-            ->action(fn () => Filament::getLoginUrl());
+            ->action(fn (): ?string => Filament::getLoginUrl());
     }
 }

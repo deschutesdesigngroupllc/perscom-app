@@ -10,6 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Laravel\Passport\ClientRepository;
 use League\Csv\Exception;
@@ -49,7 +50,7 @@ class CreatePassportClient extends CreateRecord
             'secret' => $secret,
         ]);
 
-        session()->flash(ViewPassportClient::PLAIN_SECRET_SESSION_KEY, $secret);
+        Session::flash(ViewPassportClient::PLAIN_SECRET_SESSION_KEY, $secret);
 
         return $client;
     }

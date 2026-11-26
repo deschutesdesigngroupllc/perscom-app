@@ -9,6 +9,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent|User
@@ -52,7 +53,10 @@ trait HasProfilePhoto
 
     protected function defaultProfilePhotoUrl(): string
     {
-        $name = trim(collect(explode(' ', $this->name))->map(fn ($segment): string => mb_substr($segment, 0, 1))->join(' '));
+        $name = Str::trim(Str::of($this->name)
+            ->explode(' ')
+            ->map(fn (string $segment): string => Str::substr($segment, 0, 1))
+            ->join(' '));
 
         return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=2563eb&background=eff6ff';
     }

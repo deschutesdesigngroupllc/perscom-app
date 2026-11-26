@@ -10,6 +10,7 @@ use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use JsonException;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use Stringable;
@@ -25,6 +26,11 @@ class GetMember implements Tool
         return "Get one member's profile, including their recent rank records, awards and qualifications.";
     }
 
+    /**
+     * Return the member's profile and recent records as JSON.
+     *
+     * @throws JsonException when the profile cannot be encoded
+     */
     public function handle(Request $request): Stringable|string
     {
         $user = SearchMembers::query([])
@@ -39,7 +45,7 @@ class GetMember implements Tool
             return 'You are not allowed to view this member.';
         }
 
-        return (string) json_encode([
+        return json_encode([
             ...$this->describeMember($user),
             'rank_records' => $user->rank_records()->with('rank')->limit(10)->get()->map(fn (RankRecord $record): array => [
                 'rank' => $record->rank?->name,
@@ -54,7 +60,7 @@ class GetMember implements Tool
                 'qualification' => $record->qualification?->name,
                 'date' => $record->created_at?->toDateString(),
             ])->all(),
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 
     /**

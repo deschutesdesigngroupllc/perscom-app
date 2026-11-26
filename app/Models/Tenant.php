@@ -8,6 +8,7 @@ use App\Models\Enums\SubscriptionPlanType;
 use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -114,6 +115,14 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(TenantObserver::class)]
+#[Appends([
+    'database_status',
+    'url',
+    'custom_url',
+    'fallback_url',
+    'setup_completed',
+    'subscription_status',
+])]
 class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 {
     use Billable {
@@ -126,15 +135,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     use HasFactory;
     use HasFeatures;
     use Notifiable;
-
-    protected $appends = [
-        'database_status',
-        'url',
-        'custom_url',
-        'fallback_url',
-        'setup_completed',
-        'subscription_status',
-    ];
 
     /**
      * @return array<int, string>
@@ -184,6 +184,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Generate a URL to the named route on the tenant's domain.
+     *
      * @param  array<string, mixed>  $parameters
      */
     public function route(string $name, array $parameters = []): string
@@ -297,6 +299,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the tenant's URL.
+     *
      * @return Attribute<string|null, never>
      */
     protected function url(): Attribute
@@ -307,6 +311,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the subscription plan from the current Stripe price.
+     *
      * @return Attribute<SubscriptionPlanType, never>
      */
     protected function subscriptionPlan(): Attribute
@@ -325,6 +331,8 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
+     * Get the status of the tenant's subscription.
+     *
      * @return Attribute<SubscriptionStatus, never>
      */
     protected function subscriptionStatus(): Attribute

@@ -6,6 +6,7 @@ namespace App\Traits;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
@@ -14,7 +15,9 @@ trait HasResourceLabel
 {
     public function getLabel(): string
     {
-        $resource = implode(' ', preg_split('/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/', class_basename($this), -1, PREG_SPLIT_NO_EMPTY));
+        $resource = Str::of(class_basename($this))
+            ->split('/(?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z])/', -1, PREG_SPLIT_NO_EMPTY)
+            ->implode(' ');
 
         return sprintf('%s: %s', $resource, $this->getKey());
     }

@@ -8,6 +8,8 @@ use App\Filament\Actions\AssignMemberAction;
 use App\Filament\App\Actions\ViewHtmlAction;
 use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\AssignmentRecord;
+use App\Models\Document;
+use App\Models\User;
 use App\Support\Brand;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -60,21 +62,21 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (AssignmentRecord $record) => $record->document)
-                            ->user(fn (AssignmentRecord $record) => $record->user)
+                            ->document(fn (AssignmentRecord $record): ?Document => $record->document)
+                            ->user(fn (AssignmentRecord $record): ?User => $record->user)
                             ->attached(fn (AssignmentRecord $record): AssignmentRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn (?string $state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (AssignmentRecord $record) => $record->text),
+                            ->html(fn (AssignmentRecord $record): ?string => $record->text),
                     ),
             ])
             ->headerActions([

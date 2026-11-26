@@ -176,7 +176,7 @@ class AutomationResource extends BaseResource
                                                     ->grammar(Grammar::Json)
                                                     ->state(json_encode(
                                                         AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                        JSON_PRETTY_PRINT
+                                                        JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                     )),
                                             ]),
                                     ])
@@ -234,7 +234,7 @@ class AutomationResource extends BaseResource
                                                                     return 'Error: '.$result['error'];
                                                                 }
 
-                                                                return json_encode($result['result'], JSON_PRETTY_PRINT);
+                                                                return json_encode($result['result'], JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR);
                                                             }),
                                                     ]),
                                                 Action::make('viewAvailableFields')
@@ -251,7 +251,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                                 Action::make('viewAvailableFilters')
@@ -264,7 +264,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
+                                                            ->state(collect(self::getAvailableTwigFilters())->implode("\n")),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -322,7 +322,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                                 Action::make('viewAvailableFiltersMessage')
@@ -335,7 +335,7 @@ class AutomationResource extends BaseResource
                                                     ->schema(fn (): array => [
                                                         CodeEntry::make('filters')
                                                             ->hiddenLabel()
-                                                            ->state(implode("\n", self::getAvailableTwigFilters())),
+                                                            ->state(collect(self::getAvailableTwigFilters())->implode("\n")),
                                                     ]),
                                             ])
                                             ->columnSpanFull(),
@@ -387,7 +387,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                             ])
@@ -462,7 +462,7 @@ class AutomationResource extends BaseResource
                                                             ->grammar(Grammar::Json)
                                                             ->state(json_encode(
                                                                 AutomationTrigger::from($get('trigger'))->getExampleContext(),
-                                                                JSON_PRETTY_PRINT
+                                                                JSON_PRETTY_PRINT | JSON_PARTIAL_OUTPUT_ON_ERROR
                                                             )),
                                                     ]),
                                             ])
@@ -566,7 +566,7 @@ class AutomationResource extends BaseResource
                     ->sortable(),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->toggleable(),
@@ -638,6 +638,8 @@ class AutomationResource extends BaseResource
     }
 
     /**
+     * Get the Twig filters available to automation templates.
+     *
      * @return list<string>
      */
     private static function getAvailableTwigFilters(): array

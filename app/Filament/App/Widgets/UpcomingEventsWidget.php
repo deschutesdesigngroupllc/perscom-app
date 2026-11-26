@@ -163,6 +163,8 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
     }
 
     /**
+     * Get the registrations for the occurrence grouped by response.
+     *
      * @return Collection<string, Collection<int, EventRegistration>>
      */
     public function responses(OccurrenceData $occurrence): Collection
@@ -171,6 +173,8 @@ class UpcomingEventsWidget extends Widget implements HasActions, HasSchemas
     }
 
     /**
+     * Count the registrations for the occurrence by response.
+     *
      * @return array{going: int, maybe: int, not_going: int}
      */
     public function summary(OccurrenceData $occurrence): array

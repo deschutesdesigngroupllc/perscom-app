@@ -31,12 +31,12 @@ class ListForms extends ListRecords
         $views = [
             PresetView::make('public')
                 ->label('Public')
-                ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', true))
+                ->modifyQueryUsing(fn (Form|Builder $query): Builder => $query->where('is_public', true))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEye),
             PresetView::make('private')
                 ->label('Private')
-                ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', false))
+                ->modifyQueryUsing(fn (Form|Builder $query): Builder => $query->where('is_public', false))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEyeSlash),
         ];
@@ -45,7 +45,10 @@ class ListForms extends ListRecords
             $category->id => PresetView::make()
                 ->label($category->name)
                 ->icon(Heroicon::OutlinedTag)
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas(
+                    'categories',
+                    fn (Builder $query): Builder => $query->whereKey($category->id),
+                ))
                 ->favorite(),
         ])->toArray());
     }

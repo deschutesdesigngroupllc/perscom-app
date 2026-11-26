@@ -121,7 +121,7 @@ class ImageResource extends BaseResource
                                     ->html(),
                                 TextEntry::make('image_url')
                                     ->label('URL')
-                                    ->url(fn ($state) => $state)
+                                    ->url(fn ($state): ?string => $state)
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
@@ -136,7 +136,7 @@ class ImageResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
-                                    ->url(fn (Image $record) => $record->model_url),
+                                    ->url(fn (Image $record): ?string => $record->model_url),
                             ]),
                     ]),
             ]);
@@ -158,7 +158,7 @@ class ImageResource extends BaseResource
                     ->label(''),
                 TextColumn::make('description')
                     ->placeholder('No Description')
-                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -167,7 +167,7 @@ class ImageResource extends BaseResource
                     ->limit()
                     ->wrap()
                     ->label('URL')
-                    ->url(fn ($state) => $state)
+                    ->url(fn ($state): ?string => $state)
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
@@ -179,7 +179,7 @@ class ImageResource extends BaseResource
                     ->openUrlInNewTab()
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
-                    ->url(fn (Image $record) => $record->model_url),
+                    ->url(fn (Image $record): ?string => $record->model_url),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')
@@ -189,7 +189,7 @@ class ImageResource extends BaseResource
                 Action::make('open')
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color('gray')
-                    ->url(fn (?Image $record) => $record->image_url)
+                    ->url(fn (?Image $record): ?string => $record->image_url)
                     ->openUrlInNewTab(),
                 ViewAction::make(),
                 EditAction::make(),

@@ -15,7 +15,7 @@ class CreateFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fields', function (Blueprint $table) {
+        Schema::create('fields', function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->text('type');

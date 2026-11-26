@@ -117,6 +117,8 @@ class EventDiscussion extends Component implements HasActions, HasSchemas
     }
 
     /**
+     * Get the event's comments with their authors loaded.
+     *
      * @return Collection<int, Comment>
      */
     public function comments(): Collection
@@ -158,6 +160,8 @@ class EventDiscussion extends Component implements HasActions, HasSchemas
     }
 
     /**
+     * Find the event comment referenced by the action arguments.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function findComment(array $arguments): ?Comment

@@ -16,6 +16,7 @@ use App\Filament\Exports\AwardRecordExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
 use App\Models\AwardRecord;
+use App\Models\Document;
 use App\Models\Field;
 use App\Models\User;
 use App\Settings\FieldSettings;
@@ -209,22 +210,22 @@ class AwardRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (AwardRecord $record) => $record->document)
-                            ->user(fn (AwardRecord $record) => $record->user)
+                            ->document(fn (AwardRecord $record): ?Document => $record->document)
+                            ->user(fn (AwardRecord $record): ?User => $record->user)
                             ->attached(fn (AwardRecord $record): AwardRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (AwardRecord $record) => $record->text),
+                            ->html(fn (AwardRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')

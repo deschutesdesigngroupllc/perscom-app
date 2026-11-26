@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Enums\AutomationLogStatus;
 use App\Models\Enums\AutomationTrigger;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,29 +59,29 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'automation_id',
+    'trigger',
+    'subject_type',
+    'subject_id',
+    'causer_type',
+    'causer_id',
+    'status',
+    'condition_expression',
+    'condition_result',
+    'context',
+    'action_payload',
+    'error_message',
+    'execution_time_ms',
+])]
+#[Table(name: 'automations_logs')]
 class AutomationLog extends Model
 {
     use HasFactory;
 
-    protected $table = 'automations_logs';
-
-    protected $fillable = [
-        'automation_id',
-        'trigger',
-        'subject_type',
-        'subject_id',
-        'causer_type',
-        'causer_id',
-        'status',
-        'condition_expression',
-        'condition_result',
-        'context',
-        'action_payload',
-        'error_message',
-        'execution_time_ms',
-    ];
-
     /**
+     * Get the automation the log belongs to.
+     *
      * @return BelongsTo<Automation, $this>
      */
     public function automation(): BelongsTo
@@ -88,6 +90,8 @@ class AutomationLog extends Model
     }
 
     /**
+     * Get the model the automation ran against.
+     *
      * @return MorphTo<Model, $this>
      */
     public function subject(): MorphTo
@@ -96,6 +100,8 @@ class AutomationLog extends Model
     }
 
     /**
+     * Get the model that caused the automation to run.
+     *
      * @return MorphTo<Model, $this>
      */
     public function causer(): MorphTo

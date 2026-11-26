@@ -35,7 +35,7 @@ class NewAlert extends Notification implements ShouldQueue
     {
         return Collection::wrap($this->alert->channels)
             ->reject(fn (AlertChannel $channel): bool => $channel === AlertChannel::SLACK)
-            ->map(fn (AlertChannel $channel) => $channel->value)
+            ->map(fn (AlertChannel $channel): string => $channel->value)
             ->values()
             ->all();
     }

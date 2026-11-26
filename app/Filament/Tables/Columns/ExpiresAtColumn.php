@@ -9,6 +9,7 @@ use App\Models\TrainingRecord;
 use Carbon\CarbonInterface;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Str;
 
 class ExpiresAtColumn extends TextColumn
 {
@@ -99,12 +100,10 @@ class ExpiresAtColumn extends TextColumn
      */
     public static function splitCredentialState(string $state): array
     {
-        $position = strrpos($state, '|');
-
-        if ($position === false) {
+        if (Str::doesntContain($state, '|')) {
             return [$state, null];
         }
 
-        return [substr($state, 0, $position), substr($state, $position + 1)];
+        return [Str::beforeLast($state, '|'), Str::afterLast($state, '|')];
     }
 }

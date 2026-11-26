@@ -8,7 +8,9 @@ use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasStatus;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +35,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|StatusRecord newModelQuery()
  * @method static Builder<static>|StatusRecord newQuery()
  * @method static Builder<static>|StatusRecord query()
- * @method static Builder<static>|StatusRecord status(\App\Models\Status $status)
  * @method static Builder<static>|StatusRecord whereCreatedAt($value)
  * @method static Builder<static>|StatusRecord whereId($value)
  * @method static Builder<static>|StatusRecord whereModelId($value)
@@ -45,18 +46,16 @@ use Illuminate\Support\Carbon;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(StatusRecordObserver::class)]
+#[Fillable([
+    'text',
+])]
+#[Table(name: 'model_has_statuses')]
 class StatusRecord extends MorphPivot
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasStatus;
-
-    protected $table = 'model_has_statuses';
-
-    protected $fillable = [
-        'text',
-    ];
 
     public function model(): MorphTo
     {

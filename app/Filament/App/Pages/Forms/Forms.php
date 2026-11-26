@@ -59,7 +59,7 @@ class Forms extends Page implements HasForms, HasTable
                 Group::make('categoryPivot.category_id')
                     ->collapsible()
                     ->label('Category')
-                    ->getTitleFromRecordUsing(fn (Form $record) => $record->categoryPivot?->category?->name),
+                    ->getTitleFromRecordUsing(fn (Form $record): ?string => $record->categoryPivot?->category?->name),
             ])
             ->groupingSettingsHidden()
             ->recordActions([

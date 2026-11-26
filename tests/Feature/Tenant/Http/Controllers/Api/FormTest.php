@@ -54,8 +54,8 @@ class FormTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
-            'name' => $this->faker->word,
-            'slug' => Str::slug($this->faker->word),
+            'name' => $this->faker->word(),
+            'slug' => Str::slug($this->faker->word()),
             'is_public' => false,
         ];
     }
@@ -66,7 +66,7 @@ class FormTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

@@ -29,7 +29,7 @@ class PurgeApiCacheTest extends TenantTestCase
 
         $rank = Rank::factory()->createQuietly();
         $rank->update([
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
         ]);
 
         Queue::assertPushed(PurgeApiCache::class, fn (PurgeApiCache $job): bool => $job->tags === ApiCacheService::tagForModel($rank)

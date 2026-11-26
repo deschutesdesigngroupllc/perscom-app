@@ -69,7 +69,7 @@ class UserObserver
         }
 
         if ($user->isDirty('discord_user_id') && filled($user->discord_user_id) && blank($user->discord_private_channel_id)) {
-            $privateChannelId = rescue(fn () => resolve(Discord::class)->getPrivateChannel($user->discord_user_id));
+            $privateChannelId = rescue(fn (): string => resolve(Discord::class)->getPrivateChannel($user->discord_user_id));
 
             if ($privateChannelId) {
                 $user->forceFill([

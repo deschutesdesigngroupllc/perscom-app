@@ -61,7 +61,7 @@ class RankRecordTest extends ApiResourceTestCase
             'author_id' => $this->user->getKey(),
             'rank_id' => Rank::factory()->create()->getKey(),
             'type' => RankRecordType::PROMOTION,
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 
@@ -71,7 +71,7 @@ class RankRecordTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'text' => $this->faker->paragraph,
+            'text' => $this->faker->paragraph(),
         ];
     }
 }

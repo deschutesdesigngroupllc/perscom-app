@@ -28,7 +28,7 @@ trait HasDocument
     protected function documentParsed(): Attribute
     {
         return Attribute::make(
-            get: function () {
+            get: function (): ?string {
                 $resource = clone $this;
                 $user = in_array(HasUser::class, class_uses_recursive($resource::class))
                     ? $resource->user // @phpstan-ignore-line

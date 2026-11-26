@@ -82,6 +82,8 @@ class ServiceProfileService
     }
 
     /**
+     * Get the profile fields the organization hides.
+     *
      * @return string[]
      */
     public static function hiddenFields(): array

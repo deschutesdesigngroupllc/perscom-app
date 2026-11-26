@@ -17,6 +17,8 @@ class AutomationTemplatesWidget extends Widget
     protected string $view = 'filament.app.widgets.automation-templates-widget';
 
     /**
+     * Get the automation templates the widget offers.
+     *
      * @return array<string, array{name: string, description: string, category: string, prerequisites?: list<string>, data: array<string, mixed>}>
      */
     public function getTemplates(): array

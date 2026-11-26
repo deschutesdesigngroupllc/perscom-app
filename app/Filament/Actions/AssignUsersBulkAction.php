@@ -40,10 +40,15 @@ class AssignUsersBulkAction extends BulkAction
             ->visible(fn (): bool => Gate::check('create', AssignmentRecord::class))
             ->deselectRecordsAfterCompletion()
             ->schema(static::formSchema())
-            ->action(fn (BulkAction $action, Collection $records, array $data) => $this->applyOperation($action, static::operationFor($records, $data)));
+            ->action(fn (BulkAction $action, Collection $records, array $data): null => $this->applyOperation(
+                $action,
+                static::operationFor($records, $data),
+            ));
     }
 
     /**
+     * Build the form that collects the assignment details.
+     *
      * @return array<int, \Filament\Schemas\Components\Component|\Filament\Forms\Components\Field>
      */
     public static function formSchema(): array
@@ -91,6 +96,8 @@ class AssignUsersBulkAction extends BulkAction
     }
 
     /**
+     * Build the assignment operation for the selected members.
+     *
      * @param  Collection<int, User>  $users
      * @param  array<string, mixed>  $data
      */
@@ -105,12 +112,12 @@ class AssignUsersBulkAction extends BulkAction
             userIds: $users->map(fn (User $user): int => $user->getKey())->values()->all(),
             targetId: (int) $unitId,
             text: $data['text'] ?? null,
-            attributes: array_filter([
+            attributes: collect([
                 'type' => $type->value,
                 'unit_slot_id' => $unitSlot?->getKey(),
                 'position_id' => $unitSlot instanceof UnitSlot ? null : ($data['position_id'] ?? null),
                 'specialty_id' => $unitSlot instanceof UnitSlot ? null : ($data['specialty_id'] ?? null),
-            ], filled(...)),
+            ])->filter(filled(...))->all(),
             summary: sprintf('Assign %d member(s) to %s', $users->count(), Unit::query()->find($unitId)?->name),
         );
     }

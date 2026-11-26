@@ -9,6 +9,7 @@ use App\Settings\IntegrationSettings;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 /**
  * Keeps a member's Discord roles and nickname in step with their PERSCOM rank and unit. PERSCOM
@@ -25,6 +26,8 @@ class DiscordRoleSyncService
     }
 
     /**
+     * Sync the member's Discord roles and nickname.
+     *
      * @throws ConnectionException
      */
     public static function sync(User $user): void
@@ -53,10 +56,12 @@ class DiscordRoleSyncService
 
     public static function nickname(User $user): string
     {
-        return trim(sprintf('%s %s', $user->rank?->abbreviation, $user->name));
+        return Str::trim(sprintf('%s %s', $user->rank?->abbreviation, $user->name));
     }
 
     /**
+     * Add the member's desired roles and remove stale managed ones.
+     *
      * @param  array<int, string>  $currentRoleIds
      *
      * @throws ConnectionException
@@ -79,6 +84,8 @@ class DiscordRoleSyncService
     }
 
     /**
+     * Get the role names the member should hold, keyed by rank or unit.
+     *
      * @return Collection<string, string>
      */
     protected static function desiredRoles(User $user): Collection
@@ -124,6 +131,8 @@ class DiscordRoleSyncService
     }
 
     /**
+     * Get the Discord integration settings.
+     *
      * @return array<string, mixed>
      */
     protected static function settings(bool $fresh = false): array

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('units_groups', function (Blueprint $table) {
+        Schema::table('units_groups', function (Blueprint $table): void {
             $table->dropColumn('order');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('units_groups', function (Blueprint $table) {
+        Schema::table('units_groups', function (Blueprint $table): void {
             $table->integer('order')->default(0);
         });
     }

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
-            $table->after('enabled', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
+            $table->after('enabled', function (Blueprint $table): void {
                 $table->json('channels')->nullable();
             });
         });
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('announcements', function (Blueprint $table) {
+        Schema::table('announcements', function (Blueprint $table): void {
             $table->dropColumn(['channels']);
         });
     }

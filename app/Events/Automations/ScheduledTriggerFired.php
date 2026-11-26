@@ -27,6 +27,8 @@ class ScheduledTriggerFired extends AbstractAutomationEvent
     }
 
     /**
+     * Get the extra context the schedule passed with the trigger.
+     *
      * @return array<string, mixed>
      */
     public function getAdditionalContext(): array

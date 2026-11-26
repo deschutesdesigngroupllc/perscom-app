@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('submissions', function (Blueprint $table) {
+        Schema::table('submissions', function (Blueprint $table): void {
             $table->timestamp('read_at')->nullable()->after('data');
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('submissions', function (Blueprint $table) {
+        Schema::table('submissions', function (Blueprint $table): void {
             $table->dropColumn('read_at');
         });
     }

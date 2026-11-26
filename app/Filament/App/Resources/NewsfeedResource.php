@@ -125,7 +125,7 @@ class NewsfeedResource extends BaseResource
                             ->toggleable(false)
                             ->html()
                             ->wrap()
-                            ->formatStateUsing(fn ($state) => Str::limit($state, 250)),
+                            ->formatStateUsing(fn ($state): string => Str::limit($state, 250)),
                         TextColumn::make('created_at')
                             ->toggleable(false)
                             ->weight(FontWeight::Light)

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 
+#[Description('Retrieves or sets the current application version.')]
+#[Signature('perscom:version
+                            {--set= : Set the current application version}')]
 class ApplicationVersionCommand extends Command
 {
-    protected $signature = 'perscom:version
-                            {--set= : Set the current application version}';
-
-    protected $description = 'Retrieves or sets the current application version.';
-
     public function handle(): int
     {
         $currentApplicationVersion = $this->getApplicationVersion();
@@ -27,6 +29,11 @@ class ApplicationVersionCommand extends Command
         return static::SUCCESS;
     }
 
+    /**
+     * Write the given version to the environment file.
+     *
+     * @throws FileNotFoundException when the environment file does not exist
+     */
     public function setApplicationVersion(string $version): int
     {
         if (in_array(preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version), [0, false], true)) {
@@ -41,10 +48,10 @@ class ApplicationVersionCommand extends Command
 
         $this->components->info('Setting the current application version to: '.$version);
 
-        file_put_contents($path, preg_replace(
+        File::put($path, preg_replace(
             sprintf('/^APP_VERSION%s/m', $escaped),
             'APP_VERSION='.$version,
-            file_get_contents($path)
+            File::get($path)
         ));
 
         $this->components->success('The application version has been successfully set to: '.$version);

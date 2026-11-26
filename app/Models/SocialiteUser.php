@@ -36,6 +36,8 @@ use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 class SocialiteUser extends BaseSocialiteUser
 {
     /**
+     * Find the socialite user for the provider and sync the member's ID.
+     *
      * @throws ImplementationException
      */
     public static function findForProvider(string $provider, SocialiteUserContract $oauthUser): ?BaseSocialiteUser
@@ -64,6 +66,8 @@ class SocialiteUser extends BaseSocialiteUser
     }
 
     /**
+     * Create the socialite user and sync the member's provider ID.
+     *
      * @throws ImplementationException
      */
     public static function createForProvider(string $provider, SocialiteUserContract $oauthUser, Authenticatable $user): BaseSocialiteUser
@@ -77,6 +81,8 @@ class SocialiteUser extends BaseSocialiteUser
     }
 
     /**
+     * Get the user column that stores the provider's ID.
+     *
      * @throws ImplementationException
      */
     protected static function getProviderColumn(string $provider): string
@@ -91,6 +97,8 @@ class SocialiteUser extends BaseSocialiteUser
     }
 
     /**
+     * Store the provider's ID on the linked member.
+     *
      * @throws ImplementationException
      */
     protected static function updateUser(string $provider, SocialiteUserContract $oauthUser, SocialiteUser $socialiteUser): void

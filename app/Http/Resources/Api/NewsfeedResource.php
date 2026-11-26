@@ -23,13 +23,16 @@ class NewsfeedResource extends ApiResource
 
         return [
             'id' => $this->resource->id,
-            'author' => optional($author, fn (User $user) => $user->display_name),
-            'author_profile_photo' => optional($author, fn (User $user) => $user->profile_photo_url),
-            'recipient' => optional($recipient, fn (User $user) => $user->display_name),
-            'recipient_profile_photo' => optional($recipient, fn (User $user) => $user->profile_photo_url),
+            'author' => optional($author, fn (User $user): string => $user->display_name),
+            'author_profile_photo' => optional($author, fn (User $user): string => $user->profile_photo_url),
+            'recipient' => optional($recipient, fn (User $user): string => $user->display_name),
+            'recipient_profile_photo' => optional($recipient, fn (User $user): string => $user->profile_photo_url),
             'description' => $this->resource->description,
             'event' => $this->resource->event,
-            'type' => optional($this->resource->subject_type, fn ($subjectType) => Str::replace('_', ' ', Str::snake(class_basename($subjectType)))) ?? 'message',
+            'type' => optional(
+                $this->resource->subject_type,
+                fn (string $subjectType): string => Str::replace('_', ' ', Str::snake(class_basename($subjectType))),
+            ) ?? 'message',
             'headline' => $this->resource->headline,
             'text' => $this->resource->text,
             'item' => $this->resource->item,

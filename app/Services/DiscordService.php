@@ -106,6 +106,8 @@ class DiscordService
     }
 
     /**
+     * Register the application's slash commands with Discord.
+     *
      * @param  array<int, array<string, mixed>>  $commands
      *
      * @throws ConnectionException
@@ -116,6 +118,8 @@ class DiscordService
     }
 
     /**
+     * Get the roles in the server.
+     *
      * @return array<int, array<string, mixed>>
      *
      * @throws ConnectionException
@@ -126,6 +130,8 @@ class DiscordService
     }
 
     /**
+     * Create a role in the server and return its id.
+     *
      * @throws ConnectionException
      */
     public static function createRole(string $guildId, string $name): ?string
@@ -139,6 +145,8 @@ class DiscordService
     }
 
     /**
+     * Get a member of the server.
+     *
      * @return array<string, mixed>|null
      *
      * @throws ConnectionException
@@ -151,6 +159,8 @@ class DiscordService
     }
 
     /**
+     * Add a role to a member of the server.
+     *
      * @throws ConnectionException
      */
     public static function addMemberRole(string $guildId, string $userId, string $roleId): bool
@@ -159,6 +169,8 @@ class DiscordService
     }
 
     /**
+     * Remove a role from a member of the server.
+     *
      * @throws ConnectionException
      */
     public static function removeMemberRole(string $guildId, string $userId, string $roleId): bool
@@ -179,6 +191,8 @@ class DiscordService
     }
 
     /**
+     * Remove the bot from the server.
+     *
      * @throws ConnectionException
      */
     public static function leaveServer(string $guildId): bool
@@ -187,19 +201,20 @@ class DiscordService
     }
 
     /**
+     * Get the servers the bot belongs to.
+     *
      * @throws ConnectionException
      * @throws DiscordRateLimitException
      */
     public static function getGuilds(): mixed
     {
-        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) {
+        $request = function (DiscordService $service): mixed {
             $response = $service
                 ->client()
                 ->get('users/@me/guilds');
 
             $data = $response->json();
 
-            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
@@ -211,23 +226,26 @@ class DiscordService
             }
 
             return $data;
-        }));
+        };
+
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler($request));
     }
 
     /**
+     * Get the channels in the server.
+     *
      * @throws ConnectionException
      * @throws DiscordRateLimitException
      */
     public static function getChannels(string|int $guildId): mixed
     {
-        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) use ($guildId) {
+        $request = function (DiscordService $service) use ($guildId): mixed {
             $response = $service
                 ->client()
                 ->get(sprintf('guilds/%s/channels', $guildId));
 
             $data = $response->json();
 
-            /** @phpstan-ignore-next-line method.notFound */
             if ($response->getStatusCode() === 429) {
                 throw DiscordRateLimitException::withData($data);
             }
@@ -239,7 +257,9 @@ class DiscordService
             }
 
             return $data;
-        }));
+        };
+
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler($request));
     }
 
     /**
@@ -266,6 +286,8 @@ class DiscordService
     }
 
     /**
+     * Send a request to the Discord API.
+     *
      * @param  array<int|string, mixed>  $data
      *
      * @throws ConnectionException

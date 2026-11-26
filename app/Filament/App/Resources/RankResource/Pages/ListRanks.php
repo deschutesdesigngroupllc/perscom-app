@@ -32,7 +32,10 @@ class ListRanks extends ListRecords
                 ->favorite()
                 ->icon(Heroicon::OutlinedTag)
                 ->label($category->name)
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id))),
+                ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereHas(
+                    'categories',
+                    fn (Builder $query): Builder => $query->whereKey($category->id),
+                )),
         ])->toArray();
     }
 

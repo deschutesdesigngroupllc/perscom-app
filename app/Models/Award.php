@@ -15,6 +15,7 @@ use App\Traits\HasLogs;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -63,6 +64,13 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(AwardScope::class)]
+#[Fillable([
+    'name',
+    'description',
+    'order',
+    'created_at',
+    'updated_at',
+])]
 class Award extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
@@ -75,12 +83,4 @@ class Award extends Model implements HasLabel, Sortable
     use HasLogs;
     use HasResourceLabel;
     use HasResourceUrl;
-
-    protected $fillable = [
-        'name',
-        'description',
-        'order',
-        'created_at',
-        'updated_at',
-    ];
 }

@@ -15,8 +15,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('fields', function (Blueprint $table) {
-            $table->after('type', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
+            $table->after('type', function (Blueprint $table): void {
                 $table->string('nova_type')->nullable();
                 $table->string('cast')->nullable();
             });
@@ -32,7 +32,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('fields', function (Blueprint $table) {
+        Schema::table('fields', function (Blueprint $table): void {
             $table->dropColumn('nova_type', 'cast');
             $table->boolean('disabled')->default(false);
             $table->text('text')->nullable();

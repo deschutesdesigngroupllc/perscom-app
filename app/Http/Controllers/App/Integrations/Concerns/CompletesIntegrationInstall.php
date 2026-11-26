@@ -25,6 +25,8 @@ use Illuminate\Support\Str;
 trait CompletesIntegrationInstall
 {
     /**
+     * Complete the provider's OAuth install and redirect back to Integrations.
+     *
      * @param  Closure(string $code): string  $connect  exchanges the code, connects, and returns the connected server or workspace name
      */
     protected function completeInstall(Request $request, string $provider, string $label, Closure $connect): RedirectResponse
@@ -58,7 +60,9 @@ trait CompletesIntegrationInstall
         }
 
         try {
-            throw_if(blank($request->query('code')), IntegrationConnectionException::authorizationFailed($label));
+            if (blank($request->query('code'))) {
+                throw IntegrationConnectionException::authorizationFailed($label);
+            }
 
             $name = $connect((string) $request->query('code'));
 

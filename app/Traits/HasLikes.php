@@ -16,7 +16,7 @@ trait HasLikes
 {
     public function likes(): MorphToMany
     {
-        return $this->morphToMany(User::class, 'model', 'model_has_likes')
+        return $this->morphToMany(User::class, 'model', ModelLike::class)
             ->orderByPivot('created_at')
             ->using(ModelLike::class)
             ->withTimestamps();

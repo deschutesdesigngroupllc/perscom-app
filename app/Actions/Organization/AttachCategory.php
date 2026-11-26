@@ -25,7 +25,7 @@ class AttachCategory
                 'resource' => $model::class,
             ]);
 
-        if (! $model->categories()->whereKey($category->getKey())->exists()) {
+        if ($model->categories()->whereKey($category->getKey())->doesntExist()) {
             $model->categories()->attach($category->getKey());
         }
 

@@ -30,12 +30,12 @@ class ListGroups extends ListRecords
         return [
             PresetView::make('visible')
                 ->label('Visible')
-                ->modifyQueryUsing(fn (Group|Builder $query) => $query->where('hidden', false))
+                ->modifyQueryUsing(fn (Group|Builder $query): Builder => $query->where('hidden', false))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEye),
             PresetView::make('hidden')
                 ->label('Hidden')
-                ->modifyQueryUsing(fn (Group|Builder $query) => $query->where('hidden', true))
+                ->modifyQueryUsing(fn (Group|Builder $query): Builder => $query->where('hidden', true))
                 ->favorite()
                 ->icon(Heroicon::OutlinedEyeSlash),
         ];

@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use BackedEnum;
+use Carbon\CarbonInterface;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -36,6 +37,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use UnitEnum;
 
@@ -94,7 +96,7 @@ class MessageResource extends BaseResource
                 TextColumn::make('send_at')
                     ->placeholder('Sent Immediately')
                     ->label('Send')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -105,7 +107,7 @@ class MessageResource extends BaseResource
                 TextColumn::make('sent_at')
                     ->placeholder('Not Sent Yet')
                     ->label('Sent')
-                    ->timezone(UserSettingsService::get('timezone', function () {
+                    ->timezone(UserSettingsService::get('timezone', function (): string {
                         /** @var OrganizationSettings $settings */
                         $settings = resolve(OrganizationSettings::class);
 
@@ -122,7 +124,9 @@ class MessageResource extends BaseResource
             ->filters([
                 SelectFilter::make('channels')
                     ->options(NotificationChannel::class)
-                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->unless(is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                    ->modifyQueryUsing(fn (Builder $query, $data): Builder => $query
+                        ->unless(is_null(data_get($data, 'value')))
+                        ->whereJsonContains('channels', data_get($data, 'value'))),
                 TernaryFilter::make('repeats'),
             ])
             ->recordActions([
@@ -149,6 +153,8 @@ class MessageResource extends BaseResource
     }
 
     /**
+     * Build the message body editor schema.
+     *
      * @return Component[]
      */
     public static function messageSchema(string $name = 'message'): array
@@ -163,6 +169,8 @@ class MessageResource extends BaseResource
     }
 
     /**
+     * Build the notification channel picker schema.
+     *
      * @return CheckboxList[]
      */
     public static function channelSchema(string $name = 'channels'): array
@@ -173,10 +181,10 @@ class MessageResource extends BaseResource
                 ->searchable()
                 ->hiddenLabel()
                 ->bulkToggleable()
-                ->descriptions(fn () => collect(NotificationChannel::cases())
+                ->descriptions(fn (): array => collect(NotificationChannel::cases())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                     ->all())
-                ->options(fn () => collect(NotificationChannel::cases())
+                ->options(fn (): array => collect(NotificationChannel::cases())
                     ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
                     ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                     ->all()),
@@ -184,6 +192,8 @@ class MessageResource extends BaseResource
     }
 
     /**
+     * Build the message audience and recipient schema.
+     *
      * @return array<int, Field>
      */
     public static function detailsSchema(): array
@@ -192,7 +202,11 @@ class MessageResource extends BaseResource
             Radio::make('audience')
                 ->label('Send To')
                 ->options(fn (): array => [
-                    'everyone' => sprintf('Everyone (%s %s)', number_format($count = User::query()->count()), Str::plural('member', $count)),
+                    'everyone' => sprintf(
+                        'Everyone (%s %s)',
+                        Number::format($count = User::query()->count()),
+                        Str::plural('member', $count),
+                    ),
                     'specific' => 'Specific members',
                 ])
                 ->default('everyone')
@@ -215,13 +229,13 @@ class MessageResource extends BaseResource
         return [
             DateTimePicker::make('send_at')
                 ->label('Send At')
-                ->timezone(UserSettingsService::get('timezone', function () {
+                ->timezone(UserSettingsService::get('timezone', function (): string {
                     /** @var OrganizationSettings $settings */
                     $settings = resolve(OrganizationSettings::class);
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
-                ->minDate(fn ($component) => now()
+                ->minDate(fn (DateTimePicker $component): CarbonInterface => now()
                     ->subDay()
                     ->shiftTimezone($component->getTimezone())
                     ->setTimezone(config('app.timezone')))

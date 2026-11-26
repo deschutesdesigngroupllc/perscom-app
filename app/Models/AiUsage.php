@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,21 +39,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'user_id',
+    'invocation_id',
+    'agent',
+    'provider',
+    'model',
+    'input_tokens',
+    'output_tokens',
+])]
 class AiUsage extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'invocation_id',
-        'agent',
-        'provider',
-        'model',
-        'input_tokens',
-        'output_tokens',
-    ];
-
     /**
+     * Get the user who incurred the usage.
+     *
      * @return BelongsTo<User, $this>
      */
     public function user(): BelongsTo

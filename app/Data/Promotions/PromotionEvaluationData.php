@@ -23,18 +23,28 @@ class PromotionEvaluationData extends Data
     ) {}
 
     /**
+     * Get the requirements the member meets.
+     *
      * @return array<int, RequirementResultData>
      */
     public function metRequirements(): array
     {
-        return array_values(array_filter($this->requirements, fn (RequirementResultData $result): bool => $result->met));
+        return collect($this->requirements)
+            ->filter(fn (RequirementResultData $result): bool => $result->met)
+            ->values()
+            ->all();
     }
 
     /**
+     * Get the requirements the member does not yet meet.
+     *
      * @return array<int, RequirementResultData>
      */
     public function unmetRequirements(): array
     {
-        return array_values(array_filter($this->requirements, fn (RequirementResultData $result): bool => ! $result->met));
+        return collect($this->requirements)
+            ->reject(fn (RequirementResultData $result): bool => $result->met)
+            ->values()
+            ->all();
     }
 }

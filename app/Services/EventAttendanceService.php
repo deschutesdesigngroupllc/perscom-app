@@ -38,6 +38,8 @@ class EventAttendanceService
     }
 
     /**
+     * Get the check-in window around the occurrence.
+     *
      * @return array{0: CarbonInterface, 1: CarbonInterface}
      */
     public static function windowFor(OccurrenceData $occurrence): array
@@ -77,15 +79,22 @@ class EventAttendanceService
     {
         $occurrence = EventOccurrenceService::nearest($event, now());
 
-        throw_if($occurrence?->isCancelled(), EventCheckInException::cancelled());
-        throw_unless($occurrence instanceof OccurrenceData && static::isWithinCheckInWindow($event), EventCheckInException::outsideWindow());
+        if ($occurrence instanceof OccurrenceData && $occurrence->isCancelled()) {
+            throw EventCheckInException::cancelled();
+        }
+
+        if (! $occurrence instanceof OccurrenceData || ! static::isWithinCheckInWindow($event)) {
+            throw EventCheckInException::outsideWindow();
+        }
 
         $isRegistered = EventRegistration::query()
             ->where('event_id', $event->getKey())
             ->where('user_id', $user->getKey())
             ->exists();
 
-        throw_if(! $isRegistered && ! $event->registration_enabled, EventCheckInException::registrationDisabled());
+        if (! $isRegistered && ! $event->registration_enabled) {
+            throw EventCheckInException::registrationDisabled();
+        }
 
         return static::markAttendance($occurrence, $user->getKey(), EventRegistrationStatus::ATTENDED, now());
     }

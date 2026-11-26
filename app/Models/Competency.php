@@ -10,6 +10,7 @@ use App\Traits\HasCategories;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +46,10 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  */
+#[Fillable([
+    'name',
+    'description',
+])]
 class Competency extends Model implements HasLabel
 {
     use ClearsApiCache;
@@ -54,14 +59,9 @@ class Competency extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    protected $fillable = [
-        'name',
-        'description',
-    ];
-
     public function training_records(): BelongsToMany
     {
-        return $this->belongsToMany(TrainingRecord::class, 'records_trainings_competencies')
+        return $this->belongsToMany(TrainingRecord::class, TrainingRecordCompetency::class)
             ->using(TrainingRecordCompetency::class);
     }
 }

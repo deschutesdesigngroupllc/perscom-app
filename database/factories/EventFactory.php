@@ -42,7 +42,7 @@ class EventFactory extends Factory
 
     public function withSchedule(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'repeats' => true,
                 'all_day' => false,
@@ -52,7 +52,7 @@ class EventFactory extends Factory
 
     public function withNotifications(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'notifications_enabled' => true,
                 'notifications_interval' => [NotificationInterval::PT1H],
@@ -63,7 +63,7 @@ class EventFactory extends Factory
 
     public function withRegistrations(): static
     {
-        return $this->state(function () {
+        return $this->state(function (): array {
             return [
                 'registration_enabled' => true,
                 'registration_deadline' => null,

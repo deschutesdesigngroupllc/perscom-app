@@ -95,6 +95,8 @@ class ApiLog extends Activity
     use Metable;
 
     /**
+     * Get the cache purges triggered by the request.
+     *
      * @return HasManyJson<ApiPurgeLog, $this>
      */
     public function purges(): HasManyJson
@@ -103,6 +105,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the IP address the request came from.
+     *
      * @return Attribute<?string, never>
      */
     protected function ipAddress(): Attribute
@@ -113,6 +117,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the HTTP method of the request.
+     *
      * @return Attribute<?string, never>
      */
     protected function method(): Attribute
@@ -123,6 +129,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the endpoint the request was sent to.
+     *
      * @return Attribute<?string, never>
      */
     protected function endpoint(): Attribute
@@ -133,6 +141,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the request body.
+     *
      * @return Attribute<mixed, never>
      */
     protected function body(): Attribute
@@ -143,6 +153,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the response content.
+     *
      * @return Attribute<mixed, never>
      */
     protected function content(): Attribute
@@ -153,6 +165,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get how long the request took.
+     *
      * @return Attribute<string|int|null, never>
      */
     protected function duration(): Attribute
@@ -163,6 +177,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the HTTP status of the response.
+     *
      * @return Attribute<string|int|null, never>
      */
     protected function status(): Attribute
@@ -173,6 +189,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the request headers.
+     *
      * @return Attribute<mixed, never>
      */
     protected function requestHeaders(): Attribute
@@ -183,6 +201,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the response headers.
+     *
      * @return Attribute<mixed, never>
      */
     protected function responseHeaders(): Attribute
@@ -193,6 +213,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the ID of the request.
+     *
      * @return Attribute<?string, never>
      */
     protected function requestId(): Attribute
@@ -203,6 +225,8 @@ class ApiLog extends Activity
     }
 
     /**
+     * Get the trace ID of the request.
+     *
      * @return Attribute<?string, never>
      */
     protected function traceId(): Attribute

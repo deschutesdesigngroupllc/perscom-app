@@ -53,8 +53,8 @@ class CalendarTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
-            'name' => $this->faker->word,
-            'color' => $this->faker->hexColor,
+            'name' => $this->faker->word(),
+            'color' => $this->faker->hexColor(),
         ];
     }
 
@@ -64,7 +64,7 @@ class CalendarTest extends ApiResourceTestCase
     public function updateData(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->word(),
         ];
     }
 }

@@ -20,6 +20,8 @@ use Throwable;
 class DispatchTenantJob
 {
     /**
+     * Dispatch the job once per tenant, or once centrally when tenancy is off.
+     *
      * @param  class-string  $job
      * @param  array<int, mixed>  $arguments  extra constructor arguments after the tenant key
      *

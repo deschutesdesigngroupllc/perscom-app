@@ -10,6 +10,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasLikes;
 use Filament\Support\Contracts\HasColor;
+use Illuminate\Database\Eloquent\Attributes\Appends;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -69,6 +70,11 @@ use Illuminate\Support\Collection;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ScopedBy(NewsfeedScope::class)]
+#[Appends([
+    'headline',
+    'text',
+    'item',
+])]
 class Newsfeed extends Activity implements HasColor
 {
     use ClearsApiCache;
@@ -81,13 +87,9 @@ class Newsfeed extends Activity implements HasColor
         'description',
     ];
 
-    protected $appends = [
-        'headline',
-        'text',
-        'item',
-    ];
-
     /**
+     * Get the headline of the newsfeed item.
+     *
      * @return Attribute<?string, never>
      */
     protected function headline(): Attribute
@@ -98,6 +100,8 @@ class Newsfeed extends Activity implements HasColor
     }
 
     /**
+     * Get the text of the newsfeed item.
+     *
      * @return Attribute<?string, never>
      */
     protected function text(): Attribute
@@ -108,6 +112,8 @@ class Newsfeed extends Activity implements HasColor
     }
 
     /**
+     * Get the color of the newsfeed item.
+     *
      * @return Attribute<?string, never>
      */
     protected function color(): Attribute
@@ -118,6 +124,8 @@ class Newsfeed extends Activity implements HasColor
     }
 
     /**
+     * Get the item details of the newsfeed item.
+     *
      * @return Attribute<?string, never>
      */
     protected function item(): Attribute

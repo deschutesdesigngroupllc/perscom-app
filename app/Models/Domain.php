@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Observers\DomainObserver;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\Appends;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -41,24 +43,22 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @mixin \Illuminate\Database\Eloquent\Model
  */
 #[ObservedBy(DomainObserver::class)]
+#[Appends([
+    'host',
+    'url',
+])]
+#[Fillable([
+    'domain',
+    'tenant_id',
+    'is_custom_subdomain',
+    'created_at',
+    'updated_at',
+])]
 class Domain extends BaseDomain
 {
     use CentralConnection;
     use ClearsResponseCache;
     use HasFactory;
-
-    protected $fillable = [
-        'domain',
-        'tenant_id',
-        'is_custom_subdomain',
-        'created_at',
-        'updated_at',
-    ];
-
-    protected $appends = [
-        'host',
-        'url',
-    ];
 
     public static function generateSubdomain(): string
     {
@@ -66,6 +66,8 @@ class Domain extends BaseDomain
     }
 
     /**
+     * Get the full URL of the domain.
+     *
      * @return Attribute<string, never>
      */
     protected function url(): Attribute
@@ -76,6 +78,8 @@ class Domain extends BaseDomain
     }
 
     /**
+     * Get the fully qualified host of the domain.
+     *
      * @return Attribute<string, never>
      */
     protected function host(): Attribute

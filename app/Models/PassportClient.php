@@ -39,7 +39,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-read int|null $tokens_count
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient existsIn(array $haystack)
+ * @method static Builder<static>|PassportClient existsIn(array $haystack)
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()

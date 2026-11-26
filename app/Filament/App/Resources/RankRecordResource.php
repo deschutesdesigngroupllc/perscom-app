@@ -15,6 +15,7 @@ use App\Filament\App\Resources\RankRecordResource\RelationManagers\CommentsRelat
 use App\Filament\Exports\RankRecordExporter;
 use App\Filament\Forms\Components\MemberSelect;
 use App\Forms\Components\ModelNotification;
+use App\Models\Document;
 use App\Models\Enums\RankRecordType;
 use App\Models\Field;
 use App\Models\RankRecord;
@@ -221,22 +222,22 @@ class RankRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         ViewDocumentAction::make()
-                            ->document(fn (RankRecord $record) => $record->document)
-                            ->user(fn (RankRecord $record) => $record->user)
+                            ->document(fn (RankRecord $record): ?Document => $record->document)
+                            ->user(fn (RankRecord $record): ?User => $record->user)
                             ->attached(fn (RankRecord $record): RankRecord => $record),
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
                     ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
-                    ->formatStateUsing(fn ($state) => Str::limit($state, 20))
+                    ->formatStateUsing(fn ($state): string => Str::limit($state, 20))
                     ->html()
                     ->sortable()
                     ->searchable()
                     ->action(
                         ViewHtmlAction::make()
                             ->modalHeading('Text')
-                            ->html(fn (RankRecord $record) => $record->text),
+                            ->html(fn (RankRecord $record): ?string => $record->text),
                     ),
                 TextColumn::make('created_at')
                     ->label('Date')
