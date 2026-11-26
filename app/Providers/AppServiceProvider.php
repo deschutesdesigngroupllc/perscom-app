@@ -181,6 +181,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureTitleCaseLabels();
 
+
         Column::configureUsing(function (Column $field) {
             $closure = match ($field->getName()) {
                 'created_at' => function (Column $field): void {
@@ -462,12 +463,16 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Filament derives unlabelled fields, entries, columns and filters from their names in sentence case
-     * ("First name"). Give them Title Case defaults instead; any label set explicitly or by the component
-     * itself still wins because these run first.
+     * ("First name"). Give them Title Case defaults instead, naming relationship fields after the relationship
+     * as Filament does; any label set explicitly or by the component itself still wins because these run first.
      */
     protected function configureTitleCaseLabels(): void
     {
-        Field::configureUsing(fn (Field $field): Field => $field->label(fn (Field $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
+        Field::configureUsing(fn (Field $field): Field => $field->label(fn (Field $component): string => Label::fromName(
+            method_exists($component, 'getRelationshipName') && filled($relationship = $component->getRelationshipName())
+                ? Str::before($relationship, '.')
+                : Str::afterLast($component->getName(), '.'),
+        )));
         Entry::configureUsing(fn (Entry $entry): Entry => $entry->label(fn (Entry $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
         Column::configureUsing(fn (Column $column): Column => $column->label(fn (Column $component): string => Label::fromName(Str::of($component->getName())->beforeLast('.')->afterLast('.')->toString())));
         BaseFilter::configureUsing(fn (BaseFilter $filter): BaseFilter => $filter->label(fn (BaseFilter $component): string => Label::fromName(Str::before($component->getName(), '.'))));

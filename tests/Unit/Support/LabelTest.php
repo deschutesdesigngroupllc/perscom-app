@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Support;
 
 use App\Support\Label;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Columns\TextColumn;
@@ -38,7 +39,9 @@ class LabelTest extends TestCase
     {
         $this->assertSame('Registration Deadline', Label::fromName('registration_deadline'));
         $this->assertSame('Last Seen At', Label::fromName('lastSeenAt'));
-        $this->assertSame('Author ID', Label::fromName('author_id'));
+        $this->assertSame('Author', Label::fromName('author_id'));
+        $this->assertSame('Document', Label::fromName('documentId'));
+        $this->assertSame('ID', Label::fromName('id'));
     }
 
     public function test_unlabelled_filament_components_default_to_title_case(): void
@@ -47,6 +50,9 @@ class LabelTest extends TestCase
         $this->assertSame('Email Address', TextEntry::make('user.email_address')->getLabel());
         $this->assertSame('Rank', TextColumn::make('rank.name')->getLabel());
         $this->assertSame('Is Active', TernaryFilter::make('is_active')->getLabel());
+        $this->assertSame('Author', Select::make('author_id')->getLabel());
+        $this->assertSame('Document', Select::make('document_id')->relationship('document', 'name')->getLabel());
+        $this->assertSame('Position', Select::make('position_id')->relationship('position.unit', 'name')->getLabel());
     }
 
     public function test_explicit_and_built_in_labels_still_win(): void

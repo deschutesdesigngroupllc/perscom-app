@@ -42,11 +42,15 @@ class Label
     ];
 
     /**
-     * Derive a Title Case label from an attribute name such as "user.first_name" or "apiKey".
+     * Derive a Title Case label from an attribute name such as "user.first_name" or "apiKey". A foreign key
+     * like "author_id" is labelled after what it points to ("Author"), while a bare "id" stays "ID".
      */
     public static function fromName(string $name): string
     {
-        return static::titleCase((string) Str::of($name)->kebab()->replace(['-', '_'], ' '));
+        return static::titleCase((string) Str::of($name)
+            ->replaceMatches('/(.)(?:_id|Id)$/', '$1')
+            ->kebab()
+            ->replace(['-', '_'], ' '));
     }
 
     public static function titleCase(string $label): string
