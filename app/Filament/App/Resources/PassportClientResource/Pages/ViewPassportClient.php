@@ -42,7 +42,6 @@ class ViewPassportClient extends ViewRecord
         return Action::make('showSecret')
             ->modalHeading('Client Secret')
             ->modalDescription("Copy this secret now and store it somewhere safe. It won't be shown again.")
-            ->modalIcon(Heroicon::OutlinedKey)
             ->fillForm(fn (): array => ['secret' => $this->plainSecret])
             ->schema([
                 TextInput::make('secret')

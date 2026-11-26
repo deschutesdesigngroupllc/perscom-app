@@ -118,7 +118,6 @@ class Dashboard extends BaseDashboard
             ->modalHeading('Welcome to '.($tenant?->name ?? 'PERSCOM'))
             ->modalDescription("Let's get your organization set up. Complete each step below to create your organizational structure.")
             ->modalWidth(Width::SixExtraLarge)
-            ->modalIcon(Heroicon::OutlinedRocketLaunch)
             ->visible(fn (): bool => $this->shouldShowOnboarding())
             ->fillForm(fn (): array => $this->getOnboardingFormData())
             ->steps($this->getOnboardingSteps())
