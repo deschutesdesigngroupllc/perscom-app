@@ -36,8 +36,7 @@ class ViewUser extends ViewRecord
     protected static string $resource = UserResource::class;
 
     /**
-     * The record tabs the organization shows on member profiles, in order. Filament keeps these keys when it
-     * drops the tabs a viewer may not see, so a tab's key is stable for linking.
+     * Get the record tabs the organization shows on member profiles, in order.
      *
      * @return array<int, class-string<RelationManager>>
      */
@@ -73,7 +72,7 @@ class ViewUser extends ViewRecord
     }
 
     /**
-     * Filament filters these by what the viewer may see, so members never load a tab that would be refused.
+     * Get the profile record tabs; Filament drops those the viewer cannot see.
      *
      * @return array<int, class-string<RelationManager>>
      */

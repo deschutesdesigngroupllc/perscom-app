@@ -66,8 +66,9 @@ class ViewEvent extends ViewRecord
     protected ?OccurrenceData $resolvedOccurrence = null;
 
     /**
-     * Members open events from the calendar and dashboard without access to the event list, so skip the
-     * resource-wide viewAny gate; ViewRecord still requires permission to view this event.
+     * Skip the resource-wide viewAny gate so members can open an event.
+     *
+     * ViewRecord still requires permission to view this event.
      */
     public static function authorizeResourceAccess(): void {}
 

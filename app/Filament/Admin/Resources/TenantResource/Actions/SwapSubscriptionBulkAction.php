@@ -24,7 +24,6 @@ class SwapSubscriptionBulkAction extends BulkAction
         $this->modalHeading('Swap Subscription');
         $this->modalDescription('Enter the new price ID to swap the subscription of the tenant.');
         $this->modalSubmitActionLabel('Swap');
-        $this->modalIcon(Heroicon::OutlinedArrowPath);
 
         $this->groupedIcon(Heroicon::ArrowPath);
 

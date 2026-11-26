@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Data\Feeds\FeedItemData;
 use App\Filament\App\Pages\Dashboard;
 use App\Models\Announcement;
 use App\Models\Newsfeed;
@@ -12,11 +13,13 @@ use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use XMLWriter;
 
 /**
- * Private RSS 2.0 feeds of the organization's announcements and newsfeed. They are signed with the member's
- * secret feed token, the same one their calendar subscriptions use, so resetting it revokes both.
+ * Build private RSS 2.0 feeds of the organization's announcements and newsfeed.
+ *
+ * Links carry the member's calendar feed token, so resetting it revokes both.
  */
 class RssFeedService
 {
@@ -38,13 +41,13 @@ class RssFeedService
             ->latest()
             ->limit(static::LIMIT)
             ->get()
-            ->map(fn (Announcement $announcement): array => [
-                'guid' => 'announcement-'.$announcement->getKey(),
-                'title' => $announcement->title,
-                'description' => $announcement->content,
-                'author' => null,
-                'date' => $announcement->created_at,
-            ]);
+            ->map(fn (Announcement $announcement): FeedItemData => new FeedItemData(
+                guid: 'announcement-'.$announcement->getKey(),
+                title: $announcement->title,
+                description: $announcement->content,
+                author: null,
+                date: $announcement->created_at,
+            ));
 
         return static::render(
             sprintf('%s Announcements', static::organizationName()),
@@ -60,13 +63,13 @@ class RssFeedService
             ->latest()
             ->limit(static::LIMIT)
             ->get()
-            ->map(fn (Newsfeed $item): array => [
-                'guid' => 'news-'.$item->getKey(),
-                'title' => (string) $item->headline,
-                'description' => (string) $item->text,
-                'author' => $item->causer instanceof User ? $item->causer->name : null,
-                'date' => $item->created_at,
-            ]);
+            ->map(fn (Newsfeed $item): FeedItemData => new FeedItemData(
+                guid: 'news-'.$item->getKey(),
+                title: (string) $item->headline,
+                description: (string) $item->text,
+                author: $item->causer instanceof User ? $item->causer->name : null,
+                date: $item->created_at,
+            ));
 
         return static::render(
             sprintf('%s News', static::organizationName()),
@@ -76,7 +79,9 @@ class RssFeedService
     }
 
     /**
-     * @param  Collection<int, array{guid: string, title: string, description: string, author: ?string, date: ?CarbonInterface}>  $items
+     * Render an RSS 2.0 document for the given feed items.
+     *
+     * @param  Collection<int, FeedItemData>  $items
      */
     public static function render(string $title, string $description, Collection $items): string
     {
@@ -94,7 +99,7 @@ class RssFeedService
         $xml->writeElement('title', $title);
         $xml->writeElement('link', $link);
         $xml->writeElement('description', $description);
-        $xml->writeElement('language', str_replace('_', '-', app()->getLocale()));
+        $xml->writeElement('language', Str::replace('_', '-', (string) config('app.locale')));
 
         $xml->startElement('atom:link');
         $xml->writeAttribute('href', request()->url());
@@ -102,31 +107,33 @@ class RssFeedService
         $xml->writeAttribute('type', 'application/rss+xml');
         $xml->endElement();
 
-        if ($latest = $items->first()['date'] ?? null) {
+        $latest = $items->first()?->date;
+
+        if ($latest instanceof CarbonInterface) {
             $xml->writeElement('lastBuildDate', $latest->toRssString());
         }
 
-        foreach ($items as $item) {
+        $items->each(function (FeedItemData $item) use ($xml, $link): void {
             $xml->startElement('item');
-            $xml->writeElement('title', $item['title']);
+            $xml->writeElement('title', $item->title);
             $xml->writeElement('link', $link);
-            $xml->writeElement('description', $item['description']);
+            $xml->writeElement('description', $item->description);
 
             $xml->startElement('guid');
             $xml->writeAttribute('isPermaLink', 'false');
-            $xml->text($item['guid']);
+            $xml->text($item->guid);
             $xml->endElement();
 
-            if (filled($item['author'])) {
-                $xml->writeElement('dc:creator', $item['author']);
+            if (filled($item->author)) {
+                $xml->writeElement('dc:creator', $item->author);
             }
 
-            if ($item['date'] instanceof CarbonInterface) {
-                $xml->writeElement('pubDate', $item['date']->toRssString());
+            if ($item->date instanceof CarbonInterface) {
+                $xml->writeElement('pubDate', $item->date->toRssString());
             }
 
             $xml->endElement();
-        }
+        });
 
         $xml->endElement();
         $xml->endElement();
@@ -146,11 +153,9 @@ class RssFeedService
 
     protected static function organizationName(): string
     {
-        return rescue(function (): string {
-            /** @var OrganizationSettings $settings */
-            $settings = resolve(OrganizationSettings::class);
+        /** @var OrganizationSettings $settings */
+        $settings = resolve(OrganizationSettings::class);
 
-            return filled($settings->name) ? $settings->name : (string) config('app.name');
-        }, (string) config('app.name'), report: false);
+        return filled($settings->name) ? $settings->name : (string) config('app.name');
     }
 }

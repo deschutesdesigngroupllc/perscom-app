@@ -59,7 +59,10 @@ class SubscribeToCalendarAction extends Action
                 ->color('gray')
                 ->requiresConfirmation()
                 ->modalHeading('Reset Calendar Link')
-                ->modalDescription('Your current calendar and RSS links will stop working. Calendar apps and feed readers using the old links must be subscribed again.')
+                ->modalDescription(
+                    'Your current calendar and RSS links will stop working. '
+                    .'Calendar apps and feed readers using the old links must be subscribed again.',
+                )
                 ->modalSubmitActionLabel('Reset Link')
                 ->action(function (): void {
                     /** @var User $user */

@@ -10,23 +10,24 @@ use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TernaryFilter;
+use Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class LabelTest extends TestCase
 {
     /**
-     * @return array<string, array{0: string, 1: string}>
+     * @return Generator<string, array{0: string, 1: string}>
      */
-    public static function labels(): array
+    public static function labels(): Generator
     {
-        return [
-            'sentence case' => ['First name', 'First Name'],
-            'minor words stay lowercase' => ['time in grade', 'Time in Grade'],
-            'a leading minor word is capitalized' => ['of record', 'Of Record'],
-            'acronyms' => ['api key url', 'API Key URL'],
-            'already title case' => ['RSVP Deadline', 'RSVP Deadline'],
-        ];
+        yield 'sentence case' => ['First name', 'First Name'];
+        yield 'minor words stay lowercase' => ['time in grade', 'Time in Grade'];
+        yield 'a leading minor word is capitalized' => ['of record', 'Of Record'];
+        yield 'a trailing minor word is capitalized' => ['opt in', 'Opt In'];
+        yield 'acronyms' => ['api key url', 'API Key URL'];
+        yield 'already title case' => ['RSVP Deadline', 'RSVP Deadline'];
+        yield 'surrounding whitespace is trimmed' => ['  last name ', 'Last Name'];
     }
 
     #[DataProvider('labels')]
@@ -44,7 +45,7 @@ class LabelTest extends TestCase
         $this->assertSame('ID', Label::fromName('id'));
     }
 
-    public function test_unlabelled_filament_components_default_to_title_case(): void
+    public function test_unlabeled_filament_components_default_to_title_case(): void
     {
         $this->assertSame('First Name', TextInput::make('first_name')->getLabel());
         $this->assertSame('Email Address', TextEntry::make('user.email_address')->getLabel());

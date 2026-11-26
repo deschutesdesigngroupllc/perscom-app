@@ -405,6 +405,26 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
+     * Label a field after its relationship, or else after its name.
+     */
+    protected static function fieldLabel(Field $field): string
+    {
+        $relationship = method_exists($field, 'getRelationshipName') ? $field->getRelationshipName() : null;
+
+        return Label::fromName(filled($relationship)
+            ? Str::before($relationship, '.')
+            : Str::afterLast($field->getName(), '.'));
+    }
+
+    /**
+     * Label a column after its relationship, or else after its name.
+     */
+    protected static function columnLabel(Column $column): string
+    {
+        return Label::fromName(Str::of($column->getName())->beforeLast('.')->afterLast('.')->toString());
+    }
+
+    /**
      * Destructive actions name the action and its consequence instead of Filament's generic
      * "Are you sure you would like to do this?". An action configured explicitly still wins.
      */
@@ -464,27 +484,33 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Filament derives unlabelled fields, entries, columns and filters from their names in sentence case
-     * ("First name"). Give them Title Case defaults instead, naming relationship fields after the relationship
-     * as Filament does; any label set explicitly or by the component itself still wins because these run first.
+     * Default unlabeled fields, entries, columns, and filters to Title Case.
+     *
+     * Explicit labels and labels a component sets itself still win, because these run first.
      */
     protected function configureTitleCaseLabels(): void
     {
-        Field::configureUsing(fn (Field $field): Field => $field->label(fn (Field $component): string => Label::fromName(
-            method_exists($component, 'getRelationshipName') && filled($relationship = $component->getRelationshipName())
-                ? Str::before($relationship, '.')
-                : Str::afterLast($component->getName(), '.'),
-        )));
-        Entry::configureUsing(fn (Entry $entry): Entry => $entry->label(fn (Entry $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
-        Column::configureUsing(fn (Column $column): Column => $column->label(fn (Column $component): string => Label::fromName(Str::of($component->getName())->beforeLast('.')->afterLast('.')->toString())));
-        BaseFilter::configureUsing(fn (BaseFilter $filter): BaseFilter => $filter->label(fn (BaseFilter $component): string => Label::fromName(Str::before($component->getName(), '.'))));
+        Field::configureUsing(fn (Field $field): Field => $field->label(
+            fn (Field $component): string => static::fieldLabel($component),
+        ));
+        Entry::configureUsing(fn (Entry $entry): Entry => $entry->label(
+            fn (Entry $component): string => Label::fromName(Str::afterLast($component->getName(), '.')),
+        ));
+        Column::configureUsing(fn (Column $column): Column => $column->label(
+            fn (Column $component): string => static::columnLabel($component),
+        ));
+        BaseFilter::configureUsing(fn (BaseFilter $filter): BaseFilter => $filter->label(
+            fn (BaseFilter $component): string => Label::fromName(Str::before($component->getName(), '.')),
+        ));
     }
 
     /**
-     * A tabs container whose tabs are all hidden would still draw its empty border, so hide it with them.
+     * Hide a tabs container when all of its tabs are hidden.
      */
     protected function hideEmptyTabs(): void
     {
-        Tabs::configureUsing(fn (Tabs $tabs): Tabs => $tabs->hidden(fn (Tabs $component): bool => $component->getChildComponents() === []));
+        Tabs::configureUsing(fn (Tabs $tabs): Tabs => $tabs->hidden(
+            fn (Tabs $component): bool => blank($component->getChildComponents()),
+        ));
     }
 }

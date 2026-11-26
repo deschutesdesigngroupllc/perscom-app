@@ -160,15 +160,20 @@ class CalendarTest extends TenantTestCase
     public function test_load_more_skips_ahead_to_the_next_event(): void
     {
         $this->actingAsSuperAdmin();
-        Event::factory()->createQuietly(['name' => 'Winter Field Exercise', 'all_day' => false, 'starts' => Date::parse('2026-11-20 18:00:00'), 'ends' => Date::parse('2026-11-20 19:00:00')]);
+        Event::factory()->createQuietly([
+            'name' => 'Winter Field Exercise',
+            'all_day' => false,
+            'starts' => Date::parse('2026-11-20 18:00:00'),
+            'ends' => Date::parse('2026-11-20 19:00:00'),
+        ]);
 
         Livewire::test(Calendar::class)
             ->call('setDisplay', 'agenda')
             ->assertDontSee('Winter Field Exercise')
-            ->assertSee('Load more')
+            ->assertSee('Load More')
             ->call('loadMore')
             ->assertSee('Winter Field Exercise')
-            ->assertDontSee('Load more')
+            ->assertDontSee('Load More')
             ->assertSee('No more events scheduled in the next year.');
     }
 
@@ -178,7 +183,7 @@ class CalendarTest extends TenantTestCase
 
         Livewire::test(Calendar::class)
             ->call('setDisplay', 'agenda')
-            ->assertDontSee('Load more')
+            ->assertDontSee('Load More')
             ->assertSee('No more events scheduled in the next year.')
             ->call('togglePast')
             ->assertDontSee('Load earlier')
@@ -187,7 +192,12 @@ class CalendarTest extends TenantTestCase
 
     public function test_the_agenda_only_lists_events_for_members_who_can_open_them(): void
     {
-        Event::factory()->createQuietly(['name' => 'Range Day', 'all_day' => false, 'starts' => Date::parse('2026-06-03 18:00:00'), 'ends' => Date::parse('2026-06-03 19:00:00')]);
+        Event::factory()->createQuietly([
+            'name' => 'Range Day',
+            'all_day' => false,
+            'starts' => Date::parse('2026-06-03 18:00:00'),
+            'ends' => Date::parse('2026-06-03 19:00:00'),
+        ]);
 
         $member = User::factory()->createQuietly()->syncRoles([]);
         $member->givePermissionTo(['view_calendar', 'view_calendar_widget']);

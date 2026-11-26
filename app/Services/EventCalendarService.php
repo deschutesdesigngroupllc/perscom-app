@@ -45,6 +45,7 @@ class EventCalendarService
 
     /**
      * The occurrences shown on the calendar for a range, narrowed by the calendar filters.
+     * A user without the view event permission gets no occurrences.
      *
      * @param  array{calendars?: array<int, int|string>, mine?: bool, open?: bool}  $filters
      * @return Collection<int, OccurrenceData>

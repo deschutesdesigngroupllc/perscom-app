@@ -83,7 +83,7 @@
         <div class="flex justify-center">
           @if ($this->hasMoreAgenda())
             <x-filament::button color="gray" wire:click="loadMore" wire:target="loadMore" :icon="$past ? 'heroicon-m-arrow-up' : 'heroicon-m-arrow-down'">
-              {{ $past ? 'Load earlier' : 'Load more' }}
+              {{ $past ? 'Load Earlier' : 'Load More' }}
             </x-filament::button>
           @else
             <p class="text-sm text-gray-500 dark:text-gray-400">

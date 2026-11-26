@@ -10,42 +10,84 @@ use App\Models\Announcement;
 use App\Models\Newsfeed;
 use App\Models\User;
 use App\Services\RssFeedService;
+use App\Support\Brand;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Carbon\CarbonInterface;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class RecentPostsWidgetTest extends TenantTestCase
 {
-    private User $user;
-
-    public function test_recent_news_features_the_latest_item_and_opens_it_in_a_modal(): void
+    public function test_recent_news_features_the_latest_item_before_older_ones(): void
     {
-        $this->user = $this->actingAsSuperAdmin();
-
+        $this->actingAsSuperAdmin();
         $author = User::factory()->createQuietly(['name' => 'Captain Reyes']);
+        $this->createNews($author, 'Promotions Approved', '<p>Board results are out.</p>', now()->subDay());
+        $this->createNews($author, 'Detachment Reaches Full Strength', '<p>All positions are filled.</p>');
 
-        Newsfeed::factory()->createQuietly([
-            'causer_type' => User::class,
-            'causer_id' => $author->getKey(),
-            'created_at' => now()->subDay(),
-            'properties' => ['headline' => 'Promotions Approved', 'text' => '<p>Board results are out.</p>'],
+        Livewire::test(RecentNews::class)->assertSeeInOrder([
+            'Latest',
+            'Detachment Reaches Full Strength',
+            'All positions are filled.',
+            'Captain Reyes',
+            'Promotions Approved',
         ]);
+    }
 
-        $latest = Newsfeed::factory()->createQuietly([
-            'causer_type' => User::class,
-            'causer_id' => $author->getKey(),
-            'properties' => ['headline' => 'Detachment Reaches Full Strength', 'text' => '<p>All positions are filled.</p>'],
-        ]);
+    public function test_recent_news_excerpts_drop_html(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->createNews(User::factory()->createQuietly(), 'Range Day', '<p>All positions are filled.</p>');
 
-        $widget = Livewire::test(RecentNews::class);
+        Livewire::test(RecentNews::class)
+            ->assertSee('All positions are filled.')
+            ->assertDontSeeHtml('<p>All positions are filled.</p>');
+    }
 
-        $widget->assertSeeInOrder(['Latest', 'Detachment Reaches Full Strength', 'All positions are filled.', 'Captain Reyes', 'Promotions Approved'])->assertDontSeeHtml('<p>All positions are filled.</p>')->assertSee('View All News')->assertSeeHtml(RssFeedService::newsFeedUrl($this->user));
+    public function test_recent_news_links_to_all_news_and_the_members_rss_feed(): void
+    {
+        $user = $this->actingAsSuperAdmin();
+        $this->createNews(User::factory()->createQuietly(), 'Range Day', 'Range day is on Saturday.');
 
-        $widget
-            ->mountAction(TestAction::make('view')->arguments(['record' => $latest->getKey()]))
+        Livewire::test(RecentNews::class)
+            ->assertSee('View All News')
+            ->assertSeeHtml(RssFeedService::newsFeedUrl($user));
+    }
+
+    public function test_news_without_a_color_shows_a_neutral_accent(): void
+    {
+        $this->actingAsSuperAdmin();
+        $this->createNews(User::factory()->createQuietly(), 'Range Day', 'Range day is on Saturday.');
+
+        Livewire::test(RecentNews::class)
+            ->assertSeeHtml('bg-gray-300 dark:bg-gray-600')
+            ->assertDontSeeHtml('background-color: '.Brand::PRIMARY_HEX);
+    }
+
+    public function test_opening_a_post_shows_it_in_a_modal(): void
+    {
+        $this->actingAsSuperAdmin();
+        $news = $this->createNews(User::factory()->createQuietly(), 'Range Day', '<p>All positions are filled.</p>');
+
+        Livewire::test(RecentNews::class)
+            ->mountAction(TestAction::make('view')->arguments(['record' => $news->getKey()]))
             ->assertActionMounted('view')
             ->assertSee('All positions are filled.');
+    }
+
+    public function test_opening_a_post_deleted_after_the_dashboard_loaded_does_nothing(): void
+    {
+        $this->actingAsSuperAdmin();
+        $news = $this->createNews(User::factory()->createQuietly(), 'Range Day', 'Range day is on Saturday.');
+
+        $widget = Livewire::test(RecentNews::class);
+        $news->delete();
+
+        $widget
+            ->mountAction(TestAction::make('view')->arguments(['record' => $news->getKey()]))
+            ->assertOk()
+            ->assertActionNotMounted('view');
     }
 
     public function test_recent_announcements_show_expiry_and_an_empty_state(): void
@@ -70,7 +112,10 @@ class RecentPostsWidgetTest extends TenantTestCase
 
     public function test_the_rss_link_is_only_offered_to_members_whose_feed_would_load(): void
     {
-        $member = User::factory()->createQuietly()->syncRoles([])->givePermissionTo(['view_recent_news', 'view_recent_announcements']);
+        $member = User::factory()->createQuietly()->syncRoles([])->givePermissionTo([
+            'view_recent_news',
+            'view_recent_announcements',
+        ]);
         $this->actingAs($member);
 
         Livewire::test(RecentNews::class)->assertDontSee('news.xml');
@@ -80,6 +125,20 @@ class RecentPostsWidgetTest extends TenantTestCase
 
         Livewire::test(RecentNews::class)->assertSee('news.xml');
         Livewire::test(RecentAnnouncements::class)->assertSee('announcements.xml');
+    }
+
+    private function createNews(
+        User $author,
+        string $headline,
+        string $text,
+        ?CarbonInterface $createdAt = null,
+    ): Newsfeed {
+        return Newsfeed::factory()->createQuietly([
+            'causer_type' => User::class,
+            'causer_id' => $author->getKey(),
+            'created_at' => $createdAt ?? now(),
+            'properties' => ['headline' => $headline, 'text' => $text],
+        ]);
     }
 
     private function actingAsSuperAdmin(): User

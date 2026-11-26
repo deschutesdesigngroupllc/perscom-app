@@ -40,7 +40,11 @@ Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], fun
         Route::get('calendars/{calendar}.ics', CalendarFeedController::class)->whereNumber('calendar')->name('calendar');
     });
 
-    Route::group(['prefix' => 'feeds/{token}', 'as' => 'rss-feeds.', 'middleware' => ['throttle:rss-feeds']], function (): void {
+    Route::group([
+        'prefix' => 'feeds/{token}',
+        'as' => 'rss-feeds.',
+        'middleware' => ['throttle:rss-feeds'],
+    ], function (): void {
         Route::get('announcements.xml', AnnouncementsFeedController::class)->name('announcements');
         Route::get('news.xml', NewsFeedController::class)->name('news');
     });

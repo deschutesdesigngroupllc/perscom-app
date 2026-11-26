@@ -51,7 +51,7 @@ class ModelNotification
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Recipients')
-                            ->visible(fn (Get $get): bool => (bool) $get('enabled'))
+                            ->visible(fn (Get $get): bool => $get->boolean('enabled'))
                             ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('groups')
@@ -98,7 +98,7 @@ class ModelNotification
                                     ]),
                             ]),
                         Tab::make('Notification')
-                            ->visible(fn (Get $get): bool => (bool) $get('enabled'))
+                            ->visible(fn (Get $get): bool => $get->boolean('enabled'))
                             ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 TextInput::make('subject')

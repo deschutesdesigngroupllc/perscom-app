@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 /**
- * Turns generated field, entry, column and filter labels into Title Case so every label reads the same
- * whether it was written by hand or derived from an attribute name.
+ * Write field, entry, column, and filter labels in Title Case.
  */
 class Label
 {
     /**
-     * Words kept lowercase unless they open or close the label.
+     * The words kept lowercase unless they open or close the label.
      */
-    public const array MINOR_WORDS = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'from', 'in', 'nor', 'of', 'on', 'or', 'per', 'the', 'to', 'via', 'vs', 'with'];
+    public const array MINOR_WORDS = [
+        'a',
+        'an',
+        'and',
+        'as',
+        'at',
+        'but',
+        'by',
+        'for',
+        'from',
+        'in',
+        'nor',
+        'of',
+        'on',
+        'or',
+        'per',
+        'the',
+        'to',
+        'via',
+        'vs',
+        'with',
+    ];
 
     /**
-     * Words that should always be written this way, keyed by their lowercase form.
+     * The words always written this way, keyed by their lowercase form.
      */
     public const array ACRONYMS = [
         'ai' => 'AI',
@@ -42,8 +63,9 @@ class Label
     ];
 
     /**
-     * Derive a Title Case label from an attribute name such as "user.first_name" or "apiKey". A foreign key
-     * like "author_id" is labelled after what it points to ("Author"), while a bare "id" stays "ID".
+     * Derive a Title Case label from an attribute name such as "first_name".
+     *
+     * A foreign key like "author_id" is labeled after what it points to ("Author").
      */
     public static function fromName(string $name): string
     {
@@ -53,24 +75,35 @@ class Label
             ->replace(['-', '_'], ' '));
     }
 
+    /**
+     * Write a label in Title Case, keeping acronyms and minor words as listed.
+     */
     public static function titleCase(string $label): string
     {
-        $words = preg_split('/(\s+)/', trim($label), -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
-        $wordIndexes = array_keys(array_filter($words, fn (string $word): bool => $word !== '' && ! ctype_space($word)));
-        $firstIndex = reset($wordIndexes);
-        $lastIndex = end($wordIndexes);
+        $words = Str::of($label)->trim()->explode(' ');
+        $wordIndexes = $words->filter(fn (string $word): bool => filled($word))->keys();
+        $firstIndex = $wordIndexes->first();
+        $lastIndex = $wordIndexes->last();
 
-        foreach ($wordIndexes as $index) {
-            $word = $words[$index];
-            $lower = Str::lower($word);
+        return $words
+            ->map(fn (string $word, int $index): string => static::titleCaseWord(
+                $word,
+                isEdge: $index === $firstIndex || $index === $lastIndex,
+            ))
+            ->implode(' ');
+    }
 
-            $words[$index] = match (true) {
-                array_key_exists($lower, static::ACRONYMS) => static::ACRONYMS[$lower],
-                $index !== $firstIndex && $index !== $lastIndex && in_array($lower, static::MINOR_WORDS, true) => $lower,
-                default => Str::ucfirst($word),
-            };
-        }
+    /**
+     * Write one word of a label in Title Case.
+     */
+    protected static function titleCaseWord(string $word, bool $isEdge): string
+    {
+        $lower = Str::lower($word);
 
-        return implode('', $words);
+        return match (true) {
+            Arr::exists(static::ACRONYMS, $lower) => static::ACRONYMS[$lower],
+            ! $isEdge && collect(static::MINOR_WORDS)->contains($lower) => $lower,
+            default => Str::ucfirst($word),
+        };
     }
 }

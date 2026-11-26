@@ -60,10 +60,14 @@ class RecentAnnouncements extends RecentPostsWidget
     {
         $user = Auth::user();
 
-        return $user instanceof User && $user->can('view', Announcement::class) ? RssFeedService::announcementsFeedUrl($user) : null;
+        return $user instanceof User && $user->can('view', Announcement::class)
+            ? RssFeedService::announcementsFeedUrl($user)
+            : null;
     }
 
     /**
+     * Get the latest announcements, newest first.
+     *
      * @return array<int, Model>
      */
     protected function records(): array
@@ -88,7 +92,7 @@ class RecentAnnouncements extends RecentPostsWidget
         return $record->content;
     }
 
-    protected function colorFor(Model $record): string
+    protected function colorFor(Model $record): ?string
     {
         /** @var Announcement $record */
         return $record->color;

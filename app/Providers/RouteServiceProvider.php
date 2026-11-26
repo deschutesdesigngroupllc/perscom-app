@@ -46,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
 
         RateLimiter::for('calendar-feeds', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
 
-        RateLimiter::for('rss-feeds', fn (Request $request) => Limit::perMinute(60)->by($request->ip()));
+        RateLimiter::for('rss-feeds', fn (Request $request): Limit => Limit::perMinute(60)->by($request->ip()));
 
         RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
             if (blank($tenant)) {

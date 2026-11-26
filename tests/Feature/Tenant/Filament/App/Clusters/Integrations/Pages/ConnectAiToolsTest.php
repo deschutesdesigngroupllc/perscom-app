@@ -23,7 +23,10 @@ class ConnectAiToolsTest extends TenantTestCase
         Livewire::test(ConnectAiTools::class)
             ->assertSuccessful()
             ->assertSet('serverUrl', route('mcp.server'))
-            ->assertSchemaComponentExists('serverUrl', checkComponentUsing: fn (TextInput $field): bool => $field->isDisabled() && $field->isCopyable())
+            ->assertSchemaComponentExists(
+                'serverUrl',
+                checkComponentUsing: fn (TextInput $field): bool => $field->isDisabled() && $field->isCopyable(),
+            )
             ->assertSee(route('mcp.server'))
             ->assertSee('claude mcp add --transport http perscom')
             ->assertSee('read-only')

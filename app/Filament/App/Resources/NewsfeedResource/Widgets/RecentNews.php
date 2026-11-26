@@ -9,7 +9,6 @@ use App\Filament\App\Widgets\RecentPostsWidget;
 use App\Models\Newsfeed;
 use App\Models\User;
 use App\Services\RssFeedService;
-use App\Support\Brand;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Icons\Heroicon;
@@ -65,6 +64,8 @@ class RecentNews extends RecentPostsWidget
     }
 
     /**
+     * Get the latest newsfeed items with their authors, newest first.
+     *
      * @return array<int, Model>
      */
     protected function records(): array
@@ -89,10 +90,10 @@ class RecentNews extends RecentPostsWidget
         return (string) $record->text;
     }
 
-    protected function colorFor(Model $record): string
+    protected function colorFor(Model $record): ?string
     {
         /** @var Newsfeed $record */
-        return $record->color ?: Brand::PRIMARY_HEX;
+        return filled($record->color) ? $record->color : null;
     }
 
     protected function authorFor(Model $record): ?User

@@ -33,6 +33,7 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -55,7 +56,7 @@ class Calendar extends Page
     public const int AGENDA_WINDOW_DAYS = 30;
 
     /**
-     * How far beyond the loaded agenda to look for more events before calling it the end.
+     * The number of days past the loaded agenda searched for more events.
      */
     public const int AGENDA_HORIZON_DAYS = 365;
 
@@ -93,6 +94,11 @@ class Calendar extends Page
      * @var array<string, OccurrenceData>
      */
     protected array $resolvedOccurrences = [];
+
+    /**
+     * @var array<string, OccurrenceData|null>
+     */
+    protected array $nextOccurrencesBeyondAgenda = [];
 
     /**
      * The heading shown above a day in the agenda.
@@ -174,7 +180,7 @@ class Calendar extends Page
     }
 
     /**
-     * Extend the agenda far enough to reach the next event, so loading more never shows an empty stretch.
+     * Extend the agenda far enough to reach the next event beyond it.
      */
     public function loadMore(): void
     {
@@ -187,7 +193,10 @@ class Calendar extends Page
         $today = today(UserSettingsService::timezone());
         $daysAway = (int) ceil(abs($today->diffInDays($next->localStarts()->startOfDay(), false)));
 
-        $this->agendaWindows = max($this->agendaWindows + 1, (int) ceil(($daysAway + 1) / static::AGENDA_WINDOW_DAYS));
+        $this->agendaWindows = max(
+            $this->agendaWindows + 1,
+            (int) ceil(($daysAway + 1) / static::AGENDA_WINDOW_DAYS),
+        );
     }
 
     public function hasMoreAgenda(): bool
@@ -391,23 +400,42 @@ class Calendar extends Page
     }
 
     /**
-     * The closest event outside the loaded agenda: the next one after it, or when looking back, the latest one before it.
+     * Find the closest event outside the loaded agenda.
+     *
+     * Looks forward past the agenda's end, or backward before its start when showing past events.
      */
     protected function nextOccurrenceBeyondAgenda(): ?OccurrenceData
     {
         [$start, $end] = $this->agendaRange();
+        $cacheKey = collect([$start->getTimestamp(), $end->getTimestamp(), $this->past, $this->filters()])
+            ->flatten()
+            ->map(fn (mixed $value): string => var_export($value, true))
+            ->implode('|');
+
+        if (Arr::exists($this->nextOccurrencesBeyondAgenda, $cacheKey)) {
+            return $this->nextOccurrencesBeyondAgenda[$cacheKey];
+        }
+
         $user = Auth::user();
-        $user = $user instanceof User ? $user : null;
+        $boundary = $this->past ? $start : $end;
+        $searchStart = $this->past ? $start->copy()->subDays(static::AGENDA_HORIZON_DAYS) : $end;
+        $searchEnd = $this->past ? $start : $end->copy()->addDays(static::AGENDA_HORIZON_DAYS);
 
-        $occurrences = $this->past
-            ? EventCalendarService::occurrences($start->copy()->subDays(static::AGENDA_HORIZON_DAYS), $start, $this->filters(), $user)
-                ->filter(fn (OccurrenceData $occurrence): bool => $occurrence->starts->lessThan($start))
-            : EventCalendarService::occurrences($end, $end->copy()->addDays(static::AGENDA_HORIZON_DAYS), $this->filters(), $user)
-                ->filter(fn (OccurrenceData $occurrence): bool => $occurrence->starts->greaterThan($end));
+        $occurrences = EventCalendarService::occurrences(
+            $searchStart,
+            $searchEnd,
+            $this->filters(),
+            $user instanceof User ? $user : null,
+        )
+            ->filter(fn (OccurrenceData $occurrence): bool => $this->past
+                ? $occurrence->starts->lessThan($boundary)
+                : $occurrence->starts->greaterThan($boundary))
+            ->sortBy(
+                fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp(),
+                descending: $this->past,
+            );
 
-        return $this->past
-            ? $occurrences->sortByDesc(fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp())->first()
-            : $occurrences->sortBy(fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp())->first();
+        return $this->nextOccurrencesBeyondAgenda[$cacheKey] = $occurrences->first();
     }
 
     /**

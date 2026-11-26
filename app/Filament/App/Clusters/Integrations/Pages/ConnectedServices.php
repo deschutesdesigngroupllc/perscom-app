@@ -79,7 +79,9 @@ class ConnectedServices extends SettingsPage
                                     ->state(fn (): string => $this->discordServerName() ?? 'Not connected')
                                     ->badge()
                                     ->color(fn (): string => filled($this->discordServerName()) ? 'success' : 'gray')
-                                    ->icon(fn (): Heroicon => filled($this->discordServerName()) ? Heroicon::CheckCircle : Heroicon::MinusCircle)
+                                    ->icon(fn (): Heroicon => filled($this->discordServerName())
+                                        ? Heroicon::CheckCircle
+                                        : Heroicon::MinusCircle)
                                     ->helperText('Connecting adds the PERSCOM bot to your community server. You will need the Manage Server permission in Discord.')
                                     ->afterContent([
                                         Action::make('connectDiscord')
@@ -149,7 +151,9 @@ class ConnectedServices extends SettingsPage
                                     ->state(fn (): string => $this->slackWorkspaceName() ?? 'Not connected')
                                     ->badge()
                                     ->color(fn (): string => filled($this->slackWorkspaceName()) ? 'success' : 'gray')
-                                    ->icon(fn (): Heroicon => filled($this->slackWorkspaceName()) ? Heroicon::CheckCircle : Heroicon::MinusCircle)
+                                    ->icon(fn (): Heroicon => filled($this->slackWorkspaceName())
+                                        ? Heroicon::CheckCircle
+                                        : Heroicon::MinusCircle)
                                     ->helperText('Connect your Slack workspace to post organization-wide notifications, messages and event reminders to a channel.')
                                     ->afterContent([
                                         Action::make('connectSlack')

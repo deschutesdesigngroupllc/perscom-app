@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Widgets;
 
+use App\Data\Widgets\RecentPostData;
 use App\Models\User;
 use BackedEnum;
 use Carbon\CarbonInterface;
@@ -18,8 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * A dashboard feed of the latest posts: the newest one featured, the rest as compact rows, each opening
- * in a modal. Announcements and the newsfeed share it.
+ * Show the latest posts, featuring the newest and opening each in a modal.
  */
 abstract class RecentPostsWidget extends Widget implements HasActions, HasSchemas
 {
@@ -49,11 +49,13 @@ abstract class RecentPostsWidget extends Widget implements HasActions, HasSchema
     abstract public function allPostsUrl(): ?string;
 
     /**
-     * The member's private RSS link for this feed.
+     * Get the member's private RSS link for this feed.
      */
     abstract public function rssFeedUrl(): ?string;
 
     /**
+     * Get the latest records to show, newest first.
+     *
      * @return array<int, Model>
      */
     abstract protected function records(): array;
@@ -64,28 +66,34 @@ abstract class RecentPostsWidget extends Widget implements HasActions, HasSchema
 
     abstract protected function bodyFor(Model $record): string;
 
-    abstract protected function colorFor(Model $record): string;
+    /**
+     * Get the post's accent color, or null to show a neutral gray accent.
+     */
+    abstract protected function colorFor(Model $record): ?string;
 
     /**
-     * @return array<int, array{key: mixed, title: string, excerpt: string, color: string, author: ?User, date: ?CarbonInterface, note: ?string}>
+     * Build the posts the widget shows, newest first.
+     *
+     * @return array<int, RecentPostData>
      */
     public function posts(): array
     {
-        return collect($this->records())->map(fn (Model $record): array => [
-            'key' => $record->getKey(),
-            'title' => $this->titleFor($record),
-            'excerpt' => Str::of(strip_tags($this->bodyFor($record)))->squish()->limit(280)->toString(),
-            'color' => $this->colorFor($record),
-            'author' => $this->authorFor($record),
-            'date' => $this->dateFor($record),
-            'note' => $this->noteFor($record),
-        ])->all();
+        return collect($this->records())->map(fn (Model $record): RecentPostData => new RecentPostData(
+            key: $record->getKey(),
+            title: $this->titleFor($record),
+            excerpt: Str::of($this->bodyFor($record))->stripTags()->squish()->limit(280)->toString(),
+            color: $this->colorFor($record),
+            author: $this->authorFor($record),
+            date: $this->dateFor($record),
+            note: $this->noteFor($record),
+        ))->all();
     }
 
     public function viewAction(): Action
     {
         return Action::make('view')
             ->record(fn (array $arguments): ?Model => $this->findRecord($arguments['record'] ?? null))
+            ->hidden(fn (?Model $record): bool => ! $record instanceof Model)
             ->modalHeading(fn (Model $record): string => $this->titleFor($record))
             ->modalDescription(fn (Model $record): string => collect([
                 $this->authorFor($record)?->name,
