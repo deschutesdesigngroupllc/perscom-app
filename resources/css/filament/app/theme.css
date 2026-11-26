@@ -258,3 +258,20 @@
 #fi-main-content:focus {
   outline: none;
 }
+
+/* Filament centers inline labels on text inputs, toggles and checkboxes against the whole field, so a field
+   with helper text floats its label halfway down. Align them to the top of the control like selects instead. */
+@media (width >= 40rem) {
+  .fi-fo-field.fi-fo-field-has-inline-label > .fi-fo-field-label-col.fi-vertical-align-center {
+    align-items: start;
+    padding-top: calc(var(--spacing) * 1.5);
+  }
+
+  .fi-fo-field.fi-fo-field-has-inline-label:has(.fi-toggle) > .fi-fo-field-label-col.fi-vertical-align-center {
+    padding-top: calc(var(--spacing) * 0.5);
+  }
+
+  .fi-fo-field.fi-fo-field-has-inline-label:has(.fi-checkbox-input) > .fi-fo-field-label-col.fi-vertical-align-center {
+    padding-top: 0;
+  }
+}
