@@ -118,13 +118,56 @@ class ShowControllerTest extends TenantTestCase
     {
         $this->enablePublicProfiles();
 
-        $response = $this->get(ServiceProfileService::imageUrl($this->member()))
+        $response = $this->get(ServiceProfileService::build($this->member())->imageUrl)
             ->assertOk()
             ->assertHeader('Content-Type', 'image/png');
 
         $size = getimagesizefromstring((string) $response->getContent());
 
         $this->assertSame([1200, 630], [$size[0] ?? null, $size[1] ?? null]);
+    }
+
+    public function test_the_share_image_url_changes_when_the_member_earns_an_award(): void
+    {
+        $this->enablePublicProfiles();
+        $member = $this->member();
+        $before = ServiceProfileService::build($member)->imageUrl;
+
+        AwardRecord::factory()->createQuietly([
+            'user_id' => $member->getKey(),
+            'award_id' => Award::factory()->createQuietly()->getKey(),
+        ]);
+
+        $this->assertNotSame($before, ServiceProfileService::build($member->fresh())->imageUrl);
+    }
+
+    public function test_the_share_image_url_changes_when_the_members_rank_is_renamed(): void
+    {
+        $this->enablePublicProfiles();
+        $rank = Rank::factory()->createQuietly(['name' => 'Sergeant', 'abbreviation' => 'SGT']);
+        $member = $this->member(['rank_id' => $rank->getKey()]);
+        $before = ServiceProfileService::build($member)->imageUrl;
+
+        $rank->updateQuietly(['name' => 'Staff Sergeant', 'abbreviation' => 'SSG']);
+
+        $this->assertNotSame($before, ServiceProfileService::build($member->fresh())->imageUrl);
+    }
+
+    public function test_the_share_image_is_redrawn_after_the_member_earns_an_award(): void
+    {
+        $this->enablePublicProfiles();
+        $member = $this->member();
+        $handle = ServiceProfileService::handle($member);
+        $first = $this->get(route('app.service-profiles.image', ['handle' => $handle]))->assertOk()->getContent();
+
+        AwardRecord::factory()->createQuietly([
+            'user_id' => $member->getKey(),
+            'award_id' => Award::factory()->createQuietly()->getKey(),
+        ]);
+
+        $second = $this->get(route('app.service-profiles.image', ['handle' => $handle]))->assertOk()->getContent();
+
+        $this->assertNotSame($first, $second);
     }
 
     /**

@@ -70,15 +70,34 @@ class ServiceProfileService
     }
 
     /**
-     * The version parameter changes whenever the member changes, so share previews refresh rather
-     * than serving a stale cached image.
+     * Get the absolute URL of the member's share image at the given version.
      */
-    public static function imageUrl(User $user): string
+    public static function imageUrl(User $user, string $version): string
     {
         return ServiceProfileService::absoluteUrl(route('app.service-profiles.image', [
             'handle' => ServiceProfileService::handle($user),
-            'v' => $user->updated_at?->getTimestamp(),
+            'v' => $version,
         ], absolute: false));
+    }
+
+    /**
+     * Fingerprint everything the share image draws.
+     *
+     * It changes whenever the picture would, so the cached image and link previews refresh.
+     */
+    public static function imageVersion(ServiceProfileData $profile): string
+    {
+        $user = $profile->user;
+
+        return Str::substr(md5(serialize([
+            $user->name,
+            $profile->organization,
+            $profile->timeInService,
+            $profile->showsRank ? [$user->rank?->name, $user->rank?->abbreviation, $user->rank?->image?->image_url] : null,
+            $profile->showsAssignment ? [$user->position?->name, $user->unit?->name] : null,
+            $profile->awards->map(fn (AwardRecord $record): array => [$record->getKey(), $record->award?->image?->image_url])->all(),
+            $profile->qualifications->count(),
+        ])), 0, 16);
     }
 
     /**
@@ -130,7 +149,7 @@ class ServiceProfileService
                 ->values()
                 ->toBase();
 
-        return new ServiceProfileData(
+        $profile = new ServiceProfileData(
             user: $user,
             organization: (string) SettingsService::get(OrganizationSettings::class, 'name', config('app.name')),
             timeInService: in_array('time_in_service', $hidden, true) ? null : ServiceProfileService::humanize($user->time_in_service),
@@ -141,8 +160,12 @@ class ServiceProfileService
             showsRank: ! in_array('rank_id', $hidden, true) && filled($user->rank),
             showsAssignment: ! in_array('assignment', $hidden, true),
             url: ServiceProfileService::url($user),
-            imageUrl: ServiceProfileService::imageUrl($user),
+            imageUrl: '',
         );
+
+        $profile->imageUrl = ServiceProfileService::imageUrl($user, ServiceProfileService::imageVersion($profile));
+
+        return $profile;
     }
 
     protected static function humanize(?CarbonInterval $interval): ?string

@@ -75,9 +75,11 @@ hidden rank or assignment stays out of the image.
 
 - It is served by `app/Http/Controllers/App/ServiceProfiles/ImageController.php`, which returns 404
   unless `ServiceProfileService::isPublic()` holds.
-- The PNG is cached for a day under a key built from the member's `updated_at`, and the `og:image`
-  URL carries the same timestamp as `v`. A change that does not touch the member's `updated_at`
-  (a new award record, a renamed rank) is not reflected until the cache entry expires.
+- `ServiceProfileService::imageVersion()` fingerprints everything the image draws: the name, the
+  organization, time in service, the rank and its insignia, position and unit, the award ribbons,
+  and the qualification count. The PNG is cached for a day under that version, and the `og:image`
+  URL carries it as `v`, so a new award or a renamed rank yields a new image and a new preview
+  URL. Anything added to the drawing must be added to the fingerprint too.
 - Only raster images are drawn. SVG insignia and ribbons, and any file GD cannot decode, are
   skipped; a rank without a usable image falls back to an abbreviation badge. Ribbons stop at the
   right padding rather than wrapping.
