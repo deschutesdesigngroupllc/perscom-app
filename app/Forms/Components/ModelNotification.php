@@ -46,11 +46,12 @@ class ModelNotification
                     ->default(data_get($defaults, 'enabled', false))
                     ->helperText($description ?? 'Enable to send notifications.'),
                 Tabs::make()
+                    ->key('model_notification_tabs')
                     ->persistTabInQueryString()
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Recipients')
-                            ->visible(fn (Get $get): mixed => $get('enabled'))
+                            ->visible(fn (Get $get): bool => (bool) $get('enabled'))
                             ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('groups')
@@ -97,7 +98,7 @@ class ModelNotification
                                     ]),
                             ]),
                         Tab::make('Notification')
-                            ->visible(fn (Get $get): mixed => $get('enabled'))
+                            ->visible(fn (Get $get): bool => (bool) $get('enabled'))
                             ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 TextInput::make('subject')

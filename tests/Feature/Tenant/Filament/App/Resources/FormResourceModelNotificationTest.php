@@ -15,6 +15,20 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class FormResourceModelNotificationTest extends TenantTestCase
 {
+    public function test_notification_tabs_only_appear_once_notifications_are_enabled(): void
+    {
+        $admin = User::factory()->createQuietly();
+        $admin->assignRole(Utils::getSuperAdminName());
+        $this->actingAs($admin);
+
+        $form = Form::factory()->createQuietly();
+
+        Livewire::test(EditForm::class, ['record' => $form->getKey()])
+            ->assertSchemaComponentHidden('model_notifications.model_notification_tabs')
+            ->set('data.model_notifications.enabled', true)
+            ->assertSchemaComponentVisible('model_notifications.model_notification_tabs');
+    }
+
     public function test_saving_notification_settings_stores_the_written_message(): void
     {
         $admin = User::factory()->createQuietly();

@@ -44,6 +44,7 @@ use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Tabs;
 use Filament\Support\Facades\FilamentColor;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
@@ -181,6 +182,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->configureTitleCaseLabels();
 
+        $this->hideEmptyTabs();
 
         Column::configureUsing(function (Column $field) {
             $closure = match ($field->getName()) {
@@ -476,5 +478,13 @@ class AppServiceProvider extends ServiceProvider
         Entry::configureUsing(fn (Entry $entry): Entry => $entry->label(fn (Entry $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
         Column::configureUsing(fn (Column $column): Column => $column->label(fn (Column $component): string => Label::fromName(Str::of($component->getName())->beforeLast('.')->afterLast('.')->toString())));
         BaseFilter::configureUsing(fn (BaseFilter $filter): BaseFilter => $filter->label(fn (BaseFilter $component): string => Label::fromName(Str::before($component->getName(), '.'))));
+    }
+
+    /**
+     * A tabs container whose tabs are all hidden would still draw its empty border, so hide it with them.
+     */
+    protected function hideEmptyTabs(): void
+    {
+        Tabs::configureUsing(fn (Tabs $tabs): Tabs => $tabs->hidden(fn (Tabs $component): bool => $component->getChildComponents() === []));
     }
 }
