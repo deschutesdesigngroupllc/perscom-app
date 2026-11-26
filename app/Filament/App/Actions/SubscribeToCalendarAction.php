@@ -33,7 +33,6 @@ class SubscribeToCalendarAction extends Action
 
         $this->modalHeading('Subscribe to Calendar');
         $this->modalDescription('Add events to the calendar app you already use. Subscribed calendars update automatically as events change.');
-        $this->modalIcon(Heroicon::OutlinedCalendarDays);
         $this->modalWidth('lg');
         $this->modalSubmitAction(false);
         $this->modalCancelActionLabel('Close');
