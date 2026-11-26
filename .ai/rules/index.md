@@ -19,6 +19,7 @@ Before planning or editing, find the row whose globs match the file's path and r
 | tests/Feature/**/Jobs/** | .ai/rules/feature-jobs.md |
 | tests/Feature/** | .ai/rules/feature.md |
 | app/Filament/** | .ai/rules/filament.md |
+| app/Forms/** | .ai/rules/forms.md |
 | tests/Feature/Tenant/Http/Controllers/Api/** | .ai/rules/http-controllers-api.md |
 | app/Jobs/** | .ai/rules/jobs.md |
 | resources/js/** | .ai/rules/js.md |
@@ -37,3 +38,4 @@ Before planning or editing, find the row whose globs match the file's path and r
 | routes/** | .ai/rules/routes.md |
 | app/Services/** | .ai/rules/services.md |
 | tests/** | .ai/rules/tests.md |
+| resources/views/** | .ai/rules/views.md |
