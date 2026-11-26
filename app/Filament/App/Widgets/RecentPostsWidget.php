@@ -49,6 +49,11 @@ abstract class RecentPostsWidget extends Widget implements HasActions, HasSchema
     abstract public function allPostsUrl(): ?string;
 
     /**
+     * The member's private RSS link for this feed.
+     */
+    abstract public function rssFeedUrl(): ?string;
+
+    /**
      * @return array<int, Model>
      */
     abstract protected function records(): array;

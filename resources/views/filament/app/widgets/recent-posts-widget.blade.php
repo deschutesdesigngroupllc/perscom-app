@@ -3,12 +3,22 @@
   $featured = $posts[0] ?? null;
   $rest = array_slice($posts, 1);
   $allPostsUrl = $this->allPostsUrl();
+  $rssFeedUrl = $this->rssFeedUrl();
 @endphp
 
 <x-filament-widgets::widget>
   <x-filament::section :icon="$this->icon()" icon-color="primary">
     <x-slot name="heading">{{ $this->heading() }}</x-slot>
     <x-slot name="description">{{ $this->description() }}</x-slot>
+
+    @if ($rssFeedUrl)
+      <x-slot name="afterHeader">
+        <x-filament::link :href="$rssFeedUrl" target="_blank" rel="noopener" color="gray" icon="heroicon-m-rss" size="sm"
+          tooltip="Your private RSS link. Paste it into any feed reader.">
+          RSS
+        </x-filament::link>
+      </x-slot>
+    @endif
 
     @if ($featured)
       <button type="button" wire:click="mountAction('view', @js(['record' => $featured['key']]))" wire:key="post-{{ $featured['key'] }}"

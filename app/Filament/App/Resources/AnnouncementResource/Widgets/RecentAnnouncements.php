@@ -7,10 +7,13 @@ namespace App\Filament\App\Resources\AnnouncementResource\Widgets;
 use App\Filament\App\Resources\AnnouncementResource;
 use App\Filament\App\Widgets\RecentPostsWidget;
 use App\Models\Announcement;
+use App\Models\User;
+use App\Services\RssFeedService;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class RecentAnnouncements extends RecentPostsWidget
 {
@@ -51,6 +54,13 @@ class RecentAnnouncements extends RecentPostsWidget
     public function allPostsUrl(): ?string
     {
         return AnnouncementResource::canViewAny() ? AnnouncementResource::getUrl() : null;
+    }
+
+    public function rssFeedUrl(): ?string
+    {
+        $user = Auth::user();
+
+        return $user instanceof User ? RssFeedService::announcementsFeedUrl($user) : null;
     }
 
     /**

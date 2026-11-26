@@ -9,6 +9,7 @@ use App\Filament\App\Resources\NewsfeedResource\Widgets\RecentNews;
 use App\Models\Announcement;
 use App\Models\Newsfeed;
 use App\Models\User;
+use App\Services\RssFeedService;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\Testing\TestAction;
 use Livewire\Livewire;
@@ -16,9 +17,11 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class RecentPostsWidgetTest extends TenantTestCase
 {
+    private User $user;
+
     public function test_recent_news_features_the_latest_item_and_opens_it_in_a_modal(): void
     {
-        $this->actingAsSuperAdmin();
+        $this->user = $this->actingAsSuperAdmin();
 
         $author = User::factory()->createQuietly(['name' => 'Captain Reyes']);
 
@@ -37,7 +40,7 @@ class RecentPostsWidgetTest extends TenantTestCase
 
         $widget = Livewire::test(RecentNews::class);
 
-        $widget->assertSeeInOrder(['Latest', 'Detachment Reaches Full Strength', 'All positions are filled.', 'Captain Reyes', 'Promotions Approved'])->assertDontSeeHtml('<p>All positions are filled.</p>')->assertSee('View All News');
+        $widget->assertSeeInOrder(['Latest', 'Detachment Reaches Full Strength', 'All positions are filled.', 'Captain Reyes', 'Promotions Approved'])->assertDontSeeHtml('<p>All positions are filled.</p>')->assertSee('View All News')->assertSeeHtml(RssFeedService::newsFeedUrl($this->user));
 
         $widget
             ->mountAction(TestAction::make('view')->arguments(['record' => $latest->getKey()]))

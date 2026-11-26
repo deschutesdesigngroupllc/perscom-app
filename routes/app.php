@@ -8,6 +8,8 @@ use App\Http\Controllers\App\Calendars\CalendarFeedController;
 use App\Http\Controllers\App\Calendars\PersonalFeedController;
 use App\Http\Controllers\App\Events\CalendarController;
 use App\Http\Controllers\App\Events\CheckInController;
+use App\Http\Controllers\App\Feeds\AnnouncementsFeedController;
+use App\Http\Controllers\App\Feeds\NewsFeedController;
 use App\Http\Controllers\App\Integrations\DiscordConnectController;
 use App\Http\Controllers\App\Integrations\InstallController;
 use App\Http\Controllers\App\Integrations\SlackConnectController;
@@ -36,6 +38,11 @@ Route::group(['middleware' => ['web', InitializeTenancyBySubdomain::class]], fun
     Route::group(['prefix' => 'feeds/{token}', 'as' => 'calendar-feeds.', 'middleware' => ['throttle:calendar-feeds']], function (): void {
         Route::get('calendar.ics', PersonalFeedController::class)->name('personal');
         Route::get('calendars/{calendar}.ics', CalendarFeedController::class)->whereNumber('calendar')->name('calendar');
+    });
+
+    Route::group(['prefix' => 'feeds/{token}', 'as' => 'rss-feeds.', 'middleware' => ['throttle:rss-feeds']], function (): void {
+        Route::get('announcements.xml', AnnouncementsFeedController::class)->name('announcements');
+        Route::get('news.xml', NewsFeedController::class)->name('news');
     });
 
     Route::group(['middleware' => ['auth:web']], function (): void {

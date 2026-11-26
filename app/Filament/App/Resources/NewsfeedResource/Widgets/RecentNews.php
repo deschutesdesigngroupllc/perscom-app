@@ -8,11 +8,13 @@ use App\Filament\App\Resources\NewsfeedResource;
 use App\Filament\App\Widgets\RecentPostsWidget;
 use App\Models\Newsfeed;
 use App\Models\User;
+use App\Services\RssFeedService;
 use App\Support\Brand;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class RecentNews extends RecentPostsWidget
 {
@@ -53,6 +55,13 @@ class RecentNews extends RecentPostsWidget
     public function allPostsUrl(): ?string
     {
         return NewsfeedResource::canViewAny() ? NewsfeedResource::getUrl() : null;
+    }
+
+    public function rssFeedUrl(): ?string
+    {
+        $user = Auth::user();
+
+        return $user instanceof User ? RssFeedService::newsFeedUrl($user) : null;
     }
 
     /**
