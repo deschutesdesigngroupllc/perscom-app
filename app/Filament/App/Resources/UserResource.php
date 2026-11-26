@@ -448,7 +448,13 @@ class UserResource extends BaseResource
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
                     ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('name', $direction))
                     ->searchable(query: fn (Builder $query, string $search) => $query->where('name', 'like', sprintf('%%%s%%', $search)))
-                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? Heroicon::OutlinedExclamationCircle : null)
+                    ->icon(function (?User $record): ?Heroicon {
+                        if (! $record instanceof User || $record->approved || ! Auth::user()->can('approve', $record)) {
+                            return null;
+                        }
+
+                        return Heroicon::OutlinedExclamationCircle;
+                    })
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 TextColumn::make('email')

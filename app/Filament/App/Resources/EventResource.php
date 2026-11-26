@@ -296,7 +296,7 @@ class EventResource extends BaseResource
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
-                    ->icon(fn (Event $record): ?string => $record->repeats ? Heroicon::OutlinedArrowPath : null),
+                    ->icon(fn (Event $record): ?Heroicon => $record->repeats ? Heroicon::OutlinedArrowPath : null),
                 TextColumn::make('starts')
                     ->label('Starts')
                     ->dateTime(fn (Event $record): string => $record->all_day ? 'M j, Y' : 'M j, Y g:i A')

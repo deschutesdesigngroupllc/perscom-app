@@ -85,7 +85,7 @@ class MessageResource extends BaseResource
                     ->html()
                     ->wrap()
                     ->sortable()
-                    ->icon(fn (Message $record): ?string => $record->repeats ? Heroicon::OutlinedArrowPath : null),
+                    ->icon(fn (Message $record): ?Heroicon => $record->repeats ? Heroicon::OutlinedArrowPath : null),
                 TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),
