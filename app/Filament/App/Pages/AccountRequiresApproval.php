@@ -6,16 +6,18 @@ namespace App\Filament\App\Pages;
 
 use App\Models\Tenant;
 use App\Models\User;
+use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Pages\SimplePage;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 
 class AccountRequiresApproval extends SimplePage
 {
     protected bool $hasTopbar = false;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected string $view = 'filament.app.pages.account-requires-approval';
 

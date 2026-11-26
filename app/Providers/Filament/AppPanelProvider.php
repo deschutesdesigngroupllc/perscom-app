@@ -49,6 +49,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Enums\Size;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -148,8 +149,8 @@ class AppPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make()
                     ->navigationGroup('Users')
                     ->navigationSort(22)
-                    ->navigationIcon('heroicon-o-shield-check')
-                    ->activeNavigationIcon('heroicon-o-shield-check'),
+                    ->navigationIcon(Heroicon::OutlinedShieldCheck)
+                    ->activeNavigationIcon(Heroicon::OutlinedShieldCheck),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration(fn (): bool => RegistrationSettings::isOpen())
@@ -195,19 +196,19 @@ class AppPanelProvider extends PanelProvider
                     ->label('Billing')
                     ->action(fn () => tenant() ? redirect()->away(Billing::actionUrl(tenant(), request()->headers->get('referer') ?: url('/'))) : null)
                     ->visible(fn (): bool => Gate::check('billing') && config('tenancy.enabled') && ! App::isDemo() && filled(config('cashier.secret')))
-                    ->icon('heroicon-o-currency-dollar'),
+                    ->icon(Heroicon::OutlinedCurrencyDollar),
                 Action::make('docs')
                     ->label('Documentation')
                     ->url('https://docs.perscom.io', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-book-open'),
+                    ->icon(Heroicon::OutlinedBookOpen),
                 Action::make('support')
                     ->label('Support')
                     ->url('https://perscom.io/slack', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-question-mark-circle'),
+                    ->icon(Heroicon::OutlinedQuestionMarkCircle),
                 Action::make('status')
                     ->label('System Status')
                     ->url('https://status.perscom.io', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-command-line'),
+                    ->icon(Heroicon::OutlinedCommandLine),
             ]);
     }
 }

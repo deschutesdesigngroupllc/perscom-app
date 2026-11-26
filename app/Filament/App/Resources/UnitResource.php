@@ -47,7 +47,7 @@ class UnitResource extends BaseResource
 {
     protected static ?string $model = Unit::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -62,7 +62,7 @@ class UnitResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Unit')
-                            ->icon('heroicon-o-home')
+                            ->icon(Heroicon::OutlinedHome)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the unit.')
@@ -92,7 +92,7 @@ class UnitResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -112,7 +112,7 @@ class UnitResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Toggle::make('hidden')
                                     ->helperText('Hide this unit from the roster.')
@@ -179,7 +179,7 @@ class UnitResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(UnitExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -16,6 +16,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -23,7 +24,7 @@ class DomainsRelationManager extends RelationManager
 {
     protected static string $relationship = 'domains';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedGlobeAlt;
 
     public function form(Schema $schema): Schema
     {

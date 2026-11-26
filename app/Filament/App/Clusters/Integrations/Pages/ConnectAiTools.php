@@ -16,6 +16,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Phiki\Grammar\Grammar;
@@ -27,7 +28,7 @@ class ConnectAiTools extends Page
 
     protected static ?string $cluster = Integrations::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cpu-chip';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCpuChip;
 
     protected static string|UnitEnum|null $navigationGroup = 'Services';
 

@@ -16,6 +16,7 @@ use Filament\Infolists\Components\CodeEntry;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use Phiki\Grammar\Grammar;
@@ -31,7 +32,7 @@ class Widgets extends Page
     #[Url]
     public string $widget = 'roster';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-code-bracket';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCodeBracket;
 
     protected static ?string $cluster = Integrations::class;
 
@@ -119,7 +120,7 @@ class Widgets extends Page
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
                         ->suffixAction(Action::make('open')
-                            ->icon('heroicon-o-plus')
+                            ->icon(Heroicon::OutlinedPlus)
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))
                         )

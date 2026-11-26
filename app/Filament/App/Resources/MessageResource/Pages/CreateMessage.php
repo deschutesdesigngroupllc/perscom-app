@@ -11,6 +11,7 @@ use Filament\Resources\Pages\CreateRecord;
 use Filament\Schemas\Components\Text;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 
 class CreateMessage extends CreateRecord
@@ -28,7 +29,7 @@ class CreateMessage extends CreateRecord
     {
         return [
             Step::make('Message')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema([
                     Text::make('tip')
                         ->columnSpanFull()
@@ -41,13 +42,13 @@ class CreateMessage extends CreateRecord
                     ...MessageResource::messageSchema(),
                 ]),
             Step::make('Channels')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::channelSchema()),
             Step::make('Recipients')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::detailsSchema()),
             Step::make('Schedule')
-                ->completedIcon('heroicon-m-hand-thumb-up')
+                ->completedIcon(Heroicon::HandThumbUp)
                 ->schema(MessageResource::scheduleSchema()),
         ];
     }

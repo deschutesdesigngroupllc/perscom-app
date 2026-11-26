@@ -35,7 +35,7 @@ class StatusResource extends BaseResource
 {
     protected static ?string $model = Status::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-scale';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedScale;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -95,7 +95,7 @@ class StatusResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(StatusExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -56,7 +56,7 @@ class TrainingRecordResource extends BaseResource
 
     protected static ?string $model = TrainingRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-academic-cap';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -74,7 +74,7 @@ class TrainingRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Training Record')
                             ->columns()
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->prefillFromQuery()
@@ -122,7 +122,7 @@ class TrainingRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -132,7 +132,7 @@ class TrainingRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -157,7 +157,7 @@ class TrainingRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Training Record')
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -179,7 +179,7 @@ class TrainingRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -189,7 +189,7 @@ class TrainingRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -215,7 +215,7 @@ class TrainingRecordResource extends BaseResource
                     ->placeholder(new HtmlString('&ndash;')),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -226,7 +226,7 @@ class TrainingRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -272,7 +272,7 @@ class TrainingRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(TrainingRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

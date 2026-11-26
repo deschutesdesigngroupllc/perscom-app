@@ -33,7 +33,7 @@ class CredentialResource extends BaseResource
 {
     protected static ?string $model = Credential::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -123,7 +123,7 @@ class CredentialResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CredentialExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

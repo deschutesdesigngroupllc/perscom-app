@@ -15,6 +15,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
@@ -23,7 +24,7 @@ class Organization extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
@@ -51,7 +52,7 @@ class Organization extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Account')
-                            ->icon('heroicon-o-building-office')
+                            ->icon(Heroicon::OutlinedBuildingOffice)
                             ->schema([
                                 TextInput::make('name')
                                     ->maxLength(255)

@@ -25,6 +25,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
@@ -36,7 +37,7 @@ class ConnectedServices extends SettingsPage
 {
     protected static ?string $cluster = Integrations::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-puzzle-piece';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPuzzlePiece;
 
     protected static string|UnitEnum|null $navigationGroup = 'Services';
 
@@ -78,7 +79,7 @@ class ConnectedServices extends SettingsPage
                                     ->state(fn (): string => $this->discordServerName() ?? 'Not connected')
                                     ->badge()
                                     ->color(fn (): string => filled($this->discordServerName()) ? 'success' : 'gray')
-                                    ->icon(fn (): string => filled($this->discordServerName()) ? 'heroicon-m-check-circle' : 'heroicon-m-minus-circle')
+                                    ->icon(fn (): Heroicon => filled($this->discordServerName()) ? Heroicon::CheckCircle : Heroicon::MinusCircle)
                                     ->helperText('Connecting adds the PERSCOM bot to your community server. You will need the Manage Server permission in Discord.')
                                     ->afterContent([
                                         Action::make('connectDiscord')
@@ -148,7 +149,7 @@ class ConnectedServices extends SettingsPage
                                     ->state(fn (): string => $this->slackWorkspaceName() ?? 'Not connected')
                                     ->badge()
                                     ->color(fn (): string => filled($this->slackWorkspaceName()) ? 'success' : 'gray')
-                                    ->icon(fn (): string => filled($this->slackWorkspaceName()) ? 'heroicon-m-check-circle' : 'heroicon-m-minus-circle')
+                                    ->icon(fn (): Heroicon => filled($this->slackWorkspaceName()) ? Heroicon::CheckCircle : Heroicon::MinusCircle)
                                     ->helperText('Connect your Slack workspace to post organization-wide notifications, messages and event reminders to a channel.')
                                     ->afterContent([
                                         Action::make('connectSlack')
@@ -186,14 +187,14 @@ class ConnectedServices extends SettingsPage
                                     ->helperText('Select the channel the notifications will be posted to. Then choose Slack as a channel on messages, events and record notifications.'),
                             ]),
                         Tab::make('Single Sign-On (SSO)')
-                            ->icon('heroicon-o-key')
+                            ->icon(Heroicon::OutlinedKey)
                             ->schema([
                                 TextInput::make('single_sign_on_key')
                                     ->label('SSO Key')
                                     ->disabled()
                                     ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM resources on the fly through the PERSCOM API.')
                                     ->suffixAction(fn (): Action => Action::make('regenerate')
-                                        ->icon('heroicon-o-arrow-path')
+                                        ->icon(Heroicon::OutlinedArrowPath)
                                         ->successNotificationTitle('The SSO key has been successfully regenerated.')
                                         ->requiresConfirmation()
                                         ->modalHeading('Regenerate SSO Key')
@@ -209,7 +210,7 @@ class ConnectedServices extends SettingsPage
                                         })),
                             ]),
                         Tab::make('SMS')
-                            ->icon('heroicon-o-phone')
+                            ->icon(Heroicon::OutlinedPhone)
                             ->visible(fn (): bool => filled(config('services.twilio.auth_token')) && filled(config('services.twilio.sid')))
                             ->schema([
                                 Toggle::make('sms_settings.sms_enabled')

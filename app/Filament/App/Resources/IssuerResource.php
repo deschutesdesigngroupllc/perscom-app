@@ -29,7 +29,7 @@ class IssuerResource extends BaseResource
 {
     protected static ?string $model = Issuer::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -75,7 +75,7 @@ class IssuerResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(IssuerExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

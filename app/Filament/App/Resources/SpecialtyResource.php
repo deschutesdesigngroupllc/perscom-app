@@ -36,7 +36,7 @@ class SpecialtyResource extends BaseResource
 {
     protected static ?string $model = Specialty::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBriefcase;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -126,7 +126,7 @@ class SpecialtyResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(SpecialtyExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

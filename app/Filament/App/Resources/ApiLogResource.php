@@ -21,6 +21,7 @@ use Filament\Resources\RelationManagers\RelationManagerConfiguration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -40,7 +41,7 @@ class ApiLogResource extends BaseResource
 {
     protected static ?string $model = ApiLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
     protected static ?string $navigationParentItem = 'API Keys';
 
@@ -154,7 +155,7 @@ class ApiLogResource extends BaseResource
                     ->constraints([
                         Constraint::make('request_id')
                             ->label('Request ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -179,7 +180,7 @@ class ApiLogResource extends BaseResource
                             ]),
                         Constraint::make('trace_id')
                             ->label('Trace ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -203,7 +204,7 @@ class ApiLogResource extends BaseResource
                                     }),
                             ]),
                         Constraint::make('endpoint')
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -229,7 +230,7 @@ class ApiLogResource extends BaseResource
                         DateConstraint::make('created_at')
                             ->label('Requested'),
                         Constraint::make('status')
-                            ->icon('heroicon-o-flag')
+                            ->icon(Heroicon::OutlinedFlag)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -265,7 +266,7 @@ class ApiLogResource extends BaseResource
                 ->columnSpanFull()
                 ->tabs([
                     Tab::make('Client')
-                        ->icon('heroicon-o-user')
+                        ->icon(Heroicon::OutlinedUser)
                         ->schema([
                             TextEntry::make('request_id')
                                 ->copyable()
@@ -285,7 +286,7 @@ class ApiLogResource extends BaseResource
                                 ->label('IP Address'),
                         ]),
                     Tab::make('Request')
-                        ->icon('heroicon-o-cloud-arrow-up')
+                        ->icon(Heroicon::OutlinedCloudArrowUp)
                         ->schema([
                             TextEntry::make('method')
                                 ->badge(),
@@ -315,7 +316,7 @@ class ApiLogResource extends BaseResource
                             ? 'Truncated'
                             : null)
                         ->badgeColor('gray')
-                        ->icon('heroicon-o-cloud-arrow-down')
+                        ->icon(Heroicon::OutlinedCloudArrowDown)
                         ->schema([
                             TextEntry::make('status')
                                 ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state])

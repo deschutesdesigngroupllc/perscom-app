@@ -18,6 +18,7 @@ use App\Settings\DashboardSettings;
 use App\Settings\OnboardingSettings;
 use App\Settings\OrganizationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -228,7 +229,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display awards using the PERSCOM widgets.',
                 'slug' => 'awards',
                 'hidden' => false,
-                'icon' => 'heroicon-o-trophy',
+                'icon' => Heroicon::OutlinedTrophy,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -256,7 +257,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display positions using the PERSCOM widgets.',
                 'slug' => 'positions',
                 'hidden' => false,
-                'icon' => 'heroicon-o-identification',
+                'icon' => Heroicon::OutlinedIdentification,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -284,7 +285,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display qualifications using the PERSCOM widgets.',
                 'slug' => 'qualifications',
                 'hidden' => false,
-                'icon' => 'heroicon-o-star',
+                'icon' => Heroicon::OutlinedStar,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -312,7 +313,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display ranks using the PERSCOM widgets.',
                 'slug' => 'ranks',
                 'hidden' => false,
-                'icon' => 'heroicon-o-chevron-double-up',
+                'icon' => Heroicon::OutlinedChevronDoubleUp,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{
@@ -340,7 +341,7 @@ class SetupTenantAccount
                 'description' => 'This is a custom page that has been built to display specialties using the PERSCOM widgets.',
                 'slug' => 'specialties',
                 'hidden' => false,
-                'icon' => 'heroicon-o-briefcase',
+                'icon' => Heroicon::OutlinedBriefcase,
                 'content' => <<<'HTML_WRAP'
                 <!-- This HTML uses Alpine.js to dynamically build the widget -->
                 <div x-data="{

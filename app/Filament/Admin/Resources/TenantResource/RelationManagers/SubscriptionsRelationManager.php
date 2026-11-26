@@ -13,6 +13,7 @@ use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ class SubscriptionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subscriptions';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-credit-card';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedCreditCard;
 
     /**
      * @param  Tenant  $ownerRecord
@@ -73,7 +74,7 @@ class SubscriptionsRelationManager extends RelationManager
             ])
             ->recordActions([
                 Action::make('stripe')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color(Color::generateV3Palette('#5167FC'))
                     ->openUrlInNewTab()
                     ->url(fn (Subscription $record) => $record->stripe_url),

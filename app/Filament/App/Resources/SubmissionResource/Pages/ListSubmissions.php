@@ -11,6 +11,7 @@ use App\Models\Submission;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListSubmissions extends ListRecords
@@ -36,14 +37,14 @@ class ListSubmissions extends ListRecords
                 ->label('Read')
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->read())
                 ->favorite()
-                ->icon('heroicon-o-envelope'),
+                ->icon(Heroicon::OutlinedEnvelope),
             PresetView::make('unread')
                 ->default()
                 ->label('Unread')
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->unread())
                 ->badge(fn (): ?string => $count > 0 ? (string) $count : null)
                 ->favorite()
-                ->icon('heroicon-o-envelope-open'),
+                ->icon(Heroicon::OutlinedEnvelopeOpen),
         ];
 
         return array_merge($views, Form::all()->mapWithKeys(fn (Form $form): array => [
@@ -51,7 +52,7 @@ class ListSubmissions extends ListRecords
                 ->label($form->name)
                 ->modifyQueryUsing(fn (Submission|Builder $query) => $query->whereBelongsTo($form))
                 ->favorite()
-                ->icon('heroicon-o-pencil-square'),
+                ->icon(Heroicon::OutlinedPencilSquare),
         ])->toArray());
     }
 

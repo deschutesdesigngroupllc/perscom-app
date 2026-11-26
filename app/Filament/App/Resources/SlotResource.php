@@ -24,6 +24,7 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
@@ -37,7 +38,7 @@ class SlotResource extends BaseResource
 {
     protected static ?string $model = Slot::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cursor-arrow-rays';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCursorArrowRays;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -54,7 +55,7 @@ class SlotResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Slot')
-                            ->icon('heroicon-o-cursor-arrow-rays')
+                            ->icon(Heroicon::OutlinedCursorArrowRays)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the slot.')
@@ -68,7 +69,7 @@ class SlotResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Assignment')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 Select::make('position_id')
                                     ->helperText('If selected, a member will be assigned the position when an assignment record is created for the slot.')
@@ -84,7 +85,7 @@ class SlotResource extends BaseResource
                                     ->createOptionForm(fn (Schema $form): Schema => SpecialtyResource::form($form)),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 RichEditor::make('empty')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])

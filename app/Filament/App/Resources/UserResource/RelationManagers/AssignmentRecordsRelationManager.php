@@ -12,6 +12,7 @@ use App\Support\Brand;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -21,7 +22,7 @@ class AssignmentRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'assignment_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $title = 'Assignment Records';
 
@@ -55,7 +56,7 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()
@@ -65,7 +66,7 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()

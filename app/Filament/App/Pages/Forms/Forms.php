@@ -27,7 +27,7 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static ?string $slug = 'forms/list';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
 
     protected static ?int $navigationSort = 9;
 
@@ -64,7 +64,7 @@ class Forms extends Page implements HasForms, HasTable
             ->groupingSettingsHidden()
             ->recordActions([
                 Action::make('open')
-                    ->icon('heroicon-o-pencil')
+                    ->icon(Heroicon::OutlinedPencil)
                     ->url(fn (?Form $record): string => Submit::getUrl([
                         'record' => $record,
                     ])),

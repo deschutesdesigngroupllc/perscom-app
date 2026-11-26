@@ -11,6 +11,7 @@ use App\Models\Form;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListForms extends ListRecords
@@ -32,18 +33,18 @@ class ListForms extends ListRecords
                 ->label('Public')
                 ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', true))
                 ->favorite()
-                ->icon('heroicon-o-eye'),
+                ->icon(Heroicon::OutlinedEye),
             PresetView::make('private')
                 ->label('Private')
                 ->modifyQueryUsing(fn (Form|Builder $query) => $query->where('is_public', false))
                 ->favorite()
-                ->icon('heroicon-o-eye-slash'),
+                ->icon(Heroicon::OutlinedEyeSlash),
         ];
 
         return array_merge($views, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->label($category->name)
-                ->icon('heroicon-o-tag')
+                ->icon(Heroicon::OutlinedTag)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))
                 ->favorite(),
         ])->toArray());

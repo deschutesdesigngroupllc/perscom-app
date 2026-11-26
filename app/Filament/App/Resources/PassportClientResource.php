@@ -45,7 +45,7 @@ class PassportClientResource extends BaseResource
 {
     protected static ?string $model = PassportClient::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $cluster = Integrations::class;
 
@@ -120,7 +120,7 @@ class PassportClientResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Client')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('id')
@@ -159,7 +159,7 @@ class PassportClientResource extends BaseResource
                                     ->badge(),
                             ]),
                         Tab::make('Endpoints')
-                            ->icon('heroicon-o-link')
+                            ->icon(Heroicon::OutlinedLink)
                             ->schema([
                                 KeyValueEntry::make('endpoints')
                                     ->hiddenLabel()

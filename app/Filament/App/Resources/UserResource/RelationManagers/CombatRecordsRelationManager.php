@@ -12,6 +12,7 @@ use App\Models\User;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -21,7 +22,7 @@ class CombatRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'combat_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedFire;
 
     protected static ?string $title = 'Combat Records';
 
@@ -38,7 +39,7 @@ class CombatRecordsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -50,7 +51,7 @@ class CombatRecordsRelationManager extends RelationManager
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()

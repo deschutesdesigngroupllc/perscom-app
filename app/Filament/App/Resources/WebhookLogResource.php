@@ -22,6 +22,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\QueryBuilder;
 use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
@@ -38,7 +39,7 @@ class WebhookLogResource extends BaseResource
 {
     protected static ?string $model = WebhookLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected static ?string $navigationParentItem = 'Webhooks';
 
@@ -70,7 +71,7 @@ class WebhookLogResource extends BaseResource
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->url(fn (WebhookLog $record) => $record->resource_url),
                 TextColumn::make('description')
@@ -115,7 +116,7 @@ class WebhookLogResource extends BaseResource
                     ->constraints([
                         Constraint::make('request_id')
                             ->label('Request ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -140,7 +141,7 @@ class WebhookLogResource extends BaseResource
                             ]),
                         Constraint::make('trace_id')
                             ->label('Trace ID')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->operators([
                                 ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
@@ -187,7 +188,7 @@ class WebhookLogResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Webhook')
-                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->icon(Heroicon::OutlinedCloudArrowUp)
                             ->schema([
                                 TextEntry::make('request_id')
                                     ->copyable()
@@ -211,7 +212,7 @@ class WebhookLogResource extends BaseResource
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
-                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
                                     ->url(fn (WebhookLog $record) => $record->resource_url),
                                 TextEntry::make('description')
@@ -223,7 +224,7 @@ class WebhookLogResource extends BaseResource
                                     ->color('gray'),
                             ]),
                         Tab::make('Payload')
-                            ->icon('heroicon-o-code-bracket')
+                            ->icon(Heroicon::OutlinedCodeBracket)
                             ->schema([
                                 CodeEntry::make('payload')
                                     ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))

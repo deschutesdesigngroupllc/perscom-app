@@ -57,7 +57,7 @@ class AssignmentRecordResource extends BaseResource
 
     protected static ?string $model = AssignmentRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -79,7 +79,7 @@ class AssignmentRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Assignment Record')
                             ->columns()
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 TextEntry::make('warning')
                                     ->columnSpanFull()
@@ -124,7 +124,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 Select::make('position_id')
                                     ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
@@ -163,7 +163,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->createOptionForm(fn (Schema $form): Schema => StatusResource::form($form)),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -173,7 +173,7 @@ class AssignmentRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -198,7 +198,7 @@ class AssignmentRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Assignment Record')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -222,7 +222,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -232,7 +232,7 @@ class AssignmentRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -276,7 +276,7 @@ class AssignmentRecordResource extends BaseResource
                     ->searchable(),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -287,7 +287,7 @@ class AssignmentRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -350,7 +350,7 @@ class AssignmentRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AssignmentRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

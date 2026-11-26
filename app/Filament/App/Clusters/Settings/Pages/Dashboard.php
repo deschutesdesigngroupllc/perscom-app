@@ -26,6 +26,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -37,7 +38,7 @@ class Dashboard extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
@@ -67,7 +68,7 @@ class Dashboard extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Home Page')
-                            ->icon('heroicon-o-home')
+                            ->icon(Heroicon::OutlinedHome)
                             ->schema([
                                 TextInput::make('title')
                                     ->maxLength(255)
@@ -79,7 +80,7 @@ class Dashboard extends SettingsPage
                             ]),
                         Tab::make('Domain')
                             ->visible(config('tenancy.enabled'))
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->badgeColor('gray')
                             ->badge(fn () => tenant('url'))
                             ->schema([
@@ -98,7 +99,7 @@ class Dashboard extends SettingsPage
                                     ->suffix(config('app.base_url'))
                                     ->suffixAction(Action::make('test')
                                         ->label('Reset')
-                                        ->icon('heroicon-o-arrow-path')
+                                        ->icon(Heroicon::OutlinedArrowPath)
                                         ->color('primary')
                                         ->requiresConfirmation()
                                         ->modalDescription('Are you sure you want to reset your subdomain? This means your dashboard will no longer be accessible by your custom subdomain. You will only be able to reach your dashboard using your fallback URL from this point on.')
@@ -107,7 +108,7 @@ class Dashboard extends SettingsPage
                                     ),
                             ]),
                         Tab::make('User Profile')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->schema([
                                 Toggle::make('public_profiles_enabled')
                                     ->label('Public Service Profiles')
@@ -165,7 +166,7 @@ class Dashboard extends SettingsPage
                                     ])->sort()->all()),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Radio::make('roster_mode')
                                     ->label('Mode')

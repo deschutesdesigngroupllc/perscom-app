@@ -10,6 +10,7 @@ use App\Filament\App\Resources\DocumentResource\Actions\ViewDocumentAction;
 use App\Models\RankRecord;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -20,7 +21,7 @@ class RankRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'rank_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-chevron-double-up';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedChevronDoubleUp;
 
     protected static ?string $title = 'Rank Records';
 
@@ -42,7 +43,7 @@ class RankRecordsRelationManager extends RelationManager
                     ->label(''),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -54,7 +55,7 @@ class RankRecordsRelationManager extends RelationManager
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()

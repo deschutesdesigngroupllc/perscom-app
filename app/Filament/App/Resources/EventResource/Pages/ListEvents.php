@@ -32,7 +32,7 @@ class ListEvents extends ListRecords
         $calendars = Calendar::all()->mapWithKeys(fn (Calendar $calendar): array => [
             $calendar->id => PresetView::make()
                 ->favorite()
-                ->icon('heroicon-o-calendar')
+                ->icon(Heroicon::OutlinedCalendar)
                 ->label($calendar->name)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereBelongsTo($calendar)),
         ])->toArray();
@@ -40,7 +40,7 @@ class ListEvents extends ListRecords
         return array_merge($calendars, Category::all()->where('resource', static::$resource::getModel())->mapWithKeys(fn (Category $category): array => [
             $category->id => PresetView::make()
                 ->label($category->name)
-                ->icon('heroicon-o-tag')
+                ->icon(Heroicon::OutlinedTag)
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('categories', fn (Builder $query) => $query->whereKey($category->id)))
                 ->favorite(),
         ])->toArray());

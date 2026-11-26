@@ -40,7 +40,7 @@ class NewsfeedResource extends BaseResource
 {
     protected static ?string $model = Newsfeed::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
     protected static ?string $label = 'newsfeed item';
 

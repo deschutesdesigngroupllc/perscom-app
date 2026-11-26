@@ -53,7 +53,7 @@ class ServiceRecordResource extends BaseResource
 
     protected static ?string $model = ServiceRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -71,7 +71,7 @@ class ServiceRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Service Record')
                             ->columns()
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->prefillFromQuery()
@@ -107,7 +107,7 @@ class ServiceRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -117,7 +117,7 @@ class ServiceRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -142,7 +142,7 @@ class ServiceRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Service Record')
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -152,7 +152,7 @@ class ServiceRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -162,7 +162,7 @@ class ServiceRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -186,7 +186,7 @@ class ServiceRecordResource extends BaseResource
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -197,7 +197,7 @@ class ServiceRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -238,7 +238,7 @@ class ServiceRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(ServiceRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

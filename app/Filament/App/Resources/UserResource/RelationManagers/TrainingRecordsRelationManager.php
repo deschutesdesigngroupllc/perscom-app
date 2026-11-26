@@ -13,6 +13,7 @@ use App\Models\User;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -22,7 +23,7 @@ class TrainingRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'training_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-academic-cap';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedAcademicCap;
 
     protected static ?string $title = 'Training Records';
 
@@ -44,7 +45,7 @@ class TrainingRecordsRelationManager extends RelationManager
                     ->listWithLineBreaks(),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -56,7 +57,7 @@ class TrainingRecordsRelationManager extends RelationManager
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()

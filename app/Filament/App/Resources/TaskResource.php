@@ -35,7 +35,7 @@ class TaskResource extends BaseResource
 {
     protected static ?string $model = Task::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -50,7 +50,7 @@ class TaskResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Task')
-                            ->icon('heroicon-o-clipboard-document-check')
+                            ->icon(Heroicon::OutlinedClipboardDocumentCheck)
                             ->schema([
                                 TextInput::make('title')
                                     ->helperText('The title of the task.')
@@ -70,7 +70,7 @@ class TaskResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Form')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->schema([
                                 Select::make('form_id')
                                     ->preload()
@@ -110,7 +110,7 @@ class TaskResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(TaskExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

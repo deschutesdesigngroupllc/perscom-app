@@ -38,7 +38,7 @@ class WebhookResource extends BaseResource
 {
     protected static ?string $model = Webhook::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedGlobeAlt;
 
     protected static ?string $cluster = Integrations::class;
 
@@ -108,7 +108,7 @@ class WebhookResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Webhook')
-                            ->icon('heroicon-o-globe-alt')
+                            ->icon(Heroicon::OutlinedGlobeAlt)
                             ->schema([
                                 TextEntry::make('url')
                                     ->label('URL')

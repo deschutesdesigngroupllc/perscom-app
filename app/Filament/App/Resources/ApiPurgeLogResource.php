@@ -10,6 +10,7 @@ use App\Models\ApiPurgeLog;
 use BackedEnum;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Support\Enums\IconPosition;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class ApiPurgeLogResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Purges';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
     protected static ?string $navigationParentItem = 'API Keys';
 
@@ -39,7 +40,7 @@ class ApiPurgeLogResource extends BaseResource
             ->columns([
                 TextColumn::make('apiLog.id')
                     ->label('API Log ID')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->url(function (ApiPurgeLog $record): ?string {
                         if (blank($apiLogs = $record->apiLog)) {

@@ -33,6 +33,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -51,7 +52,7 @@ class TenantResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-user-group';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
 
     protected static string|UnitEnum|null $navigationGroup = 'Application';
 
@@ -66,7 +67,7 @@ class TenantResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Tenant')
-                            ->icon('heroicon-o-user-group')
+                            ->icon(Heroicon::OutlinedUserGroup)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText("The tenant's name.")
@@ -91,7 +92,7 @@ class TenantResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 DateTimePicker::make('last_login_at')
                                     ->label('Last Login')
@@ -104,7 +105,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Billing')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-credit-card')
+                            ->icon(Heroicon::OutlinedCreditCard)
                             ->columns(2)
                             ->schema([
                                 TextInput::make('invoice_emails')
@@ -148,7 +149,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Database')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-circle-stack')
+                            ->icon(Heroicon::OutlinedCircleStack)
                             ->schema([
                                 TextInput::make('tenancy_db_name')
                                     ->maxLength(255)
@@ -157,7 +158,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Payment')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-currency-dollar')
+                            ->icon(Heroicon::OutlinedCurrencyDollar)
                             ->schema([
                                 TextInput::make('stripe_id')
                                     ->maxLength(255)
@@ -178,7 +179,7 @@ class TenantResource extends Resource
                             ]),
                         Tab::make('Metadata')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-code-bracket')
+                            ->icon(Heroicon::OutlinedCodeBracket)
                             ->schema([
                                 CodeEditor::make('data')
                                     ->dehydrated(false)
@@ -254,7 +255,7 @@ class TenantResource extends Resource
             ->recordActions([
                 Action::make('retrySetup')
                     ->label('Retry Setup')
-                    ->icon('heroicon-o-arrow-path')
+                    ->icon(Heroicon::OutlinedArrowPath)
                     ->color('warning')
                     ->visible(fn (Tenant $record): bool => ! $record->setup_completed)
                     ->requiresConfirmation()
@@ -268,7 +269,7 @@ class TenantResource extends Resource
                         $action->success();
                     }),
                 Action::make('login')
-                    ->icon('heroicon-o-arrow-right-end-on-rectangle')
+                    ->icon(Heroicon::OutlinedArrowRightEndOnRectangle)
                     ->color('gray')
                     ->modalDescription('Login to the tenant using the user below.')
                     ->visible(fn (Tenant $record) => $record->setup_completed)

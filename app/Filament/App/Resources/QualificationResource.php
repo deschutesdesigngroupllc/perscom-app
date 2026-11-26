@@ -40,7 +40,7 @@ class QualificationResource extends BaseResource
 {
     protected static ?string $model = Qualification::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -55,7 +55,7 @@ class QualificationResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Qualification')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the qualification.')
@@ -88,7 +88,7 @@ class QualificationResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -156,7 +156,7 @@ class QualificationResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(QualificationExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

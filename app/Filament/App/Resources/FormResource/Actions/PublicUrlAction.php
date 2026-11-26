@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\FormResource\Actions;
 
 use App\Models\Form;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 
 class PublicUrlAction extends Action
 {
@@ -17,7 +18,7 @@ class PublicUrlAction extends Action
         $this->color('gray');
         $this->tooltip(fn (Form $record): string => route('filament.public.pages.forms.{slug}', ['slug' => $record->slug]));
         $this->openUrlInNewTab();
-        $this->icon('heroicon-o-link');
+        $this->icon(Heroicon::OutlinedLink);
         $this->visible(fn (Form $record) => $record->is_public);
         $this->action(fn (Form $record) => $this->redirect(route('filament.public.pages.forms.{slug}', ['slug' => $record->slug])));
     }

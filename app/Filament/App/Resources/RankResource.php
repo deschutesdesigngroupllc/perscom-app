@@ -42,7 +42,7 @@ class RankResource extends BaseResource
 {
     protected static ?string $model = Rank::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chevron-double-up';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChevronDoubleUp;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -57,7 +57,7 @@ class RankResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Rank')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the rank.')
@@ -136,7 +136,7 @@ class RankResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -206,7 +206,7 @@ class RankResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(RankExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

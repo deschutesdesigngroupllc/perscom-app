@@ -59,7 +59,7 @@ class Dashboard extends BaseDashboard
 
     protected static ?int $navigationSort = 1;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
 
     /**
      * Ranks, units and positions already exist (applied at signup, seeded by an install, or built by
@@ -155,7 +155,7 @@ class Dashboard extends BaseDashboard
                 ->visible(fn () => config('tenancy.enabled'))
                 ->label(fn (): string => 'PERSCOM ID: '.tenant('id'))
                 ->copyable((string) tenant('id'))
-                ->icon('heroicon-o-document-duplicate')
+                ->icon(Heroicon::OutlinedDocumentDuplicate)
                 ->iconPosition(IconPosition::After)
                 ->color('gray'),
         ];

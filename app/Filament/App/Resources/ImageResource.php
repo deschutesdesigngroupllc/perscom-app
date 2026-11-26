@@ -45,7 +45,7 @@ class ImageResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
 
     protected static string|UnitEnum|null $navigationGroup = 'Data & Files';
 
@@ -62,7 +62,7 @@ class ImageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Image')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 TextInput::make('name')
                                     ->required()
@@ -86,7 +86,7 @@ class ImageResource extends BaseResource
                                     ->storeFileNamesIn('filename'),
                             ]),
                         Tab::make('Resource')
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 MorphToSelect::make('model')
                                     ->contained(false)
@@ -114,7 +114,7 @@ class ImageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Image')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 TextEntry::make('name'),
                                 TextEntry::make('description')
@@ -128,13 +128,13 @@ class ImageResource extends BaseResource
                                     ->label('Image'),
                             ]),
                         Tab::make('Resource')
-                            ->icon('heroicon-o-document')
+                            ->icon(Heroicon::OutlinedDocument)
                             ->schema([
                                 TextEntry::make('model.label')
                                     ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
-                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                                     ->iconPosition(IconPosition::After)
                                     ->url(fn (Image $record) => $record->model_url),
                             ]),
@@ -169,7 +169,7 @@ class ImageResource extends BaseResource
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
@@ -177,7 +177,7 @@ class ImageResource extends BaseResource
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->iconPosition(IconPosition::After)
                     ->url(fn (Image $record) => $record->model_url),
                 TextColumn::make('created_at')
@@ -187,7 +187,7 @@ class ImageResource extends BaseResource
             ])
             ->recordActions([
                 Action::make('open')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->color('gray')
                     ->url(fn (?Image $record) => $record->image_url)
                     ->openUrlInNewTab(),

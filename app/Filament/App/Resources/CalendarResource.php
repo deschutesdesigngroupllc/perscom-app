@@ -35,7 +35,7 @@ class CalendarResource extends BaseResource
 {
     protected static ?string $model = Calendar::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendar;
 
     protected static string|UnitEnum|null $navigationGroup = null;
 
@@ -96,7 +96,7 @@ class CalendarResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CalendarExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -35,7 +35,7 @@ class CompetencyResource extends BaseResource
 {
     protected static ?string $model = Competency::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-numbered-list';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNumberedList;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -115,7 +115,7 @@ class CompetencyResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CompetencyExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

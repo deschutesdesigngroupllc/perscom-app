@@ -43,7 +43,7 @@ class MessageResource extends BaseResource
 {
     protected static ?string $model = Message::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -58,17 +58,17 @@ class MessageResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Message')
-                            ->icon('heroicon-o-chat-bubble-left-right')
+                            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
                             ->schema(static::messageSchema()),
                         Tab::make('Channels')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema(static::channelSchema()),
                         Tab::make('Recipients')
-                            ->icon('heroicon-o-users')
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema(static::detailsSchema()),
                         Tab::make('Schedule')
                             ->visible(fn (Get $get): mixed => $get('repeats'))
-                            ->icon('heroicon-o-arrow-path')
+                            ->icon(Heroicon::OutlinedArrowPath)
                             ->schema(static::scheduleSchema()),
                     ]),
             ]);
@@ -85,7 +85,7 @@ class MessageResource extends BaseResource
                     ->html()
                     ->wrap()
                     ->sortable()
-                    ->icon(fn (Message $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Message $record): ?string => $record->repeats ? Heroicon::OutlinedArrowPath : null),
                 TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),

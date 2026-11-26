@@ -20,6 +20,7 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -74,24 +75,24 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->navigationItems([
                 NavigationItem::make('Health')
-                    ->icon('heroicon-o-heart')
+                    ->icon(Heroicon::OutlinedHeart)
                     ->group('Tools')
                     ->sort(3)
                     ->url(config('app.url').'/health', shouldOpenInNewTab: true),
                 NavigationItem::make('Horizon')
-                    ->icon('heroicon-o-queue-list')
+                    ->icon(Heroicon::OutlinedQueueList)
                     ->group('Tools')
                     ->sort(3)
                     ->url(config('app.url').'/'.config('horizon.path'), shouldOpenInNewTab: true),
                 NavigationItem::make('Pulse')
                     ->url(config('app.url').'/'.config('pulse.path'), shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-heart')
+                    ->icon(Heroicon::OutlinedHeart)
                     ->group('Tools')
                     ->sort(3),
                 NavigationItem::make('Telescope')
                     ->url(config('app.url').'/'.config('telescope.path'), shouldOpenInNewTab: true)
                     ->visible(fn () => config('telescope.enabled'))
-                    ->icon('heroicon-o-presentation-chart-line')
+                    ->icon(Heroicon::OutlinedPresentationChartLine)
                     ->group('Tools')
                     ->sort(3),
             ])

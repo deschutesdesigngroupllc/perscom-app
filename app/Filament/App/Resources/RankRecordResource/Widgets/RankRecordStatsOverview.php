@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\RankRecordResource\Widgets;
 
 use App\Models\RankRecord;
+use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
@@ -63,9 +64,9 @@ class RankRecordStatsOverview extends BaseWidget
             Stat::make('Total Records MTD', (string) $currentMtd)
                 ->description(Number::percentage($percentageMtd))
                 ->descriptionIcon(match ($currentMtd <=> $lastMtd) {
-                    1 => 'heroicon-m-arrow-trending-up',
-                    -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-arrows-right-left',
+                    1 => Heroicon::ArrowTrendingUp,
+                    -1 => Heroicon::ArrowTrendingDown,
+                    default => Heroicon::ArrowsRightLeft,
                 })
                 ->chart($mtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentMtd <=> $lastMtd) {
@@ -76,9 +77,9 @@ class RankRecordStatsOverview extends BaseWidget
             Stat::make('Total Records QTD', (string) $currentQtd)
                 ->description(Number::percentage($percentageQtd))
                 ->descriptionIcon(match ($currentQtd <=> $lastQtd) {
-                    1 => 'heroicon-m-arrow-trending-up',
-                    -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-arrows-right-left',
+                    1 => Heroicon::ArrowTrendingUp,
+                    -1 => Heroicon::ArrowTrendingDown,
+                    default => Heroicon::ArrowsRightLeft,
                 })
                 ->chart($qtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentQtd <=> $lastQtd) {
@@ -89,9 +90,9 @@ class RankRecordStatsOverview extends BaseWidget
             Stat::make('Total Records YTD', (string) $currentYtd)
                 ->description(Number::percentage($percentageYtd))
                 ->descriptionIcon(match ($currentYtd <=> $lastYtd) {
-                    1 => 'heroicon-m-arrow-trending-up',
-                    -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-arrows-right-left',
+                    1 => Heroicon::ArrowTrendingUp,
+                    -1 => Heroicon::ArrowTrendingDown,
+                    default => Heroicon::ArrowsRightLeft,
                 })
                 ->chart($ytd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentYtd <=> $lastYtd) {

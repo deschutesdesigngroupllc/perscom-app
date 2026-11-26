@@ -13,6 +13,7 @@ use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -20,7 +21,7 @@ class StatusesRelationManager extends RelationManager
 {
     protected static string $relationship = 'statuses';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-scale';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedScale;
 
     public function table(Table $table): Table
     {

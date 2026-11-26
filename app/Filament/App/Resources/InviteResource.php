@@ -26,7 +26,7 @@ class InviteResource extends BaseResource
 {
     protected static ?string $model = Invite::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
     protected static string|UnitEnum|null $navigationGroup = 'People';
 

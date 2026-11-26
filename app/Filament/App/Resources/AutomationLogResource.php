@@ -22,6 +22,7 @@ use Filament\Resources\Pages\PageRegistration;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -33,7 +34,7 @@ class AutomationLogResource extends BaseResource
 {
     protected static ?string $model = AutomationLog::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bolt';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
 
     protected static ?string $navigationParentItem = 'Automations';
 
@@ -110,7 +111,7 @@ class AutomationLogResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Overview')
-                            ->icon('heroicon-o-bolt')
+                            ->icon(Heroicon::OutlinedBolt)
                             ->schema([
                                 TextEntry::make('automation.name')
                                     ->label('Automation')
@@ -134,7 +135,7 @@ class AutomationLogResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Subject')
-                            ->icon('heroicon-o-cube')
+                            ->icon(Heroicon::OutlinedCube)
                             ->schema([
                                 TextEntry::make('subject_type')
                                     ->label('Type')
@@ -150,7 +151,7 @@ class AutomationLogResource extends BaseResource
                                     ->visible(fn ($state): bool => filled($state)),
                             ]),
                         Tab::make('Condition')
-                            ->icon('heroicon-o-funnel')
+                            ->icon(Heroicon::OutlinedFunnel)
                             ->schema([
                                 TextEntry::make('condition_expression')
                                     ->label('Expression')
@@ -163,7 +164,7 @@ class AutomationLogResource extends BaseResource
                                     ->visible(fn (AutomationLog $record): bool => $record->condition_result !== null),
                             ]),
                         Tab::make('Context')
-                            ->icon('heroicon-o-document-text')
+                            ->icon(Heroicon::OutlinedDocumentText)
                             ->schema([
                                 CodeEntry::make('context')
                                     ->hiddenLabel()
@@ -171,7 +172,7 @@ class AutomationLogResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Action Result')
-                            ->icon('heroicon-o-paper-airplane')
+                            ->icon(Heroicon::OutlinedPaperAirplane)
                             ->schema([
                                 CodeEntry::make('action_payload')
                                     ->default('No Result Logged')

@@ -45,7 +45,7 @@ class GroupResource extends BaseResource
 {
     protected static ?string $model = Group::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleGroup;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -62,7 +62,7 @@ class GroupResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Group')
-                            ->icon('heroicon-o-rectangle-group')
+                            ->icon(Heroicon::OutlinedRectangleGroup)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the group.')
@@ -77,7 +77,7 @@ class GroupResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -97,7 +97,7 @@ class GroupResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Roster')
-                            ->icon('heroicon-o-queue-list')
+                            ->icon(Heroicon::OutlinedQueueList)
                             ->schema([
                                 Toggle::make('hidden')
                                     ->helperText('Hide this group from the roster.')
@@ -160,7 +160,7 @@ class GroupResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(GroupExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

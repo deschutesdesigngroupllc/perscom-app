@@ -55,7 +55,7 @@ class FieldResource extends BaseResource
 
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
 
     protected static ?string $navigationLabel = 'Custom Fields';
 
@@ -75,7 +75,7 @@ class FieldResource extends BaseResource
                     ->tabs([
                         Tab::make('Field')
                             ->columns()
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('This is the name of the field that will be displayed to the member.')
@@ -149,7 +149,7 @@ class FieldResource extends BaseResource
                                     ->language(Language::Html),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('placeholder')
@@ -174,7 +174,7 @@ class FieldResource extends BaseResource
                                     ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '') === FieldType::FIELD_BOOLEAN),
                             ]),
                         Tab::make('Validation')
-                            ->icon('heroicon-o-shield-check')
+                            ->icon(Heroicon::OutlinedShieldCheck)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 TextInput::make('rules')
@@ -189,7 +189,7 @@ class FieldResource extends BaseResource
                                     ->required(),
                             ]),
                         Tab::make('Visibility')
-                            ->icon('heroicon-o-eye')
+                            ->icon(Heroicon::OutlinedEye)
                             ->visible(fn (Get $get): bool => FieldType::tryFrom($get('type') ?? '')?->getType() !== 'component')
                             ->schema([
                                 Toggle::make('hidden')

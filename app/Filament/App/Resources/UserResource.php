@@ -74,7 +74,7 @@ class UserResource extends BaseResource
 
     protected static ?string $pluralModelLabel = 'members';
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-users';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
     protected static string|UnitEnum|null $navigationGroup = 'People';
 
@@ -103,7 +103,7 @@ class UserResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Demographics')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->columns()
                             ->schema([
                                 Grid::make(8)
@@ -146,7 +146,7 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Assignment')
                             ->badge(fn (?User $record) => $record?->position?->name)
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->columns()
                             ->schema([
                                 Select::make('position_id')
@@ -173,11 +173,11 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Fields')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(fn (?User $record): array => UserResource::buildCustomFieldInputs($record?->fields ?? collect())),
                         Tab::make('Details')
                             ->hiddenOn('create')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 DateTimePicker::make('created_at')
                                     ->default(now())
@@ -207,7 +207,7 @@ class UserResource extends BaseResource
                                     ->helperText("The date the user's email was verified. Set this to bypass user email verification."),
                             ]),
                         Tab::make('Notes')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->schema([
                                 RichEditor::make('notes')
                                     ->extraInputAttributes(['style' => 'min-height: 10rem;'])
@@ -218,7 +218,7 @@ class UserResource extends BaseResource
                             ]),
                         Tab::make('Rank')
                             ->badge(fn (?User $record) => $record?->rank?->name)
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->columns()
                             ->schema([
                                 Select::make('rank_id')
@@ -232,7 +232,7 @@ class UserResource extends BaseResource
                         Tab::make('Status')
                             ->badge(fn (?User $record) => $record?->status?->name)
                             ->badgeColor(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
-                            ->icon('heroicon-o-scale')
+                            ->icon(Heroicon::OutlinedScale)
                             ->schema([
                                 Select::make('status_id')
                                     ->helperText("The user's current status.")
@@ -268,7 +268,7 @@ class UserResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Profile')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->schema([
                                 Fieldset::make('Identity')
                                     ->columns(['default' => 1, 'md' => 2])
@@ -278,7 +278,7 @@ class UserResource extends BaseResource
                                             ->hidden(fn (): bool => in_array('name', $hiddenFields)),
                                         TextEntry::make('email')
                                             ->label('Email')
-                                            ->icon('heroicon-o-envelope')
+                                            ->icon(Heroicon::OutlinedEnvelope)
                                             ->copyable()
                                             ->placeholder('—')
                                             ->hidden(fn (): bool => in_array('email', $hiddenFields)),
@@ -309,7 +309,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Assignment')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->visible(fn (): bool => ! in_array('assignment', $hiddenFields))
                             ->schema([
                                 Fieldset::make('Primary Assignment')
@@ -381,7 +381,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Awards')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->badge(fn (?User $record): ?int => $record?->awards?->count() ?: null)
                             ->badgeColor('warning')
                             ->visible(fn (): bool => ! in_array('award_records', $hiddenFields))
@@ -391,12 +391,12 @@ class UserResource extends BaseResource
                                     ->viewData(fn (User $record): array => [
                                         'items' => $record->awards,
                                         'emptyMessage' => 'No awards have been received yet.',
-                                        'fallbackIcon' => 'heroicon-o-trophy',
+                                        'fallbackIcon' => Heroicon::OutlinedTrophy,
                                         'storageKey' => 'user-awards-view',
                                     ]),
                             ]),
                         Tab::make('Qualifications')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->badge(fn (?User $record): ?int => $record?->qualifications?->count() ?: null)
                             ->badgeColor('success')
                             ->visible(fn (): bool => ! in_array('qualification_records', $hiddenFields))
@@ -406,11 +406,11 @@ class UserResource extends BaseResource
                                     ->viewData(fn (User $record): array => [
                                         'items' => $record->qualifications,
                                         'emptyMessage' => 'No qualifications have been earned yet.',
-                                        'fallbackIcon' => 'heroicon-o-star',
+                                        'fallbackIcon' => Heroicon::OutlinedStar,
                                     ]),
                             ]),
                         Tab::make('Credentials')
-                            ->icon('heroicon-o-identification')
+                            ->icon(Heroicon::OutlinedIdentification)
                             ->badge(fn (?User $record): ?int => $record?->credentials?->count() ?: null)
                             ->badgeColor('info')
                             ->visible(fn (): bool => ! in_array('credentials', $hiddenFields))
@@ -423,7 +423,7 @@ class UserResource extends BaseResource
                                     ]),
                             ]),
                         Tab::make('Custom Fields')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->visible(fn (User $record): bool => $record->fields->isNotEmpty())
                             ->schema(fn (User $record): array => UserResource::buildCustomFieldEntries($record->fields)),
                     ]),
@@ -448,7 +448,7 @@ class UserResource extends BaseResource
                     ->hidden(fn (): bool => in_array('name', $hiddenFields))
                     ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy('name', $direction))
                     ->searchable(query: fn (Builder $query, string $search) => $query->where('name', 'like', sprintf('%%%s%%', $search)))
-                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? 'heroicon-o-exclamation-circle' : null)
+                    ->icon(fn (?User $record): ?string => ! $record->approved && Auth::user()->can('approve', $record) ? Heroicon::OutlinedExclamationCircle : null)
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 TextColumn::make('email')
@@ -536,7 +536,7 @@ class UserResource extends BaseResource
             ->recordActions([
                 Action::make('approve')
                     ->color('success')
-                    ->icon('heroicon-o-check-circle')
+                    ->icon(Heroicon::OutlinedCheckCircle)
                     ->visible(fn (?User $record): bool => ! $record->approved && Auth::user()->can('approve', $record))
                     ->successNotificationTitle('Member Approved')
                     ->action(function (Action $action, User $record): void {
@@ -560,7 +560,7 @@ class UserResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(UserExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     ...MemberRecordActions::bulk(),
                     DeleteBulkAction::make(),

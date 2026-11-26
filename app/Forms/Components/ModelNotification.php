@@ -20,6 +20,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 
 class ModelNotification
@@ -50,7 +51,7 @@ class ModelNotification
                     ->tabs([
                         Tab::make('Recipients')
                             ->visible(fn (Get $get): mixed => $get('enabled'))
-                            ->icon('heroicon-o-users')
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('groups')
                                     ->helperText('Send the notification to everyone in the selected groups.')
@@ -97,14 +98,14 @@ class ModelNotification
                             ]),
                         Tab::make('Notification')
                             ->visible(fn (Get $get): mixed => $get('enabled'))
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 TextInput::make('subject')
                                     ->default(data_get($defaults, 'subject'))
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')
@@ -125,7 +126,7 @@ class ModelNotification
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')

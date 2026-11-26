@@ -10,6 +10,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -17,7 +18,7 @@ class RolesRelationManager extends RelationManager
 {
     protected static string $relationship = 'roles';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-shield-check';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedShieldCheck;
 
     public function table(Table $table): Table
     {

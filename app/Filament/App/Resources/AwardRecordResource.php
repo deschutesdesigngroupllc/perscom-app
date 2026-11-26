@@ -55,7 +55,7 @@ class AwardRecordResource extends BaseResource
 
     protected static ?string $model = AwardRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-trophy';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTrophy;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -73,7 +73,7 @@ class AwardRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Award Record')
                             ->columns()
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
@@ -113,7 +113,7 @@ class AwardRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -123,7 +123,7 @@ class AwardRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -148,7 +148,7 @@ class AwardRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Award Record')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -164,7 +164,7 @@ class AwardRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -174,7 +174,7 @@ class AwardRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -204,7 +204,7 @@ class AwardRecordResource extends BaseResource
                     ->label(''),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -215,7 +215,7 @@ class AwardRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -261,7 +261,7 @@ class AwardRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AwardRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

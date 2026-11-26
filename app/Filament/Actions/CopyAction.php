@@ -6,6 +6,7 @@ namespace App\Filament\Actions;
 
 use Closure;
 use Filament\Actions\Action;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Js;
 use JsonException;
@@ -21,7 +22,7 @@ class CopyAction extends Action
         $this
             ->dispatch('FilamentCopyActions')
             ->successNotificationTitle(__('Copied!'))
-            ->icon('heroicon-o-clipboard-document')
+            ->icon(Heroicon::OutlinedClipboardDocument)
             ->extraAttributes(fn (): array => [
                 'x-data' => '',
                 'x-on:click' => new HtmlString(

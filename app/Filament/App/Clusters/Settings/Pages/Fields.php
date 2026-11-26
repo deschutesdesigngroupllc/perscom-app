@@ -25,7 +25,7 @@ use UnitEnum;
 
 class Fields extends SettingsPage
 {
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAdjustmentsHorizontal;
 
     protected static ?string $navigationLabel = 'Field Defaults';
 
@@ -57,7 +57,7 @@ class Fields extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Assignment Records')
-                            ->icon('heroicon-o-rectangle-stack')
+                            ->icon(Heroicon::OutlinedRectangleStack)
                             ->schema([
                                 Select::make('assignment_records')
                                     ->label('Custom Fields')
@@ -68,7 +68,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Award Records')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 Select::make('award_records')
                                     ->label('Custom Fields')
@@ -79,7 +79,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Combat Records')
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 Select::make('combat_records')
                                     ->label('Custom Fields')
@@ -90,7 +90,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Qualification Records')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 Select::make('qualification_records')
                                     ->label('Custom Fields')
@@ -101,7 +101,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Rank Records')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 Select::make('rank_records')
                                     ->label('Custom Fields')
@@ -112,7 +112,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Service Records')
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon(Heroicon::OutlinedClipboardDocumentList)
                             ->schema([
                                 Select::make('service_records')
                                     ->label('Custom Fields')
@@ -123,7 +123,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Training Records')
-                            ->icon('heroicon-o-academic-cap')
+                            ->icon(Heroicon::OutlinedAcademicCap)
                             ->schema([
                                 Select::make('training_records')
                                     ->label('Custom Fields')
@@ -134,7 +134,7 @@ class Fields extends SettingsPage
                                     ->helperText('Add the specified custom fields to the assignment record form.'),
                             ]),
                         Tab::make('Users')
-                            ->icon('heroicon-o-users')
+                            ->icon(Heroicon::OutlinedUsers)
                             ->schema([
                                 Select::make('users')
                                     ->label('Custom Fields')

@@ -40,7 +40,7 @@ class AwardResource extends BaseResource
 {
     protected static ?string $model = Award::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-trophy';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTrophy;
 
     protected static string|UnitEnum|null $navigationGroup = 'Structure';
 
@@ -55,7 +55,7 @@ class AwardResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Award')
-                            ->icon('heroicon-o-trophy')
+                            ->icon(Heroicon::OutlinedTrophy)
                             ->schema([
                                 TextInput::make('name')
                                     ->helperText('The name of the award.')
@@ -82,7 +82,7 @@ class AwardResource extends BaseResource
                             ]),
                         Tab::make('Image')
                             ->visibleOn('edit')
-                            ->icon('heroicon-o-photo')
+                            ->icon(Heroicon::OutlinedPhoto)
                             ->schema([
                                 Section::make()
                                     ->contained(false)
@@ -145,7 +145,7 @@ class AwardResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AwardExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

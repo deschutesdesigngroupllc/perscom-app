@@ -39,7 +39,7 @@ class DocumentResource extends BaseResource
 {
     protected static ?string $model = Document::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocument;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -84,7 +84,7 @@ class DocumentResource extends BaseResource
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
                                     ->hintColor('gray')
-                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintIcon(Heroicon::OutlinedTag)
                                     ->hintAction(Action::make('view')
                                         ->color('gray')
                                         ->modalHeading('Content Tags')
@@ -145,7 +145,7 @@ class DocumentResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(DocumentExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

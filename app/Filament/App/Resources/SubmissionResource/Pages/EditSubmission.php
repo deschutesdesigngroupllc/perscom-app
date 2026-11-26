@@ -13,6 +13,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 
 class EditSubmission extends EditRecord
 {
@@ -38,7 +39,7 @@ class EditSubmission extends EditRecord
                 Action::make('mark-as-unread')
                     ->label('Mark As Unread')
                     ->visible(fn (Submission $record): bool => filled($record->read_at))
-                    ->icon('heroicon-o-envelope-open')
+                    ->icon(Heroicon::OutlinedEnvelopeOpen)
                     ->action(function (Submission $record): void {
                         $record->markAsUnread();
                         $this->redirect(SubmissionResource::getUrl());

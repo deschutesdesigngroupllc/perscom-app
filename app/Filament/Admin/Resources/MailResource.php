@@ -31,6 +31,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ class MailResource extends Resource
 {
     protected static ?string $model = Mail::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -59,7 +60,7 @@ class MailResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Email')
-                            ->icon('heroicon-o-envelope')
+                            ->icon(Heroicon::OutlinedEnvelope)
                             ->schema([
                                 Select::make('recipients')
                                     ->helperText('Leave blank to send to all tenants.')
@@ -114,7 +115,7 @@ class MailResource extends Resource
             ->recordActions([
                 Action::make('retry')
                     ->successNotificationTitle('The email has been queued for sending.')
-                    ->icon('heroicon-o-arrow-path')
+                    ->icon(Heroicon::OutlinedArrowPath)
                     ->action(function (Mail $record, Action $action): void {
                         DispatchTenantMassEmails::handle($record);
                         $action->success();

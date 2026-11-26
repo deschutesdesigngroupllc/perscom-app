@@ -70,7 +70,7 @@ class EventResource extends BaseResource
 {
     protected static ?string $model = Event::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
 
     protected static string|UnitEnum|null $navigationGroup = null;
 
@@ -296,7 +296,7 @@ class EventResource extends BaseResource
                 TextColumn::make('name')
                     ->sortable()
                     ->searchable()
-                    ->icon(fn (Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Event $record): ?string => $record->repeats ? Heroicon::OutlinedArrowPath : null),
                 TextColumn::make('starts')
                     ->label('Starts')
                     ->dateTime(fn (Event $record): string => $record->all_day ? 'M j, Y' : 'M j, Y g:i A')
@@ -351,7 +351,7 @@ class EventResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(EventExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

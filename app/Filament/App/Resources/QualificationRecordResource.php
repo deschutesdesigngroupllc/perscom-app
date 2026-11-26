@@ -56,7 +56,7 @@ class QualificationRecordResource extends BaseResource
 
     protected static ?string $model = QualificationRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedStar;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -74,7 +74,7 @@ class QualificationRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Qualification Record')
                             ->columns()
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
@@ -114,7 +114,7 @@ class QualificationRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -124,7 +124,7 @@ class QualificationRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -149,7 +149,7 @@ class QualificationRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Qualification Record')
-                            ->icon('heroicon-o-star')
+                            ->icon(Heroicon::OutlinedStar)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -171,7 +171,7 @@ class QualificationRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -181,7 +181,7 @@ class QualificationRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -213,7 +213,7 @@ class QualificationRecordResource extends BaseResource
                     ->label(''),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -224,7 +224,7 @@ class QualificationRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -270,7 +270,7 @@ class QualificationRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(QualificationRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

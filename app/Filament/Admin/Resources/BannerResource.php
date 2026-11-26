@@ -21,6 +21,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
@@ -29,7 +30,7 @@ class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bell';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBell;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -44,7 +45,7 @@ class BannerResource extends Resource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Banner')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 TextInput::make('title')
                                     ->required()
@@ -56,7 +57,7 @@ class BannerResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Tab::make('Style')
-                            ->icon('heroicon-o-paint-brush')
+                            ->icon(Heroicon::OutlinedPaintBrush)
                             ->schema([
                                 ColorPicker::make('text_color')
                                     ->label('Text Color')
@@ -68,7 +69,7 @@ class BannerResource extends Resource
                                     ->default(Brand::PRIMARY_HEX),
                             ]),
                         Tab::make('Link')
-                            ->icon('heroicon-o-link')
+                            ->icon(Heroicon::OutlinedLink)
                             ->schema([
                                 TextInput::make('link_text')
                                     ->requiredWith('link_url')

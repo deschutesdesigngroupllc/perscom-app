@@ -45,7 +45,7 @@ class FormResource extends BaseResource
 {
     protected static ?string $model = FormModel::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPencilSquare;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -64,7 +64,7 @@ class FormResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Form')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->columns()
                             ->schema([
                                 TextInput::make('name')
@@ -113,7 +113,7 @@ class FormResource extends BaseResource
                                     ->required(),
                             ]),
                         Tab::make('Submission')
-                            ->icon('heroicon-o-folder-plus')
+                            ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 Select::make('submission_status_id')
                                     ->preload()
@@ -129,7 +129,7 @@ class FormResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Notifications')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 ModelNotification::make(
                                     alert: new HtmlString("<div class='font-bold'>Enable to send notifications when a form is submitted.</div>")
@@ -185,7 +185,7 @@ class FormResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(FormExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

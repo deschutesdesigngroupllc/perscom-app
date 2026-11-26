@@ -80,7 +80,7 @@ class ViewUser extends ViewRecord
                 ->color('gray'),
             Action::make('publicProfile')
                 ->label('Public Profile')
-                ->icon('heroicon-o-globe-alt')
+                ->icon(Heroicon::OutlinedGlobeAlt)
                 ->color('gray')
                 ->visible(fn (?User $record): bool => $record instanceof User && ServiceProfileService::isPublic($record))
                 ->url(fn (User $record): string => ServiceProfileService::url($record))

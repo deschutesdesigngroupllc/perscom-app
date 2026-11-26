@@ -9,6 +9,7 @@ use Exception;
 use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 
 class SwapSubscriptionBulkAction extends BulkAction
@@ -23,9 +24,9 @@ class SwapSubscriptionBulkAction extends BulkAction
         $this->modalHeading('Swap Subscription');
         $this->modalDescription('Enter the new price ID to swap the subscription of the tenant.');
         $this->modalSubmitActionLabel('Swap');
-        $this->modalIcon('heroicon-o-arrow-path');
+        $this->modalIcon(Heroicon::OutlinedArrowPath);
 
-        $this->groupedIcon('heroicon-m-arrow-path');
+        $this->groupedIcon(Heroicon::ArrowPath);
 
         $this->form([
             TextInput::make('price_id')

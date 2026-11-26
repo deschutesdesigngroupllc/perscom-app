@@ -18,6 +18,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -25,7 +26,7 @@ class SecondaryAssignmentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'secondary_assignment_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedCalendarDays;
 
     protected static ?string $title = 'Secondary Assignments';
 

@@ -56,7 +56,7 @@ class RankRecordResource extends BaseResource
 
     protected static ?string $model = RankRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chevron-double-up';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChevronDoubleUp;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -74,7 +74,7 @@ class RankRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Rank Record')
                             ->columns()
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'Member(s)' : 'Member')
@@ -120,7 +120,7 @@ class RankRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -130,7 +130,7 @@ class RankRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -155,7 +155,7 @@ class RankRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Rank Record')
-                            ->icon('heroicon-o-chevron-double-up')
+                            ->icon(Heroicon::OutlinedChevronDoubleUp)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -173,7 +173,7 @@ class RankRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -183,7 +183,7 @@ class RankRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -216,7 +216,7 @@ class RankRecordResource extends BaseResource
                     ->label(''),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -227,7 +227,7 @@ class RankRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -278,7 +278,7 @@ class RankRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(RankRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

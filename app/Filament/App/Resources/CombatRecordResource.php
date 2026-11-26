@@ -53,7 +53,7 @@ class CombatRecordResource extends BaseResource
 
     protected static ?string $model = CombatRecord::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-fire';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFire;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -71,7 +71,7 @@ class CombatRecordResource extends BaseResource
                     ->tabs([
                         Tab::make('Combat Record')
                             ->columns()
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 MemberSelect::make('user_id')
                                     ->prefillFromQuery()
@@ -107,7 +107,7 @@ class CombatRecordResource extends BaseResource
                                     ->searchable(),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -117,7 +117,7 @@ class CombatRecordResource extends BaseResource
                             }),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = resolve(NotificationSettings::class);
@@ -142,7 +142,7 @@ class CombatRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Combat Record')
-                            ->icon('heroicon-o-fire')
+                            ->icon(Heroicon::OutlinedFire)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -152,7 +152,7 @@ class CombatRecordResource extends BaseResource
                                     ->columnSpanFull(),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('author.display_name')
                                     ->label('Author'),
@@ -162,7 +162,7 @@ class CombatRecordResource extends BaseResource
                                 TextEntry::make('updated_at'),
                             ]),
                         Tab::make('Fields')
-                            ->icon('heroicon-o-pencil')
+                            ->icon(Heroicon::OutlinedPencil)
                             ->schema(function (): array {
                                 $settings = resolve(FieldSettings::class);
 
@@ -186,7 +186,7 @@ class CombatRecordResource extends BaseResource
                     ->searchable(query: fn (Builder $query, string $search): Builder => $query->whereHas('user', fn (Builder $q): Builder => $q->where('name', 'like', sprintf('%%%s%%', $search)))),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->searchable()
                     ->action(
@@ -197,7 +197,7 @@ class CombatRecordResource extends BaseResource
                     ),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -238,7 +238,7 @@ class CombatRecordResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(CombatRecordExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

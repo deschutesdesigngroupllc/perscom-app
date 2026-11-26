@@ -46,7 +46,7 @@ class AnnouncementResource extends BaseResource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMegaphone;
 
     protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
@@ -61,7 +61,7 @@ class AnnouncementResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Announcement')
-                            ->icon('heroicon-o-megaphone')
+                            ->icon(Heroicon::OutlinedMegaphone)
                             ->schema([
                                 TextInput::make('title')
                                     ->afterStateUpdated(fn (Set $set, $state): mixed => $set('model_notifications.subject', $state))
@@ -95,7 +95,7 @@ class AnnouncementResource extends BaseResource
                             ]),
                         Tab::make('Notifications')
                             ->visibleOn('create')
-                            ->icon('heroicon-o-bell')
+                            ->icon(Heroicon::OutlinedBell)
                             ->schema([
                                 ModelNotification::make(),
                             ]),
@@ -157,7 +157,7 @@ class AnnouncementResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(AnnouncementExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

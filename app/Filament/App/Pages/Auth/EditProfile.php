@@ -18,6 +18,7 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 
 class EditProfile extends \Filament\Auth\Pages\EditProfile
@@ -36,7 +37,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Profile')
-                            ->icon('heroicon-o-user')
+                            ->icon(Heroicon::OutlinedUser)
                             ->schema([
                                 $this->getNameFormComponent(),
                                 Select::make('timezone')
@@ -60,7 +61,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                             ]),
                         Tab::make('Social')
                             ->columnSpanFull()
-                            ->icon('heroicon-o-device-phone-mobile')
+                            ->icon(Heroicon::OutlinedDevicePhoneMobile)
                             ->schema([
                                 Section::make('Discord')
                                     ->visible(fn (): bool => filled(config('services.discord.client_id')) && filled(config('services.discord.client_secret')))
@@ -163,7 +164,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->schema([]),
                             ]),
                         Tab::make('Password')
-                            ->icon('heroicon-o-lock-closed')
+                            ->icon(Heroicon::OutlinedLockClosed)
                             ->schema([
                                 $this->getPasswordFormComponent()
                                     ->helperText('Set a new password for your account.') // @phpstan-ignore method.notFound

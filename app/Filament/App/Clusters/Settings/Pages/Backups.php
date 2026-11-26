@@ -11,6 +11,7 @@ use Aws\S3\S3Client;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -23,7 +24,7 @@ class Backups extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-circle-stack';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCircleStack;
 
     protected static string|UnitEnum|null $navigationGroup = 'General';
 
@@ -75,7 +76,7 @@ class Backups extends Page implements HasTable
             ])
             ->recordActions([
                 Action::make('download')
-                    ->icon('heroicon-o-cloud-arrow-down')
+                    ->icon(Heroicon::OutlinedCloudArrowDown)
                     ->openUrlInNewTab()
                     ->url(fn (Backup $record) => $record->url),
             ]);

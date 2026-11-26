@@ -11,6 +11,7 @@ use App\Filament\Tables\Columns\ExpiresAtColumn;
 use App\Models\QualificationRecord;
 use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -21,7 +22,7 @@ class QualificationRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'qualification_records';
 
-    protected static string|BackedEnum|null $icon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $icon = Heroicon::OutlinedStar;
 
     protected static ?string $title = 'Qualification Records';
 
@@ -45,7 +46,7 @@ class QualificationRecordsRelationManager extends RelationManager
                     ->label(''),
                 TextColumn::make('text')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->wrap(false)
                     ->formatStateUsing(fn ($state) => Str::limit($state, 20))
                     ->html()
@@ -57,7 +58,7 @@ class QualificationRecordsRelationManager extends RelationManager
                     ),
                 TextColumn::make('document.name')
                     ->placeholder(new HtmlString('&ndash;'))
-                    ->icon('heroicon-o-document')
+                    ->icon(Heroicon::OutlinedDocument)
                     ->sortable()
                     ->action(
                         ViewDocumentAction::make()

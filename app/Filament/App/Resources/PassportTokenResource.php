@@ -39,7 +39,7 @@ class PassportTokenResource extends BaseResource
 {
     protected static ?string $model = PassportToken::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedKey;
 
     protected static ?string $cluster = Integrations::class;
 

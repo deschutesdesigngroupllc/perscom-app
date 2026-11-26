@@ -49,7 +49,7 @@ class SubmissionResource extends BaseResource
 
     protected static ?string $model = Submission::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-folder-plus';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolderPlus;
 
     protected static string|UnitEnum|null $navigationGroup = 'Records';
 
@@ -97,7 +97,7 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('form-tab')
                     ->tabs([
                         Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->label(fn (Get $get) => Form::find($get('form_id'))->name ?? 'Form')
                             ->schema(fn (Get $get): array => SubmissionResource::buildCustomFieldInputs(collect(Form::find($get('form_id'))?->fields))),
                     ]),
@@ -115,7 +115,7 @@ class SubmissionResource extends BaseResource
                         Tab::make('Submission')
                             ->badge(fn (?Submission $record) => $record->status->name ?? null)
                             ->badgeColor(fn (?Submission $record): array => Color::generateV3Palette($record->status->color ?? Brand::NEUTRAL_HEX))
-                            ->icon('heroicon-o-folder-plus')
+                            ->icon(Heroicon::OutlinedFolderPlus)
                             ->schema([
                                 TextEntry::make('user.display_name')
                                     ->label('Member'),
@@ -123,7 +123,7 @@ class SubmissionResource extends BaseResource
                                     ->label('Form'),
                             ]),
                         Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
+                            ->icon(Heroicon::OutlinedInformationCircle)
                             ->schema([
                                 TextEntry::make('read_at')
                                     ->dateTime()
@@ -137,7 +137,7 @@ class SubmissionResource extends BaseResource
                     ->persistTabInQueryString('form-tab')
                     ->tabs([
                         Tab::make('')
-                            ->icon('heroicon-o-pencil-square')
+                            ->icon(Heroicon::OutlinedPencilSquare)
                             ->label(fn (Submission $record) => $record->form->name ?? 'Form')
                             ->schema(fn (Submission $record): array => SubmissionResource::buildCustomFieldEntries($record->form->fields)),
                     ]),
@@ -207,7 +207,7 @@ class SubmissionResource extends BaseResource
             ->toolbarActions([
                 ExportBulkAction::make()
                     ->exporter(SubmissionExporter::class)
-                    ->icon('heroicon-o-document-arrow-down'),
+                    ->icon(Heroicon::OutlinedDocumentArrowDown),
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

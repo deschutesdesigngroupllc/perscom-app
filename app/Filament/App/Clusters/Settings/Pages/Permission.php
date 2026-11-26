@@ -16,6 +16,7 @@ use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
@@ -24,7 +25,7 @@ class Permission extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
     protected static ?string $navigationLabel = 'Permissions';
 
@@ -54,7 +55,7 @@ class Permission extends SettingsPage
                     ->columnSpanFull()
                     ->tabs([
                         Tab::make('Defaults')
-                            ->icon('heroicon-o-identification')
+                            ->icon(Heroicon::OutlinedIdentification)
                             ->schema([
                                 Select::make('default_roles')
                                     ->label('Role(s)')
@@ -73,7 +74,7 @@ class Permission extends SettingsPage
                                     ->helperText('The default permission(s) a new member will be granted when created.'),
                             ]),
                         Tab::make('Security')
-                            ->icon('heroicon-o-lock-closed')
+                            ->icon(Heroicon::OutlinedLockClosed)
                             ->schema([
                                 Toggle::make('require_multi_factor_authentication')
                                     ->label('Require multi-factor authentication')
