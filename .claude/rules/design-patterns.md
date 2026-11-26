@@ -27,11 +27,11 @@ Short area rules (badges, modal headers, copyable values, icons) live in `.ai/ru
 
 ## Form Methods
 
-| Method                     | When to use                                                          |
-|----------------------------|----------------------------------------------------------------------|
-| **Wizard**                 | Ordered steps where later inputs depend on earlier ones              |
-| **Progressive disclosure** | One form whose inputs are mostly independent, with shallow branches  |
-| **Simple form**            | A few independent fields where speed matters most                    |
+| Method                     | When to use                                                         |
+|----------------------------|---------------------------------------------------------------------|
+| **Wizard**                 | Ordered steps where later inputs depend on earlier ones             |
+| **Progressive disclosure** | One form whose inputs are mostly independent, with shallow branches |
+| **Simple form**            | A few independent fields where speed matters most                   |
 
 A setup flow that gates later steps on earlier ones (onboarding, the organization builder) is a
 wizard. Everything else is a single form that hides what does not apply.
@@ -44,11 +44,14 @@ in and failing on save.
 
 ## Modals and Slide-Overs
 
-| Entry                                                              | Use          |
-|--------------------------------------------------------------------|--------------|
-| A confirmation, or one to three flat fields                        | Modal        |
-| Four or more fields, sub-steps, or a record created from elsewhere | Slide-over   |
-| A read-only detail (a post, an occurrence)                         | Modal        |
+A custom action that opens entry UI picks its container by size. A resource's or relation
+manager's create and edit actions keep Filament's default.
+
+| Entry                                                              | Use        |
+|--------------------------------------------------------------------|------------|
+| A confirmation, or one to three flat fields                        | Modal      |
+| Four or more fields, sub-steps, or a record created from elsewhere | Slide-over |
+| A read-only detail (a post, an occurrence)                         | Modal      |
 
 - A modal has a Title Case `->modalHeading()` and a sentence `->modalDescription()`; see
   `.ai/rules/filament.md` for when it may carry an icon.
@@ -87,8 +90,10 @@ Every tab carries an icon, and a tab set never mixes tabs with icons and tabs wi
 A dashboard widget that shows more than a table is a custom Blade view inside an
 `<x-filament::section>`:
 
-- The section takes an outlined Heroicon, `icon-color="primary"`, a Title Case heading, and a
-  one-line description.
+- The section takes an outlined Heroicon, a Title Case heading, and a one-line description. Its
+  icon color says what it holds: `primary` for a feed of posts or events, `brass` for insignia and
+  setup prompts (rank, the launch plan, items needing attention), and the record kind's own color
+  otherwise.
 - Its own action is a link: in the section footer for "View All …" or "Open Calendar", or in
   `afterHeader` for a small control such as "Hide" or "RSS". Buttons are for actions inside the
   card.

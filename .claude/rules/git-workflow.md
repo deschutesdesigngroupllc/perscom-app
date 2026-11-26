@@ -2,9 +2,9 @@
 
 ## Branches
 
-Work lands on `develop`, and pull requests target `master`. A branch for an issue is named
-`{issue-number}-{description}`; without an issue, `{type}/{description}` with a type of
-`feature`, `fix`, `hotfix`, or `chore`.
+Work lands on `develop`, and pull requests target `master`. A branch off `develop` is named
+`{type}/{description}` with a type of `feature`, `fix`, `hotfix`, or `chore`
+(`feature/platform-upgrade`).
 
 Rebase a feature branch onto its base rather than merging the base in.
 
@@ -21,8 +21,8 @@ Commit only when asked. Each commit is atomic: one logical change, with the test
 
 ### Messages
 
-- A title in the imperative, describing the outcome: "Hide tab containers when all of their tabs
-  are hidden". Aim for 50 characters and never pass 72.
+- A title in the imperative, describing the outcome, on one line: "Hide tab containers when all
+  of their tabs are hidden". Aim for about 50 characters.
 - A body only when it explains why, wrapped at 72 columns.
 - No "Generated with" or "Co-Authored-By" lines.
 

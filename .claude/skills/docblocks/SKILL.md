@@ -39,7 +39,7 @@ Three carve-outs where a title-less block is correct:
   `register()`, `mount()`, `setUp()`, `tearDown()`, and overrides of a framework parent such as a
   resource's `form()`, `table()`, or `getPages()`. A title adds nothing to these; keep a
   title-less block when it carries a generic or a `@throws`. A domain method that merely starts
-  with a framework verb (`handleCheckIn()`) is not a lifecycle method and keeps its title.
+  with a framework verb (`handleAttendance()`) is not a lifecycle method and keeps its title.
 - **Generated model `@property` blocks**, written by `composer ide`. Never hand-write or trim
   them; regenerate them, and add a PHPStan ignore when the generated block is wrong.
 

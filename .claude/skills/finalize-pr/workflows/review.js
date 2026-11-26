@@ -291,9 +291,9 @@ const gateRuns = []
 if (A.gates.phpstan) {
   gateRuns.push(['PHPStan', () => agent(
     `${GATE_CONTRACT}\n\nRepository root: ${A.root}\nCommand: composer analyze\n\n` +
-    'The raised limit is deliberate: other gates run concurrently, and under that contention a worker at the default ' +
-    '512M dies with "PHPStan process crashed because it reached configured PHP memory limit" — zero findings and a ' +
-    'non-zero exit. If that still happens, report unverified with that reason, never pass.',
+    'It runs PHPStan with the memory limit the team uses. Other gates run concurrently; if a worker still dies with ' +
+    '"PHPStan process crashed because it reached configured PHP memory limit" (zero findings and a non-zero exit), ' +
+    'report unverified with that reason, never pass.',
     { label: 'gate:phpstan', phase: 'Gates', schema: GATE, model: MODELS.gate, effort: 'low', agentType: 'general-purpose' })])
 }
 if (A.gates.rector) {

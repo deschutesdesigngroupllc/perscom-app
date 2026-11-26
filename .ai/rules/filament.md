@@ -22,5 +22,6 @@ Give modals a Title Case ->modalHeading() and a ->modalDescription(); do not add
 except on destructive confirmations.
 
 ## Copyable values as disabled inputs
-Show a single value the user copies (URL, key, ID) on a form or page as a disabled TextInput with
-->copyable() and ->dehydrated(false), not a TextEntry.
+On a form or custom page, show a single value the user copies (a URL, a key) as a disabled
+TextInput with ->copyable() and ->dehydrated(false), not a TextEntry. In an infolist or a table, a
+copyable TextEntry or TextColumn is right.

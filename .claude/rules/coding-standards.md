@@ -13,38 +13,38 @@ strict types, and the rewrites they make. Nothing here restates what those tools
 Follow Laravel defaults: `php artisan make:*` decides where a file goes. Beyond the skeleton, these
 folders carry a pattern the app has committed to:
 
-| Directory           | Holds                                                             |
-|---------------------|-------------------------------------------------------------------|
-| `app/Actions/`      | Single-purpose classes with one static `handle()`                 |
-| `app/Ai/`           | AI assistant tools and agents                                     |
-| `app/Contracts/`    | Interfaces                                                        |
-| `app/Data/`         | DTOs extending spatie/laravel-data `Data`                         |
-| `app/Filament/`     | Panels: `Admin` (central), `App` (tenant), shared `Actions`       |
-| `app/Forms/`        | Reusable Filament form components built from a static `make()`    |
-| `app/Mcp/`          | MCP server tools                                                  |
-| `app/Models/Enums/` | Backed enums                                                      |
-| `app/Services/`     | Stateless services exposing static methods                        |
-| `app/Settings/`     | spatie/laravel-settings classes                                   |
-| `app/Support/`      | Small shared helpers (`Brand`, `Label`, and the like)             |
-| `app/Traits/`       | Model concern traits (`Has*`, `CanBe*`, `Clears*`)                |
-| `operations/`       | One-time data operations, see `one-time-operations.md`            |
+| Directory           | Holds                                                               |
+|---------------------|---------------------------------------------------------------------|
+| `app/Actions/`      | Single-purpose classes with one `handle()` (`.ai/rules/actions.md`) |
+| `app/Ai/`           | AI assistant tools and agents                                       |
+| `app/Contracts/`    | Interfaces                                                          |
+| `app/Data/`         | DTOs extending spatie/laravel-data `Data`                           |
+| `app/Filament/`     | Panels: `Admin` (central), `App` (tenant), shared `Actions`         |
+| `app/Forms/`        | Reusable Filament form components built from a static `make()`      |
+| `app/Mcp/`          | MCP server tools                                                    |
+| `app/Models/Enums/` | Backed enums                                                        |
+| `app/Services/`     | Stateless services exposing static methods                          |
+| `app/Settings/`     | spatie/laravel-settings classes                                     |
+| `app/Support/`      | Small shared helpers (`Brand`, `Label`, and the like)               |
+| `app/Traits/`       | Model concern traits (`Has*`, `CanBe*`, `Clears*`)                  |
+| `operations/`       | One-time data operations, see `one-time-operations.md`              |
 
 There is no repository layer and no domain or module folder. Query Eloquent directly.
 
 ## Naming Conventions
 
-| Thing          | Convention                   | Example                       |
-|----------------|------------------------------|-------------------------------|
-| Actions        | Verb + Noun                  | `CreateSpecialty`             |
-| Commands       | Noun or Verb + Command       | `CalculateSchedulesCommand`   |
-| Events         | Past tense                   | `RecordCreated`               |
-| Jobs           | Verb + Noun                  | `PruneApiLogs`                |
-| Models         | Singular PascalCase          | `CombatRecord`                |
-| Observers      | Model + Observer             | `UserObserver`                |
-| Policies       | Model + Policy               | `EventPolicy`                 |
-| Services       | Noun + Service               | `CalendarFeedService`         |
-| Tests          | Class under test + Test      | `CalendarFeedServiceTest`     |
-| Enums          | Singular PascalCase, no Enum | `EventRegistrationStatus`     |
+| Thing     | Convention                   | Example                     |
+|-----------|------------------------------|-----------------------------|
+| Actions   | Verb + Noun                  | `CreateSpecialty`           |
+| Commands  | Noun or Verb + Command       | `CalculateSchedulesCommand` |
+| Events    | Past tense                   | `RecordCreated`             |
+| Jobs      | Verb + Noun                  | `PruneApiLogs`              |
+| Models    | Singular PascalCase          | `CombatRecord`              |
+| Observers | Model + Observer             | `UserObserver`              |
+| Policies  | Model + Policy               | `EventPolicy`               |
+| Services  | Noun + Service               | `CalendarFeedService`       |
+| Tests     | Class under test + Test      | `CalendarFeedServiceTest`   |
+| Enums     | Singular PascalCase, no Enum | `EventRegistrationStatus`   |
 
 Enum cases are `UPPER_SNAKE_CASE` (see `.ai/rules/enums.md`).
 
@@ -117,12 +117,12 @@ Collections are preferred (`.ai/rules/app.md`). For a small plain array where wr
 collection would be unnatural, use PHP's array search functions instead of a `foreach` whose body
 is a single `if` that returns:
 
-| The loop returns            | Use                |
-|-----------------------------|--------------------|
-| `true` on a match           | `array_any()`      |
-| `false` on a match          | `array_all()`      |
-| The matching value          | `array_find()`     |
-| The matching key            | `array_find_key()` |
+| The loop returns   | Use                |
+|--------------------|--------------------|
+| `true` on a match  | `array_any()`      |
+| `false` on a match | `array_all()`      |
+| The matching value | `array_find()`     |
+| The matching key   | `array_find_key()` |
 
 ## Line Length
 
@@ -237,8 +237,8 @@ takes; the `docblocks` skill is the fuller judgment guide.
 
 - **A method docblock opens with a one-line title.** Imperative, verb-first, ending in a period,
   within 80 columns: `Resolve the member's private feed token.` If it wraps, tighten it or extract
-  the code until a short title says it. A constructor or a framework lifecycle method may carry
-  tags alone.
+  the code until a short title says it. A constructor, a framework lifecycle method, or an override
+  of a framework method may carry tags alone.
 - **At most one fact follows the title**, and only when a caller would trip without it: a side
   effect, an edge case, or a precondition. Never an account of what the method does line by line,
   or why it was built that way. A method that needs more has code to extract.
@@ -263,11 +263,11 @@ takes; the `docblocks` skill is the fuller judgment guide.
 
 ```php
 /**
- * Get the members registered for the occurrence.
+ * Get the members registered for the event.
  *
- * @return HasMany<EventRegistration, $this>
+ * @return BelongsToMany<User, $this>
  */
-public function registrations(): HasMany
+public function registrations(): BelongsToMany
 ```
 
 ## Type Hints

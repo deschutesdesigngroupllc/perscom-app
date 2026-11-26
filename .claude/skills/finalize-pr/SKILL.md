@@ -256,14 +256,17 @@ it, and it is the rule most likely broken elsewhere in the same diff.
 **Cut the diff into areas**, at most five, each a coherent slice (one panel, one resource family,
 the API, the jobs) with its tests beside it. Under about 30 files, use one area. For each, list:
 
-- `sources`: `CLAUDE.md`, `coding-standards.md`, and `spelling.md` for any PHP; `design-patterns.md`
-  and `ui-text.md` for Filament, Livewire, or Blade; `testing.md` for tests;
-  `one-time-operations.md` for `operations/` or permission changes; every `.ai/rules` file whose
-  glob matches; every `CLAUDE.md` the walk printed above the slice's paths
-- `skills`: every sibling skill whose description matches: `laravel-best-practices` for backend
-  PHP, `tailwindcss-development` for Blade and CSS, `inertia-react-development` for
-  `resources/js`, `passport-development` for OAuth, `cashier-stripe-development` for billing,
-  `configuring-horizon` for queues, and whatever else the listing shows
+- `sources`: `CLAUDE.md`, `coding-standards.md`, and `spelling.md` for any PHP; `filament.md`,
+  `design-patterns.md`, `ui-text.md`, and `list-search.md` for Filament, Livewire, or Blade;
+  `testing.md` for tests; `database.md` for migrations and models; `config-files.md` for `config/`;
+  `one-time-operations.md` for `operations/` or permission changes; `markdown.md` for rule and
+  skill files; every `.ai/rules` file whose glob matches; every `CLAUDE.md` the walk printed above
+  the slice's paths
+- `skills`: every sibling skill whose description matches: `docblocks` when docblocks change,
+  `laravel-best-practices` for backend PHP, `tailwindcss-development` for Blade and CSS,
+  `inertia-react-development` for `resources/js`, `passport-development` for OAuth,
+  `cashier-stripe-development` for billing, `configuring-horizon` for queues, and whatever else the
+  listing shows
 
 Past about 200 files, five areas cannot each read everything. Say so in `coverageNotes` and let the
 agents' `notReached` lists name what was missed.

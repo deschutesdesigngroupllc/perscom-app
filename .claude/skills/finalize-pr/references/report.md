@@ -83,13 +83,13 @@ When the workflow returns `reviewItems`, print them as one table after the requi
 per `R` item in order, every item included, under a count line:
 `**Review comments:** 9 — 5 fixed · 1 replied · 2 outstanding · 1 external`.
 
-| Column     | Holds              | Rules                                                                     |
-|------------|--------------------|---------------------------------------------------------------------------|
-| `Item`     | `**R7** Blocking`  | Bold ID; `Blocking` when it is                                            |
-| `Where`    | `` `Foo.php:62` `` | The `where`, as a clickable path, or `review` or `PR body`                |
-| `Status`   | `✓ fixed`          | `✓ fixed`, `↩ replied`, `✗ outstanding`, `⚖ disputed`, or `⏸ external`    |
-| `Evidence` | `evidence`         | One clause: the place a fix landed, or what is missing                    |
-| `Findings` | `F3`               | The row's `findings`                                                      |
+| Column     | Holds              | Rules                                                                  |
+|------------|--------------------|------------------------------------------------------------------------|
+| `Item`     | `**R7** Blocking`  | Bold ID; `Blocking` when it is                                         |
+| `Where`    | `` `Foo.php:62` `` | The `where`, as a clickable path, or `review` or `PR body`             |
+| `Status`   | `✓ fixed`          | `✓ fixed`, `↩ replied`, `✗ outstanding`, `⚖ disputed`, or `⏸ external` |
+| `Evidence` | `evidence`         | One clause: the place a fix landed, or what is missing                 |
+| `Findings` | `F3`               | The row's `findings`                                                   |
 
 ## Findings
 
@@ -97,14 +97,14 @@ One table per area, in the workflow's order, which is already the priority: Secu
 Data & schema, Correctness, Spec & requirements, Review comments, Conventions, Docs & companions,
 and Quality. Drop an empty area rather than printing its heading.
 
-| Column        | Holds                                                                         |
-|---------------|-------------------------------------------------------------------------------|
-| `ID`          | `**F7**`                                                                      |
-| `Sev`         | `S1 ✓`                                                                        |
-| `Location`    | `` `path/to/File.php:41` ``                                                   |
-| `What breaks` | `consequence`                                                                 |
-| `Fix`         | `fix`                                                                         |
-| `Src`         | `bug`, `sec`, `spec`, `pr`, `rules`, `len` (measured width), or `simp`        |
+| Column        | Holds                                                                  |
+|---------------|------------------------------------------------------------------------|
+| `ID`          | `**F7**`                                                               |
+| `Sev`         | `S1 ✓`                                                                 |
+| `Location`    | `` `path/to/File.php:41` ``                                            |
+| `What breaks` | `consequence`                                                          |
+| `Fix`         | `fix`                                                                  |
+| `Src`         | `bug`, `sec`, `spec`, `pr`, `rules`, `len` (measured width), or `simp` |
 
 - **`ID`:** bold, exactly as the workflow assigned it, never renumbered.
 - **`Sev`:** `✓` when `verified`, `?` when not.

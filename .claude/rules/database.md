@@ -27,10 +27,10 @@ MySQL can place a later column with `->after()`, but a new table is written in t
 6. `created_at` and `updated_at`
 
 Indexes and unique constraints follow the last column. A pivot table holds its keys, then its
-payload, then its timestamps.
+payload, then its timestamps. A new table, for example:
 
 ```php
-Schema::create('event_registrations', function (Blueprint $table): void {
+Schema::create('event_check_ins', function (Blueprint $table): void {
     $table->id();
     $table->foreignId('event_id')->constrained()->cascadeOnDelete();
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
@@ -44,19 +44,20 @@ Schema::create('event_registrations', function (Blueprint $table): void {
 
 ## Ordering Records
 
-A model the user sorts by hand uses `spatie/eloquent-sortable` with an integer column named
-`order`, never a bespoke `position` or `sort_order` column with hand-written reordering.
+A model the user sorts by hand implements `Spatie\EloquentSortable\Sortable` and uses the
+`App\Traits\CanBeOrdered` trait, over an integer `order` column
+(`$table->integer('order')->default(0)`). Never add a bespoke `position` or `sort_order` column
+with hand-written reordering.
 
 ```php
-class Alert extends Model implements Sortable
+class Rank extends Model implements HasLabel, Sortable
 {
-    use SortableTrait;
+    use CanBeOrdered;
 }
 ```
 
-The column name comes from `config/eloquent-sortable.php`. When records are ordered within a parent
-rather than globally, override `buildSortQuery()` to scope it. Query with the `ordered()` scope and
-reorder with `Model::setNewOrder($ids)`.
+When records are ordered within a parent rather than globally, override `buildSortQuery()` to scope
+it. Query with the `ordered()` scope and reorder with `Model::setNewOrder($ids)`.
 
 ## Hard Deletes
 

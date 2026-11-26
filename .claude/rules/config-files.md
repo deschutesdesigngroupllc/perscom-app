@@ -20,11 +20,11 @@ named for its domain (`automations.php`, `billing.php`, `ai.php`).
 
 ## Environment Variables
 
-- `UPPER_SNAKE_CASE`, prefixed by the file's domain (`AI_*` in `ai.php`, `BILLING_*` in
-  `billing.php`).
+- `UPPER_SNAKE_CASE`, prefixed by what they configure: the app setting's domain
+  (`AI_MONTHLY_TOKEN_LIMIT`) or the external service (`STRIPE_*`, `ANTHROPIC_*`).
 - Give a default for a sensible non-secret value; omit it for a secret or an optional feature.
-- Cast a non-string value before `env()`: `(int) env('AI_MONTHLY_TOKEN_LIMIT', 2000000)`,
-  `(bool) env('APP_DEBUG', false)`.
+- Cast a number before `env()`: `(int) env('AI_MONTHLY_TOKEN_LIMIT', 2000000)`. A boolean needs no
+  cast, since `env()` already reads `true` and `false` as booleans: `env('OPENAI_STORE', true)`.
 - A nested `env()` fallback is fine: `env('MAIL_FROM_NAME', env('APP_NAME', 'PERSCOM'))`.
 
 ## Formatting
@@ -47,7 +47,7 @@ Document each top-level key or logical group with Laravel's banner comment:
 | The models automations may update, and which of their fields they may set.
 | Fields in denied_fields are always blocked.
 |
-| Supported lookups: "id", "email"
+| Supported lookup types: "expression", "query"
 |
 */
 ```

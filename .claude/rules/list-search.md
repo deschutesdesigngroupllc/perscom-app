@@ -32,8 +32,8 @@ A user who can read a value in a list column can find the row by typing it.
 
 5. **Exempt by nature**: dates, numbers, counts, booleans, colors, and computed summaries with no
    single stored value.
-6. **Member names are searched on `users.name`**, the column every member display name is built
-   from.
+6. **Member names are searched on `users.name`**, the stored name every display-name format
+   includes.
 
 ## Global Search
 
