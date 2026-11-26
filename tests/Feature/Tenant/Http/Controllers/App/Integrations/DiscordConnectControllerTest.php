@@ -179,7 +179,7 @@ class DiscordConnectControllerTest extends TenantTestCase
 
     protected function assertNotificationBodyContains(string $text): void
     {
-        $mailbox = app(NotificationMailbox::class);
+        $mailbox = resolve(NotificationMailbox::class);
         $mailbox->flush();
 
         $bodies = collect($mailbox->pull())->pluck('body')->implode(' ');
