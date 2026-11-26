@@ -81,9 +81,15 @@
         @endforelse
 
         <div class="flex justify-center">
-          <x-filament::button color="gray" wire:click="loadMore" wire:target="loadMore" :icon="$past ? 'heroicon-m-arrow-up' : 'heroicon-m-arrow-down'">
-            {{ $past ? 'Load earlier' : 'Load more' }}
-          </x-filament::button>
+          @if ($this->hasMoreAgenda())
+            <x-filament::button color="gray" wire:click="loadMore" wire:target="loadMore" :icon="$past ? 'heroicon-m-arrow-up' : 'heroicon-m-arrow-down'">
+              {{ $past ? 'Load earlier' : 'Load more' }}
+            </x-filament::button>
+          @else
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+              {{ $past ? 'No earlier events in the past year.' : 'No more events scheduled in the next year.' }}
+            </p>
+          @endif
         </div>
       </div>
     @else

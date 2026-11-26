@@ -157,6 +157,34 @@ class CalendarTest extends TenantTestCase
             ->assertDontSee('Far Away Event');
     }
 
+    public function test_load_more_skips_ahead_to_the_next_event(): void
+    {
+        $this->actingAsSuperAdmin();
+        Event::factory()->createQuietly(['name' => 'Winter Field Exercise', 'all_day' => false, 'starts' => Date::parse('2026-11-20 18:00:00'), 'ends' => Date::parse('2026-11-20 19:00:00')]);
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Winter Field Exercise')
+            ->assertSee('Load more')
+            ->call('loadMore')
+            ->assertSee('Winter Field Exercise')
+            ->assertDontSee('Load more')
+            ->assertSee('No more events scheduled in the next year.');
+    }
+
+    public function test_the_agenda_says_when_there_is_nothing_more_to_load(): void
+    {
+        $this->actingAsSuperAdmin();
+
+        Livewire::test(Calendar::class)
+            ->call('setDisplay', 'agenda')
+            ->assertDontSee('Load more')
+            ->assertSee('No more events scheduled in the next year.')
+            ->call('togglePast')
+            ->assertDontSee('Load earlier')
+            ->assertSee('No earlier events in the past year.');
+    }
+
     public function test_rsvp_from_the_agenda_records_a_registration(): void
     {
         $user = $this->actingAsSuperAdmin();

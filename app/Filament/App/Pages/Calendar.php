@@ -54,6 +54,11 @@ class Calendar extends Page
      */
     public const int AGENDA_WINDOW_DAYS = 30;
 
+    /**
+     * How far beyond the loaded agenda to look for more events before calling it the end.
+     */
+    public const int AGENDA_HORIZON_DAYS = 365;
+
     public string $display = 'month';
 
     /**
@@ -168,9 +173,26 @@ class Calendar extends Page
         $this->reset(['calendarIds', 'mine', 'openOnly', 'agendaWindows']);
     }
 
+    /**
+     * Extend the agenda far enough to reach the next event, so loading more never shows an empty stretch.
+     */
     public function loadMore(): void
     {
-        $this->agendaWindows++;
+        $next = $this->nextOccurrenceBeyondAgenda();
+
+        if (! $next instanceof OccurrenceData) {
+            return;
+        }
+
+        $today = today(UserSettingsService::timezone());
+        $daysAway = (int) ceil(abs($today->diffInDays($next->localStarts()->startOfDay(), false)));
+
+        $this->agendaWindows = max($this->agendaWindows + 1, (int) ceil(($daysAway + 1) / static::AGENDA_WINDOW_DAYS));
+    }
+
+    public function hasMoreAgenda(): bool
+    {
+        return $this->nextOccurrenceBeyondAgenda() instanceof OccurrenceData;
     }
 
     #[On('calendar-occurrence-selected')]
@@ -366,6 +388,26 @@ class Calendar extends Page
     {
         return EventCalendarService::canCancelDate($occurrence)
             && (Auth::user()?->can('update', $occurrence->event) ?? false);
+    }
+
+    /**
+     * The closest event outside the loaded agenda: the next one after it, or when looking back, the latest one before it.
+     */
+    protected function nextOccurrenceBeyondAgenda(): ?OccurrenceData
+    {
+        [$start, $end] = $this->agendaRange();
+        $user = Auth::user();
+        $user = $user instanceof User ? $user : null;
+
+        $occurrences = $this->past
+            ? EventCalendarService::occurrences($start->copy()->subDays(static::AGENDA_HORIZON_DAYS), $start, $this->filters(), $user)
+                ->filter(fn (OccurrenceData $occurrence): bool => $occurrence->starts->lessThan($start))
+            : EventCalendarService::occurrences($end, $end->copy()->addDays(static::AGENDA_HORIZON_DAYS), $this->filters(), $user)
+                ->filter(fn (OccurrenceData $occurrence): bool => $occurrence->starts->greaterThan($end));
+
+        return $this->past
+            ? $occurrences->sortByDesc(fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp())->first()
+            : $occurrences->sortBy(fn (OccurrenceData $occurrence): int => $occurrence->starts->getTimestamp())->first();
     }
 
     /**
