@@ -21,6 +21,7 @@ use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Brand;
+use App\Support\Label;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
@@ -48,6 +49,7 @@ use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\BaseFilter;
 use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -176,6 +178,8 @@ class AppServiceProvider extends ServiceProvider
 
         Authenticate::redirectUsing($authenticationRedirect);
         AuthenticateSession::redirectUsing($authenticationRedirect);
+
+        $this->configureTitleCaseLabels();
 
         Column::configureUsing(function (Column $field) {
             $closure = match ($field->getName()) {
@@ -454,5 +458,18 @@ class AppServiceProvider extends ServiceProvider
             ->modalDescription('Only this link is removed. The record itself is kept.')
             ->modalSubmitActionLabel('Remove')
             ->modalCancelActionLabel('Keep'));
+    }
+
+    /**
+     * Filament derives unlabelled fields, entries, columns and filters from their names in sentence case
+     * ("First name"). Give them Title Case defaults instead; any label set explicitly or by the component
+     * itself still wins because these run first.
+     */
+    protected function configureTitleCaseLabels(): void
+    {
+        Field::configureUsing(fn (Field $field): Field => $field->label(fn (Field $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
+        Entry::configureUsing(fn (Entry $entry): Entry => $entry->label(fn (Entry $component): string => Label::fromName(Str::afterLast($component->getName(), '.'))));
+        Column::configureUsing(fn (Column $column): Column => $column->label(fn (Column $component): string => Label::fromName(Str::of($component->getName())->beforeLast('.')->afterLast('.')->toString())));
+        BaseFilter::configureUsing(fn (BaseFilter $filter): BaseFilter => $filter->label(fn (BaseFilter $component): string => Label::fromName(Str::before($component->getName(), '.'))));
     }
 }
