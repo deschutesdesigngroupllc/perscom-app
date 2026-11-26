@@ -28,7 +28,7 @@ class ListPassportTokens extends ListRecords
     {
         return [
             Action::make('purge')
-                ->label('Purge API cache')
+                ->label('Purge API Cache')
                 ->color('warning')
                 ->requiresConfirmation()
                 ->modalDescription(new HtmlString("<div class='fi-modal-description text-sm text-gray-500 dark:text-gray-400 flex flex-col space-y-2'><div>PERSCOM leverages a sophisticated caching system to deliver your content globally through our API. Whenever an update occurs, we automatically purge the corresponding item from the cache, ensuring you always access the freshest data. Occasionally, data may become out of sync. If you encounter stale or outdated information through our API, simply purge your cache to retrieve the latest updates.</div><div class='font-semibold'>Please note, it may take a few minutes to propagate the request.</div></div>"))
@@ -42,7 +42,7 @@ class ListPassportTokens extends ListRecords
                     $action->success();
                 }),
             Action::make('logs')
-                ->label('View logs')
+                ->label('View Logs')
                 ->color('gray')
                 ->url(fn (): string => ApiLogResource::getUrl()),
             CreateAction::make(),

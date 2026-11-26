@@ -62,7 +62,7 @@ class ServiceRecordsRelationManager extends RelationManager
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New service record')
+                    ->label('New Service Record')
                     ->url(function (): string {
                         /** @var User $user */
                         $user = $this->getOwnerRecord();

@@ -92,7 +92,7 @@ class DomainResource extends Resource
             ->groups(['tenant.name'])
             ->filters([
                 TernaryFilter::make('is_custom_subdomain')
-                    ->label('Custom subdomain'),
+                    ->label('Custom Subdomain'),
                 SelectFilter::make('tenant_id')
                     ->label('Tenant')
                     ->multiple()

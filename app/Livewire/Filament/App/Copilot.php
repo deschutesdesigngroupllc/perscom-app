@@ -66,7 +66,7 @@ class Copilot extends Component implements HasActions, HasSchemas
             ->modalSubmitActionLabel('Ask')
             ->schema([
                 Textarea::make('prompt')
-                    ->label('What do you need?')
+                    ->label('What Do You Need?')
                     ->required()
                     ->rows(5)
                     ->maxLength(2000),

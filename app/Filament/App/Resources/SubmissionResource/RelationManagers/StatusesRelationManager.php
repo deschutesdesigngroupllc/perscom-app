@@ -36,7 +36,7 @@ class StatusesRelationManager extends RelationManager
             ])
             ->headerActions([
                 AttachAction::make()
-                    ->label('Set status')
+                    ->label('Set Status')
                     ->modalHeading('Set Status')
                     ->modalDescription('Set the current status of the submission.')
                     ->modalSubmitActionLabel('Save')
@@ -49,7 +49,7 @@ class StatusesRelationManager extends RelationManager
             ->toolbarActions([
                 BulkActionGroup::make([
                     DetachBulkAction::make()
-                        ->label('Remove selected'),
+                        ->label('Remove Selected'),
                 ]),
             ])
             ->defaultSort('model_has_statuses.created_at', 'desc');

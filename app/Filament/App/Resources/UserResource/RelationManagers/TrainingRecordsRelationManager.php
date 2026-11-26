@@ -68,7 +68,7 @@ class TrainingRecordsRelationManager extends RelationManager
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New training record')
+                    ->label('New Training Record')
                     ->url(function (): string {
                         /** @var User $user */
                         $user = $this->getOwnerRecord();

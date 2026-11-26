@@ -39,7 +39,7 @@ class DomainsRelationManager extends RelationManager
                     ->maxLength(255),
                 Toggle::make('is_custom_subdomain')
                     ->helperText('Is the domain a custom domain.')
-                    ->label('Custom subdomain')
+                    ->label('Custom Subdomain')
                     ->required(),
             ]);
     }

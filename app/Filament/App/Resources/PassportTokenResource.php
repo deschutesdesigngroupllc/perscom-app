@@ -108,7 +108,7 @@ class PassportTokenResource extends BaseResource
                                     }))
                                     ->dateTime(),
                                 TextEntry::make('token')
-                                    ->label('API key')
+                                    ->label('API Key')
                                     ->wrap()
                                     ->badge()
                                     ->color('gray')

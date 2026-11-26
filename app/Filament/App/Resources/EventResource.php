@@ -239,7 +239,7 @@ class EventResource extends BaseResource
                             ->schema([
                                 Toggle::make('registration_enabled')
                                     ->live()
-                                    ->label('Registration enabled')
+                                    ->label('Registration Enabled')
                                     ->helperText('Whether members can RSVP to the event.')
                                     ->default(false),
                                 DateTimePicker::make('registration_deadline')
@@ -249,13 +249,13 @@ class EventResource extends BaseResource
                                     ->nullable()
                                     ->helperText('The deadline for registration. Leave blank for no deadline.'),
                                 Toggle::make('creates_training_record')
-                                    ->label('Create training records')
+                                    ->label('Create Training Records')
                                     ->helperText('Automatically create a training record for each member marked as attended.')
                                     ->default(false)
                                     ->columnSpanFull(),
                                 Toggle::make('notifications_enabled')
                                     ->live()
-                                    ->label('Reminders enabled')
+                                    ->label('Reminders Enabled')
                                     ->validationAttribute('enabled notifications')
                                     ->default(false)
                                     ->helperText('Send reminder notifications to all registered members.')

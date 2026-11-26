@@ -54,7 +54,7 @@ class SlotsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make(),
                 AttachAction::make()
-                    ->label('Add slot')
+                    ->label('Add Slot')
                     ->multiple()
                     ->modalHeading('Add slot')
                     ->modalDescription('Attach a slot to this unit.')
@@ -63,12 +63,12 @@ class SlotsRelationManager extends RelationManager
             ])
             ->recordActions([
                 DetachAction::make()
-                    ->label('Remove slot'),
+                    ->label('Remove Slot'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DetachBulkAction::make()
-                        ->label('Remove selected slots')
+                        ->label('Remove Selected Slots')
                         ->action(function (DetachBulkAction $action, Collection $records): void {
                             /** @var Unit $unit */
                             $unit = $this->getOwnerRecord();

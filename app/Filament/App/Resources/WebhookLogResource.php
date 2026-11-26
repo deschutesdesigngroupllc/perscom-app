@@ -56,7 +56,7 @@ class WebhookLogResource extends BaseResource
         return $table
             ->emptyStateActions([
                 Action::make('new')
-                    ->label('New webhook')
+                    ->label('New Webhook')
                     ->url(WebhookResource::getUrl('create')),
             ])
             ->emptyStateDescription('There are no webhook logs to view. Create your first webhook to start sending real-time notifications.')

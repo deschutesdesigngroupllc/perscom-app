@@ -77,7 +77,7 @@ class Permission extends SettingsPage
                             ->icon(Heroicon::OutlinedLockClosed)
                             ->schema([
                                 Toggle::make('require_multi_factor_authentication')
-                                    ->label('Require multi-factor authentication')
+                                    ->label('Require Multi-Factor Authentication')
                                     ->helperText('When enabled, every member must set up an authenticator app or email code before they can access the dashboard.'),
                             ]),
                     ]),

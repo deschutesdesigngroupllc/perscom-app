@@ -152,7 +152,7 @@ class Fields extends SettingsPage
                                             ->modalDescription('This will sync the custom field relationships for all existing members.')
                                             ->form([
                                                 Radio::make('sync_mode')
-                                                    ->label('How should existing fields be handled?')
+                                                    ->label('How Should Existing Fields Be Handled?')
                                                     ->options([
                                                         'with_detaching' => 'Replace all fields (removes fields not in list)',
                                                         'without_detaching' => 'Add only (keeps existing fields, adds new ones)',

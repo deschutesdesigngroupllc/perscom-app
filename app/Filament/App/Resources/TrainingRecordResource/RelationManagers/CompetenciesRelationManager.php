@@ -41,13 +41,13 @@ class CompetenciesRelationManager extends RelationManager
             ->headerActions([
                 AttachAction::make()
                     ->preloadRecordSelect()
-                    ->label('Add competency')
+                    ->label('Add Competency')
                     ->modalHeading('Add competency')
                     ->modalDescription('Select a competency from the list below to attach to this training record.'),
             ])
             ->recordActions([
                 DetachAction::make()
-                    ->label('Remove competency')
+                    ->label('Remove Competency')
                     ->modalHeading('Remove competency'),
             ])
             ->toolbarActions([

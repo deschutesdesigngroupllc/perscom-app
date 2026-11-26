@@ -60,7 +60,7 @@ class ApiLogResource extends BaseResource
         return $table
             ->emptyStateActions([
                 Action::make('new')
-                    ->label('New API key')
+                    ->label('New API Key')
                     ->url(PassportTokenResource::getUrl('create')),
             ])
             ->emptyStateDescription("There are no API logs to view. Create your first API key to start integrating with PERSCOM's powerful API.")

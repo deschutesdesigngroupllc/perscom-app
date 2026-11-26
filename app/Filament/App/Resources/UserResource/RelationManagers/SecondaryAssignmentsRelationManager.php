@@ -63,7 +63,7 @@ class SecondaryAssignmentsRelationManager extends RelationManager
             ->emptyStateHeading('No secondary assignments found')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New secondary assignment record')
+                    ->label('New Secondary Assignment Record')
                     ->url(function (): string {
                         /** @var User $user */
                         $user = $this->getOwnerRecord();

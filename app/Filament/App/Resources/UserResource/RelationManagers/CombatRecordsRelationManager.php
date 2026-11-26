@@ -62,7 +62,7 @@ class CombatRecordsRelationManager extends RelationManager
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New combat record')
+                    ->label('New Combat Record')
                     ->url(function (): string {
                         /** @var User $user */
                         $user = $this->getOwnerRecord();

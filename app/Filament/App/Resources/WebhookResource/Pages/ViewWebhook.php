@@ -26,7 +26,7 @@ class ViewWebhook extends ViewRecord
     {
         return [
             Action::make('test')
-                ->label('Test webhook')
+                ->label('Test Webhook')
                 ->schema([
                     CodeEditor::make('payload')
                         ->required()

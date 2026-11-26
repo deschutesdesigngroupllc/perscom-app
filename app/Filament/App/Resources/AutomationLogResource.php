@@ -49,7 +49,7 @@ class AutomationLogResource extends BaseResource
         return $table
             ->emptyStateActions([
                 Action::make('new')
-                    ->label('New automation')
+                    ->label('New Automation')
                     ->url(AutomationResource::getUrl('create')),
             ])
             ->emptyStateDescription('There are no automation logs to view. Create your first automation to start automating tasks.')

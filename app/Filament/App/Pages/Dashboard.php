@@ -219,7 +219,7 @@ class Dashboard extends BaseDashboard
                 ->schema([
                     Actions::make([
                         Action::make('dismissOnboarding')
-                            ->label("Don't show this setup wizard again")
+                            ->label("Don't Show This Setup Wizard Again")
                             ->icon(Heroicon::OutlinedXCircle)
                             ->color('gray')
                             ->link()
@@ -383,7 +383,7 @@ class Dashboard extends BaseDashboard
                                     </div>
                                 ')),
                             Checkbox::make('finish.dont_show_again')
-                                ->label("Don't show this setup wizard again")
+                                ->label("Don't Show This Setup Wizard Again")
                                 ->helperText('You can always access organization settings from the settings menu.'),
                         ]),
                 ]),

@@ -348,7 +348,7 @@ class Calendar extends Page
                     ->title('Event created.')
                     ->actions([
                         Action::make('view')
-                            ->label('Open event')
+                            ->label('Open Event')
                             ->button()
                             ->url(EventResource::getUrl('view', ['record' => $event])),
                     ])

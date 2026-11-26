@@ -74,7 +74,7 @@ class CreateUser extends CreateRecord
                             ->unique(User::class, 'email'),
                     ]),
                     Toggle::make('send_invite')
-                        ->label('Send them an invitation')
+                        ->label('Send Them an Invitation')
                         ->helperText('Emails a link to set their password and sign in. You can send one later from their profile.')
                         ->default(true)
                         ->visible(fn (): bool => Gate::check('create', Invite::class))

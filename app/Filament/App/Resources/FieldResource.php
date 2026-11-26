@@ -270,7 +270,7 @@ class FieldResource extends BaseResource
             ])
             ->headerActions([
                 AttachAction::make()
-                    ->label('Add field')
+                    ->label('Add Field')
                     ->modalHeading('Add Field')
                     ->modalWidth(Width::TwoExtraLarge)
                     ->modalSubmitActionLabel('Add')
@@ -282,7 +282,7 @@ class FieldResource extends BaseResource
             ->recordActions([
                 DetachAction::make()
                     ->modalHeading('Remove Field')
-                    ->label('Remove field'),
+                    ->label('Remove Field'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
@@ -293,7 +293,7 @@ class FieldResource extends BaseResource
             ->reorderable('order')
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('New field')
+                    ->label('New Field')
                     ->openUrlInNewTab()
                     ->url(FieldResource::getUrl('create'))
                     ->button(),

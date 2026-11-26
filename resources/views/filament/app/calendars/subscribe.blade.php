@@ -14,7 +14,7 @@
   </div>
 
   <div class="flex flex-col gap-2">
-    <p class="text-sm font-medium text-gray-950 dark:text-white">Subscription link</p>
+    <p class="text-sm font-medium text-gray-950 dark:text-white">Subscription Link</p>
     <div x-data="{ copied: false }" class="flex items-stretch gap-2">
       <x-filament::input.wrapper class="min-w-0 flex-1">
         <x-filament::input type="text" readonly :value="$url" onclick="this.select()" aria-label="Subscription link" />

@@ -42,7 +42,7 @@ class UnitsRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make(),
                 AttachAction::make()
-                    ->label('Add unit')
+                    ->label('Add Unit')
                     ->attachAnother(false)
                     ->multiple()
                     ->modalHeading('Add unit')
@@ -53,7 +53,7 @@ class UnitsRelationManager extends RelationManager
             ->recordActions([
                 EditAction::make(),
                 DetachAction::make()
-                    ->label('Remove unit'),
+                    ->label('Remove Unit'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
