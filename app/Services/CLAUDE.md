@@ -153,8 +153,9 @@ in a `finally` block.
   `EventRegistrationService::respond()`, so the same status and window rules apply.
 - Replies are ephemeral unless meant to be shared (a public `/profile`), and set
   `allowed_mentions` to parse nothing so a reply never pings anyone.
-- Autocomplete runs without resolving the invoker, so unit names and upcoming event names are
-  suggested to anyone in the server. The `/rsvp` choice value is `OccurrenceData::key()`
+- Autocomplete resolves the invoker and applies the same checks as the commands: unit suggestions
+  need roster access, event suggestions need `view` on `Event` and on each event, and a Discord
+  user with no linked member gets none. The `/rsvp` choice value is `OccurrenceData::key()`
   (`{eventId}|{timestamp}`); without a timestamp the RSVP applies to the occurrence in progress or
   the next one.
 

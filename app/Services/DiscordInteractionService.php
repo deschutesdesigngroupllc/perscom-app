@@ -395,15 +395,18 @@ class DiscordInteractionService
     {
         $focused = collect((array) data_get($payload, 'data.options'))->firstWhere('focused', true);
         $search = (string) data_get($focused, 'value');
+        $invoker = DiscordInteractionService::invoker($payload);
 
-        $choices = match (data_get($focused, 'name')) {
-            'unit' => Unit::query()
+        $choices = match (true) {
+            ! $invoker instanceof User => collect(),
+            data_get($focused, 'name') === 'unit' && DiscordInteractionService::canViewRoster($invoker) => Unit::query()
                 ->when(filled($search), fn (Builder $query): Builder => $query->where('name', 'like', '%'.$search.'%'))
                 ->orderBy('order')
                 ->limit(25)
                 ->get()
                 ->map(fn (Unit $unit): array => ['name' => Str::limit($unit->name, 97), 'value' => (string) $unit->getKey()]),
-            'event' => DiscordInteractionService::upcomingOccurrences($search)
+            data_get($focused, 'name') === 'event' && $invoker->can('view', Event::class) => DiscordInteractionService::upcomingOccurrences($search)
+                ->filter(fn (OccurrenceData $occurrence): bool => $invoker->can('view', $occurrence->event))
                 ->take(25)
                 ->map(fn (OccurrenceData $occurrence): array => [
                     'name' => Str::limit($occurrence->event->name.' · '.$occurrence->starts->format('M j'), 97),
